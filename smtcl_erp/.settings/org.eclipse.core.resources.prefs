@@ -1,2 +1,8 @@
 eclipse.preferences.version=1
-encoding/<project>=UTF-8
+encoding//src/com/sygf/erp=UTF-8
+encoding//src/com/sygf/erp/baseData/action=UTF-8
+encoding//src/com/sygf/erp/baseData/dao=UTF-8
+encoding//src/com/sygf/erp/systemSecurity/action=UTF-8
+encoding//src/com/sygf/erp/util=UTF-8
+encoding//src/com/sygf/util=UTF-8
+encoding//src/com/sygf/util/db=UTF-8
