@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap 
+  PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+  "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="ERP">
+	<!-- 公共方法-保存 -->
+	<insert id="OrderOperactionDAO.saveAll" parameterClass="java.util.HashMap">
+		$sql$
+	</insert>
+	<!-- 公共方法-删除 -->
+	<delete id="OrderOperactionDAO.removeAll" parameterClass="java.util.HashMap">
+		$sql$
+	</delete>
+	<!-- 查询所有调度订单 -->
+	<resultMap id="MaterialSchedulingDAO.getListDingDanMap" class="java.util.HashMap">
+    	<result property="id" column="id" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="order_code" column="order_code" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="pack_code" column="pack_code" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="plan_num" column="plan_num" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="prepare_num" column="prepare_num" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="finish_num" column="finish_num" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="state" column="state" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    </resultMap>
+	<select id="MaterialSchedulingDAO.getListDingDan" parameterClass="java.util.HashMap" resultMap="MaterialSchedulingDAO.getListDingDanMap">
+		SELECT 
+		a.id,
+		a.order_code,
+		a.pack_code,
+		a.plan_num,
+		a.prepare_num,
+		a.finish_num,
+		a.state
+		FROM order_pack a
+		WHERE a.state&lt;&gt;'3' ORDER BY a.queue
+	</select>
+	<!-- 查询所有调度订单所缺物料 -->
+	<resultMap id="MaterialSchedulingDAO.getListMap" class="java.util.HashMap">
+    	<result property="id" column="id" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="order_code" column="order_code" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="material_code" column="material_code" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="material_id" column="material_id" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="material_des" column="material_des" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="plan_num" column="plan_num" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="prepare_num" column="prepare_num" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="finish_num" column="finish_num" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="cell_num" column="cell_num" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="queue" column="queue" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="ratio" column="ratio" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    </resultMap>
+	<select id="MaterialSchedulingDAO.getList" parameterClass="java.util.HashMap" resultMap="MaterialSchedulingDAO.getListMap">
+		SELECT 
+		c.id,a.order_code,c.material_code,c.material_id,
+		c.material_des,c.plan_num,d.number as prepare_num,
+		c.finish_num,c.cell_num,c.queue,e.ratio
+		FROM order_pack a
+		LEFT JOIN order_group b 
+		ON a.order_code=b.order_code
+		LEFT JOIN order_material c
+		ON b.id = c.order_group_id
+		LEFT JOIN stock d ON c.material_code=d.materiel_code
+		LEFT JOIN material e ON e.materiel_code = c.material_code
+		WHERE a.order_code=#order_code# AND a.state&lt;&gt;'3' and b.state&lt;&gt;'3' ORDER BY a.queue,b.queue,c.queue
+	</select>
+	<!-- 查询剩余货位 -->
+	<resultMap id="MaterialSchedulingDAO.getGoodsPosMap" class="java.util.HashMap">
+    	<result property="id" column="id" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+	</resultMap>
+	<select id="MaterialSchedulingDAO.getGoodsPos" parameterClass="java.util.HashMap" resultMap="MaterialSchedulingDAO.getGoodsPosMap">
+		SELECT a.id FROM goods_pos a where a.tray_code IS NULL or a.tray_code=''
+	</select>
+	<!-- **********************************基础数据********************************** -->
+	<!-- 查询此物料是否存在 -->
+	<resultMap id="BaseDataDAO.getWlCodeMap" class="java.util.HashMap">
+    	<result property="物料编码" column="物料编码" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+	</resultMap>
+	<select id="BaseDataDAO.getWlCode" parameterClass="java.util.HashMap" resultMap="BaseDataDAO.getWlCodeMap">
+		SELECT a.物料编码 FROM 通用物料 a where a.物料编码=#wuliao_code#
+	</select>
+	<!-- 物料维护-保存 -->
+	<insert id="BaseDataDAO.saveWlBaseData" parameterClass="java.util.HashMap">
+		$sql$
+	</insert>
+	<!-- 物料删除 -->
+	<delete id="BaseDataDAO.deleteWl" parameterClass="java.util.HashMap">
+		delete from 通用物料 where 物料编码=#wuliao_code#
+	</delete>
+	<!-- 查询所有物料 -->
+	<resultMap id="BaseDataDAO.selectWlListMap" class="java.util.HashMap">
+    	<result property="物料ID" column="物料ID" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="物料编码" column="物料编码" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="物料描述" column="物料描述" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="类别" column="类别" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="类型" column="类型" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="单位" column="单位" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="新建时间" column="新建时间" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="失效" column="失效" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="托盘类别" column="托盘类别" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="装载系数" column="装载系数" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="回流阀值" column="回流阀值" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="第二编码" column="第二编码" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="PLC编码" column="PLC编码" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="默认上货区" column="默认上货区" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="默认下货区" column="默认下货区" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    </resultMap>
+	<select id="BaseDataDAO.selectWlList" parameterClass="java.util.HashMap" resultMap="BaseDataDAO.selectWlListMap">
+		select a.* from 通用物料 a $sql$
+	</select>
+	<!-- 查询模组题头 -->
+	<resultMap id="BaseDataDAO.getMzYesNoMap" class="java.util.HashMap">
+    	<result property="模组ID" column="模组ID" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="模组编码" column="模组编码" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="模组类型" column="模组类型" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="电芯类型" column="电芯类型" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="工位类别" column="工位类别" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="型腔数" column="型腔数" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="新建者" column="新建者" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="新建时间" column="新建时间" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="更新者" column="更新者" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="更新时间" column="更新时间" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    </resultMap>
+	<select id="BaseDataDAO.getMzYesNo" parameterClass="java.util.HashMap" resultMap="BaseDataDAO.getMzYesNoMap">
+		select a.* from 模组题头 a where a.模组编码 = #mozu_code#
+	</select>
+	<select id="BaseDataDAO.getMzHead" parameterClass="java.util.HashMap" resultMap="BaseDataDAO.getMzYesNoMap">
+		$sql$
+	</select>
+	<!-- 模组题头-保存 -->
+	<insert id="BaseDataDAO.saveMzHead" parameterClass="java.util.HashMap">
+		$sql$
+	</insert>
+	<!-- 模组载具行-保存 -->
+	<insert id="BaseDataDAO.saveMzRow" parameterClass="java.util.HashMap">
+		$sql$
+	</insert>
+	<!-- 查询模组载具 -->
+	<resultMap id="BaseDataDAO.getMzzjListMap" class="java.util.HashMap">
+    	<result property="模组ID" column="模组ID" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="载具ID" column="载具ID" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="序号" column="序号" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="翻面否" column="翻面否" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="叠装否" column="叠装否" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="电芯数" column="电芯数" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="电芯1" column="电芯1" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="电芯2" column="电芯2" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="电芯3" column="电芯3" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="电芯4" column="电芯4" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="有效型腔" column="有效型腔" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="假电芯1" column="假电芯1" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="假电芯2" column="假电芯2" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    </resultMap>
+	<select id="BaseDataDAO.getMzzjList" parameterClass="java.util.HashMap" resultMap="BaseDataDAO.getMzzjListMap">
+		$sql$
+	</select>
+	<!-- 查询模组指令行 -->
+	<resultMap id="BaseDataDAO.getMzzlhListMap" class="java.util.HashMap">
+    	<result property="模组ID" column="模组ID" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="载具ID" column="载具ID" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="序号" column="序号" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="物料" column="物料" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="物料描述" column="物料描述" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="数量" column="数量" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="工位" column="工位" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    </resultMap>
+	<select id="BaseDataDAO.getMzzlhList" parameterClass="java.util.HashMap" resultMap="BaseDataDAO.getMzzlhListMap">
+		$sql$
+	</select>
+	<!-- 模组指令行行 -->
+	<insert id="BaseDataDAO.saveZlhRow" parameterClass="java.util.HashMap">
+		$sql$
+	</insert>
+	<!-- 删除模组 -->
+	<delete id="BaseDataDAO.mz_delete" parameterClass="java.util.HashMap">
+		$sql$
+	</delete>
+	<!-- 模组调序 -->
+	<update id="BaseDataDAO.updateXuhaoUp" parameterClass="java.util.HashMap">
+		$sql$
+	</update>
+	<!-- 查询pack题头 -->
+	<resultMap id="BaseDataDAO.getHeadListMap" class="java.util.HashMap">
+    	<result property="ID" column="ID" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="pack编码" column="pack编码" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="pack类型" column="pack类型" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="默认生产线" column="默认生产线" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="电芯类型" column="电芯类型" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="新建者" column="新建者" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="新建时间" column="新建时间" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="更新时间" column="更新时间" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="更新者" column="更新者" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    </resultMap>
+	<select id="BaseDataDAO.getHeadList" parameterClass="java.util.HashMap" resultMap="BaseDataDAO.getHeadListMap">
+		$sql$
+	</select>
+	<!-- 查询pack行 -->
+	<resultMap id="BaseDataDAO.getPackRowListMap" class="java.util.HashMap">
+    	<result property="ID" column="ID" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="pack编码" column="pack编码" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="序号" column="序号" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="模组编码" column="模组编码" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="模组类型" column="模组类型" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="数量" column="数量" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="更新者" column="更新者" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="更新时间" column="更新时间" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    </resultMap>
+	<select id="BaseDataDAO.getPackRowList" parameterClass="java.util.HashMap" resultMap="BaseDataDAO.getPackRowListMap">
+		$sql$
+	</select>
+	<!-- pack-保存 -->
+	<insert id="BaseDataDAO.savePack" parameterClass="java.util.HashMap">
+		$sql$
+	</insert>
+	<!-- pack删除 -->
+	<delete id="BaseDataDAO.deletePack" parameterClass="java.util.HashMap">
+		$sql$
+	</delete>
+	<!-- **********************************订单调度********************************** -->
+	<!-- 工单list -->
+	<resultMap id="OrderOperactionDAO.getDdListMap" class="java.util.HashMap">
+    	<result property="ID" column="ID" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="工单号" column="工单号" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="工单序号" column="工单序号" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="pack编码" column="pack编码" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="pack类型" column="pack类型" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="装配区" column="装配区" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="工单数量" column="工单数量" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="完成数量" column="完成数量" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="分解日期" column="分解日期" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="工单完成率" column="工单完成率" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    </resultMap>
+	<select id="OrderOperactionDAO.getDdList" parameterClass="java.util.HashMap" resultMap="OrderOperactionDAO.getDdListMap">
+			SELECT `工单表`.ID,`工单表`.`工单号`,`工单表`.`工单序号`,`工单表`.`pack编码`,
+			`pack题头`.`pack类型`,`工单表`.装配区,`工单表`.`工单数量`,`工单表`.`完成数量` ,`工单表`.`分解日期`,
+				`工单完成率`.`完成数量`/`工单完成率`.`数量`*100 AS `工单完成率` 
+			FROM `工单表` 
+			LEFT JOIN `pack题头` ON `工单表`.`pack编码` = `pack题头`.`pack编码` 
+			LEFT JOIN `工单完成率` ON `工单完成率`.`工单ID` = `工单表`.ID $sql$ 
+		  	ORDER BY `工单表`.`工单序号`
+	</select>
+	<!-- 指令list -->
+	<resultMap id="OrderOperactionDAO.getZlListMap" class="java.util.HashMap">
+    	<result property="ID" column="ID" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="工单ID" column="工单ID" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="工单序号" column="工单序号" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="pack编码" column="pack编码" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="模组序ID" column="模组序ID" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="模组序号" column="模组序号" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="模组编码" column="模组编码" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="分解号" column="分解号" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="载具序号" column="载具序号" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="模组类型" column="模组类型" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="电芯类型" column="电芯类型" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="物料" column="物料" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="物料描述" column="物料描述" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="数量" column="数量" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="工位" column="工位" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="电芯数量" column="电芯数量" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="翻面否" column="翻面否" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="电芯位置1" column="电芯位置1" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="电芯位置2" column="电芯位置2" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="电芯位置3" column="电芯位置3" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="电芯位置4" column="电芯位置4" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="假电芯1" column="假电芯1" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="假电芯2" column="假电芯2" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="叠装否" column="叠装否" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="前升读标志" column="前升读标志" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="叠装读标志" column="叠装读标志" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="预装读标志" column="预装读标志" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="ST读取标志" column="ST读取标志" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="有效型腔" column="有效型腔" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="完成数量" column="完成数量" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="装配区" column="装配区" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    </resultMap>
+	<select id="OrderOperactionDAO.getZlList" parameterClass="java.util.HashMap" resultMap="OrderOperactionDAO.getZlListMap">
+		$sql$
+	</select>
+	<!-- 指令表-模组list -->
+	<resultMap id="OrderOperactionDAO.getZlmzListMap" class="java.util.HashMap">
+    	<result property="工单ID" column="工单ID" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="模组序ID" column="模组序ID" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="模组类型" column="模组类型" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="模组编码" column="模组编码" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="模组序号" column="模组序号" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="数量" column="数量" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="模组完成率" column="模组完成率" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    </resultMap>
+	<select id="OrderOperactionDAO.getZlmzList" parameterClass="java.util.HashMap" resultMap="OrderOperactionDAO.getZlmzListMap">
+		SELECT DISTINCT `配方指令队列`.`模组序ID`,`配方指令队列`.`工单ID`,`配方指令队列`.`模组类型`,
+		`配方指令队列`.`模组编码` ,`pack行`.`数量`,`配方指令队列`.`模组序号`,`模组完成率`.`完成数量`/`模组完成率`.`数量`*100 AS `模组完成率`
+		FROM `配方指令队列` 
+		LEFT JOIN `pack行` ON `pack行`.`模组编码` = `配方指令队列`.`模组编码` AND 
+			`配方指令队列`.`模组序ID` = `pack行`.`模组序ID` AND 
+			`配方指令队列`.`模组序号` = `pack行`.`序号` 
+		LEFT JOIN `模组完成率` ON `模组完成率`.`工单ID` = `配方指令队列`.`工单ID` AND `模组完成率`.`模组序ID` = `配方指令队列`.`模组序ID`
+		WHERE `配方指令队列`.`工单ID` = #dd_id# AND `配方指令队列`.`pack编码`=#pack_code#  GROUP BY `配方指令队列`.`模组序号` 
+	</select>
+	<!-- 指令表-模组-配方list -->
+	<resultMap id="OrderOperactionDAO.getZlpfListMap" class="java.util.HashMap">
+    	<result property="分解号" column="分解号" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="工单序号" column="工单序号" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="载具序号" column="载具序号" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="物料" column="物料" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="物料描述" column="物料描述" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="数量" column="数量" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="完成数量" column="完成数量" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="电芯位置1" column="电芯位置1" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="电芯位置2" column="电芯位置2" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="电芯位置3" column="电芯位置3" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="电芯位置4" column="电芯位置4" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    </resultMap>
+	<select id="OrderOperactionDAO.getZlpfList" parameterClass="java.util.HashMap" resultMap="OrderOperactionDAO.getZlpfListMap">
+		$sql$
+	</select>
+	<!-- 配方指令队列 保存 -->
+	<insert id="OrderOperactionDAO.savePfzldl" parameterClass="java.util.HashMap">
+		insert into `配方指令队列`(`工单ID`,`工单序号`,`pack编码`,`装配区`,`模组序ID`,`模组序号`,`模组编码`,`载具序号`,`模组类型`,`电芯类型`,`物料`,`物料描述`,`数量`,`工位`,`电芯数量`,`翻面否`,`电芯位置1`,`电芯位置2`,`电芯位置3`,`电芯位置4`,`假电芯1`,`假电芯2`,`叠装否`,`有效型腔`,`完成数量`,`分解号`)
+		values(#工单ID#,#工单序号#,#pack编码#,#装配区#,#模组序ID#,#模组序号#,#模组编码#,#载具序号#,#模组类型#,#电芯类型#,#物料#,#物料描述#,#数量#,#工位#,#电芯数量#,#翻面否#,#电芯位置1#,#电芯位置2#,#电芯位置3#,#电芯位置4#,#假电芯1#,#假电芯2#,#叠装否#,#有效型腔#,#完成数量#,#分解号#)
+	</insert>
+	<!-- 修改工单分解日期 -->
+	<update id="OrderOperactionDAO.updateGdState" parameterClass="java.util.HashMap">
+		$sql$
+	</update>
+	<!-- 下载工单 -->
+	<resultMap id="OrderOperactionDAO.getGdDownloadMap" class="java.util.HashMap">
+    	<result property="ID" column="ID" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="pack编码" column="pack编码" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="工单号" column="工单号" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="工单数量" column="工单数量" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="装配区" column="装配区" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="传送否" column="传送否" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="释放否" column="释放否" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    </resultMap>
+	<select id="OrderOperactionDAO.getGdDownload" parameterClass="java.util.HashMap" resultMap="OrderOperactionDAO.getGdDownloadMap">
+		$sql$
+	</select>
+	<!-- 获取最大工单序号 -->
+	<resultMap id="OrderOperactionDAO.getMaxGdxhMap" class="java.util.HashMap">
+    	<result property="ID" column="ID" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="工单序号" column="工单序号" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    </resultMap>
+	<select id="OrderOperactionDAO.getMaxGdxh" parameterClass="java.util.HashMap" resultMap="OrderOperactionDAO.getMaxGdxhMap">
+		SELECT MAX(a.`工单序号`) AS `工单序号`,MAX(a.`ID`) AS ID FROM `工单表` a
+	</select>
+	<!-- 获取工单状态 -->
+	<resultMap id="OrderOperactionDAO.getGdtypeMap" class="java.util.HashMap">
+    	<result property="ID" column="ID" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+   	</resultMap>
+	<select id="OrderOperactionDAO.getGdtype" parameterClass="java.util.HashMap" resultMap="OrderOperactionDAO.getGdtypeMap">
+		$sql$
+	</select>
+	<!-- 模组进度统计 -->
+	<resultMap id="OrderOperactionDAO.getMzJinduListMap" class="java.util.HashMap">
+    	<result property="数量" column="数量" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="完成数量" column="完成数量" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    </resultMap>
+	<select id="OrderOperactionDAO.getMzJinduList" parameterClass="java.util.HashMap" resultMap="OrderOperactionDAO.getMzJinduListMap">
+		$sql$
+	</select>
+</sqlMap>

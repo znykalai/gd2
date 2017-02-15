@@ -1,0 +1,148 @@
+<html>
+<head>
+	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+	<meta http-equiv="description" content="this is my page">
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+</head>
+<body>
+	<div class="row margin-top-40 account-company-auth" id="xy" style="overflow-y:scroll;background-color:white;height:94%;width:98%;margin-left:2%;">
+		<!-- 配方指令队列 -->
+		<div id="dd_id" class="row">
+			<form id="dd_form" class="row">
+				<div class="col-md-12">
+					<div class="row" style="margin-top:-55px;margin-left:-10px;">
+			            <div class="col-md-1" style="width:220px;">
+							<input id="getGdId" type="text" placeholder="--- 请输入工单号 ---" class="form-control"/>
+						</div>
+			            <div class="col-md-1" style="width:215px;">
+							<input id="getGdfenjieriqi" type="text" placeholder="--- 请输入分解日期 ---" class="form-control"/>
+						</div>
+			            <div class="col-md-2" style="width:220px;">
+							<input id="getPackeCode" type="text" placeholder="--- 请输入pack编码 ---" class="form-control"/>
+						</div>
+			            <div class="col-md-1" style="width:125px;">
+					        <div class="button button-primary button-rounded button-small" id="dd_selectBtn" 
+					        	style="margin-left:5px;font-size:14px;font-family:'微软雅黑';" onselectstart="return false">
+					        	查找
+				        	</div>
+				        </div>
+					</div>
+					<div class="row" style="margin-top:14px;margin-left:-10px;">
+			            <div class="col-md-1" style="width:120px;">
+					        <div class="button button-primary button-rounded button-small" id="dd_dowBtn" 
+					        	style="font-size:14px;font-family:'微软雅黑';" onselectstart="return false">
+					        	下载
+				        	</div>
+				        </div>
+			            <div class="col-md-1" style="width:120px;">
+					        <div class="button button-primary button-rounded button-small" id="dd_upBtn" 
+					        	style="font-size:14px;font-family:'微软雅黑';" onselectstart="return false">
+					        	上调
+				        	</div>
+				        </div>
+			            <div class="col-md-1" style="width:120px;">
+					        <div class="button button-primary button-rounded button-small" id="dd_bomBtn" 
+					        	style="font-size:14px;font-family:'微软雅黑';" onselectstart="return false">
+					        	下调
+				        	</div>
+				        </div>
+			            <div class="col-md-1" style="width:150px;">
+					        <div class="button button-primary button-rounded button-small" id="dd_fenjieRadioBtn" 
+					        	style="font-size:14px;font-family:'微软雅黑';" onselectstart="return false">
+					        	选择分解
+				        	</div>
+				        </div>
+			            <div class="col-md-1" style="width:150px;">
+					        <div class="button button-primary button-rounded button-small" id="dd_fenjieAllBtn" 
+					        	style="font-size:14px;font-family:'微软雅黑';" onselectstart="return false">
+					        	全部分解
+				        	</div>
+				        </div>
+			            <div class="col-md-1" style="width:120px;">
+					        <div class="button button-primary button-rounded button-small" id="dd_delBtn" 
+					        	style="font-size:14px;font-family:'微软雅黑';" onselectstart="return false">
+					        	删除
+				        	</div>
+				        </div>
+			        </div>
+			        <div class="row" style="margin-top:5px;margin-left:4px;">
+			        	<div style="padding-right:17px;">
+							<table class="table table-bordered" style="width:100%;">
+					           <thead>
+					               <tr>
+					                  <th class="text-center" style="width: 3%;" bgcolor="#EFEFEF"></th>
+					                  <th class="text-center" style="width: 8%;" bgcolor="#EFEFEF">工单序号</th>
+					                  <th class="text-center" style="width: 7%;" bgcolor="#EFEFEF">状态</th>
+					                  <th class="text-center" style="width: 10%;" bgcolor="#EFEFEF">分解日期</th>
+					                  <th class="text-center" style="width: 10%;" bgcolor="#EFEFEF">PACK编码</th>
+					                  <th class="text-center" style="width: 8%;" bgcolor="#EFEFEF">PACK类型</th>
+					                  <th class="text-center" style="width: 8%;" bgcolor="#EFEFEF">装配区</th>
+					                  <th class="text-center" style="width: 8%;" bgcolor="#EFEFEF">计划数量</th>
+					                  <th class="text-center" style="width: 5%;" bgcolor="#EFEFEF">完成进度</th>
+					               </tr>
+					           </thead>
+							</table>
+						</div>
+				        <div class="table-body" style="width:100%;">
+				           <table class="table table-bordered text-center table-hover" id="dd_table">
+				               <tbody></tbody>
+				           </table>
+				        </div>
+			        </div>
+			        <div class="row" style="margin-top: 8px;margin-left:4px;">
+			        	<div style="padding-right:17px;">
+							<table class="table table-bordered" style="width:100%;">
+					           <thead>
+					               <tr>
+					                  <th class="text-center" style="width: 2%;" bgcolor="#EFEFEF"></th>
+					                  <th class="text-center" style="width: 8%;" bgcolor="#EFEFEF">模组类型</th>
+					                  <th class="text-center" style="width: 7%;" bgcolor="#EFEFEF">模组编码</th>
+					                  <th class="text-center" style="width: 10%;" bgcolor="#EFEFEF">数量</th>
+					                  <th class="text-center" style="width: 3%;" bgcolor="#EFEFEF">进度</th>
+					               </tr>
+					           </thead>
+							</table>
+						</div>
+				        <div class="table-body" style="width:100%;">
+				           <table class="table table-bordered text-center table-hover" id="mz_table">
+				               <tbody></tbody>
+				           </table>
+				        </div>
+			        </div>
+			        <div class="row" style="margin-top: 8px;margin-left:4px;">
+			        	<div style="padding-right:17px;">
+							<table class="table table-bordered" style="width:100%;">
+					           <thead>
+					               <tr>
+					                  <th class="text-center" style="width: 5%;" bgcolor="#EFEFEF">工单序号</th>
+					                  <th class="text-center" style="width: 8%;" bgcolor="#EFEFEF">载具号</th>
+					                  <th class="text-center" style="width: 8%;" bgcolor="#EFEFEF">物料编码</th>
+					                  <th class="text-center" style="width: 8%;" bgcolor="#EFEFEF">物料描述</th>
+					                  <th class="text-center" style="width: 8%;" bgcolor="#EFEFEF">需求数量</th>
+					                  <th class="text-center" style="width: 8%;" bgcolor="#EFEFEF">完成数量</th>
+					                  <th class="text-center" style="width: 8%;" bgcolor="#EFEFEF">电芯1</th>
+					                  <th class="text-center" style="width: 8%;" bgcolor="#EFEFEF">电芯2</th>
+					                  <th class="text-center" style="width: 8%;" bgcolor="#EFEFEF">电芯3</th>
+					                  <th class="text-center" style="width: 8%;" bgcolor="#EFEFEF">电芯4</th>
+					               </tr>
+					           </thead>
+							</table>
+						</div>
+				        <div class="table-body" style="width:100%;">
+				           <table class="table table-bordered text-center table-hover" id="pf_table">
+				               <tbody></tbody>
+				           </table>
+				        </div>
+			        </div>
+	            </div>
+			</form>
+		</div>
+	</div>
+	<div class="col-md-3" style="width:400px;"></div>
+	<div class="col-md-2">
+		<a class="button button-3d button-primary button-rounded"
+			style="position:absolute;top:12px;font-family:'微软雅黑';" onclick="null">订单调度</a>
+	</div>
+	<script type="text/javascript" src="/smtcl_erp/html/js/dddd.js"></script>
+</body>
+</html>

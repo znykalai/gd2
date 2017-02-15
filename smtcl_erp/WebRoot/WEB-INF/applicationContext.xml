@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<beans  xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd"
+    default-autowire="byName" default-lazy-init="true">    
+	<bean id="erp" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">  
+		<!-- <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />  
+		<property name="url" value="jdbc:oracle:thin:@127.0.0.1:1521:ORCL" />  
+		<property name="username" value="system" />  
+		<property name="password" value="oracle123" />
+		
+		<property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />  
+		<property name="url" value="jdbc:sqlserver://127.0.0.1:1455;databaseName=trainProject" />  
+		<property name="username" value="sa" />  
+		<property name="password" value="." /> --> 
+		  
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />  
+		<property name="url" value="jdbc:mysql://localhost:3306/kufang" />
+		<property name="username" value="root" />  
+		<property name="password" value="a3infosql" /> 
+	</bean> 
+	<bean id="dataSource" class="com.sygf.util.DynamicDataSource">     
+		<property name="targetDataSources">  
+			<map key-type="java.lang.String">     
+				<entry key="erp" value-ref="erp"/>
+			</map>    
+		</property>  
+		<!-- 默认的数据库 -->
+		<property name="defaultTargetDataSource" ref="erp"/>
+	</bean> 
+	<!--ibatis 层  -->
+	<bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+		<property name="configLocation" value="classpath:config/config.xml" />
+		<property name="dataSource">  
+			<ref local="dataSource"/>
+		</property>
+    </bean>
+    <!--此次id首字母不能为大写  配置DAO-->
+    <bean id="materialSchedulingDAO" class="com.sygf.erp.util.MaterialSchedulingDAO">
+        <property name="sqlMapClient" ref="sqlMapClient" /> 
+    </bean>
+    <!--此次id首字母不能为大写  配置DAO-->
+    <bean id="baseDataDAO" class="com.sygf.erp.baseData.dao.BaseDataDAO">
+        <property name="sqlMapClient" ref="sqlMapClient" /> 
+    </bean>
+    <!--此次id首字母不能为大写  配置DAO-->
+    <bean id="orderOperactionDAO" class="com.sygf.erp.baseData.dao.OrderOperactionDAO">
+        <property name="sqlMapClient" ref="sqlMapClient" /> 
+    </bean>
+</beans> 

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+<struts-config>
+	<action-mappings>
+		<!-- 登录页面 -->
+		<action path="/LoginAction" scope="request" type="com.sygf.erp.systemSecurity.action.LoginAction">
+			<forward name="index" path="/indexg.jsp" redirect="true" />
+			<forward name="failureHttp" path="/httpLogin.jsp" />
+		</action>
+		<!-- 获取html -->
+		<action path="/GetHtmlAction" type="com.sygf.erp.baseData.action.GetHtmlAction"></action>
+		<!-- 基础数据 -->
+		<action path="/BaseDataAction" type="com.sygf.erp.baseData.action.BaseDataAction"></action>
+		<!-- 订单操作 -->
+		<action path="/OrderOperAction" type="com.sygf.erp.baseData.action.OrderOperAction"></action>
+	</action-mappings>
+	<message-resources parameter="com.sygf.erp.ApplicationResources" />
+</struts-config>
