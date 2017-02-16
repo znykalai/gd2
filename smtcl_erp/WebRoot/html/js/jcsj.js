@@ -1736,7 +1736,7 @@ var readyShow = {
 				}
 			});
 		}catch (e) {
-			alert(e);
+			return e;
 		}
 		return null;
 	}

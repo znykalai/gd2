@@ -8,15 +8,6 @@
 	<div class="row margin-top-40 account-company-auth" id="xy" style="overflow-y:scroll;background-color:white;height:94%;width:98%;margin-left:2%;">
 		<div id="home_id" class="row">
 			<style>
-				.dianxin{
-					margin-left:8px;
-					text-align:center;
-					line-height:40px;
-					height:40px;
-					width:110px;
-					font-size:15px;
-					border:1px solid rgb( 234 , 234 , 234 );
-				}
 				.shusongxian{
 					margin-left:3px;
 					width:50px;
@@ -33,6 +24,7 @@
 				}
 				.head_hui{
 					text-align: center;
+					float:left;
 					margin-left:3px;
 					height:40px;
 					width:50px;
@@ -40,12 +32,23 @@
 					font-size:15px;
 					border:1px solid rgb( 234 , 234 , 234 );
 				}
+				.head_lan{
+					text-align: center;
+					margin-left:3px;
+					height:40px;
+					width:50px;
+					float:left;
+					color:#ffffff;
+					font-size:15px;
+					background-color:rgb( 75 , 176 , 249 );
+				}
 				.hui{
 					text-align: center;
 					margin-left:3px;
 					line-height:40px;
 					height:40px;
 					width:50px;
+					float:left;
 					color:#000000;
 					font-size:15px;
 					background-color:rgb( 234 , 234 , 234 );
@@ -64,10 +67,10 @@
 			<form id="home_form" class="row">
 				<div class="col-md-7" style="width:850px;margin-top:20px;">
 					<div class="row" style="margin-top:7px;width:850px;">
-							<div class="head_hui no" style="float:left;">异步输送线</div>
-							<div class="hui no no" id="TOP-1ST" style="float:left;">1ST</div>
-							<div class="hui no no" id="TOP-2ST" style="float:left;">2ST</div>
-							<div class="hui no no" id="TOP-3ST" style="float:left;">3ST</div>
+							<div class="head_hui no" id="TOP-0ST">异步输送线</div>
+							<div class="hui no" id="TOP-1ST" style="float:left;">1ST</div>
+							<div class="hui no" id="TOP-2ST" style="float:left;">2ST</div>
+							<div class="hui no" id="TOP-3ST" style="float:left;">3ST</div>
 							<div class="hui no" id="TOP-4ST" style="float:left;">4ST</div>
 							<div class="hui no" id="TOP-5ST" style="float:left;">5ST</div>
 							<div class="hui no" id="TOP-6ST" style="float:left;">6ST</div>
@@ -78,7 +81,7 @@
 							<div class="hui no" id="TOP-11ST" style="float:left;">11ST</div>
 							<div class="hui no" id="TOP-12ST" style="float:left;">12ST</div>
 							<div class="hui no" id="TOP-13ST" style="float:left;">13ST</div>
-							<div class="head_hui no" style="float:left;">异步输送线</div>
+							<div class="head_hui no" id="TOP-14ST">异步输送线</div>
 					</div>
 					<div class="row" style="margin-top:10px;width:850px;">
 						<div class="col-md-1 shusongxian">输送线</div>
@@ -172,7 +175,7 @@
 						</div>
 					</div>
 					<div class="row" style="margin-top:10px;width:850px;">
-							<div class="head_hui no" style="float:left;">异步输送线</div>
+							<div class="head_hui no" id="BOTTOM-0ST" style="float:left;">异步输送线</div>
 							<div class="hui no" id="BOTTOM-1ST" style="float:left;">1ST</div>
 							<div class="hui no" id="BOTTOM-2ST" style="float:left;">2ST</div>
 							<div class="hui no" id="BOTTOM-3ST" style="float:left;">3ST</div>
@@ -186,7 +189,7 @@
 							<div class="hui no" id="BOTTOM-11ST" style="float:left;">11ST</div>
 							<div class="hui no" id="BOTTOM-12ST" style="float:left;">12ST</div>
 							<div class="hui no" id="BOTTOM-13ST" style="float:left;">13ST</div>
-							<div class="head_hui no" style="float:left;">异步输送线</div>
+							<div class="head_hui no" id="BOTTOM-14ST" style="float:left;">异步输送线</div>
 					</div>
 				</div>
 				<div class="col-md-5" style="height:85%;">
@@ -200,7 +203,6 @@
 					</div>
 					<div class="row" style="margin-left:4px;">
 						搬运机构指定队列
-						<input type="button" id="bbbb" value="aaaaa"></input>
 						<div style="padding-right:17px;">
 							<table class="table table-bordered" style="width:100%;">
 					           <thead>

@@ -22,4 +22,18 @@ public class HomeActionDAO extends SqlMapClientDaoSupport {
 		}
 		return null;
 	}
+	/**
+	 * 工单完成率
+	 * @return
+	 */
+	public List getGdWanChengLv(){
+		try{
+			return getSqlMapClientTemplate().queryForList("HomeActionDAO.getGdWanChengLv",null);
+		}catch (Exception e) {
+			Log.error("HomeActionDAO.getGdWanChengLv方法出现异常！" + e.getMessage());
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 }

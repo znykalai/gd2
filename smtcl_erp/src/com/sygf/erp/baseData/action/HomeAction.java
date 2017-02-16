@@ -70,16 +70,26 @@ public class HomeAction extends Action{
 						map.put(""+i+"","TOP-"+i+"ST");
 						topArratList.add(map);
 					}
-					//System.out.println(PLC.getIntance().line.getCarry(i).get载具序号());
-					//System.out.println(PLC.getIntance().line2.getCarry(i).get载具序号());
-				}catch(Exception e){
-					System.out.println(i+"=null");
-				}
+				}catch(Exception e){}
 			}
-			System.out.println("topArratList="+topArratList);
+			//异步输送线下层
+			ArrayList bottomArratList = new ArrayList();
+			for(int i=0;i<15;i++){
+				try{
+					HashMap map = new HashMap();
+					if(PLC.getIntance().line2.getCarry(i)!=null){
+						map.put(""+i+"","BOTTOM-"+i+"ST");
+						bottomArratList.add(map);
+					}
+				}catch(Exception e){}
+			}
+			list = dao.getGdWanChengLv();
 			result.put("hckTop", topArratList);
 			result.put("hckTb", resultList);
-			System.out.println("resultList="+resultList);
+			result.put("hckBottom", bottomArratList);
+			result.put("gdWcl", list!=null&&list.size()>0?((HashMap)list.get(0)).get("工单完成率"):"");
+			
+			System.out.println("result="+result);
 			response.setContentType("text/html;charset=utf-8");
 			response.getWriter().print(result);
 			response.getWriter().close();
