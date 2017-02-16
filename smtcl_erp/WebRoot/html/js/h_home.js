@@ -7,6 +7,7 @@ var readyShow = {
 				 * 渲染主界面
 				 */	
 				load:function(returnFunction,dsState){
+					var win = layer.open({type: 3});
 					var winHeight = document.body.clientHeight;
 					if(winHeight == window.screen.height){
 						winHeight = document.body.clientHeight - 50;
@@ -21,6 +22,7 @@ var readyShow = {
 							dlInterval = true;
 						})();
 					}
+					layer.close(win);
 					return returnFunction();
 				},
 				/**
