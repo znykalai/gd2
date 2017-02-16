@@ -95,7 +95,8 @@ public class STContent implements Serializable {
     	 		  update标志(firstST,1);
     	 		 //如果不为空时真加不了的，每当收到放行的信号后，会自动移动，这时会把这个设为NULL的。
     	     	 Carry carr=new Carry(firstST.get工单号(), firstST.get分解号(), firstST.get载具序号(),firstST.get模组序ID());
-    	     	 carr.set假电芯1((int)row.get(12));carr.set假电芯2((int)row.get(13));
+    	     	 carr.set假电芯1(row.get(12).toString().equals("0")?0:(int)row.get(12));
+    	     	 carr.set假电芯2(row.get(13).toString().equals("0")?0:(int)row.get(13));
     	     	 carr.set电芯位置1(row.get(14)==null?null:row.get(14).toString());
     	     	 carr.set电芯位置2(row.get(15)==null?null:row.get(15).toString());
     	     	 carr.set电芯位置3(row.get(16)==null?null:row.get(16).toString());
@@ -120,7 +121,8 @@ public class STContent implements Serializable {
    	 		 update标志(secondST,1);
    	 		 
    	 	 Carry carr2=new Carry( secondST.get工单号(),  secondST.get分解号(),  secondST.get载具序号(), secondST.get模组序ID());
-     	 carr2.set假电芯1((int)row2.get(12));carr2.set假电芯2((int)row2.get(13));
+   	 	 carr2.set假电芯1(row2.get(12).toString().equals("0")?0:(int)row2.get(12));
+    	 carr2.set假电芯2(row2.get(13).toString().equals("0")?0:(int)row2.get(13));
      	 carr2.set电芯位置1(row2.get(14)==null?null:row2.get(14).toString());
      	 carr2.set电芯位置2(row2.get(15)==null?null:row2.get(15).toString());
      	 carr2.set电芯位置3(row2.get(16)==null?null:row2.get(16).toString());
@@ -148,7 +150,8 @@ public class STContent implements Serializable {
        	 	    update标志(firstST,1);
        	 	    
        	 	 Carry carr=new Carry(firstST.get工单号(), firstST.get分解号(), firstST.get载具序号(),firstST.get模组序ID());
-	     	 carr.set假电芯1((int)row.get(12));carr.set假电芯2((int)row.get(13));
+       	 	 carr.set假电芯1(row.get(12).toString().equals("0")?0:(int)row.get(12));
+	     	 carr.set假电芯2(row.get(13).toString().equals("0")?0:(int)row.get(13));
 	     	 carr.set电芯位置1(row.get(14)==null?null:row.get(14).toString());
 	     	 carr.set电芯位置2(row.get(15)==null?null:row.get(15).toString());
 	     	 carr.set电芯位置3(row.get(16)==null?null:row.get(16).toString());
@@ -181,7 +184,8 @@ public class STContent implements Serializable {
        	 		secondST.setWrite(true);
        	 	     update标志(secondST,1);
        	 	 Carry carr2=new Carry( secondST.get工单号(),  secondST.get分解号(),  secondST.get载具序号(), secondST.get模组序ID());
-         	 carr2.set假电芯1((int)row.get(12));carr2.set假电芯2((int)row.get(13));
+       	 	 carr2.set假电芯1(row.get(12).toString().equals("0")?0:(int)row.get(12));
+	     	 carr2.set假电芯2(row.get(13).toString().equals("0")?0:(int)row.get(13));
          	 carr2.set电芯位置1(row.get(14)==null?null:row.get(14).toString());
          	 carr2.set电芯位置2(row.get(15)==null?null:row.get(15).toString());
          	 carr2.set电芯位置3(row.get(16)==null?null:row.get(16).toString());
