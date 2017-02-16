@@ -87,7 +87,7 @@ $(document).ready(function(){
 	$('#div_mo_img_close').mouseover(function(){this.src=""+getRootPath()+"/images/guanjianniu_mo.png";});
 	$('#div_mo_img_close').mouseout(function(){this.src=""+getRootPath()+"/images/guanjianniu.png";});
 	$('#div_mo_img_close').click(function(){});
-	//复位
+	//主页
 	$('#div_mo_img_strat').mouseover(function(){this.src=""+getRootPath()+"/images/fanhuianniu_mo.png";});
 	$('#div_mo_img_strat').mouseout(function(){this.src=""+getRootPath()+"/images/fanhuianniu.png";});
 	$('#div_mo_img_strat').click(function(){
@@ -109,7 +109,7 @@ $(document).ready(function(){
 		    	var home_btn = spl + html.split(spl)[1];
 				$("#home_div").html(home_html);
 				$("#btn_id").html(home_btn);
-				readyShow();
+				readyShow.load();
 		    }
 		});
 	});
@@ -159,7 +159,7 @@ $(document).ready(function(){
 		    	var home_btn = spl + html.split(spl)[1];
 				$("#home_div").html(home_html);
 				$("#btn_id").html(home_btn);
-				readyShow();
+				readyShow.load();
 		    }
 		});
 	});
@@ -187,7 +187,7 @@ $(document).ready(function(){
 		    	var home_btn = spl + html.split(spl)[1];
 				$("#home_div").html(home_html);
 				$("#btn_id").html(home_btn);
-				readyShow();
+				readyShow.load();
 		    }
 		});
 	});
@@ -215,7 +215,7 @@ $(document).ready(function(){
 		    	var home_btn = spl + html.split(spl)[1];
 				$("#home_div").html(home_html);
 				$("#btn_id").html(home_btn);
-				readyShow();
+				readyShow.load();
 		    }
 		});
 	});
@@ -243,7 +243,7 @@ $(document).ready(function(){
 		    	var home_btn = spl + html.split(spl)[1];
 				$("#home_div").html(home_html);
 				$("#btn_id").html(home_btn);
-				readyShow();
+				readyShow.load();
 		    }
 		});
 	});
@@ -271,7 +271,7 @@ $(document).ready(function(){
 		    	var home_btn = spl + html.split(spl)[1];
 				$("#home_div").html(home_html);
 				$("#btn_id").html(home_btn);
-				readyShow();
+				readyShow.load();
 		    }
 		});
 	});

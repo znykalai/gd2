@@ -23,8 +23,8 @@
 		  
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />  
 		<property name="url" value="jdbc:mysql://localhost:3306/kufang" />
-		<property name="username" value="root" />  
-		<property name="password" value="123456" /> 
+		<property name="username" value="a3info" />  
+		<property name="password" value="a3infosql" /> 
 	</bean> 
 	<bean id="dataSource" class="com.sygf.util.DynamicDataSource">     
 		<property name="targetDataSources">  
@@ -61,5 +61,4 @@
     <import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
     <bean id="service1" class="alai.znyk.server.webService.ServiceServerImp"></bean>
     <jaxws:endpoint id="gd" implementor="#service1" address="/gd" />
-    <!--钱凤来的webservice配置 end-->
 </beans> 
