@@ -38,7 +38,16 @@ public class SqlTool {
         Vector v=new Vector();
 
     for(int i=1;i<num+1;i++){
-       v.addElement(set.getObject(i));
+    	if(set.getObject(i)!=null){
+    		if(set.getObject(i) instanceof Long){
+              v.addElement(Integer.parseInt(set.getObject(i).toString()));
+          }else{
+        	  v.addElement(set.getObject(i));	  
+          }
+       }
+    	else{
+    		v.addElement(null);	
+    	}
       }
        has.addElement(v);
     }

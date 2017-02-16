@@ -446,7 +446,7 @@ var readyShow = function(){
 			}else{
 				this.ck = true;
 			}
-			$(this).html('<input id="newTd6_text_' + row + '" type="number" min="1" class="form-control" value="' + $(this).html() + '">');
+			$(this).html('<input id="newTd6_text_' + row + '" type="text" min="1" class="form-control" value="' + $(this).html() + '">');
 			$('#newTd6_text_' + row).focus();
 	        $('#newTd6_text_' + row).blur(function (){
 	            var node = this.parentNode;
@@ -469,7 +469,7 @@ var readyShow = function(){
 			}else{
 				this.ck = true;
 			}
-			$(this).html('<input id="newTd7_text_' + row + '" type="number" class="form-control" value="' + $(this).html() + '">');
+			$(this).html('<input id="newTd7_text_' + row + '" type="text" class="form-control" value="' + $(this).html() + '">');
 			$('#newTd7_text_' + row).focus();
 	        $('#newTd7_text_' + row).blur(function (){
 	            var node = this.parentNode;
@@ -492,7 +492,7 @@ var readyShow = function(){
 			}else{
 				this.ck = true;
 			}
-			$(this).html('<input id="newTd8_text_' + row + '" type="number" class="form-control" value="' + $(this).html() + '">');
+			$(this).html('<input id="newTd8_text_' + row + '" type="text" class="form-control" value="' + $(this).html() + '">');
 			$('#newTd8_text_' + row).focus();
 	        $('#newTd8_text_' + row).blur(function (){
 	            var node = this.parentNode;
@@ -515,7 +515,7 @@ var readyShow = function(){
 			}else{
 				this.ck = true;
 			}
-			$(this).html('<input id="newTd9_text_' + row + '" type="number" class="form-control" value="' + $(this).html() + '">');
+			$(this).html('<input id="newTd9_text_' + row + '" type="text" class="form-control" value="' + $(this).html() + '">');
 			$('#newTd9_text_' + row).focus();
 	        $('#newTd9_text_' + row).blur(function (){
 	            var node = this.parentNode;

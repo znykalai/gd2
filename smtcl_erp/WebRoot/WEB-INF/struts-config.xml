@@ -13,6 +13,8 @@
 		<action path="/BaseDataAction" type="com.sygf.erp.baseData.action.BaseDataAction"></action>
 		<!-- 订单操作 -->
 		<action path="/OrderOperAction" type="com.sygf.erp.baseData.action.OrderOperAction"></action>
+		<!-- home主页显示 -->
+		<action path="/HomeAction" type="com.sygf.erp.baseData.action.HomeAction"></action>
 	</action-mappings>
 	<message-resources parameter="com.sygf.erp.ApplicationResources" />
 </struts-config>

@@ -504,10 +504,13 @@ public class OrderOperAction extends Action{
 					double gdNumber = Double.parseDouble(((HashMap)list.get(i)).get("工单数量").toString());
 					for(int k=0;k<(int)gdNumber;k++){
 						//获取最大工单序号
-						int maxGdxh = Integer.parseInt(((HashMap)dao.getMaxGdxh().get(0)).get("工单序号").toString());
-						int gdID = Integer.parseInt(((HashMap)dao.getMaxGdxh().get(0)).get("ID").toString());
-						sql = "insert into `工单表`(`ID`,`工单序号`,`工单号`,`pack编码`,`工单数量`,`装配区`,`传送否`,`释放否`,`完成数量`)"+
-								"values("+(gdID+1)+","+(maxGdxh+1)+"," +
+						List maxList = dao.getMaxGdxh();
+						int maxGdxh = 0;
+						if(maxList!=null&&maxList.size()>0){
+							maxGdxh = Integer.parseInt(((HashMap)maxList.get(0)).get("工单序号").toString().equals("")?"0":((HashMap)maxList.get(0)).get("工单序号").toString());
+						}
+						sql = "insert into `工单表`(`工单序号`,`工单号`,`pack编码`,`工单数量`,`装配区`,`传送否`,`释放否`,`完成数量`)"+
+								"values("+(maxGdxh+1)+","+
 										""+((HashMap)list.get(i)).get("工单号")+"," +
 										"'"+((HashMap)list.get(i)).get("pack编码")+"'," +
 										"1," +

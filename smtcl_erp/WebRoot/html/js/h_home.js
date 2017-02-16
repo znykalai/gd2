@@ -95,4 +95,17 @@ var readyShow = function(){
 	json.yAxis = yAxis; 
 	json.series = series;
 	$('#container-rpm').highcharts(json);
+	
+	//获取输送线 库房状态
+	$.ajax({
+		url: getRootPath()+'/HomeAction.do?operType=getHckState',
+		type: 'get',
+		cache:false, 
+		data: "",
+		success: function (data) {
+			var obj = eval("("+data+")");
+			for(var i=0;i<obj.hckTb.length;i++){
+			}
+		}
+	});
 };

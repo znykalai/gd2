@@ -484,6 +484,7 @@ public class BaseDataAction extends Action{
 							"'"+add.getJSONObject(i).getString("zlh_shuliang")+"'," +
 							"'"+add.getJSONObject(i).getString("zlh_gongwei")+"')";
 					map.put("sql", sql);
+					System.out.println("sql="+sql);
 					yesNo = dao.saveZlhRow(map);
 				}
 			}

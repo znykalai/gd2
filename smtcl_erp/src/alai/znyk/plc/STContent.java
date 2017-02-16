@@ -102,9 +102,9 @@ public class STContent implements Serializable {
     	     	 carr.set电芯位置3(row.get(16)==null?null:row.get(16).toString());
     	     	 carr.set电芯位置4(row.get(17)==null?null:row.get(17).toString());
     	     	 carr.set叠装否(row.get(18).equals("是")?true:false);
-    	     	 carr.set工单ID(row.get(10)==null?0:(int)row.get(10));
-    	     	 carr.set模组类型(row.get(19)==null?0:(int)row.get(19));
-    	     	 carr.set电芯类型(row.get(20)==null?0:(int)row.get(20));
+    	     	 carr.set工单ID(row.get(10)==null?0:Integer.parseInt(row.get(10).toString()));
+    	     	 carr.set模组类型(row.get(19)==null?0:Integer.parseInt(row.get(19).toString()));
+    	     	 carr.set电芯类型(row.get(20)==null?0:Integer.parseInt(row.get(20).toString()));
     	  		 PLC.getIntance().line.addFist(carr);
     	 		 
     	 	 ((_FST)secondST).clear();
