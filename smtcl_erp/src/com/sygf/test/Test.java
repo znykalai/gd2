@@ -7,7 +7,7 @@ public class Test {
 		for(int i=0;i<15;i++){
 			try{
 				System.out.println(PLC.getIntance().line.getCarry(i).getÔØ¾ßÐòºÅ());
-				System.out.println(PLC.getIntance().line2.getCarry(i).getÔØ¾ßÐòºÅ());
+
 			}catch(Exception e){
 				System.out.println(i+"=null");
 			}

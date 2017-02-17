@@ -3,12 +3,11 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:aop="http://www.springframework.org/schema/aop"
     xmlns:tx="http://www.springframework.org/schema/tx"
-    xmlns:jaxws="http://cxf.apache.org/jaxws" 
+    
     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
-           http://cxf.apache.org/jaxws
-        http://cxf.apache.org/schemas/jaxws.xsd"
+          "
     default-autowire="byName" default-lazy-init="true">    
 	<bean id="erp" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">  
 		<!-- <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />  
@@ -55,10 +54,11 @@
     <bean id="homeActionDAO" class="com.sygf.erp.baseData.dao.HomeActionDAO">
         <property name="sqlMapClient" ref="sqlMapClient" /> 
     </bean>
-    <!--钱凤来的webservice配置-->
+    <!--钱凤来的webservice配置
     <import resource="classpath:META-INF/cxf/cxf.xml" />
     <import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
     <import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
     <bean id="service1" class="alai.znyk.server.webService.ServiceServerImp"></bean>
     <jaxws:endpoint id="gd" implementor="#service1" address="/gd" />
+    -->
 </beans> 

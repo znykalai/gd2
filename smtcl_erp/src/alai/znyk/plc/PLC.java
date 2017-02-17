@@ -398,11 +398,14 @@ public class PLC implements Serializable {
     				if(载具放行1==1){
     				if(i<15){
     				  line.removeToNext(i);
+    				  STC1.get(i).firstST.set数据更新完成(true);
+    				  STC1.get(i).firstST.setWrite(false);
+    				 //更新到PLC,由initFromSql()自动完成
     			       }
     				
-    				STC1.get(i).firstST.setWrite(false);
-    				//更新到PLC
-    				//STC1.get(i).firstST.writeToPLC();
+    				
+    				
+    				
     				}
     			}
     			

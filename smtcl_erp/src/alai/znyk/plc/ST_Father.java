@@ -117,7 +117,7 @@ public class ST_Father implements STInterface, Serializable{
 		 
 	 }
 	 
-	
+	 public void set数据更新完成(boolean 数据更新完成){};
 	 public boolean isChange(){return false;}
 
 	@Override
