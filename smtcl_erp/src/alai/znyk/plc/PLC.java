@@ -303,6 +303,7 @@ public class PLC implements Serializable {
 	public static synchronized PLC getIntance(){
 		if(INSTANCE!=null){return INSTANCE;}else{
 			INSTANCE=new PLC();
+			System.out.println("---------------");
 			INSTANCE.startTiaodu();
 			return INSTANCE;
 		}

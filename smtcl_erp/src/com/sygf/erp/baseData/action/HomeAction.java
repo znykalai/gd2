@@ -17,7 +17,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.sygf.erp.baseData.dao.HomeActionDAO;
-import com.sygf.erp.util.GetParam;
+
+import alai.znyk.plc.PLC;
 
 public class HomeAction extends Action{
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -45,23 +46,50 @@ public class HomeAction extends Action{
 		try {
 			request.setCharacterEncoding("utf-8");
 			response.setCharacterEncoding("utf-8");
-			HashMap map = GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
+			//HashMap map = GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
 			HttpSession session = request.getSession();
 			ApplicationContext context = new ClassPathXmlApplicationContext("file:"+request.getRealPath("/")+"\\WEB-INF\\applicationContext.xml");
 			HomeActionDAO dao = (HomeActionDAO)context.getBean("homeActionDAO");
-			ArrayList resultList = new ArrayList();
 			JSONObject result = new JSONObject();
 			//获取换成库 输送线状态
 			List list = dao.getHckState();
-			System.out.println("list="+list);
+			ArrayList resultList = new ArrayList();
 			if(list!=null&&list.size()>0){
 				for(int i=0;i<list.size();i++){
-					map.put("'"+i+"'", ((HashMap)list.get(i)).get("货位序号"));
+					HashMap map = new HashMap();
+					map.put(""+i+"", ((HashMap)list.get(i)).get("货位序号"));
 					resultList.add(map);
 				}
 			}
+			//异步输送线上层
+			ArrayList topArratList = new ArrayList();
+			for(int i=0;i<15;i++){
+				try{
+					HashMap map = new HashMap();
+					if(PLC.getIntance().line.getCarry(i)!=null){
+						map.put(""+i+"","TOP-"+i+"ST");
+						topArratList.add(map);
+					}
+				}catch(Exception e){}
+			}
+			//异步输送线下层
+			ArrayList bottomArratList = new ArrayList();
+			for(int i=0;i<15;i++){
+				try{
+					HashMap map = new HashMap();
+					if(PLC.getIntance().line2.getCarry(i)!=null){
+						map.put(""+i+"","BOTTOM-"+i+"ST");
+						bottomArratList.add(map);
+					}
+				}catch(Exception e){}
+			}
+			list = dao.getGdWanChengLv();
+			result.put("hckTop", topArratList);
 			result.put("hckTb", resultList);
+			result.put("hckBottom", bottomArratList);
+			result.put("gdWcl", list!=null&&list.size()>0?((HashMap)list.get(0)).get("工单完成率"):"");
 			
+			System.out.println("result="+result);
 			response.setContentType("text/html;charset=utf-8");
 			response.getWriter().print(result);
 			response.getWriter().close();

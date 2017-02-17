@@ -363,4 +363,11 @@
 	<select id="HomeActionDAO.getHckState" parameterClass="java.util.HashMap" resultMap="HomeActionDAO.getHckStateMap">
 		SELECT a.`货位ID`,a.`货位序号` FROM `货位表` AS a WHERE a.`托盘编号`&lt;&gt;''
 	</select>
+	<!-- 所以工单完成率 -->
+	<resultMap id="HomeActionDAO.getGdWanChengLvMap" class="java.util.HashMap">
+    	<result property="工单完成率" column="工单完成率" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    </resultMap>
+	<select id="HomeActionDAO.getGdWanChengLv" parameterClass="java.util.HashMap" resultMap="HomeActionDAO.getGdWanChengLvMap">
+		SELECT SUM(a.`完成数量`) / SUM(a.`数量`) * 100 AS `工单完成率` FROM `工单完成率` AS a
+	</select>
 </sqlMap>

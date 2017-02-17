@@ -1,6 +1,6 @@
 package alai.znyk.server.webService;
 
-import javax.jws.HandlerChain;
+
 import javax.jws.WebService;
 
 @WebService(endpointInterface="alai.znyk.server.webService.ServiceServer",serviceName="ServiceServer")
