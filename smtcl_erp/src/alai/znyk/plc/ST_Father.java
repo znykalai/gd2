@@ -117,8 +117,15 @@ public class ST_Father implements STInterface, Serializable{
 		 
 	 }
 	 
-	 public void set数据更新完成(boolean 数据更新完成){}
-	 public boolean isChange(){return false;}
+	 public void set数据更新完成(boolean 数据更新完成){//子类覆盖
+		 
+	 }
+	 public boolean isChange(){
+		 //子类覆盖
+		 return false;}
+	 public void set立库RDY(boolean 立库rdy) {
+			//子类覆盖
+		}
 	
 	@Override
 	public int getLength() {
@@ -143,14 +150,15 @@ public class ST_Father implements STInterface, Serializable{
 		String back=writeToPLC();
 		if(back!=null){
 			if(back.equals("成功")){
-				System.out.println("00000");
+				//System.out.println("00000");
 				old.intFromST(this);
+				return "成功!";
 			}
 		}
 		
 		}
 		
-		return null;
+		return "成功!";
 	}
 	public int get剩余数量(){
 		return 0;

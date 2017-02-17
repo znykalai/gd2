@@ -341,13 +341,15 @@ public class PLC implements Serializable {
 			public void run(){
 			while(true){
 				ST0_1.initFromSql();
-				ST1_1.initFromSql();
-				ST2_1.initFromSql();
-				ST3_1.initFromSql();
-				ST4_1.initFromSql();
-				ST5_1.initFromSql();
-				ST6_1.initFromSql();
-				ST7_1.initFromSql();
+				
+				ST1_1.initFromSql();getSTRdy(1,2);
+				
+				ST2_1.initFromSql();getSTRdy(1,3);
+				ST3_1.initFromSql();getSTRdy(1,4);
+				ST4_1.initFromSql();getSTRdy(1,5);
+				ST5_1.initFromSql();getSTRdy(1,6);
+				ST6_1.initFromSql();getSTRdy(1,7);
+				ST7_1.initFromSql();getSTRdy(1,8);
 				ST8_1.initFromSql();
 				ST9_1.initFromSql();
 				ST10_1.initFromSql();
@@ -397,6 +399,7 @@ public class PLC implements Serializable {
     				//更新托盘的物料数量
     				if(取料完成1==1){
     				 STC1.get(i).updataDB(STC1.get(i).firstST);//更新托盘的数量
+    				 
     				 System.out.println("取料完成1");
     				
     				}
@@ -404,14 +407,30 @@ public class PLC implements Serializable {
     			}
     			
     			if(载具放行1!=载具放行2){
+    				
+    				
     				//更新托盘位置，同时把write置成false,
     				if(载具放行1==1){
     				if(i<15){
-    					System.out.println("载具放行1");
-    				  line.removeToNext(i);
-    				  STC1.get(i).firstST.set数据更新完成(true);
-    				  STC1.get(i).firstST.setWrite(false);
-    					
+    					Carry car=line.getCarry(i);
+    					if(car.getName().equals(STC1.get(i).firstST.getName())){
+    						//如果这个托盘是本工位需要的托盘
+    						 if( STC1.get(i).firstST.get剩余数量()==0){
+    						  System.out.println("载具放行1");
+    						  STC1.get(i).firstST.set数据更新完成(true);
+    						  String back=STC1.get(i).firstST.writeifChangeToPLC();
+    						  if(back.contains("成功")){
+    							  //写入PLC成功后
+    	    				  line.removeToNext(i);
+    	    				  STC1.get(i).firstST.setWrite(false);
+    	    				  }
+    						  
+    						 }
+    					}
+    					else{
+                                line.removeToNext(i);
+    	    				  
+    					}
     				 //更新到PLC,由initFromSql()自动完成
     			       }
     				
@@ -575,6 +594,8 @@ public class PLC implements Serializable {
 		  }
 		  
 		  if(tem2==null){//没有托盘的情况
+			  cot.firstST.set立库RDY(false);
+			  cot.secondST.set立库RDY(false);
 			  return false;}
 		 
 		  else{
@@ -583,39 +604,49 @@ public class PLC implements Serializable {
 		      
 		       int id=((_1_6ST)cot.firstST).id;
 		       int id2=((_1_6ST)cot.secondST).id;
-               boolean re=((_1_6ST)cot.firstST).is立库RDY();
-		       boolean re2=((_1_6ST)cot.secondST).is立库RDY();
+            //   boolean re=((_1_6ST)cot.firstST).is立库RDY();
+		    //   boolean re2=((_1_6ST)cot.secondST).is立库RDY();
 		       int 需求数量=((_1_6ST)cot.firstST).get需求数量();
 			   int 完成数量=((_1_6ST)cot.firstST).get完成数量();
 			   if(需求数量!=完成数量){
 				   //如果第一个队列还没取完，那就判断第一个队列
 		       
 		       String tem=SqlTool.findOneRecord("select  物料,数量  from 配方指令队列   where  ID='"+id+"'");
-		       if(sm[1].equals(tem.split("!_!")[0])){
+		       if(sm[1].equals(tem.split("!_!")[0])){//判断队列需要的物料，跟当前工位托盘的物料是不是一样
+		    	   
 		    	   if(需求数量-完成数量>tpshul){
 					   //叫托盘回流
-					   return false;
-					   }else{return true;}
+		    		   cot.firstST.set立库RDY(false);
+					    return false;
+					   }else{
+					   cot.firstST.set立库RDY(true);  
+						   return true;
+					   
+					   }
 		    	   
 		       }else{
 		    	      //叫托盘回流  
-		    	 return false;  
+		    	   cot.firstST.set立库RDY(false);
+		    	   return false;  
 		       }
 		    }
-			   else{
-				     //如果第一个队列取完了，才判断第二个队列	   
+			   else{//如果第一个队列取完了，才判断第二个队列	   
 				   String tem=SqlTool.findOneRecord("select  物料,数量  from 配方指令队列   where  ID='"+id2+"'");
 				   if(sm[1].equals(tem.split("!_!")[0])){
 					   int 需求数量2=((_1_6ST)cot.secondST).get需求数量();
 					   int 完成数量2=((_1_6ST)cot.secondST).get完成数量();
 					   if(需求数量2-完成数量2>tpshul){
 						   //叫托盘回流
+						   cot.secondST.set立库RDY(false);
 						   return false;
-						   }else{return true;}
+						   }else{
+							cot.secondST.set立库RDY(true);
+							   return true;}
 					   
 				   }
 				        else{
 			    	      //叫托盘回流  
+				        cot.secondST.set立库RDY(false);
 				    	 return false;  
 				       }
 				   
@@ -640,6 +671,8 @@ public class PLC implements Serializable {
 				  
 			  }
 			  if(tem2==null){//没有托盘的情况
+				  cot.firstST.set立库RDY(false);
+				  cot.secondST.set立库RDY(false);
 				  return false;}
 			 
 			  else{
@@ -658,12 +691,16 @@ public class PLC implements Serializable {
 			       if(sm[1].equals(tem.split("!_!")[0])){
 			    	   if(tpshul>0){
 						   //叫托盘回流
+			    		   cot.firstST.set立库RDY(false);
 						   return false;
-						   }else{return true;}
+						   }else{
+						   cot.firstST.set立库RDY(true);
+							   return true;}
 			    	   
 			       }else{
 			    	      //叫托盘回流  
-			    	 return false;  
+			    	   cot.firstST.set立库RDY(false);
+			    	   return false;  
 			       }
 			    }
 				   else{
@@ -674,12 +711,17 @@ public class PLC implements Serializable {
 						   int 完成数量2=((_7ST)cot.secondST).get完成数量();
 						   if(tpshul>0){
 							   //叫托盘回流
+							   cot.secondST.set立库RDY(false);
 							   return false;
-							   }else{return true;}
+							   }else{
+								   cot.secondST.set立库RDY(true);
+								   return true;
+								   }
 						   
 					   }
 					        else{
 				    	      //叫托盘回流  
+					        	 cot.secondST.set立库RDY(false);
 					    	 return false;  
 					       }
 					   
