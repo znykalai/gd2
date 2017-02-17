@@ -612,6 +612,7 @@ public class PLC implements Serializable {
 				   //如果第一个队列还没取完，那就判断第一个队列
 		       
 		       String tem=SqlTool.findOneRecord("select  物料,数量  from 配方指令队列   where  ID='"+id+"'");
+		       if(tem==null)tem="-1!_!-1";
 		       if(sm[1].equals(tem.split("!_!")[0])){//判断队列需要的物料，跟当前工位托盘的物料是不是一样
 		    	   
 		    	   if(需求数量-完成数量>tpshul){
@@ -632,6 +633,7 @@ public class PLC implements Serializable {
 		    }
 			   else{//如果第一个队列取完了，才判断第二个队列	   
 				   String tem=SqlTool.findOneRecord("select  物料,数量  from 配方指令队列   where  ID='"+id2+"'");
+				   if(tem==null)tem="-1!_!-1";
 				   if(sm[1].equals(tem.split("!_!")[0])){
 					   int 需求数量2=((_1_6ST)cot.secondST).get需求数量();
 					   int 完成数量2=((_1_6ST)cot.secondST).get完成数量();
@@ -688,6 +690,7 @@ public class PLC implements Serializable {
 					   //如果第一个队列还没取完，那就判断第一个队列
 			       
 			       String tem=SqlTool.findOneRecord("select  物料,数量  from 配方指令队列   where  ID='"+id+"'");
+			       if(tem==null)tem="-1!_!-1";
 			       if(sm[1].equals(tem.split("!_!")[0])){
 			    	   if(tpshul>0){
 						   //叫托盘回流
@@ -706,6 +709,7 @@ public class PLC implements Serializable {
 				   else{
 					     //如果第一个队列取完了，才判断第二个队列	   
 					   String tem=SqlTool.findOneRecord("select  物料,数量  from 配方指令队列   where  ID='"+id2+"'");
+					   if(tem==null)tem="-1!_!-1";
 					   if(sm[1].equals(tem.split("!_!")[0])){
 						   int 需求数量2=((_7ST)cot.secondST).get需求数量();
 						   int 完成数量2=((_7ST)cot.secondST).get完成数量();
