@@ -18,6 +18,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.sygf.erp.baseData.dao.BaseDataDAO;
 import com.sygf.erp.baseData.dao.OrderOperactionDAO;
+import com.sygf.erp.util.GetApplicationContext;
 import com.sygf.erp.util.GetParam;
 
 public class OrderOperAction extends Action{
@@ -64,7 +65,7 @@ public class OrderOperAction extends Action{
 			response.setCharacterEncoding("utf-8");
 			HashMap map = GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
 			HttpSession session = request.getSession();
-			ApplicationContext context = new ClassPathXmlApplicationContext("file:"+request.getRealPath("/")+"\\WEB-INF\\applicationContext.xml");
+			ApplicationContext context = GetApplicationContext.getContext(request);
 			OrderOperactionDAO dao = (OrderOperactionDAO)context.getBean("orderOperactionDAO");
 			ArrayList result = new ArrayList();
 			String sql = " WHERE";
@@ -146,7 +147,7 @@ public class OrderOperAction extends Action{
 			response.setCharacterEncoding("utf-8");
 			HashMap map = GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
 			HttpSession session = request.getSession();
-			ApplicationContext context = new ClassPathXmlApplicationContext("file:"+request.getRealPath("/")+"\\WEB-INF\\applicationContext.xml");
+			ApplicationContext context = GetApplicationContext.getContext(request);
 			OrderOperactionDAO dao = (OrderOperactionDAO)context.getBean("orderOperactionDAO");
 			ArrayList result = new ArrayList();
 			List list = dao.getZlmzList(map);
@@ -186,7 +187,7 @@ public class OrderOperAction extends Action{
 			response.setCharacterEncoding("utf-8");
 			HashMap map = GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
 			HttpSession session = request.getSession();
-			ApplicationContext context = new ClassPathXmlApplicationContext("file:"+request.getRealPath("/")+"\\WEB-INF\\applicationContext.xml");
+			ApplicationContext context = GetApplicationContext.getContext(request);
 			OrderOperactionDAO dao = (OrderOperactionDAO)context.getBean("orderOperactionDAO");
 			ArrayList result = new ArrayList();
 			String sql = "SELECT a.* FROM `配方指令队列` a WHERE " +
@@ -234,7 +235,7 @@ public class OrderOperAction extends Action{
 			response.setCharacterEncoding("utf-8");
 			HashMap map = GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
 			HttpSession session = request.getSession();
-			ApplicationContext context = new ClassPathXmlApplicationContext("file:"+request.getRealPath("/")+"\\WEB-INF\\applicationContext.xml");
+			ApplicationContext context = GetApplicationContext.getContext(request);
 			OrderOperactionDAO dao = (OrderOperactionDAO)context.getBean("orderOperactionDAO");
 			String sql = "SELECT " +
 						 "a.ID,"+
@@ -360,7 +361,7 @@ public class OrderOperAction extends Action{
 			response.setCharacterEncoding("utf-8");
 			HashMap map = GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
 			HttpSession session = request.getSession();
-			ApplicationContext context = new ClassPathXmlApplicationContext("file:"+request.getRealPath("/")+"\\WEB-INF\\applicationContext.xml");
+			ApplicationContext context = GetApplicationContext.getContext(request);
 			OrderOperactionDAO dao = (OrderOperactionDAO)context.getBean("orderOperactionDAO");
 			String sql = "SELECT " +
 						 "a.ID,"+
@@ -493,7 +494,7 @@ public class OrderOperAction extends Action{
 			response.setCharacterEncoding("utf-8");
 			HashMap map = GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
 			HttpSession session = request.getSession();
-			ApplicationContext context = new ClassPathXmlApplicationContext("file:"+request.getRealPath("/")+"\\WEB-INF\\applicationContext.xml");
+			ApplicationContext context = GetApplicationContext.getContext(request);
 			OrderOperactionDAO dao = (OrderOperactionDAO)context.getBean("orderOperactionDAO");
 			String sql = "SELECT a.`ID`,a.`工单号`,a.`pack编码`,a.`工单数量`,a.`装配区`,a.`传送否`,a.`释放否` FROM `工单下载` a";
 			map.put("sql", sql);
@@ -554,7 +555,7 @@ public class OrderOperAction extends Action{
 			response.setCharacterEncoding("utf-8");
 			HashMap map = GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
 			HttpSession session = request.getSession();
-			ApplicationContext context = new ClassPathXmlApplicationContext("file:"+request.getRealPath("/")+"\\WEB-INF\\applicationContext.xml");
+			ApplicationContext context = GetApplicationContext.getContext(request);
 			OrderOperactionDAO dao = (OrderOperactionDAO)context.getBean("orderOperactionDAO");
 			JSONObject result = new JSONObject();
 			//查询当前工单是否处理中，非处理状态可删除
@@ -598,7 +599,7 @@ public class OrderOperAction extends Action{
 			response.setCharacterEncoding("utf-8");
 			HashMap map = GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
 			HttpSession session = request.getSession();
-			ApplicationContext context = new ClassPathXmlApplicationContext("file:"+request.getRealPath("/")+"\\WEB-INF\\applicationContext.xml");
+			ApplicationContext context = GetApplicationContext.getContext(request);
 			BaseDataDAO dao = (BaseDataDAO)context.getBean("baseDataDAO");
 			JSONObject result = new JSONObject();
 //			System.out.println(map);
@@ -659,7 +660,7 @@ public class OrderOperAction extends Action{
 			response.setCharacterEncoding("utf-8");
 			HashMap map = GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
 			HttpSession session = request.getSession();
-			ApplicationContext context = new ClassPathXmlApplicationContext("file:"+request.getRealPath("/")+"\\WEB-INF\\applicationContext.xml");
+			ApplicationContext context = GetApplicationContext.getContext(request);
 			BaseDataDAO dao = (BaseDataDAO)context.getBean("baseDataDAO");
 			JSONObject result = new JSONObject();
 //			System.out.println(map);

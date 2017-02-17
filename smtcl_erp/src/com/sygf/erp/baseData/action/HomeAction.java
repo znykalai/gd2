@@ -14,9 +14,12 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.sygf.erp.baseData.dao.HomeActionDAO;
+import com.sygf.erp.util.GetApplicationContext;
 
 import alai.znyk.plc.PLC;
 
@@ -33,6 +36,7 @@ public class HomeAction extends Action{
 		}
 		return null;
 	}
+	
 	/**
 	 * 获取换成库 状态
 	 * @param mapping
@@ -48,7 +52,7 @@ public class HomeAction extends Action{
 			response.setCharacterEncoding("utf-8");
 			//HashMap map = GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
 			HttpSession session = request.getSession();
-			ApplicationContext context = new ClassPathXmlApplicationContext("file:"+request.getRealPath("/")+"\\WEB-INF\\applicationContext.xml");
+			ApplicationContext context = GetApplicationContext.getContext(request);
 			HomeActionDAO dao = (HomeActionDAO)context.getBean("homeActionDAO");
 			JSONObject result = new JSONObject();
 			//获取换成库 输送线状态
@@ -83,18 +87,38 @@ public class HomeAction extends Action{
 					}
 				}catch(Exception e){}
 			}
+			//订单完成率
 			list = dao.getGdWanChengLv();
+			String gdWcl = list!=null&&list.size()>0?((HashMap)list.get(0)).get("工单完成率").toString():"0";
+			//货位使用率
+			
+			//立体库动作指令
+			list = dao.getActionCommand();
+			ArrayList actionCommandList = new ArrayList();
+			if(list!=null&&list.size()>0){
+				for(int i=0;i<list.size();i++){
+					HashMap map = new HashMap();
+					map.put("idEvent", ((HashMap)list.get(i)).get("idEvent"));
+					map.put("dongzuo", ((HashMap)list.get(i)).get("动作"));
+					map.put("tp_code", ((HashMap)list.get(i)).get("托盘编号"));
+					map.put("zhuangtai", ((HashMap)list.get(i)).get("状态"));
+					map.put("fasongshijian", ((HashMap)list.get(i)).get("发送时间"));
+					map.put("wanchengshijian", ((HashMap)list.get(i)).get("完成时间"));
+					actionCommandList.add(map);
+				}
+			}
 			result.put("hckTop", topArratList);
 			result.put("hckTb", resultList);
 			result.put("hckBottom", bottomArratList);
-			result.put("gdWcl", list!=null&&list.size()>0?((HashMap)list.get(0)).get("工单完成率"):"");
-			
+			result.put("gdWcl",gdWcl);
+			result.put("byjgzddl", actionCommandList);
 			System.out.println("result="+result);
 			response.setContentType("text/html;charset=utf-8");
 			response.getWriter().print(result);
 			response.getWriter().close();
 		}catch (Exception e) {
 			e.printStackTrace();
+		}finally{
 		}
 		return null;
 	}

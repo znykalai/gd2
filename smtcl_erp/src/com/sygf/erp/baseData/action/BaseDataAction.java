@@ -20,6 +20,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.sygf.erp.baseData.dao.BaseDataDAO;
+import com.sygf.erp.util.GetApplicationContext;
 import com.sygf.erp.util.GetParam;
 
 public class BaseDataAction extends Action{
@@ -83,7 +84,7 @@ public class BaseDataAction extends Action{
 			response.setCharacterEncoding("utf-8");
 			HashMap map = GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
 			HttpSession session = request.getSession();
-			ApplicationContext context = new ClassPathXmlApplicationContext("file:"+request.getRealPath("/")+"\\WEB-INF\\applicationContext.xml");
+			ApplicationContext context = GetApplicationContext.getContext(request);
 			BaseDataDAO dao = (BaseDataDAO)context.getBean("baseDataDAO");
 			String sql = "";
 			if(map.get("id")!=null&&!map.get("id").equals("")){
@@ -137,7 +138,7 @@ public class BaseDataAction extends Action{
 			response.setCharacterEncoding("utf-8");
 			HashMap map = GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
 			HttpSession session = request.getSession();
-			ApplicationContext context = new ClassPathXmlApplicationContext("file:"+request.getRealPath("/")+"\\WEB-INF\\applicationContext.xml");
+			ApplicationContext context = GetApplicationContext.getContext(request);
 			BaseDataDAO dao = (BaseDataDAO)context.getBean("baseDataDAO");
 			int wlSize = dao.getWlCode(map).size();
 			String sql = "insert into 通用物料(物料编码,物料描述,类别,类型,单位,新建者,新建时间,更新时间,失效,托盘类别,装载系数,回流阀值,第二编码,PLC编码,默认上货区,默认下货区)" +
@@ -204,7 +205,7 @@ public class BaseDataAction extends Action{
 			request.setCharacterEncoding("utf-8");
 			response.setCharacterEncoding("utf-8");
 			HashMap map = GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
-			ApplicationContext context = new ClassPathXmlApplicationContext("file:"+request.getRealPath("/")+"\\WEB-INF\\applicationContext.xml");
+			ApplicationContext context = GetApplicationContext.getContext(request);
 			BaseDataDAO dao = (BaseDataDAO)context.getBean("baseDataDAO");
 			boolean yesNo = dao.deleteWl(map);
 			JSONObject result = new JSONObject();
@@ -234,7 +235,7 @@ public class BaseDataAction extends Action{
 			response.setCharacterEncoding("utf-8");
 			HashMap map = GetParam.GetParamValue(request, "utf-8", "utf-8");
 			HttpSession session = request.getSession();
-			ApplicationContext context = new ClassPathXmlApplicationContext("file:"+request.getRealPath("/")+"\\WEB-INF\\applicationContext.xml");
+			ApplicationContext context = GetApplicationContext.getContext(request);
 			BaseDataDAO dao = (BaseDataDAO)context.getBean("baseDataDAO");
 //			System.out.println("map="+map);
 			//模组题头
@@ -366,7 +367,7 @@ public class BaseDataAction extends Action{
 			response.setCharacterEncoding("utf-8");
 			HashMap map = GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
 			HttpSession session = request.getSession();
-			ApplicationContext context = new ClassPathXmlApplicationContext("file:"+request.getRealPath("/")+"\\WEB-INF\\applicationContext.xml");
+			ApplicationContext context = GetApplicationContext.getContext(request);
 			BaseDataDAO dao = (BaseDataDAO)context.getBean("baseDataDAO");
 //			System.out.println(map);
 			ArrayList result = new ArrayList();
@@ -456,7 +457,7 @@ public class BaseDataAction extends Action{
 			response.setCharacterEncoding("utf-8");
 			HashMap map = GetParam.GetParamValue(request, "utf-8", "utf-8");
 			HttpSession session = request.getSession();
-			ApplicationContext context = new ClassPathXmlApplicationContext("file:"+request.getRealPath("/")+"\\WEB-INF\\applicationContext.xml");
+			ApplicationContext context = GetApplicationContext.getContext(request);
 			BaseDataDAO dao = (BaseDataDAO)context.getBean("baseDataDAO");
 			//新增模组行
 			JSONArray add = new JSONArray(map.get("add").toString());
@@ -527,7 +528,7 @@ public class BaseDataAction extends Action{
 			response.setCharacterEncoding("utf-8");
 			HashMap map = GetParam.GetParamValue(request, "utf-8", "utf-8");
 			HttpSession session = request.getSession();
-			ApplicationContext context = new ClassPathXmlApplicationContext("file:"+request.getRealPath("/")+"\\WEB-INF\\applicationContext.xml");
+			ApplicationContext context = GetApplicationContext.getContext(request);
 			BaseDataDAO dao = (BaseDataDAO)context.getBean("baseDataDAO");
 			boolean yesNo = true;
 			//删除模组题头
@@ -586,7 +587,7 @@ public class BaseDataAction extends Action{
 			response.setCharacterEncoding("utf-8");
 			HashMap map = GetParam.GetParamValue(request, "utf-8", "utf-8");
 			HttpSession session = request.getSession();
-			ApplicationContext context = new ClassPathXmlApplicationContext("file:"+request.getRealPath("/")+"\\WEB-INF\\applicationContext.xml");
+			ApplicationContext context = GetApplicationContext.getContext(request);
 			BaseDataDAO dao = (BaseDataDAO)context.getBean("baseDataDAO");
 //			System.out.println("map="+map);
 			int xuhao = Integer.parseInt(map.get("zj_xuhao")+"");
@@ -651,7 +652,7 @@ public class BaseDataAction extends Action{
 			response.setCharacterEncoding("utf-8");
 			HashMap map = GetParam.GetParamValue(request, "utf-8", "utf-8");
 			HttpSession session = request.getSession();
-			ApplicationContext context = new ClassPathXmlApplicationContext("file:"+request.getRealPath("/")+"\\WEB-INF\\applicationContext.xml");
+			ApplicationContext context = GetApplicationContext.getContext(request);
 			BaseDataDAO dao = (BaseDataDAO)context.getBean("baseDataDAO");
 //			System.out.println("map="+map);
 			int xuhao = Integer.parseInt(map.get("zj_xuhao")+"");
@@ -716,7 +717,7 @@ public class BaseDataAction extends Action{
 			response.setCharacterEncoding("utf-8");
 			HashMap map = GetParam.GetParamValue(request, "utf-8", "utf-8");
 			HttpSession session = request.getSession();
-			ApplicationContext context = new ClassPathXmlApplicationContext("file:"+request.getRealPath("/")+"\\WEB-INF\\applicationContext.xml");
+			ApplicationContext context = GetApplicationContext.getContext(request);
 			BaseDataDAO dao = (BaseDataDAO)context.getBean("baseDataDAO");
 //			System.out.println("map="+map);
 			int xuhao = Integer.parseInt(map.get("zlh_xuhao")+"");
@@ -780,7 +781,7 @@ public class BaseDataAction extends Action{
 			response.setCharacterEncoding("utf-8");
 			HashMap map = GetParam.GetParamValue(request, "utf-8", "utf-8");
 			HttpSession session = request.getSession();
-			ApplicationContext context = new ClassPathXmlApplicationContext("file:"+request.getRealPath("/")+"\\WEB-INF\\applicationContext.xml");
+			ApplicationContext context = GetApplicationContext.getContext(request);
 			BaseDataDAO dao = (BaseDataDAO)context.getBean("baseDataDAO");
 //			System.out.println("map="+map);
 			int xuhao = Integer.parseInt(map.get("zlh_xuhao")+"");
@@ -845,7 +846,7 @@ public class BaseDataAction extends Action{
 			response.setCharacterEncoding("utf-8");
 			HashMap map = GetParam.GetParamValue(request, "utf-8", "utf-8");
 			HttpSession session = request.getSession();
-			ApplicationContext context = new ClassPathXmlApplicationContext("file:"+request.getRealPath("/")+"\\WEB-INF\\applicationContext.xml");
+			ApplicationContext context = GetApplicationContext.getContext(request);
 			BaseDataDAO dao = (BaseDataDAO)context.getBean("baseDataDAO");
 //			System.out.println("map="+map);
 			JSONObject head = new JSONObject(map.get("head").toString());
@@ -953,7 +954,7 @@ public class BaseDataAction extends Action{
 			response.setCharacterEncoding("utf-8");
 			HashMap map = GetParam.GetParamValue(request, "utf-8", "utf-8");
 			HttpSession session = request.getSession();
-			ApplicationContext context = new ClassPathXmlApplicationContext("file:"+request.getRealPath("/")+"\\WEB-INF\\applicationContext.xml");
+			ApplicationContext context = GetApplicationContext.getContext(request);
 			BaseDataDAO dao = (BaseDataDAO)context.getBean("baseDataDAO");
 			ArrayList result = new ArrayList();
 			if(!map.get("pack_id").equals("")&&!map.get("pack_code").equals("")){
@@ -999,7 +1000,7 @@ public class BaseDataAction extends Action{
 			response.setCharacterEncoding("utf-8");
 			HashMap map = GetParam.GetParamValue(request, "utf-8", "utf-8");
 			HttpSession session = request.getSession();
-			ApplicationContext context = new ClassPathXmlApplicationContext("file:"+request.getRealPath("/")+"\\WEB-INF\\applicationContext.xml");
+			ApplicationContext context = GetApplicationContext.getContext(request);
 			BaseDataDAO dao = (BaseDataDAO)context.getBean("baseDataDAO");
 			ArrayList result = new ArrayList();
 			String sql = "select a.* from `pack题头` a";
@@ -1042,7 +1043,7 @@ public class BaseDataAction extends Action{
 			response.setCharacterEncoding("utf-8");
 			HashMap map = GetParam.GetParamValue(request, "utf-8", "utf-8");
 			HttpSession session = request.getSession();
-			ApplicationContext context = new ClassPathXmlApplicationContext("file:"+request.getRealPath("/")+"\\WEB-INF\\applicationContext.xml");
+			ApplicationContext context = GetApplicationContext.getContext(request);
 			BaseDataDAO dao = (BaseDataDAO)context.getBean("baseDataDAO");
 //			System.out.println("map="+map);
 			boolean yesNo = false;
@@ -1087,7 +1088,7 @@ public class BaseDataAction extends Action{
 			response.setCharacterEncoding("utf-8");
 			HashMap map = GetParam.GetParamValue(request, "utf-8", "utf-8");
 			HttpSession session = request.getSession();
-			ApplicationContext context = new ClassPathXmlApplicationContext("file:"+request.getRealPath("/")+"\\WEB-INF\\applicationContext.xml");
+			ApplicationContext context = GetApplicationContext.getContext(request);
 			BaseDataDAO dao = (BaseDataDAO)context.getBean("baseDataDAO");
 //			System.out.println("map="+map);
 			int xuhao = Integer.parseInt(map.get("pack_xuhao")+"");
@@ -1151,7 +1152,7 @@ public class BaseDataAction extends Action{
 			response.setCharacterEncoding("utf-8");
 			HashMap map = GetParam.GetParamValue(request, "utf-8", "utf-8");
 			HttpSession session = request.getSession();
-			ApplicationContext context = new ClassPathXmlApplicationContext("file:"+request.getRealPath("/")+"\\WEB-INF\\applicationContext.xml");
+			ApplicationContext context = GetApplicationContext.getContext(request);
 			BaseDataDAO dao = (BaseDataDAO)context.getBean("baseDataDAO");
 //			System.out.println("map="+map);
 			int xuhao = Integer.parseInt(map.get("pack_xuhao")+"");

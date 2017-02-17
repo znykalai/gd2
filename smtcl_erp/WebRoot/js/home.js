@@ -135,7 +135,7 @@ $(document).ready(function(){
 	$('#anniuHome').mousedown(function(){this.style.backgroundImage="url("+getRootPath()+"/images/zhuyeanniu_xiao.png)";});
 	$('#anniuHome').mouseup(function(){this.style.backgroundImage="url("+getRootPath()+"/images/zhuyeanniu_huangse.png)";});
 	$('#anniuHome').click(function(){
-		$("#homeRight").slideToggle(500,function(){});
+		$("#homeRight").slideToggle(300);
 	});
 	//按钮-订单调度
 	$('#anniu1').mouseover(function(){this.style.backgroundImage="url("+getRootPath()+"/images/wuliaodiaodu66x55_huangse.png)";});
