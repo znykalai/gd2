@@ -105,6 +105,7 @@ public class STContent implements Serializable {
     	     	 carr.set工单ID(row.get(10)==null?0:Integer.parseInt(row.get(10).toString()));
     	     	 carr.set模组类型(row.get(19)==null?0:Integer.parseInt(row.get(19).toString()));
     	     	 carr.set电芯类型(row.get(20)==null?0:Integer.parseInt(row.get(20).toString()));
+    	     	 carr.set工位(row.get(9)==null?"":row.get(9).toString());
     	  		 PLC.getIntance().line.addFist(carr);
     	 		 
     	 	 ((_FST)secondST).clear();
@@ -131,6 +132,7 @@ public class STContent implements Serializable {
      	 carr2.set模组类型(row2.get(19)==null?0:(int)row2.get(19));
      	 carr2.set电芯类型(row2.get(20)==null?0:(int)row2.get(20));
      	 carr2.set工单ID(row2.get(10)==null?0:(int)row2.get(10));
+     	 carr2.set工位(row2.get(9)==null?"":row2.get(9).toString());
   		 PLC.getIntance().line.setBuffer(carr2);
     	 		 
     	 	}else{
@@ -160,6 +162,7 @@ public class STContent implements Serializable {
 	     	 carr.set工单ID(row.get(10)==null?0:(int)row.get(10));
 	     	 carr.set模组类型(row.get(19)==null?0:(int)row.get(19));
 	     	 carr.set电芯类型(row.get(20)==null?0:(int)row.get(20));
+	     	 carr.set工位(row.get(9)==null?"":row.get(9).toString());
 	  		 PLC.getIntance().line.addFist(carr);
     	 		}
     	 		
@@ -194,6 +197,7 @@ public class STContent implements Serializable {
          	 carr2.set模组类型(row.get(19)==null?0:(int)row.get(19));
         	 carr2.set电芯类型(row.get(20)==null?0:(int)row.get(20));
         	 carr2.set工单ID(row.get(10)==null?0:(int)row.get(10));
+        	 carr2.set工位(row.get(9)==null?"":row.get(9).toString());
       		 PLC.getIntance().line.setBuffer(carr2);
         	 		 
     	 		}
@@ -965,6 +969,7 @@ public class STContent implements Serializable {
     
     public boolean  updataDB(ST_Father st){
     	if(装配区==1){
+    		System.out.println(stNum);
     		//更新物料在托盘的数量
     	if(stNum==2){//1ST
     		return updataSTDB(502, st);

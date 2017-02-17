@@ -44,6 +44,7 @@ public class CarryFrame extends JFrame {
 	 */
 	public CarryFrame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setAlwaysOnTop(true);
 		setBounds(100, 100, 1203, 124);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -217,7 +218,7 @@ public class CarryFrame extends JFrame {
 				buts.get(i).setText("");
 				buts.get(i).setEnabled(false);
 			}else{
-				buts.get(i).setText(li.getCarry(i).get载具序号()+"");
+				buts.get(i).setText(li.getCarry(i).get载具序号()+"-"+li.getCarry(i).get工位());
 				buts.get(i).setEnabled(true);
 				
 			}

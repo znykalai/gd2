@@ -18,9 +18,9 @@ public class Test2 {
 		//for(int i=0;i<sm.length;i++)
 		//System.out.println(sm[i]);
 		
-		String st="1";
-		System.out.println(st.equals(1+""));
-
+		//String st="1";
+		//System.out.println(st.equals(1+""));
+		System.out.println(0b1000);
 	}
 
 }

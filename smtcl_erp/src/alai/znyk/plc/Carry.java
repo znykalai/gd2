@@ -15,7 +15,14 @@ public class Carry implements Serializable{
     public int 已装数量; //
     public int 工单号;//PACK号
     public int 工单ID;//
-    public int get工单ID() {
+    public String 工位="";
+    public String get工位() {
+		return 工位;
+	}
+	public void set工位(String 工位) {
+		this.工位 = 工位;
+	}
+	public int get工单ID() {
 		return 工单ID;
 	}
 	public void set工单ID(int 工单id) {
@@ -175,5 +182,10 @@ public class Carry implements Serializable{
 		this.电芯位置4 = 电芯位置4;
 	}
 	 
-		
+	public String getName(){
+		//工单号ID+模组序ID+分解号+载具序号,这三个也决定了唯一的载具
+		// String s=firstST.get工单ID()+""+firstST.get模组序ID()+""+firstST.get分解号()+""+firstST.get载具序号();
+		// String s2=car.get工单ID()+""+car.get模组序ID()+""+car.get分解号()+""+car.get载具序号();
+		return get工单ID()+"="+get模组序ID()+"="+get分解号()+"="+get载具序号();
+	}	
 }

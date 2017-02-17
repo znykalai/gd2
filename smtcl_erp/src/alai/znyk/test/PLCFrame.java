@@ -154,6 +154,17 @@ public class PLCFrame extends JFrame {
 		
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				panel_3.initPanel();panel_4.initPanel();
+				panel_5.initPanel();panel_6.initPanel();
+				panel_7.initPanel();panel_8.initPanel();
+				panel_9.initPanel();panel_10.initPanel();
+				panel_11.initPanel();panel_12.initPanel();
+				panel_13.initPanel();panel_14.initPanel();
+				panel_15.initPanel();panel_16.initPanel();
+				panel_17.initPanel();
+				
+				return;
+				/*
 				if(start!=0){return;}
 				start=1;
 				new Thread(){
@@ -169,11 +180,13 @@ public class PLCFrame extends JFrame {
 				panel_13.initPanel();panel_14.initPanel();
 				panel_15.initPanel();panel_16.initPanel();
 				panel_17.initPanel();
-				//System.out.println(System.currentTimeMillis()-time);
-				Thread.sleep(100);}
+				
+				Thread.sleep(100);
+				
+					}
 				}catch(Exception ex){}
 				}
-			}.start();
+			}.start();*/
 			}
 			});
 	}

@@ -356,6 +356,7 @@ public class PLC implements Serializable {
 				ST13_1.initFromSql();
 				ST14_1.initFromSql();
 				ST15_1.initFromSql();
+				getFromPLC1();
 				writeO();
 				try {
 					Thread.sleep(500);
@@ -378,18 +379,27 @@ public class PLC implements Serializable {
     		Resint r[]=	ClientSer.getIntance().getSirIntValuesFromCTR("D11001", 63, 16, 1);
     		
     		for(int i=0;i<16;i++){
+    			
     			Resint bint=r[i*2];
     			int tem1=bint.getResInt();
     			int tem2=RST[i].boolCont.getResInt();
-    			int 载具放行1=tem1&0b100;
-    			int 载具放行2=tem2&0b100;
-    			int 取料完成1=tem1&0b10;
-    			int 取料完成2=tem2&0b10;
-    			RST[i]=new ReST(bint);
+    			
+    			int 载具放行1=(tem1&0b100)==4?1:0;
+    			int 载具放行2=(tem2&0b100)==4?1:0;
+    			int 取料完成1=(tem1&0b10)==2?1:0;
+    			int 取料完成2=(tem2&0b10)==2?1:0;
+    			//RST[i]=new ReST(bint);
+    			 RST[i].set载具到位((tem1&0b1)==1?true:false);
+    			 RST[i].set人工组装线模式((tem1&0b1000)==8?true:false);
+    			 RST[i].set载具放行((tem1&0b100)==4?true:false);
+    			 RST[i].set动作完成((tem1&0b10)==2?true:false);
     			if(取料完成1!=取料完成2){
     				//更新托盘的物料数量
-    				if(取料完成1==1)
-    				STC1.get(i).updataDB(STC2.get(i).firstST);//更新托盘的数量
+    				if(取料完成1==1){
+    				 STC1.get(i).updataDB(STC1.get(i).firstST);//更新托盘的数量
+    				 System.out.println("取料完成1");
+    				
+    				}
     				
     			}
     			
@@ -397,9 +407,11 @@ public class PLC implements Serializable {
     				//更新托盘位置，同时把write置成false,
     				if(载具放行1==1){
     				if(i<15){
+    					System.out.println("载具放行1");
     				  line.removeToNext(i);
     				  STC1.get(i).firstST.set数据更新完成(true);
     				  STC1.get(i).firstST.setWrite(false);
+    					
     				 //更新到PLC,由initFromSql()自动完成
     			       }
     				
@@ -415,13 +427,19 @@ public class PLC implements Serializable {
     			Resint bint=r[i*2];
     			int tem1=bint.getResInt();
     			int tem2=RST[i].boolCont.getResInt();
-    		    int 取料完成1=tem1&0b10;
-    			int 取料完成2=tem2&0b10;
+    			int 载具放行1=(tem1&0b100)==4?1:0;
+    			int 载具放行2=(tem2&0b100)==4?1:0;
+    			int 取料完成1=(tem1&0b10)==2?1:0;
+    			int 取料完成2=(tem2&0b10)==2?1:0;
+    			 RST[i].set载具到位((tem1&0b1)==1?true:false);
+    			 RST[i].set人工组装线模式((tem1&0b1000)==8?true:false);
+    			 RST[i].set载具放行((tem1&0b100)==4?true:false);
+    			 RST[i].set动作完成((tem1&0b10)==2?true:false);
     			RST[i]=new ReST(bint);
     			if(取料完成1!=取料完成2){
     				//更新托盘的物料数量
     				if(取料完成1==1)
-    				STC1.get(i).updataDB(STC2.get(i).secondST);//更新托盘的数量
+    				STC2.get(i).updataDB(STC2.get(i).secondST);//更新托盘的数量
     				
     			}
     			
@@ -429,7 +447,7 @@ public class PLC implements Serializable {
     		}
     	
     	
-    	}catch(Exception ex){}
+    	}catch(Exception ex){ex.printStackTrace();}
     	return null;
     }
     

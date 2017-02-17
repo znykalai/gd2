@@ -129,21 +129,39 @@ public class ClientSer {
 	public int toBackBuffer(int idEvent, int fromLocID,int toLocID){ 
 		System.out.println("回货");
 		return -1;}
-	public alai.GDT.Resint[] getSirIntValuesFromCTR(String startAddress,int nums,int valueLen,
-          int machineID){
-		
-		return new Resint[]{
+	
+	public static Resint RST1[]=new Resint[]{
 			new Resint(), new Resint(),new Resint(),
 			new Resint(), new Resint(),new Resint(),
 			new Resint(), new Resint(),new Resint(),
 			new Resint(), new Resint(),new Resint(),
 			new Resint(), new Resint(),new Resint(),new Resint(),
-			//第2个缓存队列
+			
 			new Resint(), new Resint(),new Resint(),
 			new Resint(), new Resint(),new Resint(),
 			new Resint(), new Resint(),new Resint(),
 			new Resint(), new Resint(),new Resint(),
-			new Resint(), new Resint(),new Resint(),new Resint()};
+			new Resint(), new Resint(),new Resint(),new Resint(),
+			
+			new Resint(), new Resint(),new Resint(),
+			new Resint(), new Resint(),new Resint(),
+			new Resint(), new Resint(),new Resint(),
+			new Resint(), new Resint(),new Resint(),
+			new Resint(), new Resint(),new Resint(),new Resint(),
+			
+			new Resint(), new Resint(),new Resint(),
+			new Resint(), new Resint(),new Resint(),
+			new Resint(), new Resint(),new Resint(),
+			new Resint(), new Resint(),new Resint(),
+			new Resint(), new Resint(),new Resint(),new Resint()
+			
+	};
+	
+
+	public alai.GDT.Resint[] getSirIntValuesFromCTR(String startAddress,int nums,int valueLen,
+          int machineID){
+		
+		return RST1;
 	
 	}
 

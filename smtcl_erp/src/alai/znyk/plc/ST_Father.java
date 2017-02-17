@@ -34,8 +34,8 @@ public class ST_Father implements STInterface, Serializable{
 	public Hashtable table=new Hashtable();
 	protected ST_Father old;
 	public String getName(){
-		
-		return 工单ID+""+模组序ID+""+分解号+""+载具序号+""+id;
+			
+		return get工单ID()+"="+get模组序ID()+"="+get分解号()+"="+get载具序号();
 	}
 	public int get模组序ID() {
 		return 模组序ID;
@@ -117,9 +117,9 @@ public class ST_Father implements STInterface, Serializable{
 		 
 	 }
 	 
-	 public void set数据更新完成(boolean 数据更新完成){};
+	 public void set数据更新完成(boolean 数据更新完成){}
 	 public boolean isChange(){return false;}
-
+	
 	@Override
 	public int getLength() {
 		// TODO Auto-generated method stub

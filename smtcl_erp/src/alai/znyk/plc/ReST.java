@@ -18,9 +18,10 @@ public class ReST implements  Serializable{
 		this.boolCont=boolCont;
 		int con=boolCont.getResInt();
 		 载具到位=((con&0b01)==1);
-		 动作完成=((con&0b10)==1);
-		 载具放行=((con&0b100)==1);
-		 人工组装线模式=((con&0b1000)==1);
+		 动作完成=((con&0b10)==2);
+		 载具放行=((con&0b100)==4);
+		 人工组装线模式=((con&0b1000)==8);
+		
 	}
 	public boolean is载具到位() {
 		return 载具到位;
@@ -51,6 +52,8 @@ public class ReST implements  Serializable{
 	}
 	public void set人工组装线模式(boolean 人工组装线模式) {
 		this.人工组装线模式 = 人工组装线模式;
+		if( 人工组装线模式)
+			boolCont.resInt=boolCont.resInt|0b1000;else boolCont.resInt=boolCont.resInt&0b1111111111110111;
 	}
 	public Resint getBoolCont() {
 		return boolCont;

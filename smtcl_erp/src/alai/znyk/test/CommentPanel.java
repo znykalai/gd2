@@ -9,14 +9,17 @@ import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
+import alai.GDT.Resint;
 import alai.znyk.common.ClientSer;
 import alai.znyk.common.SqlPro;
 import alai.znyk.kufang.KuFang;
+import alai.znyk.plc.ReST;
 import alai.znyk.server.SqlTool;
 
 import javax.swing.UIManager;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Vector;
 
@@ -25,6 +28,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JComboBox;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 public class CommentPanel extends JPanel {
 	private JTextField textField;
@@ -39,6 +45,7 @@ public class CommentPanel extends JPanel {
 	private JTextField textField_9;
 	private JTextField textField_10;
 	private JTextField textField_11;
+	JComboBox comboBox = new JComboBox();
 	private JTable table;
 	private JTable table_1;
 	private JTable table_2;
@@ -48,6 +55,63 @@ public class CommentPanel extends JPanel {
     Vector zl=new  Vector();
     Vector TP=new Vector();
 	Vector KF=new Vector();
+	MyEditer edit=new MyEditer(new JTextField());
+	DefaultTableModel mode=new DefaultTableModel(){
+		 public void setValueAt(Object aValue, int row, int column) {
+			 super.setValueAt(aValue, row, column);
+			 if(column==0)return;
+			  
+			 if(column==1){
+			  Object name=mode.getValueAt(row, 0);
+			  try{
+				  
+				  if(aValue instanceof Boolean){
+			Method m=	first.getClass().getMethod("set"+name, boolean.class) ;
+			m.invoke(first, aValue);}
+				  if(aValue instanceof Integer){
+					 
+					Method m=	first.getClass().getMethod("set"+name, int.class) ;
+					m.invoke(first, aValue);
+				  }	
+				  if(aValue instanceof String){
+						 
+						Method m=	first.getClass().getMethod("set"+name, String.class) ;
+						m.invoke(first, aValue);
+					  }	
+				
+			
+			
+				  
+				  }catch(Exception ex){ex.printStackTrace();}
+			  }
+			
+			 
+			 if(column==2){
+				
+				  Object name=mode.getValueAt(row, 0);
+				  try{
+					  if(aValue instanceof Boolean){
+				Method m=	second.getClass().getMethod("set"+name, boolean.class) ;
+				m.invoke(second, aValue);}
+					  if(aValue instanceof Integer){
+						Method m=	second.getClass().getMethod("set"+name, int.class) ;
+						m.invoke(second, aValue);
+						
+					
+				}
+			       if(aValue instanceof String){
+							Method m=	second.getClass().getMethod("set"+name, String.class) ;
+							m.invoke(second, aValue);
+							
+						
+					}
+				
+					  }catch(Exception ex){ex.printStackTrace();}
+		
+				  }
+		    }
+  };
+	
     DefaultTableModel modezl=new DefaultTableModel(){
 		 public void setValueAt(Object aValue, int row, int column) {
 			 if(column==0)return;
@@ -108,6 +172,7 @@ public class CommentPanel extends JPanel {
 									}
 	 };
     private JTextField textField_12;
+    private JTable table_5;
 	 
 	/**
 	 * Create the panel.
@@ -174,7 +239,7 @@ public class CommentPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				if(!textField.getText().equals("")&&!textField_1.getText().equals("")){
 				ClientSer.TP=textField.getText();	
-				SqlTool.fromDKisTP=textField_1.getText()+"!_!"+2;
+				SqlTool.fromDKisTP=textField_1.getText()+"!_!"+10;
 				ClientSer.rffid1=textField_2.getText().equals("")?"0":"1";
 				
 				}
@@ -382,7 +447,7 @@ public class CommentPanel extends JPanel {
 		
 		JScrollPane scrollPane_2 = new JScrollPane();
 		scrollPane_2.setBorder(new TitledBorder(null, "\u8D27\u4F4D", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		scrollPane_2.setBounds(450, 10, 113, 529);
+		scrollPane_2.setBounds(450, 10, 113, 362);
 		add(scrollPane_2);
 		
 		table_2 = new JTable();
@@ -390,7 +455,7 @@ public class CommentPanel extends JPanel {
 		
 		JScrollPane scrollPane_3 = new JScrollPane();
 		scrollPane_3.setBorder(new TitledBorder(null, "\u6709\u8D27\u4FE1\u53F7", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		scrollPane_3.setBounds(573, 10, 93, 271);
+		scrollPane_3.setBounds(573, 10, 93, 233);
 		add(scrollPane_3);
 		
 		table_3 = new JTable();
@@ -398,7 +463,7 @@ public class CommentPanel extends JPanel {
 		
 		JScrollPane scrollPane_4 = new JScrollPane();
 		scrollPane_4.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "\u5230\u4F4D\u4FE1\u53F7", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		scrollPane_4.setBounds(573, 279, 93, 260);
+		scrollPane_4.setBounds(573, 253, 93, 118);
 		add(scrollPane_4);
 		
 		table_4 = new JTable();
@@ -409,7 +474,7 @@ public class CommentPanel extends JPanel {
 		table_3.setModel(mode3);
 		table_4.setModel(mode4);
 		
-		this.setPreferredSize(new Dimension(671, 577));
+		this.setPreferredSize(new Dimension(671, 739));
 		
 		textField_12 = new JTextField();
 		textField_12.setBounds(0, 549, 64, 21);
@@ -454,7 +519,44 @@ public class CommentPanel extends JPanel {
 		JLabel label_19 = new JLabel("\u5DE6/\u53F3\u5347\u964D\u53F0");
 		label_19.setBounds(0, 116, 93, 15);
 		add(label_19);
+		comboBox.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				//System.out.println(comboBox.getSelectedItem());
+				setData();
+			}
+		});
 		
+		
+		comboBox.addItem("0ST");comboBox.addItem("1ST");
+		comboBox.addItem("2ST");comboBox.addItem("3ST");
+		comboBox.addItem("4ST");comboBox.addItem("5ST");
+		comboBox.addItem("6ST");comboBox.addItem("7ST");
+		comboBox.addItem("8ST");comboBox.addItem("9ST");
+		comboBox.addItem("10ST");comboBox.addItem("11ST");
+		comboBox.addItem("12ST");comboBox.addItem("13ST");
+		comboBox.addItem("14ST");comboBox.addItem("15ST");
+		comboBox.setBounds(558, 384, 113, 21);
+		add(comboBox);
+		
+		JLabel lblplc = new JLabel("\u9009\u62E9PLC\u8FD4\u56DE\u5DE5\u4F4D");
+		lblplc.setBounds(440, 387, 108, 18);
+		add(lblplc);
+		
+		JScrollPane scrollPane_5 = new JScrollPane();
+		scrollPane_5.setBounds(440, 415, 231, 117);
+		add(scrollPane_5);
+		
+		table_5 = new JTable();
+		scrollPane_5.setViewportView(table_5);
+		
+		Vector col=new Vector();
+	    col.addElement("光大返回"); col.addElement("队列1值");col.addElement("队列2值");
+	    mode.setDataVector(new Vector(), col);
+	    
+	    table_5.setModel(mode);
+	    table_5.getColumnModel().getColumn(1).setCellEditor(edit);
+	    table_5.getColumnModel().getColumn(2).setCellEditor(edit);
+	    
 		new Thread(){
 			public void run(){
 				while(true){
@@ -481,4 +583,44 @@ public class CommentPanel extends JPanel {
 		modeKF.setDataVector(v5, KF);
 		
 	}
+	
+	ReST first=new ReST(new Resint());
+	ReST second=new ReST(new Resint());
+	public void setData(){
+		Resint[] rs=ClientSer.RST1;
+		String st=comboBox.getSelectedItem().toString();
+		int s=Integer.parseInt(st.replace("ST", ""));
+		Resint r1=rs[s*2];
+		Resint r2=rs[(s+16)*2];
+		first=new ReST(r1);
+	    second=new ReST(r2);
+		try{
+		Field f[]=first.getClass().getDeclaredFields();
+		mode.getDataVector().removeAllElements();
+		for(int i=0;i<f.length;i++){
+			Vector row=new Vector();
+			String name=f[i].getName();
+			
+		    Object ty=f[i].getType();
+			row.addElement(name);
+		    if(ty.toString().equals("boolean")){
+			
+			Method m2=	first.getClass().getMethod("is"+name, null) ;
+			row.addElement(m2.invoke(first, null));
+			Method m3=	second.getClass().getMethod("is"+name, null) ;
+			row.addElement(m3.invoke(second, null));
+		    //b.println();
+			mode.addRow(row);
+			 }
+			
+           
+        	  
+			
+		}
+		
+		}catch(Exception ex){
+			ex.printStackTrace();
+			
+		}
+      }
 }
