@@ -93,7 +93,7 @@ $(document).ready(function(){
 	$('#div_mo_img_strat').click(function(){
 	 	//window.location.reload();
 		if(arrBtn == this){return null;}
-		if(dlInterval){clearInterval(readyShow.deleteSetInterval);}//销毁定时器
+		if(dlInterval){dlInterval=null;clearInterval(readyShow.deleteSetInterval);}//销毁定时器
 		$("#home_div").val(null);
 		$("#btn_id").val(null);
 		readyShow = null;
@@ -144,7 +144,7 @@ $(document).ready(function(){
 	$('#anniu1').mouseup(function(){this.style.backgroundImage="url("+getRootPath()+"/images/wuliaodiaodu66x55_huangse.png)";});
 	$('#anniu1').click(function(){
 		if(arrBtn == this){return null;}
-		if(dlInterval){clearInterval(readyShow.deleteSetInterval);}//销毁定时器
+		if(dlInterval){dlInterval=null;clearInterval(readyShow.deleteSetInterval);}//销毁定时器
 		$("#home_div").val(null);
 		$("#btn_id").val(null);
 		readyShow = null;
@@ -172,7 +172,7 @@ $(document).ready(function(){
 	$('#anniu2').mouseup(function(){this.style.backgroundImage="url("+getRootPath()+"/images/xinxiguanli66x55_huangse.png)";});
 	$('#anniu2').click(function(){
 		if(arrBtn == this){return null;}
-		if(dlInterval){clearInterval(readyShow.deleteSetInterval);}//销毁定时器
+		if(dlInterval){dlInterval=null;clearInterval(readyShow.deleteSetInterval);}//销毁定时器
 		$("#home_div").val(null);
 		$("#btn_id").val(null);
 		readyShow = null;
@@ -200,7 +200,7 @@ $(document).ready(function(){
 	$('#anniu3').mouseup(function(){this.style.backgroundImage="url("+getRootPath()+"/images/dingdanguanli66x55_huangse.png)";});
 	$('#anniu3').click(function(){
 		if(arrBtn == this){return null;}
-		if(dlInterval){clearInterval(readyShow.deleteSetInterval);}//销毁定时器
+		if(dlInterval){dlInterval=null;clearInterval(readyShow.deleteSetInterval);}//销毁定时器
 		$("#home_div").val(null);
 		$("#btn_id").val(null);
 		readyShow = null;
@@ -228,7 +228,7 @@ $(document).ready(function(){
 	$('#anniu4').mouseup(function(){this.style.backgroundImage="url("+getRootPath()+"/images/kufangcaozuo66x50_huangse.png)";});
 	$('#anniu4').click(function(){
 		if(arrBtn == this){return null;}
-		if(dlInterval){clearInterval(readyShow.deleteSetInterval);}//销毁定时器
+		if(dlInterval){dlInterval=null;clearInterval(readyShow.deleteSetInterval);}//销毁定时器
 		$("#home_div").val(null);
 		$("#btn_id").val(null);
 		readyShow = null;
@@ -256,7 +256,7 @@ $(document).ready(function(){
 	$('#anniu5').mouseup(function(){this.style.backgroundImage = "url("+getRootPath()+"/images/shezhizhongxin66x55_huangse.png)";});
 	$('#anniu5').click(function(){
 		if(arrBtn == this){return null;}
-		if(dlInterval){clearInterval(readyShow.deleteSetInterval);}//销毁定时器
+		if(dlInterval){dlInterval=null;clearInterval(readyShow.deleteSetInterval);}//销毁定时器
 		$("#home_div").val(null);
 		$("#btn_id").val(null);
 		readyShow = null;
