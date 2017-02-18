@@ -14,6 +14,16 @@ var readyShow = {
 					}
 					$('#xy').css('height', (winHeight - (window.screen.height - winHeight))/1.05);
 					$('.table-body').css('height', document.body.clientHeight /5.88);
+					
+					//刷新货位状态
+					$("#getHck").click(function(){
+						af.getHck();
+					});
+					//显示GDFrame
+					$("#showGDFrame").click(function(){
+						af.getGDFrame();
+					});
+					
 					if(this.txload()&&this.getHck()&&dsState.state){
 						(function(){//定时刷新
 							readyShow.deleteSetInterval = setInterval(function(){
@@ -30,6 +40,18 @@ var readyShow = {
 					this.removeTop = [];
 					this.removeArry = [];
 					this.removeBottom = [];
+				},
+				/**
+				 * 显示GDFrame
+				 */
+				getGDFrame:function(){
+					$.ajax({
+						url: getRootPath()+'/HomeAction.do?operType=getGDFrame',
+						type: 'get',
+						cache:false,
+						success: function (data) {}
+					});
+					return null;
 				},
 				/**
 				 * 异步输送线top
@@ -306,11 +328,6 @@ var readyShow = {
 					}
 				}
 			}
-			
-			$("#aa").click(function(){
-				af.getHck();
-			});
-			
 			af.load(function(){
 				return null;
 			},{state:false,tim:1000});//渲染主页面,function(){}--第一个返回参数,{ds:true--是否为定时刷新、tim:刷新时间毫秒为单位};

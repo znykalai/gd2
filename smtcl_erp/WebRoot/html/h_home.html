@@ -59,141 +59,143 @@
 					line-height:40px;
 					height:40px;
 					width:50px;
+					float:left;
 					color:#ffffff;
 					font-size:15px;
 					background-color:rgb( 75 , 176 , 249 );
 				}
 			</style>
 			<form id="home_form" class="row">
+				<input type="button" id="showGDFrame" value="显示GDFrame"/>
+				<input type="button" id="getHck" value="更新状态"/>
 				<div class="col-md-7" style="margin-top:20px;">
-					<input type="button" id="aa" value="测试">
-					<div class="row" style="margin-top:7px;width:850px;float:left;">
+					<div class="row" style="margin-top:0px;width:850px;float:left;">
 							<div class="head_hui no" id="TOP-0ST" name="HEAD_TOP-ST">异步输送线</div>
-							<div class="hui no" id="TOP-1ST" name="TOP-ST" style="float:left;">1ST</div>
-							<div class="hui no" id="TOP-2ST" name="TOP-ST" style="float:left;">2ST</div>
-							<div class="hui no" id="TOP-3ST" name="TOP-ST" style="float:left;">3ST</div>
-							<div class="hui no" id="TOP-4ST" name="TOP-ST" style="float:left;">4ST</div>
-							<div class="hui no" id="TOP-5ST" name="TOP-ST" style="float:left;">5ST</div>
-							<div class="hui no" id="TOP-6ST" name="TOP-ST" style="float:left;">6ST</div>
-							<div class="hui no" id="TOP-7ST" name="TOP-ST" style="float:left;">7ST</div>
-							<div class="hui no" id="TOP-8ST" name="TOP-ST" style="float:left;">8ST</div>
-							<div class="hui no" id="TOP-9ST" name="TOP-ST" style="float:left;">9ST</div>
-							<div class="hui no" id="TOP-10ST" name="TOP-ST" style="float:left;">10ST</div>
-							<div class="hui no" id="TOP-11ST" name="TOP-ST" style="float:left;">11ST</div>
-							<div class="hui no" id="TOP-12ST" name="TOP-ST" style="float:left;">12ST</div>
-							<div class="hui no" id="TOP-13ST" name="TOP-ST" style="float:left;">13ST</div>
+							<div class="hui no" id="TOP-1ST" name="TOP-ST">1ST</div>
+							<div class="hui no" id="TOP-2ST" name="TOP-ST">2ST</div>
+							<div class="hui no" id="TOP-3ST" name="TOP-ST">3ST</div>
+							<div class="hui no" id="TOP-4ST" name="TOP-ST">4ST</div>
+							<div class="hui no" id="TOP-5ST" name="TOP-ST">5ST</div>
+							<div class="hui no" id="TOP-6ST" name="TOP-ST">6ST</div>
+							<div class="hui no" id="TOP-7ST" name="TOP-ST">7ST</div>
+							<div class="hui no" id="TOP-8ST" name="TOP-ST">8ST</div>
+							<div class="hui no" id="TOP-9ST" name="TOP-ST">9ST</div>
+							<div class="hui no" id="TOP-10ST" name="TOP-ST">10ST</div>
+							<div class="hui no" id="TOP-11ST" name="TOP-ST">11ST</div>
+							<div class="hui no" id="TOP-12ST" name="TOP-ST">12ST</div>
+							<div class="hui no" id="TOP-13ST" name="TOP-ST">13ST</div>
 							<div class="head_hui no" id="TOP-14ST" name="HEAD_TOP-ST">异步输送线</div>
 					</div>
-					<div class="row" style="margin-top:10px;width:850px;">
+					<div class="row" style="margin-top:10px;width:850px;float:left;">
 						<div class="col-md-1 shusongxian">输送线</div>
 						<div class="col-md-5" style="width:400px;">
 							<div class="row">
-								<div class="hui no" id="502" name="HCK-NAME" style="float:left;">502</div>
-								<div class="hui no" id="504" name="HCK-NAME" style="float:left;">504</div>
-								<div class="hui no" id="506" name="HCK-NAME" style="float:left;">506</div>
-								<div class="hui no" id="508" name="HCK-NAME" style="float:left;">508</div>
-								<div class="hui no" id="510" name="HCK-NAME" style="float:left;">510</div>
-								<div class="hui no" id="512" name="HCK-NAME" style="float:left;">512</div>
-								<div class="hui no" id="514" name="HCK-NAME" style="float:left;">514</div>
+								<div class="hui no" id="502" name="HCK-NAME">502</div>
+								<div class="hui no" id="504" name="HCK-NAME">504</div>
+								<div class="hui no" id="506" name="HCK-NAME">506</div>
+								<div class="hui no" id="508" name="HCK-NAME">508</div>
+								<div class="hui no" id="510" name="HCK-NAME">510</div>
+								<div class="hui no" id="512" name="HCK-NAME">512</div>
+								<div class="hui no" id="514" name="HCK-NAME">514</div>
 							</div>
 							<div class="row" style="margin-top:2px;">
-								<div class="hui no" id="501" name="HCK-NAME" style="float:left;">501</div>
-								<div class="hui no" id="503" name="HCK-NAME" style="float:left;">503</div>
-								<div class="hui no" id="505" name="HCK-NAME" style="float:left;">505</div>
-								<div class="hui no" id="507" name="HCK-NAME" style="float:left;">507</div>
-								<div class="hui no" id="509" name="HCK-NAME" style="float:left;">509</div>
-								<div class="hui no" id="511" name="HCK-NAME" style="float:left;">511</div>
-								<div class="hui no" id="513" name="HCK-NAME" style="float:left;">513</div>
+								<div class="hui no" id="501" name="HCK-NAME">501</div>
+								<div class="hui no" id="503" name="HCK-NAME">503</div>
+								<div class="hui no" id="505" name="HCK-NAME">505</div>
+								<div class="hui no" id="507" name="HCK-NAME">507</div>
+								<div class="hui no" id="509" name="HCK-NAME">509</div>
+								<div class="hui no" id="511" name="HCK-NAME">511</div>
+								<div class="hui no" id="513" name="HCK-NAME">513</div>
 							</div>
 						</div>
 					</div>
-					<div class="row" style="margin-top:10px;width:850px;">
+					<div class="row" style="margin-top:10px;width:850px;float:left;">
 						<div class="col-md-1 huancunku">缓存库</div>
 						<div class="col-md-5" style="width:450px;">
 							<div class="row">
-								<div class="hui no" id="22" name="HCK-NAME" style="float:left;">22</div>
-								<div class="hui no" id="23" name="HCK-NAME" style="float:left;">23</div>
-								<div class="hui no" id="24" name="HCK-NAME" style="float:left;">24</div>
-								<div class="hui no" id="25" name="HCK-NAME" style="float:left;">25</div>
-								<div class="hui no" id="26" name="HCK-NAME" style="float:left;">26</div>
-								<div class="hui no" id="27" name="HCK-NAME" style="float:left;">27</div>
-								<div class="hui no" id="28" name="HCK-NAME" style="float:left;">28</div>
+								<div class="hui no" id="22" name="HCK-NAME">22</div>
+								<div class="hui no" id="23" name="HCK-NAME">23</div>
+								<div class="hui no" id="24" name="HCK-NAME">24</div>
+								<div class="hui no" id="25" name="HCK-NAME">25</div>
+								<div class="hui no" id="26" name="HCK-NAME">26</div>
+								<div class="hui no" id="27" name="HCK-NAME">27</div>
+								<div class="hui no" id="28" name="HCK-NAME">28</div>
 								<div class="head_hui no" style="float:left;line-height:40px;">第四层</div>
 							</div>
 							<div class="row" style="margin-top:2px;">
-								<div class="hui no" id="15" name="HCK-NAME" style="float:left;">15</div>
-								<div class="hui no" id="16" name="HCK-NAME" style="float:left;">16</div>
-								<div class="hui no" id="17" name="HCK-NAME" style="float:left;">17</div>
-								<div class="hui no" id="18" name="HCK-NAME" style="float:left;">18</div>
-								<div class="hui no" id="19" name="HCK-NAME" style="float:left;">19</div>
-								<div class="hui no" id="20" name="HCK-NAME" style="float:left;">20</div>
-								<div class="hui no" id="21" name="HCK-NAME" style="float:left;">21</div>
+								<div class="hui no" id="15" name="HCK-NAME">15</div>
+								<div class="hui no" id="16" name="HCK-NAME">16</div>
+								<div class="hui no" id="17" name="HCK-NAME">17</div>
+								<div class="hui no" id="18" name="HCK-NAME">18</div>
+								<div class="hui no" id="19" name="HCK-NAME">19</div>
+								<div class="hui no" id="20" name="HCK-NAME">20</div>
+								<div class="hui no" id="21" name="HCK-NAME">21</div>
 								<div class="head_hui no" style="float:left;line-height:40px;">第三层</div>
 							</div>
 							<div class="row" style="margin-top:2px;">
-								<div class="hui no" id="8" name="HCK-NAME" style="float:left;">8</div>
-								<div class="hui no" id="9" name="HCK-NAME" style="float:left;">9</div>
-								<div class="hui no" id="10" name="HCK-NAME" style="float:left;">10</div>
-								<div class="hui no" id="11" name="HCK-NAME" style="float:left;">11</div>
-								<div class="hui no" id="12" name="HCK-NAME" style="float:left;">12</div>
-								<div class="hui no" id="13" name="HCK-NAME" style="float:left;">13</div>
-								<div class="hui no" id="14" name="HCK-NAME" style="float:left;">14</div>
+								<div class="hui no" id="8" name="HCK-NAME">8</div>
+								<div class="hui no" id="9" name="HCK-NAME">9</div>
+								<div class="hui no" id="10" name="HCK-NAME">10</div>
+								<div class="hui no" id="11" name="HCK-NAME">11</div>
+								<div class="hui no" id="12" name="HCK-NAME">12</div>
+								<div class="hui no" id="13" name="HCK-NAME">13</div>
+								<div class="hui no" id="14" name="HCK-NAME">14</div>
 								<div class="head_hui no" style="float:left;line-height:40px;">第二层</div>
 							</div>
 							<div class="row" style="margin-top:2px;">
-								<div class="hui no" id="1" name="HCK-NAME" style="float:left;">1</div>
-								<div class="hui no" id="2" name="HCK-NAME" style="float:left;">2</div>
-								<div class="hui no" id="3" name="HCK-NAME" style="float:left;">3</div>
-								<div class="hui no" id="4" name="HCK-NAME" style="float:left;">4</div>
-								<div class="hui no" id="5" name="HCK-NAME" style="float:left;">5</div>
-								<div class="hui no" id="6" name="HCK-NAME" style="float:left;">6</div>
-								<div class="hui no" id="7" name="HCK-NAME" style="float:left;">7</div>
+								<div class="hui no" id="1" name="HCK-NAME">1</div>
+								<div class="hui no" id="2" name="HCK-NAME">2</div>
+								<div class="hui no" id="3" name="HCK-NAME">3</div>
+								<div class="hui no" id="4" name="HCK-NAME">4</div>
+								<div class="hui no" id="5" name="HCK-NAME">5</div>
+								<div class="hui no" id="6" name="HCK-NAME">6</div>
+								<div class="hui no" id="7" name="HCK-NAME">7</div>
 								<div class="head_hui no" style="float:left;line-height:40px;">第一层</div>
 							</div>
 						</div>
 					</div>
-					<div class="row" style="margin-top:10px;width:850px;">
+					<div class="row" style="margin-top:10px;width:850px;float:left;">
 						<div class="col-md-1 shusongxian">输送线</div>
 						<div class="col-md-5" style="width:400px;">
 							<div class="row">
-								<div class="hui no" id="602" name="HCK-NAME" style="float:left;">602</div>
-								<div class="hui no" id="604" name="HCK-NAME" style="float:left;">604</div>
-								<div class="hui no" id="606" name="HCK-NAME" style="float:left;">606</div>
-								<div class="hui no" id="608" name="HCK-NAME" style="float:left;">608</div>
-								<div class="hui no" id="610" name="HCK-NAME" style="float:left;">610</div>
-								<div class="hui no" id="612" name="HCK-NAME" style="float:left;">612</div>
-								<div class="hui no" id="614" name="HCK-NAME" style="float:left;">614</div>
+								<div class="hui no" id="602" name="HCK-NAME">602</div>
+								<div class="hui no" id="604" name="HCK-NAME">604</div>
+								<div class="hui no" id="606" name="HCK-NAME">606</div>
+								<div class="hui no" id="608" name="HCK-NAME">608</div>
+								<div class="hui no" id="610" name="HCK-NAME">610</div>
+								<div class="hui no" id="612" name="HCK-NAME">612</div>
+								<div class="hui no" id="614" name="HCK-NAME">614</div>
 							</div>
 							<div class="row" style="margin-top:2px;">
-								<div class="hui no" id="601" name="HCK-NAME" style="float:left;">601</div>
-								<div class="hui no" id="603" name="HCK-NAME" style="float:left;">603</div>
-								<div class="hui no" id="605" name="HCK-NAME" style="float:left;">605</div>
-								<div class="hui no" id="607" name="HCK-NAME" style="float:left;">607</div>
-								<div class="hui no" id="609" name="HCK-NAME" style="float:left;">609</div>
-								<div class="hui no" id="611" name="HCK-NAME" style="float:left;">611</div>
-								<div class="hui no" id="613" name="HCK-NAME" style="float:left;">613</div>
+								<div class="hui no" id="601" name="HCK-NAME">601</div>
+								<div class="hui no" id="603" name="HCK-NAME">603</div>
+								<div class="hui no" id="605" name="HCK-NAME">605</div>
+								<div class="hui no" id="607" name="HCK-NAME">607</div>
+								<div class="hui no" id="609" name="HCK-NAME">609</div>
+								<div class="hui no" id="611" name="HCK-NAME">611</div>
+								<div class="hui no" id="613" name="HCK-NAME">613</div>
 							</div>
 						</div>
 					</div>
-					<div class="row" style="margin-top:10px;width:850px;">
-							<div class="head_hui no" id="BOTTOM-0ST" name="HEAD_BOTTOM-ST" style="float:left;">异步输送线</div>
-							<div class="hui no" id="BOTTOM-1ST" name="BOTTOM-ST" style="float:left;">1ST</div>
-							<div class="hui no" id="BOTTOM-2ST" name="BOTTOM-ST" style="float:left;">2ST</div>
-							<div class="hui no" id="BOTTOM-3ST" name="BOTTOM-ST" style="float:left;">3ST</div>
-							<div class="hui no" id="BOTTOM-4ST" name="BOTTOM-ST" style="float:left;">4ST</div>
-							<div class="hui no" id="BOTTOM-5ST" name="BOTTOM-ST" style="float:left;">5ST</div>
-							<div class="hui no" id="BOTTOM-6ST" name="BOTTOM-ST" style="float:left;">6ST</div>
-							<div class="hui no" id="BOTTOM-7ST" name="BOTTOM-ST" style="float:left;">7ST</div>
-							<div class="hui no" id="BOTTOM-8ST" name="BOTTOM-ST" style="float:left;">8ST</div>
-							<div class="hui no" id="BOTTOM-9ST" name="BOTTOM-ST" style="float:left;">9ST</div>
-							<div class="hui no" id="BOTTOM-10ST" name="BOTTOM-ST" style="float:left;">10ST</div>
-							<div class="hui no" id="BOTTOM-11ST" name="BOTTOM-ST" style="float:left;">11ST</div>
-							<div class="hui no" id="BOTTOM-12ST" name="BOTTOM-ST" style="float:left;">12ST</div>
-							<div class="hui no" id="BOTTOM-13ST" name="BOTTOM-ST" style="float:left;">13ST</div>
-							<div class="head_hui no" id="BOTTOM-14ST" name="HEAD_BOTTOM-ST" style="float:left;">异步输送线</div>
+					<div class="row" style="margin-top:10px;width:850px;float:left;">
+							<div class="head_hui no" id="BOTTOM-0ST" name="HEAD_BOTTOM-ST">异步输送线</div>
+							<div class="hui no" id="BOTTOM-1ST" name="BOTTOM-ST">1ST</div>
+							<div class="hui no" id="BOTTOM-2ST" name="BOTTOM-ST">2ST</div>
+							<div class="hui no" id="BOTTOM-3ST" name="BOTTOM-ST">3ST</div>
+							<div class="hui no" id="BOTTOM-4ST" name="BOTTOM-ST">4ST</div>
+							<div class="hui no" id="BOTTOM-5ST" name="BOTTOM-ST">5ST</div>
+							<div class="hui no" id="BOTTOM-6ST" name="BOTTOM-ST">6ST</div>
+							<div class="hui no" id="BOTTOM-7ST" name="BOTTOM-ST">7ST</div>
+							<div class="hui no" id="BOTTOM-8ST" name="BOTTOM-ST">8ST</div>
+							<div class="hui no" id="BOTTOM-9ST" name="BOTTOM-ST">9ST</div>
+							<div class="hui no" id="BOTTOM-10ST" name="BOTTOM-ST">10ST</div>
+							<div class="hui no" id="BOTTOM-11ST" name="BOTTOM-ST">11ST</div>
+							<div class="hui no" id="BOTTOM-12ST" name="BOTTOM-ST">12ST</div>
+							<div class="hui no" id="BOTTOM-13ST" name="BOTTOM-ST">13ST</div>
+							<div class="head_hui no" id="BOTTOM-14ST" name="HEAD_BOTTOM-ST">异步输送线</div>
 					</div>
 				</div>
-				<div class="col-md-5" style="margin-top:20px;">
+				<div class="col-md-5" style="margin-top:0px;">
 					<div class="row">
 						<div class="col-md-6" style="padding-right:17px;">
 							<div id="container-speed" style="width:250px;height:155px;"></div>

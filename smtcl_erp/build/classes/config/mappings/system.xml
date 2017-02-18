@@ -370,4 +370,16 @@
 	<select id="HomeActionDAO.getGdWanChengLv" parameterClass="java.util.HashMap" resultMap="HomeActionDAO.getGdWanChengLvMap">
 		SELECT SUM(a.`完成数量`) / SUM(a.`数量`) * 100 AS `工单完成率` FROM `工单完成率` AS a
 	</select>
+	<!-- 搬运机构指定队列-立体库动作  -->
+	<resultMap id="HomeActionDAO.getActionCommandMap" class="java.util.HashMap">
+    	<result property="idEvent" column="idEvent" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="动作" column="动作" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="托盘编号" column="托盘编号" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="状态" column="状态" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="发送时间" column="发送时间" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="完成时间" column="完成时间" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    </resultMap>
+	<select id="HomeActionDAO.getActionCommand" parameterClass="java.util.HashMap" resultMap="HomeActionDAO.getActionCommandMap">
+		SELECT a.idEvent,a.`动作`,a.`托盘编号`,a.`状态`,a.`发送时间`,a.`完成时间` FROM 立库动作指令 AS a
+	</select>
 </sqlMap>
