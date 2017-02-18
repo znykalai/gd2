@@ -34,7 +34,7 @@ public class ST_Father implements STInterface, Serializable{
 	public Hashtable table=new Hashtable();
 	protected ST_Father old;
 	public String getName(){
-			
+		//确定一个载具，前3位确定一个模组	
 		return get工单ID()+"="+get模组序ID()+"="+get分解号()+"="+get载具序号();
 	}
 	public int get模组序ID() {
@@ -103,6 +103,9 @@ public class ST_Father implements STInterface, Serializable{
 		 write=false; 
 		 
 	 };
+	 public boolean is允许工位动作标志() {
+			return false;
+		}
 	 
 	 public void intFromST(ST_Father st){
 		

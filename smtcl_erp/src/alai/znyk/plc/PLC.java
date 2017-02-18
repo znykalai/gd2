@@ -28,7 +28,8 @@ public class PLC implements Serializable {
 	public Vector<STContent> STC2=new Vector<STContent>();
 	public CarryLine line=new CarryLine(this);
 	public CarryLine line2=new CarryLine(this);
-	
+	String STATE1="502=0|504=0|506=0|508=0|510=0|512=0|514=0";
+	String STATE2="602=0|604=0|606=0|608=0|610=0|612=0|614=0";
 	
 	private _FST _FST_1_1=new _FST(this, 1, "D10001");
 	private _FST _FST_2_1=new _FST(this, 1, "D10138");
@@ -340,16 +341,24 @@ public class PLC implements Serializable {
 		new Thread(){
 			public void run(){
 			while(true){
+				try{
+				STATE1=ClientSer.getIntance().getState(10);
+				STATE2=ClientSer.getIntance().getState(11);}catch(Exception e){e.printStackTrace();}
 				ST0_1.initFromSql();
-				
-				ST1_1.initFromSql();getSTRdy(1,2);
-				
-				ST2_1.initFromSql();getSTRdy(1,3);
-				ST3_1.initFromSql();getSTRdy(1,4);
-				ST4_1.initFromSql();getSTRdy(1,5);
-				ST5_1.initFromSql();getSTRdy(1,6);
-				ST6_1.initFromSql();getSTRdy(1,7);
-				ST7_1.initFromSql();getSTRdy(1,8);
+				getSTRdy(1,2);
+				ST1_1.initFromSql();
+				getSTRdy(1,3);
+				ST2_1.initFromSql();
+				getSTRdy(1,4);
+				ST3_1.initFromSql();
+				getSTRdy(1,5);
+				ST4_1.initFromSql();
+				getSTRdy(1,6);
+				ST5_1.initFromSql();
+				getSTRdy(1,7);
+				ST6_1.initFromSql();
+				getSTRdy(1,8);
+				ST7_1.initFromSql();
 				ST8_1.initFromSql();
 				ST9_1.initFromSql();
 				ST10_1.initFromSql();
@@ -358,7 +367,7 @@ public class PLC implements Serializable {
 				ST13_1.initFromSql();
 				ST14_1.initFromSql();
 				ST15_1.initFromSql();
-				getFromPLC1();
+				getFromPLC(1);
 				writeO();
 				try {
 					Thread.sleep(500);
@@ -374,33 +383,47 @@ public class PLC implements Serializable {
 		
 	}
 	
+	public ReST[] getRePLC(int machine){
+		if(machine==1)return RST;else return RST2;
+		
+	}
+	public  Vector<STContent> getWrPLC(int machine){
+		if(machine==1)return STC1;else return STC2;
+		
+	}
+	public  CarryLine getCarryLine(int machine){
+		if(machine==1)return line;else return line2;
+		
+	}
 	
 	//读取光大的状态，并更新托盘数量
-    public ReST[] getFromPLC1(){
+    public ReST[] getFromPLC(int 装配区){
     	try{
-    		Resint r[]=	ClientSer.getIntance().getSirIntValuesFromCTR("D11001", 63, 16, 1);
+    		Resint r[]=	ClientSer.getIntance().getSirIntValuesFromCTR("D11001", 63, 16, 装配区);
     		
     		for(int i=0;i<16;i++){
     			
     			Resint bint=r[i*2];
     			int tem1=bint.getResInt();
-    			int tem2=RST[i].boolCont.getResInt();
+    			int tem2=getRePLC(装配区)[i].boolCont.getResInt();
     			
     			int 载具放行1=(tem1&0b100)==4?1:0;
     			int 载具放行2=(tem2&0b100)==4?1:0;
     			int 取料完成1=(tem1&0b10)==2?1:0;
     			int 取料完成2=(tem2&0b10)==2?1:0;
     			//RST[i]=new ReST(bint);
-    			 RST[i].set载具到位((tem1&0b1)==1?true:false);
-    			 RST[i].set人工组装线模式((tem1&0b1000)==8?true:false);
-    			 RST[i].set载具放行((tem1&0b100)==4?true:false);
-    			 RST[i].set动作完成((tem1&0b10)==2?true:false);
+    			getRePLC(装配区)[i].set载具到位((tem1&0b1)==1?true:false);
+    			getRePLC(装配区)[i].set人工组装线模式((tem1&0b1000)==8?true:false);
+    			getRePLC(装配区)[i].set载具放行((tem1&0b100)==4?true:false);
+    			getRePLC(装配区)[i].set动作完成((tem1&0b10)==2?true:false);
     			if(取料完成1!=取料完成2){
     				//更新托盘的物料数量
     				if(取料完成1==1){
-    				 STC1.get(i).updataDB(STC1.get(i).firstST);//更新托盘的数量
+    					//检测本工位有没有托盘
+    					if(getCarryLine(装配区).getCarry(i)!=null){
+    					getWrPLC(装配区).get(i).updataDB(getWrPLC(装配区).get(i).firstST);//更新托盘的数量
     				 
-    				 System.out.println("取料完成1");
+    				    System.out.println("取料完成1");}
     				
     				}
     				
@@ -412,24 +435,27 @@ public class PLC implements Serializable {
     				//更新托盘位置，同时把write置成false,
     				if(载具放行1==1){
     				if(i<15){
-    					Carry car=line.getCarry(i);
-    					if(car.getName().equals(STC1.get(i).firstST.getName())){
+    					Carry car=getCarryLine(装配区).getCarry(i);
+    					if(car!=null){
+    					if(car.getName().equals(getWrPLC(装配区).get(i).firstST.getName())){
     						//如果这个托盘是本工位需要的托盘
-    						 if( STC1.get(i).firstST.get剩余数量()==0){
+    						 if( getWrPLC(装配区).get(i).firstST.get剩余数量()==0){
     						  System.out.println("载具放行1");
-    						  STC1.get(i).firstST.set数据更新完成(true);
-    						  String back=STC1.get(i).firstST.writeifChangeToPLC();
+    						  getWrPLC(装配区).get(i).firstST.set数据更新完成(true);
+    						   String back=STC1.get(i).firstST.writeifChangeToPLC();
     						  if(back.contains("成功")){
     							  //写入PLC成功后
-    	    				  line.removeToNext(i);
-    	    				  STC1.get(i).firstST.setWrite(false);
+    	    				 if( getCarryLine(装配区).removeToNext(i))
+    	    					 getWrPLC(装配区).get(i).firstST.setWrite(false);
     	    				  }
     						  
     						 }
     					}
     					else{
-                                line.removeToNext(i);
+    						getCarryLine(装配区).removeToNext(i);
     	    				  
+    					}
+    					
     					}
     				 //更新到PLC,由initFromSql()自动完成
     			       }
@@ -442,23 +468,27 @@ public class PLC implements Serializable {
     			
     		}
     		
+    		//更新第个二个队列
     		for(int i=16;i<32;i++){
     			Resint bint=r[i*2];
     			int tem1=bint.getResInt();
-    			int tem2=RST[i].boolCont.getResInt();
+    			int tem2=getRePLC(装配区)[i].boolCont.getResInt();
     			int 载具放行1=(tem1&0b100)==4?1:0;
     			int 载具放行2=(tem2&0b100)==4?1:0;
     			int 取料完成1=(tem1&0b10)==2?1:0;
     			int 取料完成2=(tem2&0b10)==2?1:0;
-    			 RST[i].set载具到位((tem1&0b1)==1?true:false);
-    			 RST[i].set人工组装线模式((tem1&0b1000)==8?true:false);
-    			 RST[i].set载具放行((tem1&0b100)==4?true:false);
-    			 RST[i].set动作完成((tem1&0b10)==2?true:false);
-    			RST[i]=new ReST(bint);
+    			getRePLC(装配区)[i].set载具到位((tem1&0b1)==1?true:false);
+    			getRePLC(装配区)[i].set人工组装线模式((tem1&0b1000)==8?true:false);
+    			getRePLC(装配区)[i].set载具放行((tem1&0b100)==4?true:false);
+    			getRePLC(装配区)[i].set动作完成((tem1&0b10)==2?true:false);
+    			//RST[i]=new ReST(bint);
     			if(取料完成1!=取料完成2){
     				//更新托盘的物料数量
-    				if(取料完成1==1)
-    				STC2.get(i).updataDB(STC2.get(i).secondST);//更新托盘的数量
+    				if(取料完成1==1){
+    					if(getCarryLine(装配区).getCarry(i)!=null)
+    					getWrPLC(装配区).get(i).updataDB(getWrPLC(装配区).get(i).secondST);//更新托盘的数量
+    					
+    				}
     				
     			}
     			
@@ -470,65 +500,7 @@ public class PLC implements Serializable {
     	return null;
     }
     
-  //读取光大的状态，并更新托盘数量
-    public ReST[] getFromPLC2(){
-    	try{
-    		Resint r[]=	ClientSer.getIntance().getSirIntValuesFromCTR("D11001", 63, 16, 2);
-    		
-    		for(int i=0;i<16;i++){
-    			Resint bint=r[i*2];
-    			int tem1=bint.getResInt();
-    			int tem2=RST2[i].boolCont.getResInt();
-    			int 载具放行1=tem1&0b100;
-    			int 载具放行2=tem2&0b100;
-    			int 取料完成1=tem1&0b10;
-    			int 取料完成2=tem2&0b10;
-    			RST2[i]=new ReST(bint);
-    			
-    			if(取料完成1!=取料完成2){
-    				//更新托盘的物料数量
-    				if(取料完成1==1)
-    				STC2.get(i).updataDB(STC2.get(i).firstST);//更新托盘的数量
-    				
-    			}
-    			
-    			if(载具放行1!=载具放行2){
-    				//更新托盘位置，同时把write置成false
-    				if(载具放行1==1){
-    				if(i<15){
-    				line2.removeToNext(i);
-    				}
-    				//指令队列是已载具为单位的，所以载具移动后，本工位对应的队列也的移动。
-    				STC2.get(i).firstST.setWrite(false);
-    				}
-    				//更新到PLC
-    				//STC2.get(i).firstST.writeToPLC();
-    				
-    			}
-    			
-    		}
-    		
-    		for(int i=16;i<32;i++){
-    			Resint bint=r[i*2];
-    			int tem1=bint.getResInt();
-    			int tem2=RST2[i].boolCont.getResInt();
-    		    int 取料完成1=tem1&0b10;
-    			int 取料完成2=tem2&0b10;
-    			RST2[i]=new ReST(bint);
-    			if(取料完成1!=取料完成2){
-    				//更新托盘的物料数量
-    				if(取料完成1==1)
-    				STC2.get(i).updataDB(STC2.get(i).secondST);//更新托盘的数量
-    				
-    			}
-    			
-    			
-    		}
-    	
-    	
-    	}catch(Exception ex){}
-    	return null;
-    }
+
     
 	/*public void set动作(int s){
 	    //  ReST rs=RST[s];
@@ -578,8 +550,36 @@ public class PLC implements Serializable {
 	   
 	   return null;
    }
+   
+  
    //如果立库没准备好，那么要做两件事，1，如果工位上有托盘，那么就是这个托盘的物料不是指令要取的物料，或者数量不够，这时候要让托盘走，调用一个新的托盘；要是没有托盘那么就调新的托盘来
    public boolean getSTRdy(int line,int st){
+	   //这步判断可以不需要，因为只有到位信号才更新托盘
+	  if(st>=2&&st<=8){
+	   if(line==1){
+		   
+		   String smm[]=STATE1.split("\\|");
+		   if(st-2==0){
+			 //  System.out.println("=="+STATE1);
+		   }
+		   if(smm[st-2].split("=")[1].equals("0")){
+			  
+			   STC1.get(st-1).firstST.set立库RDY(false);
+			   STC1.get(st-1).secondST.set立库RDY(false);
+			   return false;  
+		   }
+		   
+	   }else{
+		   String smm[]=STATE2.split("\\|");
+		   if(smm[st-2].split("=")[1].equals("0")){
+			   STC2.get(st-1).firstST.set立库RDY(false);
+			   STC2.get(st-1).secondST.set立库RDY(false);
+			   return false;  
+		   }
+		   
+	   }
+	   }
+	   
 	 
 	   if(st>=2&&st<=7){
 		  String tem2=null;

@@ -18,7 +18,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class CarryFrame extends JFrame {
+public class CarryFrame extends JPanel {
 
 	private JPanel contentPane;
 	Vector<JButton> buts=new Vector<JButton>();
@@ -43,12 +43,12 @@ public class CarryFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public CarryFrame() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setAlwaysOnTop(true);
+		
 		setBounds(100, 100, 1203, 124);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
+		this.setLayout(new BorderLayout());
+		this.add(contentPane);
 		contentPane.setLayout(new GridLayout(0, 15, 0, 0));
 		
 		JButton button = new JButton("1");

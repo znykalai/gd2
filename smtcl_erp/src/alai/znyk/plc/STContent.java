@@ -105,7 +105,13 @@ public class STContent implements Serializable {
     	     	 carr.set工单ID(row.get(10)==null?0:Integer.parseInt(row.get(10).toString()));
     	     	 carr.set模组类型(row.get(19)==null?0:Integer.parseInt(row.get(19).toString()));
     	     	 carr.set电芯类型(row.get(20)==null?0:Integer.parseInt(row.get(20).toString()));
-    	     	 carr.set工位(row.get(9)==null?"":row.get(9).toString());
+    	     	 Vector<Vector> tost=SqlTool.findInVector("select 工位,物料 from 配方指令队列   where 工单ID='"+
+    	     	 carr.get工单ID()+"' and 分解号='"+carr.get分解号()+"' and 载具序号='"+carr.get载具序号()+"' order by 工位");
+    	     	 for(int m=0;m<tost.size();m++){
+    	     		 Vector vv=(Vector)tost.get(m);
+    	     	     carr.set工位(carr.get工位()+""+vv.get(0));
+    	     	 
+    	         }
     	  		 PLC.getIntance().line.addFist(carr);
     	 		 
     	 	 ((_FST)secondST).clear();
@@ -132,7 +138,13 @@ public class STContent implements Serializable {
      	 carr2.set模组类型(row2.get(19)==null?0:(int)row2.get(19));
      	 carr2.set电芯类型(row2.get(20)==null?0:(int)row2.get(20));
      	 carr2.set工单ID(row2.get(10)==null?0:(int)row2.get(10));
-     	 carr2.set工位(row2.get(9)==null?"":row2.get(9).toString());
+     	 Vector<Vector> tost2=SqlTool.findInVector("select 工位,物料 from 配方指令队列   where 工单ID='"+
+    	     	 carr2.get工单ID()+"' and 分解号='"+carr2.get分解号()+"' and 载具序号='"+carr2.get载具序号()+"' order by 工位");
+    	     	 for(int m=0;m<tost2.size();m++){
+    	     		 Vector vv=(Vector)tost2.get(m);
+    	     		 carr2.set工位(carr2.get工位()+""+vv.get(0));
+    	     	 
+    	         }
   		 PLC.getIntance().line.setBuffer(carr2);
     	 		 
     	 	}else{
@@ -162,7 +174,13 @@ public class STContent implements Serializable {
 	     	 carr.set工单ID(row.get(10)==null?0:(int)row.get(10));
 	     	 carr.set模组类型(row.get(19)==null?0:(int)row.get(19));
 	     	 carr.set电芯类型(row.get(20)==null?0:(int)row.get(20));
-	     	 carr.set工位(row.get(9)==null?"":row.get(9).toString());
+	     	Vector<Vector> tost=SqlTool.findInVector("select 工位,物料 from 配方指令队列   where 工单ID='"+
+	    	     	 carr.get工单ID()+"' and 分解号='"+carr.get分解号()+"' and 载具序号='"+carr.get载具序号()+"' order by 工位");
+	    	     	 for(int m=0;m<tost.size();m++){
+	    	     		 Vector vv=(Vector)tost.get(m);
+	    	     		 carr.set工位(carr.get工位()+""+vv.get(0));
+	    	     	 
+	    	         }
 	  		 PLC.getIntance().line.addFist(carr);
     	 		}
     	 		
@@ -197,7 +215,13 @@ public class STContent implements Serializable {
          	 carr2.set模组类型(row.get(19)==null?0:(int)row.get(19));
         	 carr2.set电芯类型(row.get(20)==null?0:(int)row.get(20));
         	 carr2.set工单ID(row.get(10)==null?0:(int)row.get(10));
-        	 carr2.set工位(row.get(9)==null?"":row.get(9).toString());
+        	 Vector<Vector> tost=SqlTool.findInVector("select 工位,物料 from 配方指令队列   where 工单ID='"+
+        	     	 carr2.get工单ID()+"' and 分解号='"+carr2.get分解号()+"' and 载具序号='"+carr2.get载具序号()+"' order by 工位");
+        	     	 for(int m=0;m<tost.size();m++){
+        	     		 Vector vv=(Vector)tost.get(m);
+        	     		 carr2.set工位(carr2.get工位()+""+vv.get(0));
+        	     	 
+        	         }
       		 PLC.getIntance().line.setBuffer(carr2);
         	 		 
     	 		}
@@ -814,7 +838,7 @@ public class STContent implements Serializable {
     	
 		//更新第一个工位动作容许标志
 		if(firstST.isWrite()){
-			Carry car=plc.line.getCarry(stNum-1);
+			Carry car=this.装配区==1?plc.line.getCarry(stNum-1):plc.line2.getCarry(stNum-1);
 			if(car!=null){
 			String id1=firstST.get工单ID()+""+firstST.get模组序ID()+""+firstST.get分解号()+firstST.get载具序号();
 			String id2=car.get工单ID()+""+car.get模组序ID()+""+car.get分解号()+car.get载具序号();
@@ -832,7 +856,8 @@ public class STContent implements Serializable {
     			   
 			    }
 			  }else{
-				  Carry car2=plc.line.getCarry(stNum-2);  
+				//  if(!firstST.is允许工位动作标志()){
+				  Carry car2=this.装配区==1?plc.line.getCarry(stNum-2):plc.line2.getCarry(stNum-2);
 				  if(car2!=null){
 					  String id1=firstST.get工单ID()+""+firstST.get模组序ID()+""+firstST.get分解号()+firstST.get载具序号();
 		    		  String id2=car2.get工单ID()+""+car2.get模组序ID()+""+car2.get分解号()+car2.get载具序号();
@@ -843,25 +868,33 @@ public class STContent implements Serializable {
 		    				 if(firstST instanceof _7ST )
 				    		 ( (_7ST)firstST).set允许工位动作标志(true);
 		    				 if(firstST instanceof _9ST ){
-					    		 ( (_9ST)firstST).set允许工位动作标志(true);
+					    	 ( (_9ST)firstST).set允许工位动作标志(true);
 					    		 
 		    				   }
 		    			    }
 					  
 				  }
+				  //}
+				  
 			  }
 			firstST.writeifChangeToPLC();
 		}
 		
 		//更新第二个工位动作容许标志
 		if(secondST.isWrite()){
+			
 			if(next==0) return;
-			Carry car=plc.line.getCarry(next-1);
+			Carry car=this.装配区==1?plc.line.getCarry(next-1):plc.line2.getCarry(next-1);
+			
 			if(car!=null){
+				 //System.out.println("firstST==="+firstST.getName());
+				 //System.out.println("secondST==="+secondST.getName());
+				//System.out.println("==="+car.getName());
 			String id1=secondST.get工单ID()+""+secondST.get模组序ID()+""+secondST.get分解号()+secondST.get载具序号();
 			String id2=car.get工单ID()+""+car.get模组序ID()+""+car.get分解号()+car.get载具序号();
 			
 			 if(id1.equals(id2)){
+				
 				 if(secondST instanceof _1_6ST )
 				( (_1_6ST)secondST).set允许工位动作标志(true);
 				 if(secondST instanceof _7ST )

@@ -48,7 +48,7 @@ public class PLCFrame extends JFrame {
 	 * Create the frame. 
 	 */
 	public PLCFrame() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1368, 714);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -60,14 +60,6 @@ public class PLCFrame extends JFrame {
 		
 		JButton btnNewButton = new JButton("\u5237\u65B0");
 		panel_18.add(btnNewButton);
-		
-		JButton btnCarry = new JButton("carry");
-		btnCarry.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				new CarryFrame().setVisible(true);
-			}
-		});
-		panel_18.add(btnCarry);
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setPreferredSize(new Dimension(1600,780));
@@ -189,6 +181,8 @@ public class PLCFrame extends JFrame {
 			}.start();*/
 			}
 			});
+		CarryFrame cp=new CarryFrame();
+		contentPane.add(cp, BorderLayout.NORTH);
 	}
 	public  int start =0;
 }

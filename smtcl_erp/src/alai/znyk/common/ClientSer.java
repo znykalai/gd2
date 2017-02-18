@@ -104,6 +104,7 @@ public class ClientSer {
 			return s;
 		
 		}
+		
 		if(t==11){
 			return "602=1|604=0|606=1|608=0|610=1|612=0|614=1";
 		
