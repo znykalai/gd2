@@ -5,16 +5,76 @@
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 </head>
 <body>
-	<div class="row margin-top-40 account-company-auth" id="xy" style="overflow-y:scroll;background-color:white;height:94%;width:98%;margin-left:2%;">
+	<div class="row margin-top-10 account-company-auth" id="xy" style="overflow-y:scroll;background-color:white;height:94%;width:98%;margin-left:2%;">
 		<!-- 物料 -->
 		<div id="wuliao" class="row">
 			<form id="wl_form">
+				<style>
+					.shusongxian{
+						margin-left:3px;
+						width:50px;
+						line-height:26px;
+						font-size:15px;
+						border:1px solid rgb( 234 , 234 , 234 );
+					}
+					.huancunku{
+						margin-left:3px;
+						width:50px;
+						line-height:54px;
+						font-size:15px;
+						border:1px solid rgb( 234 , 234 , 234 );
+					}
+					.head_hui{
+						text-align: center;
+						float:left;
+						margin-left:3px;
+						height:40px;
+						width:50px;
+						color:#000000;
+						font-size:15px;
+						border:1px solid rgb( 234 , 234 , 234 );
+					}
+					.head_lan{
+						text-align: center;
+						margin-left:3px;
+						height:40px;
+						width:50px;
+						float:left;
+						color:#ffffff;
+						font-size:15px;
+						background-color:rgb( 75 , 176 , 249 );
+					}
+					.hui{
+						text-align: center;
+						margin-left:3px;
+						line-height:40px;
+						height:40px;
+						width:50px;
+						float:left;
+						cursor:pointer;
+						color:#000000;
+						font-size:15px;
+						background-color:rgb( 234 , 234 , 234 );
+					}
+					.lan{
+						text-align: center;
+						margin-left:3px;
+						line-height:40px;
+						height:40px;
+						width:50px;
+						float:left;
+						cursor:pointer;
+						color:#ffffff;
+						font-size:15px;
+						background-color:rgb( 75 , 176 , 249 );
+					}
+				</style>
 				<div class="row">
 			        <div class="col-md-1"></div>
 					<div class="col-md-10 account-company-auth" style="height:60px;width:80%;margin-left:38px;min-height:150px; margin-top:-40px;">
-				        <div class="row" style="margin-top:-30px;">
-				        	<div class="col-md-2"></div>
-				            <div class="col-md-1 text-right" style="padding: 5px 0 0 0;">
+				        <div class="row" style="margin-top:-10px;">
+				        	<div class="col-md-1"></div>
+				            <div class="col-md-2 text-right" style="padding: 5px 0 0 0;">
 				                <span><span style="color:red;">*</span>物料编号:</span>
 				            </div>
 				            <div class="col-md-3">
@@ -27,9 +87,9 @@
 				                <input id="wl_newDate" type="text" readonly class="form-control"/>
 				            </div>
 			            </div>
-			            <div class="row margin-top-20">
-				        	<div class="col-md-2"></div>
-				            <div class="col-md-1 text-right" style="padding: 5px 0 0 0;">
+			            <div class="row margin-top-10">
+				        	<div class="col-md-1"></div>
+				            <div class="col-md-2 text-right" style="padding: 5px 0 0 0;">
 				                <span><span style="color:red;">*</span>物料描述:</span>
 				            </div>
 				            <div class="col-md-7">
@@ -38,7 +98,7 @@
 				        </div>
 			        </div>
 		        </div>
-		        <div class="row margin-top-20">
+		        <div class="row margin-top-15">
 			        <div class="col-md-1"></div>
 			        <div id="basedata_tab" class="col-md-10" style="margin-left:23px;">
 			            <div class="row orders-search">
@@ -69,7 +129,7 @@
 					                <input id="plc_code" type="text" class="form-control"/>
 					            </div>
 				            </div>
-							<div class="row margin-top-30">
+							<div class="row margin-top-10">
 					        	<div class="col-md-2"></div>
 					            <div class="col-md-1 text-right" style="padding: 5px 0 0 0;">
 					                <span>单位:</span>
@@ -92,17 +152,16 @@
 					            <div class="col-md-3">
 					                <div class="cus-select" id="leibie_name">
 		                                <div class="cus-select-btn"></div>
-		                                <input id="leibie_id" type="text" placeholder="--请选择--" readonly/>
+		                                <input id="leibie_id" type="text" value="配方" readonly/>
 		                                <ul>
-		                                	<li></li>
-		                                	<li>一</li>
-		                                	<li>二</li>
-		                                	<li>三</li>
+		                                	<li>配方</li>
+		                                	<li>模组</li>
+		                                	<li>PACK</li>
 		                                </ul>
 		                            </div>
 					            </div>
 				            </div>
-				            <div class="row margin-top-30">
+				            <div class="row margin-top-10">
 					        	<div class="col-md-2"></div>
 					            <div class="col-md-1 text-right" style="padding: 5px 0 0 0;">
 					                <span>类型:</span>
@@ -113,9 +172,9 @@
 		                                <input id="leixing_id" type="text" placeholder="--请选择--" readonly/>
 		                                <ul>
 		                                	<li></li>
-		                                	<li>一</li>
-		                                	<li>二</li>
-		                                	<li>三</li>
+		                                	<li>1</li>
+		                                	<li>2</li>
+		                                	<li>3</li>
 		                                </ul>
 		                            </div>
 					            </div>
@@ -126,7 +185,7 @@
 					                <input id="huiliufazhi_id" type="text" value="0" class="form-control"/>
 					            </div>
 					        </div>
-				            <div class="row margin-top-30">
+				            <div class="row margin-top-10">
 					        	<div class="col-md-2"></div>
 					            <div class="col-md-1 text-right" style="padding: 5px 0 0 0;">
 					                <span>装载参数:</span>
@@ -143,14 +202,11 @@
 		                                <input id="tuopanleibie_id" placeholder="--请选择--" type="text" readonly/>
 		                                <ul>
 		                                	<li></li>
-		                                	<li>一</li>
-		                                	<li>二</li>
-		                                	<li>三</li>
 		                                </ul>
 		                            </div>
 					            </div>
 					        </div>
-				            <div class="row margin-top-30">
+				            <div class="row margin-top-10">
 					        	<div class="col-md-2"></div>
 					            <div class="col-md-1 text-right" style="padding: 5px 0 0 0;">
 					                <span>失效:</span>
@@ -171,19 +227,29 @@
 				    <div id="stock2" style="display:none;">
 			        	<div class="col-md-1"></div>
 						<div class="col-md-10 account-company-auth" style="margin-left:38px;height:60px;width:80%;height:30px;min-height:60%;">
-							<div class="row" style="margin-top:100px;">
-					        	<div class="col-md-2"></div>
-					            <div class="col-md-1 text-right" style="padding: 5px 0 0 0;">
+							<div class="row" style="margin-top:80px;">
+					        	<div class="col-md-1"></div>
+					            <div class="col-md-2 text-right" style="padding: 5px 0 0 0;">
 					                <span>默认上货区:</span>
 					            </div>
 					            <div class="col-md-3">
-					                <input id="shanghuoqu_id" type="text" class="form-control"/>
+					           		<div class="input-group">
+						                <input id="shanghuoqu_id" type="text" readonly="readonly" class="form-control"/>
+						                <span class="input-group-btn">
+									        <button class="btn btn-default" id="top_button" type="button">选择货位</button>
+								   		</span>
+							   		</div>
 					            </div>
-					            <div class="col-md-1 text-right" style="padding: 5px 0 0 0;">
+					            <div class="col-md-2 text-right" style="padding: 5px 0 0 0;">
 					                <span>默认下货区:</span>
 					            </div>
 					            <div class="col-md-3">
-					                <input id="xiahuoqu_id" type="text" class="form-control"/>
+					           		<div class="input-group">
+					               		<input id="xiahuoqu_id" type="text" readonly="readonly" class="form-control"/>
+						                <span class="input-group-btn">
+									        <button class="btn btn-default" id="bottom_button" type="button">选择货位</button>
+								   		</span>
+							   		</div>
 					            </div>
 				            </div>
 			            </div>
@@ -201,7 +267,7 @@
 				        <div class="col-md-2">
 					        <div class="button button-primary button-rounded button-small" id="wl_newBtn" 
 					        	style="width:150px;font-size:15px;font-family:'微软雅黑';" onselectstart="return false">
-					            新建
+								 新建
 					        </div>
 				        </div>
 				        <div class="col-md-2">
@@ -225,16 +291,21 @@
 			<form id="mz_form">
 				<div class="row">
 			        <div class="col-md-1"></div>
-					<div class="col-md-10 account-company-auth" style="width:80%;height:150px;margin-left:38px;min-height:100px; margin-top:-50px;">
-				        <div class="row" style="margin-top:-50px;">
-			           		<div class="col-md-1"><input type="hidden" id="mozu_id" value=""/></div>
-				            <div class="col-md-1 text-right" style="padding: 5px 0 0 0;">
+					<div class="col-md-10 account-company-auth" style="width:80%;height:170px;margin-left:37px;min-height:170px; margin-top:-40px;">
+				        <div class="row" style="margin-right:10px;margin-top:-30px;">
+				            <div class="col-md-2 text-right" style="padding: 5px 0 0 0;">
+				           		<input type="hidden" id="mozu_id" value=""/>
 				                <span><span style="color:red;">*</span>模组编码:</span>
 				            </div>
 				            <div class="col-md-3">
-				                <input id="mozu_code" type="text" class="form-control"/>
+				           		<div class="input-group">
+				               		<input id="mozu_code" type="text" readonly="readonly" class="form-control"/>
+					                <span class="input-group-btn">
+								        <button class="btn btn-default" id="mozu_button" type="button">选择模组</button>
+							   		</span>
+						   		</div>
 				            </div>
-				            <div class="col-md-1 text-right" style="padding: 5px 0 0 0;">
+				            <div class="col-md-2 text-right" style="padding: 5px 0 0 0;">
 				                <span><span style="color:red;">*</span>模组类型:</span>
 				            </div>
 				            <div class="col-md-3">
@@ -248,19 +319,25 @@
 					        	</div>
 				            </div>
 			            </div>
-			            <div class="row margin-top-10">
-			           		<div class="col-md-1"></div>
-				            <div class="col-md-1 text-right" style="padding: 5px 0 0 0;">
+			            <div class="row margin-top-10" style="margin-right:10px;">
+				            <div class="col-md-2 text-right" style="padding: 5px 0 0 0;">
 				                <span><span style="color:red;">*</span>电芯类型:</span>
 				            </div>
 				            <div class="col-md-3">
 				                <input id="mozu_dianxinleixing" type="text" class="form-control"/>
 				            </div>
-				            <div class="col-md-1 text-right" style="padding: 5px 0 0 0;">
+				            <div class="col-md-2 text-right" style="padding: 5px 0 0 0;">
 				                <span>工位类别:</span>
 				            </div>
 				            <div class="col-md-3">
-				                <input id="mozu_gongweileibie" type="text" class="form-control"/>
+			            		<div class="cus-select" id="gongwei">
+	                                <div class="cus-select-btn"></div>
+	                                <input id="mozu_gongweileibie" value="" type="text" readonly/>
+	                                <ul>
+	                                	<li>奇数</li>
+	                                	<li>偶数</li>
+	                                </ul>
+	                            </div>
 				            </div>
 							<div class="col-md-2">
 						        <div class="button button-primary button-rounded button-small" id="mz_newBtn" 
@@ -270,15 +347,14 @@
 						        </div>
 					        </div>
 				        </div>
-			            <div class="row margin-top-10">
-			           		<div class="col-md-1"></div>
-				            <div class="col-md-1 text-right" style="padding: 5px 0 0 0;">
+			            <div class="row margin-top-10" style="margin-right:10px;">
+				            <div class="col-md-2 text-right" style="padding: 5px 0 0 0;">
 				                <span>型腔数:</span>
 				            </div>
 				            <div class="col-md-3">
 				                <input id="mozu_xingqiangshu" type="number" min="0" value="0" class="form-control"/>
 				            </div>
-				            <div class="col-md-1 text-right" style="padding: 5px 0 0 0;">
+				            <div class="col-md-2 text-right" style="padding: 5px 0 0 0;">
 				                <span>时间:</span>
 				            </div>
 				            <div class="col-md-3">
@@ -296,10 +372,10 @@
 		        </div>
 	        </form>
         	<!-- 按钮 -->
-			<div class="row" style="margin-top:20px;">
+			<div class="row" style="margin-top:0px;">
 				<div class="col-md-1"></div>
 				<div class="col-md-10" style="margin-left: 9px;">
-				    <div class="col-md-2">
+				    <div class="col-md-2" style="width:215px;">
 				        <div class="button button-primary button-rounded button-small" id="mz_zj_up" 
 				        	style="font-size:15px;font-family:'微软雅黑';" 
 				        	onselectstart="return false">
@@ -345,7 +421,7 @@
 				                  <th class="text-center" style="width:3%;" bgcolor="#EFEFEF">
 									 <!--  <input type="checkbox" id="checkAll_zj"/> -->
 				                  </th>
-				                  <th class="text-center" style="width: 5%;" bgcolor="#EFEFEF">序号</th>
+				                  <th class="text-center" style="width: 6%;" bgcolor="#EFEFEF">序号</th>
 				                  <th class="text-center" style="width: 10%;" bgcolor="#EFEFEF">翻面否</th>
 				                  <th class="text-center" style="width: 10%;" bgcolor="#EFEFEF">叠装否 </th>
 				                  <th class="text-center" style="width: 10%;" bgcolor="#EFEFEF">电芯数</th>
@@ -368,10 +444,10 @@
 			        <!-- 载具 end -->
 				</div>
 			</div>
-			<div class="row" style="margin-top:20px;">
+			<div class="row" style="margin-top:10px;">
 				<div class="col-md-1"></div>
 				<div class="col-md-10" style="margin-left: 9px;">
-				    <div class="col-md-2">
+				    <div class="col-md-2" style="width:215px;">
 				        <div class="button button-primary button-rounded button-small" id="mz_zlh_up" 
 				        	style="font-size:15px;font-family:'微软雅黑';" 
 				        	onselectstart="return false">
@@ -437,18 +513,21 @@
 		<div id="pack" class="row" style="display:none;">
 			<form id="pack_form" class="row">
 		        <div class="col-md-1"></div>
-				<div class="col-md-10 account-company-auth" style="width:80%;height:150px;margin-left:38px;min-height:100px; margin-top:-50px;">
-			        <div class="row" style="margin-top:-50px;">
-		           		<div class="col-md-1">
+				<div class="col-md-10 account-company-auth" style="width:80%;height:170px;margin-left:38px;min-height:170px; margin-top:-40px;">
+			        <div class="row" style="margin-right:10px;margin-top:-30px;">
+			            <div class="col-md-2 text-right" style="padding: 5px 0 0 0;">
 		           			<input type="hidden" id="pack_id" value=""/>
-		           		</div>
-			            <div class="col-md-1 text-right" style="padding: 5px 0 0 0;">
 			                <span><span style="color:red;">*</span>pack编码:</span>
 			            </div>
 			            <div class="col-md-3">
-			                <input id="pack_code" type="text" class="form-control"/>
+			           		<div class="input-group">
+			               		<input id="pack_code" type="text" readonly="readonly" class="form-control"/>
+				                <span class="input-group-btn">
+							        <button class="btn btn-default" id="pack_button" type="button">选择PACK</button>
+						   		</span>
+					   		</div>
 			            </div>
-			            <div class="col-md-1 text-right" style="padding: 5px 0 0 0;">
+			            <div class="col-md-2 text-right" style="padding: 5px 0 0 0;">
 			                <span><span style="color:red;">*</span>pack类型:</span>
 			            </div>
 			            <div class="col-md-3">
@@ -462,15 +541,14 @@
 					        </div>
 				        </div>
 		            </div>
-		            <div class="row margin-top-10">
-		           		<div class="col-md-1"></div>
-			            <div class="col-md-1 text-right" style="padding: 5px 0 0 0;">
+		            <div class="row margin-top-10" style="margin-right:10px;">
+			            <div class="col-md-2 text-right" style="padding: 5px 0 0 0;">
 			                <span><span style="color:red;">*</span>默认生产线:</span>
 			            </div>
 			            <div class="col-md-3">
 			                <input id="pack_morenshengchanxian" type="text" class="form-control"/>
 			            </div>
-			            <div class="col-md-1 text-right" style="padding: 5px 0 0 0;">
+			            <div class="col-md-2 text-right" style="padding: 5px 0 0 0;">
 			                <span><span style="color:red;">*</span>电芯类型:</span>
 			            </div>
 			            <div class="col-md-3">
@@ -484,15 +562,14 @@
 					        </div>
 				        </div>
 			        </div>
-		            <div class="row margin-top-10">
-		           		<div class="col-md-1"></div>
-			            <div class="col-md-1 text-right" style="padding: 5px 0 0 0;">
+		            <div class="row margin-top-10" style="margin-right:10px;">
+			            <div class="col-md-2 text-right" style="padding: 5px 0 0 0;">
 			                <span>时间:</span>
 			            </div>
 			            <div class="col-md-3">
 			                <input id="pack_newDate" type="text" readonly="readonly" class="form-control"/>
 			            </div>
-			            <div class="col-md-4"></div>
+			            <div class="col-md-5"></div>
 						<div class="col-md-2">
 					        <div class="button button-primary button-rounded button-small" id="pack_deleteBtn" 
 					        	style="width:150px;font-size:15px;font-family:'微软雅黑';" 
@@ -506,7 +583,7 @@
         	<div class="row" style="margin-top:20px;">
 				<div class="col-md-1"></div>
 				<div class="col-md-10" style="margin-left: 9px;">
-				    <div class="col-md-2">
+				    <div class="col-md-2" style="width:215px;">
 				        <div class="button button-primary button-rounded button-small" id="pack_up" 
 				        	style="font-size:15px;font-family:'微软雅黑';" 
 				        	onselectstart="return false">

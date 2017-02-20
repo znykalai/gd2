@@ -12,8 +12,18 @@ var readyShow = {
 					if(winHeight == window.screen.height){
 						winHeight = document.body.clientHeight - 50;
 					}
-					$('#xy').css('height', (winHeight - (window.screen.height - winHeight))/1.05);
+					$('#xy').css('height', (winHeight - (window.screen.height - winHeight))/0.98);
 					$('.table-body').css('height', document.body.clientHeight /5.88);
+					
+					//刷新货位状态
+					$("#getHck").click(function(){
+						af.getHck();
+					});
+					//显示GDFrame
+					$("#showGDFrame").click(function(){
+						af.getGDFrame();
+					});
+					
 					if(this.txload()&&this.getHck()&&dsState.state){
 						(function(){//定时刷新
 							readyShow.deleteSetInterval = setInterval(function(){
@@ -30,6 +40,18 @@ var readyShow = {
 					this.removeTop = [];
 					this.removeArry = [];
 					this.removeBottom = [];
+				},
+				/**
+				 * 显示GDFrame
+				 */
+				getGDFrame:function(){
+					$.ajax({
+						url: getRootPath()+'/HomeAction.do?operType=getGDFrame',
+						type: 'get',
+						cache:false,
+						success: function (data) {}
+					});
+					return null;
 				},
 				/**
 				 * 异步输送线top
@@ -155,11 +177,11 @@ var readyShow = {
 								af.upload(0,Number(obj.gdWcl));
 							}
 							/**
-							 * 搬运机构指定队列
+							 * 缓存库指定队列
 							 */
-							if(obj.byjgzddl.length > 0){
-								af.table.loadByjgzdd(obj.byjgzddl);
-							}
+//							if(obj.byjgzddl.length > 0){
+//								af.table.loadHckzdd(obj.byjgzddl);
+//							}
 						}
 					});
 					return true;
@@ -284,11 +306,11 @@ var readyShow = {
 				 * 渲染表格
 				 */
 				table:{
-					//搬运机构指定队列
-					loadByjgzdd:function(e){
-						$("#by_table tbody tr").remove();
+					//缓存库指定队列
+					loadHckzdd:function(e){
+						$("#hc_table tbody tr").remove();
 						for(var i=0;i<e.length;i++){
-							$('#by_table tbody').append('<tr bgcolor="#ffffff" style="height: 28px;">' +
+							$('#hc_table tbody').append('<tr bgcolor="#ffffff" style="height: 28px;">' +
 								//事件ID
 								'<td style="width: 35px;">'+e[i].idEvent +'</td>' +
 								//动作
@@ -306,11 +328,6 @@ var readyShow = {
 					}
 				}
 			}
-			
-			$("#aa").click(function(){
-				af.getHck();
-			});
-			
 			af.load(function(){
 				return null;
 			},{state:false,tim:1000});//渲染主页面,function(){}--第一个返回参数,{ds:true--是否为定时刷新、tim:刷新时间毫秒为单位};

@@ -107,7 +107,7 @@
 					</div>
 					<div id="homeRight"
 						style="position: absolute; bottom: -51px; right: -108px; height: 350px; width: 480px; 
-								background-image: url(<%=path%>/images/sanjiaoxing385x300.png); background-repeat: no-repeat; z-index: 99;">
+								background-image: url(<%=path%>/images/sanjiaoxing385x300.png); background-repeat: no-repeat; z-index:99;">
 						<div id="anniu1" title="订单调度"
 							style="width: 66px; height: 50px; cursor: pointer; position: relative; top: 245px; left: 59px; 
 								background-image: url(<%=path%>/images/wuliaodiaodu66x55_huise.png); background-repeat: no-repeat;"></div>

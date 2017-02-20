@@ -11,7 +11,7 @@ var readyShow = {
 					layer.config({
 					    path: '../../js/lib/layer/'
 					});
-					var win = layer.open({type: 3});
+					var winLayer = layer;
 					/*绑定日历选择器*/
 					$('#getGdfenjieriqi').datetimepicker({
 					    format: 'yyyy-mm-dd',
@@ -21,11 +21,21 @@ var readyShow = {
 					    linkFormat: 'yyyy-mm-dd',
 					    minView: 'month'
 					});
+					//清空当前选择行的记录，防止报错
+					$('#getGdId').on('change',function(){
+						arrayGd=[],arrayMz=[];
+					});
+					$('#getGdfenjieriqi').on('change',function(){
+						arrayGd=[],arrayMz=[];
+					});
+					$('#getPackeCode').on('change',function(){
+						arrayGd=[],arrayMz=[];
+					});
 					var winHeight = document.body.clientHeight;
 					if(winHeight == window.screen.height){
 						winHeight = document.body.clientHeight - 50;
 					}
-					$('#xy').css('height', (winHeight - (window.screen.height - winHeight))/1.05);
+					$('#xy').css('height', (winHeight - (window.screen.height - winHeight))/0.98);
 					var dd_id,mz_xuhao,arrayGd=[],arrayMz=[];
 					$('.table-body').css('height', document.body.clientHeight /5.88);
 					//工单模组-配方显示
@@ -40,7 +50,9 @@ var readyShow = {
 								for(var i=0;i < obj.length;i++){
 									$('#pf_table tbody').append('<tr id="mz_row'+i+'" bgcolor="#ffffff" style="height: 28px;">' +
 										//工单序号
-										'<td style="width: 5%;padding:2px;">'+obj[i].dd_gdxuhao +'</td>' +
+										'<td style="width: 8%;padding:2px;">'+obj[i].dd_gdxuhao +'</td>' +
+										//模组号
+										'<td style="width: 8%;padding:2px;">'+obj[i].dd_fenjiehao +'</td>' +
 										//载具号
 										'<td style="width: 8%;padding:2px;">'+obj[i].dd_zaijuxuhao +'</td>' +
 										//物料编码
@@ -57,17 +69,18 @@ var readyShow = {
 										'<td style="width: 8%;padding:2px;">'+obj[i].dd_dianxin2+'</td>' +
 										//电芯3
 										'<td style="width: 8%;padding:2px;">'+obj[i].dd_dianxin3+'</td>' +
-										//电芯3
+										//电芯4
 										'<td style="width: 8%;padding:2px;">'+obj[i].dd_dianxin4+'</td>' +
+										//工位
+										'<td style="width: 8%;padding:2px;">'+obj[i].dd_gongwei+'</td>' +
 									'</tr>');
 								}
-								layer.close(win);
 							}
 						});
 						return null;
 					}
 					//工单模组显示
-					function showGdMzList(obj){
+					function showGdMzList(obj,win){
 						dd_id="",mz_xuId="";//清空条件
 						$('#mz_table tbody tr').remove();//模组table
 						$('#pf_table tbody tr').remove();//配方table
@@ -97,9 +110,15 @@ var readyShow = {
 								dd_id = $(this).children("td").eq(1).find("input:hidden").val();
 								mz_xuId = $(this).children("td").eq(0).find("input:hidden").val();
 				 				arrayMz[arrayGd[0]] = [this.id.split("row")[1]];
-								showGdMzPfList(dd_id,mz_xuId);
+								if(win){
+									layer.close(win);
+								};
+								return showGdMzPfList(dd_id,mz_xuId,win);
 							});
-						}
+						};
+						if(win){
+							layer.close(win);
+						};
 						if(obj.length>0){
 							if(arrayMz[arrayGd[0]]&&arrayMz[arrayGd[0]].length > 0){
 								$('#mz_row'+arrayMz[arrayGd[0]][0]).click();
@@ -107,13 +126,11 @@ var readyShow = {
 								arrayMz[arrayGd[0]]= [0];
 								$('#mz_row0').click();
 							}
-						}else{
-							layer.close(win);
 						}
 						return null;
 					}
 					//工单
-					function showGdList(getGdId,getPackeCode,getGdfenjieriqi,deleteType){
+					function showGdList(getGdId,getPackeCode,getGdfenjieriqi,deleteType,win){
 						$.ajax({
 							url: getRootPath()+'/OrderOperAction.do?operType=getDdList',
 							type: 'post',cache:false, 
@@ -121,7 +138,9 @@ var readyShow = {
 							success: function (data) {
 				  				var obj = eval("("+data+")");
 								$('#dd_table tbody tr').remove();
-				  				for(var i=0;i < obj.length;i++){
+								var i = 0;
+								var objLength = obj.length;
+								while(i < objLength){
 				  					$('#dd_table tbody').append('<tr id="gd_row'+i+'" bgcolor="#ffffff" style="height: 28px;">' +
 				  						//单选
 										'<td id="radio_id_'+i+'" style="width: 3%;padding:2px;">'+
@@ -160,11 +179,13 @@ var readyShow = {
 											data: "dd_id="+gd_id+"&pack_code="+pack_code,
 											success: function (data) {
 								  				arrayGd[0] = rowIndex;
-								  				showGdMzList(eval("("+data+")"));
+								  				return showGdMzList(eval("("+data+")"),win);
 											}
 										});
+										return null;
 									});
-				  				}
+									i++;
+								}
 				  				if(obj.length > 0){
 				  					if(arrayGd.length > 0 && deleteType==false){
 										$("#gd_row"+arrayGd[0]).click();
@@ -173,7 +194,9 @@ var readyShow = {
 										$('#dd_table tbody tr').eq(0).click();
 									}
 				  				}else{
-				  					layer.close(win);
+									if(win){
+										layer.close(win);
+									};
 									dd_id="",mz_xuId="";//清空条件
 									$('#mz_table tbody tr').remove();//模组table
 									$('#pf_table tbody tr').remove();//配方table
@@ -184,14 +207,11 @@ var readyShow = {
 					}
 					//查询
 					$("#dd_selectBtn").click(function(){
-						var win = layer.open({type: 3});
 						var getGdId = $("#getGdId").val();
 						var getPackeCode = $("#getPackeCode").val();
 						var getGdfenjieriqi = $("#getGdfenjieriqi").val();
-						showGdList(getGdId,getPackeCode,getGdfenjieriqi,false);
-						layer.close(win);
-						return null;
-					});	
+						return showGdList(getGdId,getPackeCode,getGdfenjieriqi,false,winLayer.open({type: 3}));
+					});
 					//选择分解
 					$("#dd_fenjieRadioBtn").click(function(){
 						var cheBoolean = $("input[name='trGdRadio']").is(':checked');
@@ -211,7 +231,6 @@ var readyShow = {
 									layer.msg("按照顺序分解，请先分解第"+yesFenjie+"行工单！");
 									return null;
 								}
-								var win = layer.open({type: 3});//加载框
 								var gd_id = $("input[name='trGdRadio']:checked").val();
 								var pack_code = $("input[name='trGdRadio']:checked").parent().parent().children("td").eq(4).html();
 								$.ajax({
@@ -219,8 +238,7 @@ var readyShow = {
 									type: 'post',cache:false, 
 									data: "dd_id="+gd_id+"&pack_code="+pack_code,
 									success: function (data) {
-										showGdList('','','',false);
-										layer.close(win);
+										showGdList('','',$('#getGdfenjieriqi').val(),false,winLayer.open({type: 3}));
 				  						layer.msg("分解成功！");
 									}
 								});
@@ -232,13 +250,11 @@ var readyShow = {
 					});
 					//分解全部
 					$("#dd_fenjieAllBtn").click(function(){
-						var win = layer.open({type: 3});
 						$.ajax({
 							url: getRootPath()+'/OrderOperAction.do?operType=fenjieAllBtn',
 							type: 'post',cache:false, 
 							success: function (data) {
-								showGdList('','','',false);
-								layer.close(win);
+								showGdList('','',$('#getGdfenjieriqi').val(),false,winLayer.open({type: 3}));
 								layer.msg("分解成功！");
 							}
 						});
@@ -246,13 +262,12 @@ var readyShow = {
 					});
 					//下载
 					$("#dd_dowBtn").click(function(){
-						var win = layer.open({type: 3});
 						$.ajax({
 							url: getRootPath()+'/OrderOperAction.do?operType=downloadBtn',
 							type: 'post',cache:false, 
 							success: function (data) {
-								showGdList('','','',false);
-								layer.close(win);
+								showGdList('','',$('#getGdfenjieriqi').val(),false,winLayer.open({type: 3}));
+								layer.msg("下载成功！");
 							}
 						});
 						return null;
@@ -263,7 +278,6 @@ var readyShow = {
 						if (cheBoolean) {
 							var DdType = $("input[name='trGdRadio']:checked").parent().parent().children("td").eq(2).html();
 							if(DdType=="初始化"||DdType=="已分解"){
-								var win = layer.open({type: 3});
 								var gd_id = $("input[name='trGdRadio']:checked").val();
 								$.ajax({
 									url: getRootPath()+'/OrderOperAction.do?operType=delBtn',
@@ -271,8 +285,7 @@ var readyShow = {
 									data: 'gd_id='+gd_id,
 									success: function (data) {
 										var obj = eval("("+data+")");
-										showGdList('','','',true);
-										layer.close(win);
+										showGdList('','',$('#getGdfenjieriqi').val(),true,winLayer.open({type: 3}));
 				  						layer.msg(obj.body);
 									}
 								});
@@ -304,7 +317,6 @@ var readyShow = {
 											layer.msg("第"+$("#gd_row"+(rowId-1)).find('td').eq(1).text()+"行工单已分解，无法调整！");
 											return null;
 										}
-										var win = layer.open({type: 3});
 										var gd_id = $("input[name='trGdRadio']:checked").val();
 										var gd_xuhao = $("#gd_row"+rowId).find('td').eq(1).text();
 										var up_gd_id = $("#gd_row"+(rowId-1)).find('td').eq(0).find("input:radio").val();
@@ -315,8 +327,7 @@ var readyShow = {
 											data: 'gd_id='+gd_id+'&up_gd_id='+up_gd_id+'&gd_xuhao='+gd_xuhao+'&up_gd_xuhao='+up_gd_xuhao,
 											success: function (data) {
 												var obj = eval("("+data+")");
-												showGdList('','','',false);
-												layer.close(win);
+												showGdList('','',$('#getGdfenjieriqi').val(),false,winLayer.open({type: 3}));
 						  						layer.msg(obj.body);
 											}
 										});
@@ -350,7 +361,6 @@ var readyShow = {
 											layer.msg("第"+gd_xuhao+"行工单已分解，无法调整！");
 											return null;
 										}
-										var win = layer.open({type: 3});
 										var gd_id = $("input[name='trGdRadio']:checked").val();
 										var gd_xuhao = $("#gd_row"+rowId).find('td').eq(1).text();
 										var up_gd_id = $("#gd_row"+(Number(rowId)+1)).find('td').eq(0).find("input:radio").val();
@@ -361,8 +371,7 @@ var readyShow = {
 											data: 'gd_id='+gd_id+'&up_gd_id='+up_gd_id+'&gd_xuhao='+gd_xuhao+'&up_gd_xuhao='+up_gd_xuhao,
 											success: function (data) {
 												var obj = eval("("+data+")");
-												showGdList('','','',false);
-												layer.close(win);
+												showGdList('','',$('#getGdfenjieriqi').val(),false,winLayer.open({type: 3}));
 						  						layer.msg(obj.body);
 											}
 										});
@@ -375,7 +384,7 @@ var readyShow = {
 						}
 						return null;
 					});
-					if(showGdList('','','',false)&&dsState.state){
+					if(showGdList('','',$('#getGdfenjieriqi').val(),false,winLayer.open({type: 3}))&&dsState.state){
 						(function(){
 							//定时刷新
 							readyShow.deleteSetInterval = setInterval(function(){
@@ -383,7 +392,7 @@ var readyShow = {
 							},dsState.tim);
 							dlInterval = true;
 						})();
-					}
+					};
 					//工单显示
 					return null;
 				}
@@ -391,6 +400,7 @@ var readyShow = {
 			af.load(function(){
 				return null;
 			},{state:false,tim:5000});//渲染主页面,function(){}--第一个返回参数,{ds:true--是否为定时刷新、tim:刷新时间毫秒为单位};
+			return null;
 		}catch (e) {
 			return e;
 		}

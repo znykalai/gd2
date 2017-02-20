@@ -7,6 +7,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.swing.plaf.synth.SynthSeparatorUI;
 
 //import net.sf.json.JSONObject;
 
@@ -89,6 +90,8 @@ public class BaseDataAction extends Action{
 			String sql = "";
 			if(map.get("id")!=null&&!map.get("id").equals("")){
 				sql = " where a.物料编码='"+map.get("id")+"'";
+			}else if(map.get("leibie")!=null){
+				sql = " where a.类别='"+map.get("leibie")+"'";
 			}
 			map.put("sql", sql);
 			List list = dao.selectWlList(map);
@@ -459,6 +462,7 @@ public class BaseDataAction extends Action{
 			HttpSession session = request.getSession();
 			ApplicationContext context = GetApplicationContext.getContext(request);
 			BaseDataDAO dao = (BaseDataDAO)context.getBean("baseDataDAO");
+			System.out.println(map+"--");
 			//新增模组行
 			JSONArray add = new JSONArray(map.get("add").toString());
 			//修改模组行
@@ -1004,6 +1008,9 @@ public class BaseDataAction extends Action{
 			BaseDataDAO dao = (BaseDataDAO)context.getBean("baseDataDAO");
 			ArrayList result = new ArrayList();
 			String sql = "select a.* from `pack题头` a";
+			if(map.get("pack_code")!=null){
+				sql = sql + " where a.`pack编码`='"+map.get("pack_code")+"'";
+			}
 			map.put("sql", sql);
 			List list = dao.getHeadList(map);
 			if(list!=null&&list.size()>0){

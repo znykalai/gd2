@@ -19,6 +19,7 @@ import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.sygf.erp.baseData.dao.HomeActionDAO;
+import com.sygf.erp.util.GDFrame;
 import com.sygf.erp.util.GetApplicationContext;
 
 import alai.znyk.plc.PLC;
@@ -30,6 +31,8 @@ public class HomeAction extends Action{
 			String operType = request.getParameter("operType");
 			if (operType.equals("getHckState")){
 				return getHckState(mapping, form, request, response);
+			}else if (operType.equals("getGDFrame")){
+				return getGDFrame(mapping, form, request, response);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -37,6 +40,27 @@ public class HomeAction extends Action{
 		return null;
 	}
 	
+	/**
+	 * 显示GDFrame 
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	private ActionForward getGDFrame(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) {
+		try{
+			//show
+			GDFrame.showFrame();
+			return null;
+		}catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	/**
 	 * 获取换成库 状态
 	 * @param mapping
@@ -55,35 +79,39 @@ public class HomeAction extends Action{
 			ApplicationContext context = GetApplicationContext.getContext(request);
 			HomeActionDAO dao = (HomeActionDAO)context.getBean("homeActionDAO");
 			JSONObject result = new JSONObject();
-			//获取换成库 输送线状态
+			//获取缓存库 输送线状态
 			List list = dao.getHckState();
 			ArrayList resultList = new ArrayList();
 			if(list!=null&&list.size()>0){
-				for(int i=0;i<list.size();i++){
+				int i=0;
+				while(i<list.size()){
 					HashMap map = new HashMap();
 					map.put(""+i+"", ((HashMap)list.get(i)).get("货位序号"));
 					resultList.add(map);
+					i++;
 				}
 			}
 			//异步输送线上层
 			ArrayList topArratList = new ArrayList();
-			for(int i=0;i<15;i++){
+			for(int i=0,j=0;i<15;i++){
 				try{
 					HashMap map = new HashMap();
 					if(PLC.getIntance().line.getCarry(i)!=null){
-						map.put(""+i+"","TOP-"+i+"ST");
+						map.put(""+j+"","TOP-"+i+"ST");
 						topArratList.add(map);
+						j++;
 					}
 				}catch(Exception e){}
 			}
 			//异步输送线下层
 			ArrayList bottomArratList = new ArrayList();
-			for(int i=0;i<15;i++){
+			for(int i=0,j=0;i<15;i++){
 				try{
 					HashMap map = new HashMap();
 					if(PLC.getIntance().line2.getCarry(i)!=null){
-						map.put(""+i+"","BOTTOM-"+i+"ST");
+						map.put(""+j+"","BOTTOM-"+i+"ST");
 						bottomArratList.add(map);
+						j++;
 					}
 				}catch(Exception e){}
 			}
@@ -96,7 +124,8 @@ public class HomeAction extends Action{
 			list = dao.getActionCommand();
 			ArrayList actionCommandList = new ArrayList();
 			if(list!=null&&list.size()>0){
-				for(int i=0;i<list.size();i++){
+				int i=0;
+				while(i<list.size()){
 					HashMap map = new HashMap();
 					map.put("idEvent", ((HashMap)list.get(i)).get("idEvent"));
 					map.put("dongzuo", ((HashMap)list.get(i)).get("动作"));
@@ -105,6 +134,7 @@ public class HomeAction extends Action{
 					map.put("fasongshijian", ((HashMap)list.get(i)).get("发送时间"));
 					map.put("wanchengshijian", ((HashMap)list.get(i)).get("完成时间"));
 					actionCommandList.add(map);
+					i++;
 				}
 			}
 			result.put("hckTop", topArratList);

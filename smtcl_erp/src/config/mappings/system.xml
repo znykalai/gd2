@@ -306,6 +306,7 @@
     	<result property="电芯位置2" column="电芯位置2" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     	<result property="电芯位置3" column="电芯位置3" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     	<result property="电芯位置4" column="电芯位置4" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="工位" column="工位" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     </resultMap>
 	<select id="OrderOperactionDAO.getZlpfList" parameterClass="java.util.HashMap" resultMap="OrderOperactionDAO.getZlpfListMap">
 		$sql$

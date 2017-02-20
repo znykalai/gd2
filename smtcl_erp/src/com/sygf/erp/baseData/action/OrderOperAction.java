@@ -191,7 +191,7 @@ public class OrderOperAction extends Action{
 			OrderOperactionDAO dao = (OrderOperactionDAO)context.getBean("orderOperactionDAO");
 			ArrayList result = new ArrayList();
 			String sql = "SELECT a.* FROM `配方指令队列` a WHERE " +
-					"a.`工单ID`='"+map.get("dd_id")+"' AND a.`模组序ID`='"+map.get("mz_xuId")+"' ORDER BY a.`载具序号`";
+					"a.`工单ID`='"+map.get("dd_id")+"' AND a.`模组序ID`='"+map.get("mz_xuId")+"' ORDER BY a.`分解号`,a.`载具序号`";
 			map.put("sql", sql);
 			List list = dao.getZlpfList(map);
 			if(list!=null&&list.size()>0){
@@ -199,6 +199,7 @@ public class OrderOperAction extends Action{
 					HashMap mapPara = new HashMap();
 					mapPara.put("'dd_gdxuhao'", "'"+((HashMap)list.get(i)).get("工单序号")+"'");
 					mapPara.put("'dd_zaijuxuhao'", "'"+((HashMap)list.get(i)).get("载具序号")+"'");
+					mapPara.put("'dd_fenjiehao'", "'"+((HashMap)list.get(i)).get("分解号")+"'");
 					mapPara.put("'dd_wuliao'", "'"+((HashMap)list.get(i)).get("物料")+"'");
 					mapPara.put("'dd_wuliaomiaoshu'", "'"+((HashMap)list.get(i)).get("物料描述")+"'");
 					mapPara.put("'dd_xuqiushuliang'", "'"+((HashMap)list.get(i)).get("数量")+"'");
@@ -207,6 +208,7 @@ public class OrderOperAction extends Action{
 					mapPara.put("'dd_dianxin2'", "'"+((HashMap)list.get(i)).get("电芯位置2")+"'");
 					mapPara.put("'dd_dianxin3'", "'"+((HashMap)list.get(i)).get("电芯位置3")+"'");
 					mapPara.put("'dd_dianxin4'", "'"+((HashMap)list.get(i)).get("电芯位置4")+"'");
+					mapPara.put("'dd_gongwei'", "'"+((HashMap)list.get(i)).get("工位")+"'");
 					result.add(mapPara);
 				}
 			}
