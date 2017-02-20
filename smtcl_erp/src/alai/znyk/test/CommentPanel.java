@@ -554,6 +554,22 @@ public class CommentPanel extends JPanel {
 	    mode.setDataVector(new Vector(), col);
 	    
 	    table_5.setModel(mode);
+	    
+	    JButton button_6 = new JButton("\u5199\u5165");
+	    button_6.addActionListener(new ActionListener() {
+	    	public void actionPerformed(ActionEvent e) {
+	    		first.writeToPLC();
+	    		second.writeToPLC();
+	    		try{
+	    			Thread.sleep(200);
+	    			
+	    		}catch(Exception ex){}
+	    		setData();
+	    		
+	    	}
+	    });
+	    button_6.setBounds(578, 548, 93, 23);
+	    add(button_6);
 	    table_5.getColumnModel().getColumn(1).setCellEditor(edit);
 	    table_5.getColumnModel().getColumn(2).setCellEditor(edit);
 	    
@@ -593,7 +609,9 @@ public class CommentPanel extends JPanel {
 		Resint r1=rs[s*2];
 		Resint r2=rs[(s+16)*2];
 		first=new ReST(r1);
+		first.startAddres="D"+(11001+s*2);
 	    second=new ReST(r2);
+	    second.startAddres="D"+(11033+s*2);
 		try{
 		Field f[]=first.getClass().getDeclaredFields();
 		mode.getDataVector().removeAllElements();
@@ -612,8 +630,16 @@ public class CommentPanel extends JPanel {
 		    //b.println();
 			mode.addRow(row);
 			 }
-			
-           
+		  
+		    if(ty.toString().equals("class java.lang.String")){
+		    	 // System.out.println(ty);
+				Method m2=	first.getClass().getMethod("get"+name, null) ;
+				row.addElement(m2.invoke(first, null));
+				Method m3=	second.getClass().getMethod("get"+name, null) ;
+				row.addElement(m3.invoke(second, null));
+			    //b.println();
+				mode.addRow(row);
+				 }
         	  
 			
 		}

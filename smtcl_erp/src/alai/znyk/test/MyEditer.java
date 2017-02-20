@@ -261,6 +261,7 @@ public class MyEditer extends AbstractCellEditor
     	        return editorComponent;
     		
     	}else{
+    		if(value instanceof Integer){
     		 editorComponent = new JTextField();
     	        this.clickCountToStart = 2;
     	        delegate = new EditorDelegate() {
@@ -280,6 +281,29 @@ public class MyEditer extends AbstractCellEditor
     	        ((JTextField)editorComponent).addActionListener(delegate);
     	         delegate.setValue(value);
     		  return editorComponent;
+    		  
+    		}else{
+    			  
+    			 editorComponent = new JTextField();
+     	        this.clickCountToStart = 2;
+     	        delegate = new EditorDelegate() {
+     	            public void setValue(Object value) {
+     	            	((JTextField)editorComponent).setText((value != null) ? value.toString() : "");
+     	            }
+
+     	            public Object getCellEditorValue() {
+     	            	try{
+     	                return ((JTextField)editorComponent).getText();
+     	                
+     	            	}catch(Exception e){
+     	            		return 0;
+     	            	}
+     	            }
+     	        };
+     	        ((JTextField)editorComponent).addActionListener(delegate);
+     	         delegate.setValue(value);
+     		  return editorComponent;
+    		  }
     	}
     	
        

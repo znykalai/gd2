@@ -38,7 +38,7 @@ public class SqlPro {
     public static int 堆垛空闲码=3;
     public static int AGV空闲码=3;
     public static int 排队=1;
-    public static int 运行中=2;
+    public static int 执行中=2;
     public static int 完成=3;
 
     public static String kind[]

@@ -343,7 +343,8 @@ public class PLC implements Serializable {
 			while(true){
 				try{
 				STATE1=ClientSer.getIntance().getState(10);
-				STATE2=ClientSer.getIntance().getState(11);}catch(Exception e){e.printStackTrace();}
+				STATE2=ClientSer.getIntance().getState(11);
+				}catch(Exception e){e.printStackTrace();}
 				ST0_1.initFromSql();
 				getSTRdy(1,2);
 				ST1_1.initFromSql();
@@ -514,19 +515,12 @@ public class PLC implements Serializable {
 	}
 	
    public String writeBlockToBLC(String startAddress,int len,int[]val, int machineID){
-//	   if(val!=null){
-//		   Inint[] to=new  Inint[val.length];
-//		   for(int i=0;i<to.length;i++){
-//			   to[i]=new Inint(val[i]);
-//		   }
-//		   try{
-//		   gd.getGD().writeSirIntToCTR(startAddress, len, to, machineID);
-//		   
-//		   }catch(Exception ex){}
-//		   
-//	   }
-	   
+       int i= ClientSer.getIntance().writeSirIntToCTR(startAddress, len, val, machineID);
+	   if(i!=-1){
 	   return "³É¹¦";
+	   }else{
+		 return "Ê§°Ü";
+	   }
    }
    
    public String writeRandomToBLC(String[] startAddress,int[]val, int machineID){
@@ -534,19 +528,19 @@ public class PLC implements Serializable {
 	     return null;
    }
    
-   public int[] readBlockFromBLC(String startAddress,int len, int machineID){
-//	   try{
-//		  Resint[] back= gd.getGD().getSirIntValuesFromCTR(startAddress, len, 16, machineID);
-//		  if(back!=null){
-//			  int tem[]=new int[back.length];
-//			   for(int i=0;i<tem.length;i++){
-//				   tem[i]=back[i].getResInt();
-//				   
-//			   }
-//			  return tem;
-//		  }
-//		   
-//	   }catch(Exception ex){}
+   public int[] readBlockFromBLC(String startAddress,int nums, int machineID){
+	   try{
+		  Resint[] back= ClientSer.getIntance().getSirIntValuesFromCTR(startAddress, nums, 16, machineID);
+	  if(back!=null){
+			  int tem[]=new int[back.length];
+			   for(int i=0;i<tem.length;i++){
+				   tem[i]=back[i].getResInt();
+				   
+			   }
+			  return tem;
+		  }
+		   
+	   }catch(Exception ex){}
 	   
 	   return null;
    }
