@@ -306,29 +306,40 @@ var readyShow = {
 					//设置默认时间
 				    $('#mozu_newDate').val(current());
 					$('.table-body').css('height', document.body.clientHeight / 6);
-					
-					//根据模组编码查询数据
-					$("#mozu_code").change(function(){
-						$.ajax({
-							url: getRootPath()+'/BaseDataAction.do?operType=getMzList',
-							type: 'get',cache:false, 
-							data: 'type=head&where= where a.模组编码 = \''+this.value+'\'',
-							success: function (data) {
-						    	var obj = eval("("+data+")");
-				           		$('#mozu_id').val(obj[0].mozu_id);
-				           		$('#mozu_code').val(obj[0].mozu_code);
-				           		$('#mozu_leixing').val(obj[0].mozu_leixing);
-				           		$('#mozu_dianxinleixing').val(obj[0].mozu_dianxinleixing);
-				           		$('#mozu_gongweileibie').val(obj[0].mozu_gongweileibie);
-				           		$('#mozu_xingqiangshu').val(obj[0].mozu_xingqiangshu);
-				           		$('#mozu_newDate').val(obj[0].mozu_newDate);
-				           		$('#mozu_code').attr("readOnly",true);
-				           		showMzzj(obj[0].mozu_id);
-							}
-						});
+					//工位下拉条加载
+					$('#gongwei').click(function () {
+				        $('#gongwei ul').toggle();
 				        return null;
+				    });
+				    $('#gongwei ul').click(function (event) {
+				        var t2 = $(event.target).text();
+				        $('#mozu_gongweileibie').val(t2);
+				        return null;
+				    });
+					//选择模组
+					$("#mozu_button").click(function(){
+						af.selectMzPack($("#mozu_code"),$('#mozu_leixing'),$('#mz_newBtn'),function(){
+							$.ajax({
+								url: getRootPath()+'/BaseDataAction.do?operType=getMzList',
+								type: 'get',cache:false, 
+								data: 'type=head&where= where a.模组编码 = \''+$("#mozu_code").val()+'\'',
+								success: function (data) {
+									if(data!="[]"){
+								    	var obj = eval("("+data+")");
+						           		$('#mozu_id').val(obj[0].mozu_id);
+						           		$('#mozu_code').val(obj[0].mozu_code);
+						           		$('#mozu_leixing').val(obj[0].mozu_leixing);
+						           		$('#mozu_dianxinleixing').val(obj[0].mozu_dianxinleixing);
+						           		$('#mozu_gongweileibie').val(obj[0].mozu_gongweileibie);
+						           		$('#mozu_xingqiangshu').val(obj[0].mozu_xingqiangshu);
+						           		$('#mozu_newDate').val(obj[0].mozu_newDate);
+						           		showMzzj(obj[0].mozu_id);
+									}
+								}
+							});
+						},"模组");
+						return null;
 					});
-				    
 					//添加载具行
 					function addMzZjRow(obj){
 						var typeClass = "";
@@ -343,7 +354,7 @@ var readyShow = {
 								'<input type="hidden" id="mozu_id' + obj.num + '" value="'+obj.mozu_id+'"/>' +
 							'</td>' +
 							//序号
-							'<td id="newTd2_' + obj.num + '" style="width: 5%;padding:0px;">'+obj.num+'</td>' +
+							'<td id="newTd2_' + obj.num + '" style="width: 6%;padding:0px;">'+obj.num+'</td>' +
 							//翻面否
 							'<td id="newTd3_' + obj.num + '" style="width: 10%;padding:0px;">'+obj.zj_fanmianfou+'</td>' +
 							//叠装否
@@ -805,6 +816,7 @@ var readyShow = {
 								/*绑定双击事件*/
 				            	$('.commonTr').bind('dblclick', function (e) {
 									var tr = $(e.target).parent();
+									$('#mz_newBtn').click();
 				            		$('#mozu_id').val(tr.find('.mozu_id').text());
 				            		$('#mozu_code').val(tr.find('.mozu_code').text());
 				            		$('#mozu_leixing').val(tr.find('.mozu_leixing').text());
@@ -812,16 +824,14 @@ var readyShow = {
 				            		$('#mozu_gongweileibie').val(tr.find('.mozu_gongweileibie').text());
 				            		$('#mozu_xingqiangshu').val(tr.find('.mozu_xingqiangshu').text());
 				            		$('#mozu_newDate').val(tr.find('.mozu_newDate').text());
-				            		$('#mozu_code').attr("readOnly",true);
+				            		//$('#mozu_code').attr("readOnly",true);
 									showMzzj(tr.find('.mozu_id').text());//显示模组载具行
-									zlhNum = 1;
 				            		layer.close(win);
 				            	});
 							}
 						});
 				        return null;
 				    });
-					
 					//新建模组事件
 					$('#mz_newBtn').click(function(){
 						num = 1;
@@ -829,7 +839,7 @@ var readyShow = {
 				    	$('#mz_form')[0].reset();
 						//设置默认时间
 				    	$('#mozu_newDate').val(current());
-				   		$('#mozu_code').attr("readOnly",false);
+				   		//$('#mozu_code').attr("readOnly",false);
 						$('#mz_zj_table tbody tr').remove();
 						$('#mz_zlh_table tbody tr').remove();
 				        return null;
@@ -924,7 +934,7 @@ var readyShow = {
 						//模组编码不允许为空
 						if(head.mozu_code==""){
 				    	 	$("#mozu_code").focus();
-				    		layer.tips('请填写模组编码！', '#mozu_code');
+				    		layer.tips('请选择模组编码！', '#mozu_code');
 				    		return null;
 						}
 						//模组类型不允许为空
@@ -977,7 +987,7 @@ var readyShow = {
 				                    //将所有行重置class变为老数据
 				                    mz_zj_table.attr("class", "");
 				                    //模组编码不可编辑
-				                    $('#mozu_code').attr("readonly", "true");
+				                    //$('#mozu_code').attr("readonly", "true");
 				                    $("#mozu_id").val(obj.mz_id);
 				                    showMzzj(obj.mz_id);//显示模组载具行
 					  				layer.msg("保存模组成功！");
@@ -1122,12 +1132,30 @@ var readyShow = {
 							}else{
 								this.ck = true;
 							}
-							$(this).html('<input id="zlhNewTd6_text_' + row + '" type="text" class="form-control" value="' + $(this).html() + '">');
+							var optionHtml = "<option></option>" +
+											 "<option"+($(this).html()=='1ST'?' selected':'')+">1ST</option>" +
+										 	 "<option"+($(this).html()=='2ST'?' selected':'')+">2ST</option>" +
+											 "<option"+($(this).html()=='3ST'?' selected':'')+">3ST</option>" +
+											 "<option"+($(this).html()=='4ST'?' selected':'')+">4ST</option>" +
+											 "<option"+($(this).html()=='5ST'?' selected':'')+">5ST</option>" +
+											 "<option"+($(this).html()=='6ST'?' selected':'')+">6ST</option>" +
+											 "<option"+($(this).html()=='7ST'?' selected':'')+">7ST</option>";
+							$(this).html('<select class="selectpicker"  id="zlhNewTd6_text_' + row + '" style="width:100%;height:100%;">'+optionHtml+'</select>');
 							$('#zlhNewTd6_text_' + row).focus();
 					        $('#zlhNewTd6_text_' + row).blur(function (){
 					            var node = this.parentNode;
 					            $(node).html(this.value);
 					            ck.ck?ck.ck=false:null;
+					            var mz_zlh_table  = $('#mz_zlh_table tbody tr');
+					            var i = 0;
+					            while(i < mz_zlh_table.length){
+					            	if(i < (row-1) && this.value == mz_zlh_table.eq(i).children("td").eq(5).html()){
+							    		layer.tips('工位重复，请重新选择!', mz_zlh_table.eq(row-1).children("td").eq(5));
+							    		$(ck).html('');
+							    		return null;
+					            	}
+					            	i++;
+					            }
 						        return null;
 					        });
 				            //判断当前行 修改还是新增
@@ -1194,7 +1222,7 @@ var readyShow = {
 							};
 							if(mz_zlh_table.eq(i).children("td").eq(5).html()==""){
 								mz_zlh_table.eq(i).children("td").eq(5).click();
-					    		layer.tips('指令行工位不允许为空行！', '#zlhNewTd6_' + (i+1));
+					    		layer.tips('工位不允许为空行！', '#zlhNewTd6_' + (i+1));
 								return null;
 							}
 							//判断当前行,修改还是新增
@@ -1379,9 +1407,33 @@ var readyShow = {
 				    	$('#pack_id').val('');
 						//设置默认时间
 				    	$('#pack_newDate').val(current());
-				   		$('#pack_code').attr("readOnly",false);
+				   		//$('#pack_code').attr("readOnly",false);
 						$('#pack_table tbody tr').remove();
 				        return null;
+					});
+					
+					//选择pack
+					$("#pack_button").click(function(){
+						af.selectMzPack($("#pack_code"),$('#pack_leixing'),$('#pack_newBtn'),function(){
+							$.ajax({
+								url: getRootPath()+'/BaseDataAction.do?operType=getPackHead',
+								type: 'get',cache:false,
+								data: "pack_code="+$("#pack_code").val(),
+								success: function (data) {
+									if(data!="[]"){
+								    	var obj = eval("("+data+")");
+					            		$('#pack_id').val(obj[0].pack_id);
+					            		$('#pack_code').val(obj[0].pack_code);
+					            		$('#pack_leixing').val(obj[0].pack_leixing);
+					            		$('#pack_morenshengchanxian').val(obj[0].pack_morenshengchanxian);
+					            		$('#pack_dianxinleixing').val(obj[0].pack_dianxinleixing);
+					            		$('#pack_newDate').val(obj[0].pack_newDate);
+										packShowAction(obj[0].pack_id,obj[0].pack_code);//显示pack行
+									}
+								}
+							});
+						},"PACK");
+						return null;
 					});
 					
 					//添加pack行函数
@@ -1686,6 +1738,7 @@ var readyShow = {
 								/*绑定双击事件*/
 				            	$('.commonTr').bind('dblclick', function (e) {
 									var tr = $(e.target).parent();
+				  					$('#pack_newBtn').click();
 				            		$('#pack_id').val(tr.find('.pack_id').text());
 				            		$('#pack_code').val(tr.find('.pack_code').text());
 				            		$('#pack_leixing').val(tr.find('.pack_leixing').text());
@@ -1693,8 +1746,6 @@ var readyShow = {
 				            		$('#pack_dianxinleixing').val(tr.find('.pack_dianxinleixing').text());
 				            		$('#pack_newDate').val(tr.find('.pack_newDate').text());
 									packShowAction(tr.find('.pack_id').text(),tr.find('.pack_code').text());//显示pack行
-				            		$('#pack_code').attr("readOnly",true);
-									rowIndex = 1;
 				            		layer.close(win);
 				            	});
 							}
@@ -1830,6 +1881,72 @@ var readyShow = {
 				        return null;
 					});
 			        return true;
+				},
+				/**
+				 * 选择模组 pack
+				 */
+				selectMzPack:function(setLeiBie,setLeiXing,clean,fun,leibie){
+					var openWindow = '<div style="width: 100%;margin-right: 0;">' +
+							'<div class="margin-top-10">' +
+								'<div class="col-md-11" style="margin-left: 20px;">' +
+								'<!-- 标题 -->' +
+								'<div style="padding-right:17px;">' +
+								'<table class="table table-bordered text-center" id="commonSearchTableHead_MzPack">' +
+								'<thead>' +
+								'<tr>' +
+								'<td style="width: 50%;">编码</td>' +
+								'<td style="width: 50%;">类型</td>' +
+								'</tr>' +
+								'</thead>' +
+								'</table>' +
+								'</div>' +
+								'<!-- 标题 end-->' +
+								'<!-- 内容 -->' +
+								'<div class="table-body" id="commonSearchTableBody_MzPack">' +
+								'<table class="table table-bordered text-center table-hover" id="searchTable_MzPack">' +
+								'</table>' +
+								'</div>' +
+								'<!-- 内容 end-->' +
+								'</div>' +
+							'</div>' +
+						'</div>';
+					var win = layer.open({
+					    type: 1,
+					    title: leibie,
+					    shadeClose: false,
+					    scrollbar:false,
+					    anim:5,
+					    move: false,
+					    shade: [0.5, '#393D49'],
+					    area: ['30%', '50%'],
+					    content: openWindow
+					});
+					/*设置table高度*/
+					$('#commonSearchTableBody_MzPack').css('height', document.body.clientHeight / 3);
+					$.ajax({
+						url: getRootPath()+'/BaseDataAction.do?operType=selectWlList',
+						type: 'get',cache:false, 
+						data: "leibie="+leibie,
+						success: function (data) {
+					    	var obj = eval("("+data+")");
+							for(var i=0;i<obj.length;i++){
+				                $('#searchTable_MzPack').append('<tr class="commonTr" style="cursor: pointer;"></tr>');
+				               	var lastTr = $('#searchTable_MzPack tbody tr:last');
+			                    lastTr.append('<td class="leibie_id" style="width: 50%;">' + obj[i].wuliao_code + '</td>');
+			                    lastTr.append('<td class="leixing_id" style="width: 50%;">' + obj[i].leixing_id + '</td>');
+							}
+							/*绑定双击事件*/
+			            	$('.commonTr').bind('dblclick', function (e) {
+								var tr = $(e.target).parent();
+								clean.click();
+			            		setLeiBie.val(tr.find('.leibie_id').text());
+			            		setLeiXing.val(tr.find('.leixing_id').text());
+			            		layer.close(win);
+			            		return fun();
+			            	});
+						}
+					});
+			        return null;
 				},
 				//物料上货区域回车事件
 				clickCcqy:function(e){
@@ -1979,7 +2096,7 @@ var readyShow = {
 						if(winHeight == window.screen.height){
 							winHeight = document.body.clientHeight - 50;
 						}
-						$('#xy').css('height', (winHeight - (window.screen.height - winHeight))/1.05);
+						$('#xy').css('height', (winHeight - (window.screen.height - winHeight))/0.98);
 						if(this.wuliaoLoad()&&this.mozuLoad()&&this.packLoad()){
 							return null;
 						};

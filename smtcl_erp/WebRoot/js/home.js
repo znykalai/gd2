@@ -277,4 +277,9 @@ $(document).ready(function(){
 		    }
 		});
 	});
+	$(document).keydown(function (event) {
+        if (event.keyCode == 122) {
+        	window.location.reload();
+        }
+    });
 });

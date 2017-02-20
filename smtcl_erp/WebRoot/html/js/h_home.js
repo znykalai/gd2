@@ -12,7 +12,7 @@ var readyShow = {
 					if(winHeight == window.screen.height){
 						winHeight = document.body.clientHeight - 50;
 					}
-					$('#xy').css('height', (winHeight - (window.screen.height - winHeight))/1.05);
+					$('#xy').css('height', (winHeight - (window.screen.height - winHeight))/0.98);
 					$('.table-body').css('height', document.body.clientHeight /5.88);
 					
 					//刷新货位状态
@@ -177,11 +177,11 @@ var readyShow = {
 								af.upload(0,Number(obj.gdWcl));
 							}
 							/**
-							 * 搬运机构指定队列
+							 * 缓存库指定队列
 							 */
-							if(obj.byjgzddl.length > 0){
-								af.table.loadByjgzdd(obj.byjgzddl);
-							}
+//							if(obj.byjgzddl.length > 0){
+//								af.table.loadHckzdd(obj.byjgzddl);
+//							}
 						}
 					});
 					return true;
@@ -306,11 +306,11 @@ var readyShow = {
 				 * 渲染表格
 				 */
 				table:{
-					//搬运机构指定队列
-					loadByjgzdd:function(e){
-						$("#by_table tbody tr").remove();
+					//缓存库指定队列
+					loadHckzdd:function(e){
+						$("#hc_table tbody tr").remove();
 						for(var i=0;i<e.length;i++){
-							$('#by_table tbody').append('<tr bgcolor="#ffffff" style="height: 28px;">' +
+							$('#hc_table tbody').append('<tr bgcolor="#ffffff" style="height: 28px;">' +
 								//事件ID
 								'<td style="width: 35px;">'+e[i].idEvent +'</td>' +
 								//动作

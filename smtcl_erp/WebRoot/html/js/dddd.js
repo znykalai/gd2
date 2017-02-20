@@ -22,14 +22,20 @@ var readyShow = {
 					    minView: 'month'
 					});
 					//清空当前选择行的记录，防止报错
+					$('#getGdId').on('change',function(){
+						arrayGd=[],arrayMz=[];
+					});
 					$('#getGdfenjieriqi').on('change',function(){
+						arrayGd=[],arrayMz=[];
+					});
+					$('#getPackeCode').on('change',function(){
 						arrayGd=[],arrayMz=[];
 					});
 					var winHeight = document.body.clientHeight;
 					if(winHeight == window.screen.height){
 						winHeight = document.body.clientHeight - 50;
 					}
-					$('#xy').css('height', (winHeight - (window.screen.height - winHeight))/1.05);
+					$('#xy').css('height', (winHeight - (window.screen.height - winHeight))/0.98);
 					var dd_id,mz_xuhao,arrayGd=[],arrayMz=[];
 					$('.table-body').css('height', document.body.clientHeight /5.88);
 					//工单模组-配方显示
@@ -44,7 +50,9 @@ var readyShow = {
 								for(var i=0;i < obj.length;i++){
 									$('#pf_table tbody').append('<tr id="mz_row'+i+'" bgcolor="#ffffff" style="height: 28px;">' +
 										//工单序号
-										'<td style="width: 5%;padding:2px;">'+obj[i].dd_gdxuhao +'</td>' +
+										'<td style="width: 8%;padding:2px;">'+obj[i].dd_gdxuhao +'</td>' +
+										//模组号
+										'<td style="width: 8%;padding:2px;">'+obj[i].dd_fenjiehao +'</td>' +
 										//载具号
 										'<td style="width: 8%;padding:2px;">'+obj[i].dd_zaijuxuhao +'</td>' +
 										//物料编码
@@ -61,8 +69,10 @@ var readyShow = {
 										'<td style="width: 8%;padding:2px;">'+obj[i].dd_dianxin2+'</td>' +
 										//电芯3
 										'<td style="width: 8%;padding:2px;">'+obj[i].dd_dianxin3+'</td>' +
-										//电芯3
+										//电芯4
 										'<td style="width: 8%;padding:2px;">'+obj[i].dd_dianxin4+'</td>' +
+										//工位
+										'<td style="width: 8%;padding:2px;">'+obj[i].dd_gongwei+'</td>' +
 									'</tr>');
 								}
 							}
