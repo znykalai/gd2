@@ -14,7 +14,22 @@ public class ReST implements  Serializable{
 	public boolean 载具放行;
 	public boolean 人工组装线模式;
 	public Resint boolCont;
+	public String startAddres="D0";
+	public String getstartAddres() {
+		return startAddres;
+	}
+	public void setstartAddres(String startAddres) {
+		//this.startAddres = startAddres;
+	}
+	private  int machineID=1;
+	public int getmachineID() {
+		return machineID;
+	}
+	public void setmachineID(int machineID) {
+		this.machineID = machineID;
+	}
 	public ReST(Resint boolCont){
+		
 		this.boolCont=boolCont;
 		int con=boolCont.getResInt();
 		 载具到位=((con&0b01)==1);
@@ -61,5 +76,7 @@ public class ReST implements  Serializable{
 	public void setBoolCont(Resint boolCont) {
 		this.boolCont = boolCont;
 	}
-
+	public String writeToPLC() {
+		return PLC.getIntance().writeBlockToBLC(startAddres, 1, new int[]{boolCont.resInt},machineID);
+	}
 }

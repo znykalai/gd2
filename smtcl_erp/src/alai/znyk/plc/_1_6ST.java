@@ -169,5 +169,7 @@ public class _1_6ST extends ST_Father implements STInterface {
 	}
 	
    public void println(){System.out.println(Integer.toBinaryString(boolContent));}
+   
+   
 
 }

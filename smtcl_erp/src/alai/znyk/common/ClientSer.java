@@ -24,6 +24,7 @@ public class ClientSer {
 	
 	public GDLocator gd =new GDLocator();
 	private static ClientSer INSTANCE;
+	private boolean isOpenPlc=false;
 	private ClientSer(){
 	//	 ((BindingProvider)gd).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,"serviceUrl");
 		try{//启动时先预热一下，避免首例处罚。
@@ -59,7 +60,9 @@ public class ClientSer {
 	public static String rffid1="0";
 	public static String rffid2="0";
 	public String getState(int t) throws RemoteException, ServiceException{
-		//return gd.getGD().getState(t);
+		
+		if(isOpenPlc)return gd.getGD().getState(t);
+		
 		if(t==SqlPro.A区输送线){
 			String s="501=1|502=0|503=1|504=0|505=1|506=0|507=1|508=0|"+
 					"509=1|510=0|511=1|512=0|513=1|514=0";
@@ -110,13 +113,13 @@ public class ClientSer {
 		
 		}
 		
-		if(t==SqlPro.来料升){return rffid1;}
-		if(t==SqlPro.去料升){return rffid2;}
+		if(t==SqlPro.来料升){return rffid1;}//返回升降机是否有信号
+		if(t==SqlPro.去料升){return rffid2;}//返回升降机是否有信号
 		return "1";
 	}
 	  public static String TP="1";
 	public String ReadFromRffid(String message,int id) throws RemoteException, ServiceException{
-		//return gd.getGD().readFromRffid(message, id);
+		if(isOpenPlc) return gd.getGD().readFromRffid(message, id);
 		return TP;
 		
 	}
@@ -161,10 +164,67 @@ public class ClientSer {
 
 	public alai.GDT.Resint[] getSirIntValuesFromCTR(String startAddress,int nums,int valueLen,
           int machineID){
-		
+		try{
+			if(isOpenPlc)
+				RST1=gd.getGD().getSirIntValuesFromCTR(startAddress, nums, valueLen, machineID);
+			return RST1;
+			
+		}catch(Exception ex){}
 		return RST1;
 	
 	}
+	 public int writeSirIntToCTR(String strAddress, int valuseLeng, int[] invalues, int machineID) 
+	 { if(isOpenPlc){
+		 try{   alai.GDT.Inint tem []=new alai.GDT.Inint[invalues.length];
+		         for(int i=0;i<tem.length;i++){tem[i]=new alai.GDT.Inint(invalues[i]);}
+			 
+				return gd.getGD().writeSirIntToCTR(strAddress, valuseLeng, tem, machineID);
+				
+			}catch(Exception ex){}
+		 }
+		 
+		 return 1;
+	 }
+	 
+	 public int writeValueToCTR(int type1, java.lang.String address, int value){
+		 try{
+				return gd.getGD().writeValueToCTR(type1, address, value);
+				
+			}catch(Exception ex){}
+		 
+		 return -1; 
+		 
+	 }
+	 public int writeValuesToCTR(int type1, alai.GDT.Instr[] inaddress, alai.GDT.Inint[] inValues, int machineID)
+	 {
+		 try{
+				return gd.getGD().writeValuesToCTR(type1, inaddress, inValues,machineID);
+				
+			}catch(Exception ex){}
+		 
+		 return -1;  
+		 
+	 }
+	 
+	 public int getValueFromCTR(int type1, java.lang.String address, int machineID) {
+		 try{
+				return gd.getGD().getValueFromCTR(type1, address, machineID);
+				
+			}catch(Exception ex){}
+		 
+		 return -1; 
+	 }
 
-
+	    /**
+	     * Service definition of function ns__getValuesFromCTR
+	     */
+	    public alai.GDT.Resint[] getValuesFromCTR(int type1, alai.GDT.Instr[] inaddress, int machineID) {
+	    	 try{
+					return gd.getGD().getValuesFromCTR(type1, inaddress, machineID);
+					
+				}catch(Exception ex){}
+			 
+			 return null; 
+	    	
+	    }
 }

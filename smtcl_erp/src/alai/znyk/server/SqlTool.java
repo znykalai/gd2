@@ -655,6 +655,13 @@ try{
         		   }
       
           }
+       
+       if(state==SqlPro.执行中){
+    	   //还没做
+    	   st.executeUpdate("update 立库动作指令  set 状态='执行中',发送时间="+SqlPro.getDate()[1]+" where idEvent="+"'"+idEvent+"'");
+    	   
+    	   
+          }
        }
 
       con.commit();
