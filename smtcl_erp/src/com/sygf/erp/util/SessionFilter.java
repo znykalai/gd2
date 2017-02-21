@@ -32,9 +32,9 @@ public class SessionFilter implements Filter {
 	        }else{
 		        //判断session是否过期
 		        if (session.getAttribute("username") == null) {
-		            request.setAttribute("msg", "您还没有登录，或者session已过期。请先登陆!");
+		            request.setAttribute("msg", "您还没有登录，请先登陆。");
 		            //跳转至登录页面
-		            response.sendRedirect(contextPath + "/httpLogin.jsp");
+		            request.getRequestDispatcher(contextPath + "/httpLogin.jsp").forward(request,response);
 		        } else {
 		            arg2.doFilter(request, response);
 		        }

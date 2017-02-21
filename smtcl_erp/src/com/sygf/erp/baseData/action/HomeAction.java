@@ -126,7 +126,6 @@ public class HomeAction extends Action{
 			result.put("hckBottom", bottomArratList);
 			result.put("gdWcl",gdWcl);
 			result.put("hwSyl",hwSyl);
-//			System.out.println("result="+result);
 			response.setContentType("text/html;charset=utf-8");
 			response.getWriter().print(result);
 			response.getWriter().close();

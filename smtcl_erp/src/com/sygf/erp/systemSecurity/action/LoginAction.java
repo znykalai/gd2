@@ -49,7 +49,7 @@ public class LoginAction extends Action{
             	session.setAttribute("juese", ((HashMap)list.get(0)).get("角色"));
                 return mapping.findForward("index"); 
             }else{
-				request.setAttribute("msg", "请确认您输入的帐号和口令是否正确？ ");
+				request.setAttribute("msg", "用户名或密码不正确，请重新输入。");
 				return mapping.findForward("failureHttp");
             }
 		} catch (Exception e) {

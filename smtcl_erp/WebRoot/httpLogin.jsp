@@ -15,7 +15,7 @@ function checkMsg(){
 }
 var msg = "<%=msg%>";
 if(msg!=""&&msg!='null'){
-	layer.msg(msg);
+	layer.alert(msg);
 }
 function onSubmit(){
 	if($("#UserName").val()==""){
