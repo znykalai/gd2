@@ -47,4 +47,17 @@ public class HomeActionDAO extends SqlMapClientDaoSupport {
 		}
 		return null;
 	}
+	/**
+	 * 货位使用率
+	 * @return
+	 */
+	public List getHWshiYongLv() {
+		try{
+			return getSqlMapClientTemplate().queryForList("HomeActionDAO.getHWshiYongLv",null);
+		}catch (Exception e) {
+			Log.error("HomeActionDAO.getHWshiYongLv方法出现异常！" + e.getMessage());
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

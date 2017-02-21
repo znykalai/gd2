@@ -50,6 +50,9 @@
 		</property>
     </bean>
     <!--此次id首字母不能为大写  配置DAO-->
+    <bean id="loginDAO" class="com.sygf.erp.systemSecurity.dao.LoginDAO">
+        <property name="sqlMapClient" ref="sqlMapClient" /> 
+    </bean>
     <bean id="materialSchedulingDAO" class="com.sygf.erp.util.MaterialSchedulingDAO">
         <property name="sqlMapClient" ref="sqlMapClient" /> 
     </bean>

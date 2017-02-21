@@ -5,11 +5,23 @@
 		<!-- 参数名 -->
 		<param-name>company</param-name>
 		<!-- 参数值 -->
-		<param-value>沈阳机床上海分院立体库管理系统</param-value>
+		<param-value>沈阳机床云科智能制造缓存库管理系统</param-value>
 	</context-param>
+	<filter>
+        <filter-name>SessionFilter</filter-name>
+        <filter-class>com.sygf.erp.util.SessionFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>SessionFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 	<session-config>
-		<session-timeout>-1</session-timeout>
+		<session-timeout>1</session-timeout>
 	</session-config>
+	<error-page>  
+    	<error-code>404</error-code>  
+    	<location>/httpLogin.jsp</location>  
+  	</error-page>
 	<servlet>
 		<servlet-name>action</servlet-name>
 		<servlet-class>org.apache.struts.action.ActionServlet</servlet-class>
@@ -31,31 +43,23 @@
 	    <servlet-name>action</servlet-name>
 		<url-pattern>*.do</url-pattern>
 	</servlet-mapping>
-   
 	<welcome-file-list>
 		<welcome-file>/httpLogin.jsp</welcome-file>
 	</welcome-file-list>  
-	
 	<listener>
     	<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   	</listener>
-  	
     <servlet>
 		<servlet-name>CXFServlet</servlet-name>
 		<servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
-	
-	<load-on-startup>0</load-on-startup>
+		<load-on-startup>0</load-on-startup>
 	</servlet>
-	
 	<servlet-mapping>
 	    <servlet-name>CXFServlet</servlet-name>
 		<url-pattern>/ServiceServer/*</url-pattern>
 	</servlet-mapping>
-	
   	<context-param>
- 
-  	<param-name>contextConfigLocation</param-name>
+  		<param-name>contextConfigLocation</param-name>
 		<param-value>/WEB-INF/applicationContext.xml,/WEB-INF/alai.xml</param-value>
   	</context-param>
-  	
 </web-app>

@@ -1,32 +1,34 @@
 <%@ page language="java" contentType="text/html;charset=utf-8"%> 
 <%
-String path = request.getContextPath();
-String msg = (String)request.getAttribute("msg");
-String KickMsg = request.getParameter("KickMsg");
-if(KickMsg != null){
-	KickMsg = new String(KickMsg.getBytes("iso-8859-1"),"utf-8");
-}
+	String path = request.getContextPath();
+	String msg = (String)request.getAttribute("msg");
 %>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
 <title>缓存库系统</title>
+<script src="<%=path%>/js/jquery.min.js"></script>
+<script src="<%=path%>/js/layer/layer.js"></script>
 <script language="JavaScript">
 function checkMsg(){
 	document.getElementById("UserName").focus();
 }
+var msg = "<%=msg%>";
+if(msg!=""&&msg!='null'){
+	layer.msg(msg);
+}
 function onSubmit(){
-	if((document.getElementById("UserName").value=="")||(document.getElementById("Password").value=="")){
-		alert("用户名和密码不能为空！");
+	if($("#UserName").val()==""){
+	 	$("#UserName").focus();
+		layer.tips('请填写用户名！', '#UserName');
+		return false;
+	}else if($("#Password").val()==""){
+	 	$("#Password").focus();
+		layer.tips('请填写密码！', '#Password');
 		return false;
 	}
 }
 </script>
-<style>
-	.x-myCls-textfield{
-		background:#FFFFCC;
-	}
-</style>
 </head>
 <body class="login" onload="checkMsg();" background="<%=path%>/images/bg_01.gif">
 <form name="login" id="login" method="post" action="<%=path%>/LoginAction.do?operationType=login" onsubmit="return onSubmit();">
@@ -41,13 +43,13 @@ function onSubmit(){
 				<tr align="center" valign="middle">
 				  <td class="hstd5" nowrap style="font-family:微软雅黑;">用户名：</td>
 				  <td align="left" nowrap >
-					<input type="text" id="UserName" name="UserName" value="zj221" size="20" maxlength="32" class="x-myCls-textfield"/>
+					<input type="text" id="UserName" name="UserName" value="zj221" size="20" maxlength="32" />
 				  </td>
 				</tr>
 				<tr align="center" valign="middle">
 				  <td class="hstd5" nowrap style="font-family:微软雅黑;">密&nbsp;&nbsp;&nbsp;码：</td>
 				  <td align="left" nowrap >
-					<input type="password" id="Password" name="Password" value="1" size="20" maxlength="32" class="x-myCls-textfield" onfocus="this.select();";/>
+					<input type="password" id="Password" name="Password" value="1" size="20" maxlength="32"  onfocus="this.select();";/>
 				  </td>
 				</tr>
 				<tr align="center" valign="middle">
