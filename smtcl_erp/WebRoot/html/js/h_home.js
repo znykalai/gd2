@@ -173,15 +173,9 @@ var readyShow = {
 							/**
 							 * 货物使用率,订单完成率；必须是int类型
 							 */
-							if(Number(obj.gdWcl) > 0){
-								af.upload(0,Number(obj.gdWcl));
-							}
-							/**
-							 * 缓存库指定队列
-							 */
-//							if(obj.byjgzddl.length > 0){
-//								af.table.loadHckzdd(obj.byjgzddl);
-//							}
+							var hwSyl = Number(obj.hwSyl)>0?Number(obj.hwSyl):0;
+							var gdWcl = Number(obj.gdWcl)>0?Number(obj.gdWcl):0;
+							af.upload(hwSyl,gdWcl);
 						}
 					});
 					return true;
@@ -247,12 +241,8 @@ var readyShow = {
 					   name: 'Speed',
 					   data: [0],
 					   dataLabels: {
-					      format: '<div style="text-align:center;"><span style="font-size:25px;color:' +
-					      ((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '">{y:.1f}</span><br/>' +
-					      '<span style="font-size:13px;color:silver">货位使用率%</span></div>'
-					   },
-					   tooltip: {
-					      valueSuffix: ' 货位使用率%'
+					      format: '<div style="text-align:center;"><span style="font-size:15px;color:red;">{y:.0f}%</span><br/>' +
+					      '<span style="font-size:10px;color:silver;">货位使用率</span></div>'
 					   }
 					}];
 					var json = {};
@@ -269,12 +259,8 @@ var readyShow = {
 					   name: 'RPM',
 					   data: [0],
 					   dataLabels: {
-					      format: '<div style="text-align:center;"><span style="font-size:25px;color:' +
-					      ((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '">{y:.1f}</span><br/>' +
-					      '<span style="font-size:13px;color:silver">订单完成率%</span></div>'
-					   },
-					   tooltip: {
-					      valueSuffix: ' 订单完成率%'
+					      format: '<div style="text-align:center;"><span style="font-size:15px;color:red;">{y:.1f}%</span><br/>' +
+					      '<span style="font-size:10px;color:silver;">订单完成率</span></div>'
 					   }
 					}];
 					json.yAxis = yAxis; 
@@ -301,31 +287,6 @@ var readyShow = {
 				         point = chart.series[0].points[0];
 				         point.update(newVal2);
 				      }
-				},
-				/**
-				 * 渲染表格
-				 */
-				table:{
-					//缓存库指定队列
-					loadHckzdd:function(e){
-						$("#hc_table tbody tr").remove();
-						for(var i=0;i<e.length;i++){
-							$('#hc_table tbody').append('<tr bgcolor="#ffffff" style="height: 28px;">' +
-								//事件ID
-								'<td style="width: 35px;">'+e[i].idEvent +'</td>' +
-								//动作
-								'<td style="width: 50px;">'+e[i].dongzuo +'</td>' +
-								//托盘编码
-								'<td style="width: 50px;">'+e[i].tp_code+'</td>' +
-								//状态
-								'<td style="width: 35px;">'+e[i].zhuangtai+'</td>' +
-								//开始时间
-								'<td style="width: 50px;">'+e[i].fasongshijian+'</td>' +
-								//完成时间
-								'<td style="width: 50px;">'+e[i].wanchengshijian+'</td>' +
-							'</tr>');
-						}
-					}
 				}
 			}
 			af.load(function(){

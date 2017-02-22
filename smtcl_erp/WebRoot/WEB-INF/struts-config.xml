@@ -15,6 +15,8 @@
 		<action path="/OrderOperAction" type="com.sygf.erp.baseData.action.OrderOperAction"></action>
 		<!-- home主页显示 -->
 		<action path="/HomeAction" type="com.sygf.erp.baseData.action.HomeAction"></action>
+		<!-- 库房-缓存库指定队列 -->
+		<action path="/KuFangAction" type="com.sygf.erp.baseData.action.KuFangAction"></action>
 	</action-mappings>
 	<message-resources parameter="com.sygf.erp.ApplicationResources" />
 </struts-config>

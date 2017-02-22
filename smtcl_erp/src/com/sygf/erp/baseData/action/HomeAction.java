@@ -119,30 +119,13 @@ public class HomeAction extends Action{
 			list = dao.getGdWanChengLv();
 			String gdWcl = list!=null&&list.size()>0?((HashMap)list.get(0)).get("工单完成率").toString():"0";
 			//货位使用率
-			
-			//立体库动作指令
-			list = dao.getActionCommand();
-			ArrayList actionCommandList = new ArrayList();
-			if(list!=null&&list.size()>0){
-				int i=0;
-				while(i<list.size()){
-					HashMap map = new HashMap();
-					map.put("idEvent", ((HashMap)list.get(i)).get("idEvent"));
-					map.put("dongzuo", ((HashMap)list.get(i)).get("动作"));
-					map.put("tp_code", ((HashMap)list.get(i)).get("托盘编号"));
-					map.put("zhuangtai", ((HashMap)list.get(i)).get("状态"));
-					map.put("fasongshijian", ((HashMap)list.get(i)).get("发送时间"));
-					map.put("wanchengshijian", ((HashMap)list.get(i)).get("完成时间"));
-					actionCommandList.add(map);
-					i++;
-				}
-			}
+			list = dao.getHWshiYongLv();
+			String hwSyl = list!=null&&list.size()>0?((HashMap)list.get(0)).get("货位使用率").toString():"0";
 			result.put("hckTop", topArratList);
 			result.put("hckTb", resultList);
 			result.put("hckBottom", bottomArratList);
 			result.put("gdWcl",gdWcl);
-			result.put("byjgzddl", actionCommandList);
-			System.out.println("result="+result);
+			result.put("hwSyl",hwSyl);
 			response.setContentType("text/html;charset=utf-8");
 			response.getWriter().print(result);
 			response.getWriter().close();

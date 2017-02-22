@@ -7,9 +7,6 @@ import java.util.ResourceBundle;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
-import com.sygf.erp.ParamResources;
-import com.sygf.erp.util.SysMaint;
-
 public class Log {
 	
 	private static String logfile = "log4j"; // 配置文件的目
@@ -64,7 +61,6 @@ public class Log {
 	public static void info(Object msg) {
 		logger = getInstance();
 		logger.info(msg);
-		logToDB(msg, ParamResources.LOG_INFO);
 	}
 	
 	/**
@@ -74,28 +70,5 @@ public class Log {
 	 */
 	public static void error(Object msg) {
 		logger.error(msg);
-		logToDB(msg, ParamResources.LOG_ERROR);
 	}
-	
-	/**
-	 * 记录数据库日
-	 * 
-	 * @param msg
-	 */
-	public static void logToDB(Object msg, String log_level) {
-		if (SysMaint.getProperty("LOG_DB").equals("true")
-				&& msg.getClass().getName().equals("java.lang.String")) { // 是否记录数据库日
-			String logMsg = (String) msg;
-			if (logMsg.split(SEP).length == 6) { // 如果信息满足条件，记录数据库日志
-				String[] messages = logMsg.split(SEP);
-				String user_name = messages[0];
-				String ip = messages[1];
-				String url = messages[2];
-				String content = messages[3];
-				String oper_module = messages[4];
-				String oper_type = messages[5];
-			}
-		}
-	}
-
 }

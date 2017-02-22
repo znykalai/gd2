@@ -11,14 +11,14 @@
 				.shusongxian{
 					margin-left:3px;
 					width:50px;
-					line-height:26px;
+					line-height:30.5px;
 					font-size:15px;
 					border:1px solid rgb( 234 , 234 , 234 );
 				}
 				.huancunku{
 					margin-left:3px;
 					width:50px;
-					line-height:54px;
+					line-height:61.5px;
 					font-size:15px;
 					border:1px solid rgb( 234 , 234 , 234 );
 				}
@@ -66,7 +66,7 @@
 				}
 			</style>
 			<form id="home_form" class="row">
-				<div class="col-md-7">
+				<div class="col-md-6">
 					<div class="row" style="margin-top:0px;width:1200px;float:left;">
 						<div class="head_hui no" id="TOP-0ST" name="HEAD_TOP-ST">前升降机</div>
 						<div class="hui no" id="TOP-1ST" name="TOP-ST">1ST</div>
@@ -83,11 +83,11 @@
 						<div class="hui no" id="TOP-12ST" name="TOP-ST">12ST</div>
 						<div class="hui no" id="TOP-13ST" name="TOP-ST">13ST</div>
 						<div class="head_hui no" id="TOP-14ST" name="HEAD_TOP-ST">后升降机</div>
-						<div>
-							<input type="button" value="启动调度"/>
-							<input type="button" value="复位"/>
-							<input type="button" value="归零启动"/>
-							<input type="button" value="断点启动"/>
+						<div style="margin-left:5px;float:left;">
+							<input type="button" style="height:45px;width:85px;" value="启动调度"/>
+							<input type="button" style="height:45px;width:85px;" value="复位"/>
+							<input type="button" style="height:45px;width:85px;" value="归零启动"/>
+							<input type="button" style="height:45px;width:85px;" value="断点启动"/>
 						</div>
 					</div>
 					<div class="row" style="margin-top:10px;width:850px;float:left;">
@@ -182,67 +182,49 @@
 						</div>
 					</div>
 					<div class="row" style="margin-top:10px;width:1200px;float:left;z-index:100;">
-							<div class="head_hui no" id="BOTTOM-0ST" name="HEAD_BOTTOM-ST">前升降机</div>
-							<div class="hui no" id="BOTTOM-1ST" name="BOTTOM-ST">1ST</div>
-							<div class="hui no" id="BOTTOM-2ST" name="BOTTOM-ST">2ST</div>
-							<div class="hui no" id="BOTTOM-3ST" name="BOTTOM-ST">3ST</div>
-							<div class="hui no" id="BOTTOM-4ST" name="BOTTOM-ST">4ST</div>
-							<div class="hui no" id="BOTTOM-5ST" name="BOTTOM-ST">5ST</div>
-							<div class="hui no" id="BOTTOM-6ST" name="BOTTOM-ST">6ST</div>
-							<div class="hui no" id="BOTTOM-7ST" name="BOTTOM-ST">7ST</div>
-							<div class="hui no" id="BOTTOM-8ST" name="BOTTOM-ST">8ST</div>
-							<div class="hui no" id="BOTTOM-9ST" name="BOTTOM-ST">9ST</div>
-							<div class="hui no" id="BOTTOM-10ST" name="BOTTOM-ST">10ST</div>
-							<div class="hui no" id="BOTTOM-11ST" name="BOTTOM-ST">11ST</div>
-							<div class="hui no" id="BOTTOM-12ST" name="BOTTOM-ST">12ST</div>
-							<div class="hui no" id="BOTTOM-13ST" name="BOTTOM-ST">13ST</div>
-							<div class="head_hui no" id="BOTTOM-14ST" name="HEAD_BOTTOM-ST">后升降机</div>
-							<div>
-								<input type="button" value="启动调度"/>
-								<input type="button" value="复位"/>
-								<input type="button" value="归零启动"/>
-								<input type="button" value="断点启动"/>
-							</div>
-					</div>
-				</div>
-				<div class="col-md-5" style="margin-top:10%;">
-					<input type="button" id="showGDFrame" value="显示GDFrame"/>
-					<input type="button" id="getHck" value="更新状态"/>
-					<div class="row">
-						<div class="col-md-6" style="padding-right:17px;">
-							<div id="container-speed" style="width:250px;height:155px;"></div>
-						</div>
-						<div class="col-md-6" style="padding-right:17px;">
-							<div id="container-rpm" style="width:250px;height:155px;"></div>
+						<div class="head_hui no" id="BOTTOM-0ST" name="HEAD_BOTTOM-ST">前升降机</div>
+						<div class="hui no" id="BOTTOM-1ST" name="BOTTOM-ST">1ST</div>
+						<div class="hui no" id="BOTTOM-2ST" name="BOTTOM-ST">2ST</div>
+						<div class="hui no" id="BOTTOM-3ST" name="BOTTOM-ST">3ST</div>
+						<div class="hui no" id="BOTTOM-4ST" name="BOTTOM-ST">4ST</div>
+						<div class="hui no" id="BOTTOM-5ST" name="BOTTOM-ST">5ST</div>
+						<div class="hui no" id="BOTTOM-6ST" name="BOTTOM-ST">6ST</div>
+						<div class="hui no" id="BOTTOM-7ST" name="BOTTOM-ST">7ST</div>
+						<div class="hui no" id="BOTTOM-8ST" name="BOTTOM-ST">8ST</div>
+						<div class="hui no" id="BOTTOM-9ST" name="BOTTOM-ST">9ST</div>
+						<div class="hui no" id="BOTTOM-10ST" name="BOTTOM-ST">10ST</div>
+						<div class="hui no" id="BOTTOM-11ST" name="BOTTOM-ST">11ST</div>
+						<div class="hui no" id="BOTTOM-12ST" name="BOTTOM-ST">12ST</div>
+						<div class="hui no" id="BOTTOM-13ST" name="BOTTOM-ST">13ST</div>
+						<div class="head_hui no" id="BOTTOM-14ST" name="HEAD_BOTTOM-ST">后升降机</div>
+						<div style="margin-left:5px;float:left;">
+							<input type="button" style="height:45px;width:85px;" value="启动调度"/>
+							<input type="button" style="height:45px;width:85px;" value="复位"/>
+							<input type="button" style="height:45px;width:85px;" value="归零启动"/>
+							<input type="button" style="height:45px;width:85px;" value="断点启动"/>
 						</div>
 					</div>
 				</div>
-				<!-- <div class="row" style="margin-top:15px;;margin-left:4px;">
-					缓存库指定队列
-					<div style="padding-right:17px;">
-						<table class="table table-bordered" style="width:95%;">
-				           <thead>
-				               <tr>
-				                  <th class="text-center" style="width: 35px;" bgcolor="#EFEFEF">事件ID</th>
-				                  <th class="text-center" style="width: 50px;" bgcolor="#EFEFEF">动作</th>
-				                  <th class="text-center" style="width: 50px;" bgcolor="#EFEFEF">托盘编码</th>
-				                  <th class="text-center" style="width: 35px;" bgcolor="#EFEFEF">状态</th>
-				                  <th class="text-center" style="width: 50px;" bgcolor="#EFEFEF">开始时间</th>
-				                  <th class="text-center" style="width: 50px;" bgcolor="#EFEFEF">结束时间</th>
-				               </tr>
-				           </thead>
-						</table>
+				<div class="col-md-6" style="margin-top:12%;">
+					<div class="col-md-6" style="padding-right:-10px;">
+						<div id="container-speed" style="width:250px;height:155px;"></div>
 					</div>
-			        <div class="table-body" style="width:95%;">
-			           <table class="table table-bordered text-center table-hover" id="hc_table">
-			               <tbody></tbody>
-			           </table>
-			        </div>
-				</div> -->
+					<div class="col-md-6" style="padding-right:-20px;">
+						<div id="container-rpm" style="width:250px;height:155px;"></div>
+					</div>
+				</div>
 			</form>
 		</div>
 	</div>
 	<div class="col-md-3" style="width:400px;"></div>
+	<div class="col-md-2">
+		<a class="button button-3d button-primary button-rounded"
+			style="position:absolute;top:12px;font-family:'微软雅黑';" id="showGDFrame">显示GDFrame</a>
+	</div>
+	<div class="col-md-2">
+		<a class="button button-3d button-primary button-rounded"
+			style="position:absolute;top:12px;font-family:'微软雅黑';" id="getHck">更新状态</a>
+	</div>
 	<script type="text/javascript" src="/smtcl_erp/html/js/h_home.js"></script>
 </body>
 </html>

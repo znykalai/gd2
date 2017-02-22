@@ -24,24 +24,18 @@
 <title>缓存库系统</title>
 <link rel="stylesheet" type="text/css" href="<%=path%>/bootstrap/css/bootstrap.min.css"/>
 <link rel="stylesheet" type="text/css" href="<%=path%>/bootstrap/css/bootstrap-theme.min.css"/>
-<link rel="stylesheet" type="text/css" href="<%=path%>/css/button.css"/>
 <link rel="stylesheet" type="text/css" href="<%=path%>/css/bootstrap-datetimepicker.min.css"/>
+<link rel="stylesheet" type="text/css" href="<%=path%>/css/button.css"/>
 <link rel="stylesheet" type="text/css" href="<%=path%>/css/general.css"/>
 <script src="<%=path%>/js/jquery.min.js"></script>
+<script src="<%=path%>/js/highcharts.js"></script>
+<script src="<%=path%>/js/highcharts-more.js"></script>
+<script src="<%=path%>/js/solid-gauge.js"></script>
 <script src="<%=path%>/bootstrap/js/bootstrap.min.js"></script>
 <script src="<%=path%>/bootstrap/js/bootstrap-datetimepicker.min.js"></script>
 <script src="<%=path%>/js/layer/layer.js"></script>
-<script src="<%=path%>/js/highcharts.js"></script>
-<script src="<%=path%>/js/highcharts-more.js"></script>    
-<script src="<%=path%>/js/solid-gauge.js"></script>
 <script src="<%=path%>/js/home.js"></script>
 </head>
-<!-- 
-	oncopy="return false;"
-	onpaste="return false"
-	oncut="return false;"
- -->
-<!--  -->
 <body draggable="false" style="margin: 0px; padding: 0px; overflow: hidden;"
 	oncontextmenu="window.event.returnValue=false"
 	onselectstart="return false"
@@ -107,14 +101,14 @@
 					</div>
 					<div id="homeRight"
 						style="position: absolute; bottom: -51px; right: -108px; height: 350px; width: 480px; 
-								background-image: url(<%=path%>/images/sanjiaoxing385x300.png); background-repeat: no-repeat; z-index:99;">
+								background-image: url(<%=path%>/images/sanjiaoxing385x300.png); background-repeat: no-repeat; z-index:0;">
 						<div id="anniu1" title="订单调度"
 							style="width: 66px; height: 50px; cursor: pointer; position: relative; top: 245px; left: 59px; 
 								background-image: url(<%=path%>/images/wuliaodiaodu66x55_huise.png); background-repeat: no-repeat;"></div>
 						<div id="anniu2" title="查询信息"
 							style="width: 66px; height: 50px; cursor: pointer; position: relative; top: 153px; left: 118px; 
 								background-image: url(<%=path%>/images/xinxiguanli66x55_huise.png); background-repeat: no-repeat;"></div>
-						<div id="anniu3" title="订单管理"
+						<div id="anniu3" title="订单下载"
 							style="width: 66px; height: 50px; cursor: pointer; position: relative; top: 58px; left: 174px; 
 								background-image: url(<%=path%>/images/dingdanguanli66x55_huise.png); background-repeat: no-repeat;"></div>
 						<div id="anniu4" title="库房操作"
