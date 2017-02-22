@@ -8,34 +8,58 @@
 	<div class="row margin-top-10 account-company-auth" id="xy" style="overflow-y:scroll;background-color:white;height:94%;width:98%;margin-left:2%;">
 		<div id="kfcz_id" class="row">
 			<form id="kfcz_id" class="row">
-				<div class="row" style="margin-top:-40px;margin-left:4px;">
-					<div style="padding-right:17px;">
-						<table class="table table-bordered" style="width:95%;">
-				           <thead>
-				               <tr>
-				                  <th class="text-center" style="width: 35px;" bgcolor="#EFEFEF">事件ID</th>
-				                  <th class="text-center" style="width: 50px;" bgcolor="#EFEFEF">动作</th>
-				                  <th class="text-center" style="width: 50px;" bgcolor="#EFEFEF">托盘编码</th>
-				                  <th class="text-center" style="width: 35px;" bgcolor="#EFEFEF">状态</th>
-				                  <th class="text-center" style="width: 50px;" bgcolor="#EFEFEF">开始时间</th>
-				                  <th class="text-center" style="width: 50px;" bgcolor="#EFEFEF">结束时间</th>
-				               </tr>
-				           </thead>
-						</table>
+				<div class="col-md-6">
+				
+				</div>
+				<div class="col-md-6">
+					<div class="row" style="margin-top:-40px;margin-left:4px;">
+						<div style="padding-right:17px;">
+							<table class="table table-bordered" style="width:95%;">
+					           <thead>
+					               <tr>
+					                  <th class="text-center" style="width: 35px;" bgcolor="#EFEFEF">事件ID</th>
+					                  <th class="text-center" style="width: 50px;" bgcolor="#EFEFEF">动作</th>
+					                  <th class="text-center" style="width: 50px;" bgcolor="#EFEFEF">托盘编码</th>
+					                  <th class="text-center" style="width: 35px;" bgcolor="#EFEFEF">状态</th>
+					                  <th class="text-center" style="width: 50px;" bgcolor="#EFEFEF">开始时间</th>
+					                  <th class="text-center" style="width: 50px;" bgcolor="#EFEFEF">结束时间</th>
+					               </tr>
+					           </thead>
+							</table>
+						</div>
+				        <div class="table-body" style="width:95%;">
+				           <table class="table table-bordered text-center table-hover" id="hc_table">
+				               <tbody></tbody>
+				           </table>
+				        </div>
 					</div>
-			        <div class="table-body" style="width:95%;">
-			           <table class="table table-bordered text-center table-hover" id="hc_table">
-			               <tbody></tbody>
-			           </table>
-			        </div>
+					<div class="row" style="margin-top:2px;margin-left:4px;">
+						<div style="padding-right:17px;">
+							<table class="table table-bordered" style="width:95%;">
+					           <thead>
+					               <tr>
+					                  <th class="text-center" style="width: 35px;" bgcolor="#EFEFEF">托盘</th>
+					                  <th class="text-center" style="width: 50px;" bgcolor="#EFEFEF">物料</th>
+					                  <th class="text-center" style="width: 50px;" bgcolor="#EFEFEF">数量</th>
+					                  <th class="text-center" style="width: 35px;" bgcolor="#EFEFEF">货位号</th>
+					                  <th class="text-center" style="width: 50px;" bgcolor="#EFEFEF">方向</th>
+					               </tr>
+					           </thead>
+							</table>
+						</div>
+				        <div class="table-body" style="width:95%;">
+				           <table class="table table-bordered text-center table-hover" id="kc_table">
+				               <tbody></tbody>
+				           </table>
+				        </div>
+					</div>
 				</div>
 			</form>
 		</div>
 	</div>
 	<div class="col-md-3" style="width:400px;"></div>
 	<div class="col-md-2">
-		<a class="button button-3d button-primary button-rounded"
-			style="position:absolute;top:12px;font-family:'微软雅黑';">缓存库指定队列</a>
+		<a class="button button-glow button-rounded button-raised button-primary butRow">库房操作</a>
 	</div>
 	<script type="text/javascript" src="/smtcl_erp/html/js/kfcz.js"></script>
 </body>

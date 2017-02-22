@@ -8,7 +8,7 @@ var readyShow = {
 						winHeight = document.body.clientHeight - 50;
 					}
 					$('#xy').css('height', (winHeight - (window.screen.height - winHeight))/0.98);
-					$('.table-body').css('height', document.body.clientHeight /1.6);
+					$('.table-body').css('height', document.body.clientHeight / 3.5);
 					af.table.load();
 					return null;
 				},
@@ -44,9 +44,9 @@ var readyShow = {
 								//状态
 								'<td style="width: 35px;">'+e[i].zhuangtai+'</td>' +
 								//开始时间
-								'<td style="width: 50px;">'+e[i].fasongshijian+'</td>' +
+								'<td style="width: 50px;white-space:nowrap;overflow:hidden;">'+e[i].fasongshijian+'</td>' +
 								//完成时间
-								'<td style="width: 50px;">'+e[i].wanchengshijian+'</td>' +
+								'<td style="width: 50px;white-space:nowrap;overflow:hidden;">'+e[i].wanchengshijian+'</td>' +
 							'</tr>');
 						}
 						return null;

@@ -41,6 +41,8 @@ function drop(event){
 	if(data == "xtsz_home"){
 		html = "系统设置";
 	}
+	var y = getY(event);
+	var x = getX(event)+5>document.body.clientWidth?getX(event)-100:getX(event);
 	var win = layer.open({
 		btn:[],
 		anim:3,
@@ -50,7 +52,7 @@ function drop(event){
 		resize:false,
 		area: ['500px', '500px'],
 		title:$('#'+data).attr('title'),
-		offset:[getY(event),getX(event)],
+		offset:[y,x],
 		content: '<div id="'+(data+win)+'">'+html+'</div>',
 		success: function(layero){
 			winId = null;
@@ -62,6 +64,7 @@ function drop(event){
 			return false; 
 		} 
 	});
+	return null;
 }
 function getRootPath(){
 	var strFullPath=window.document.location.href;
@@ -107,83 +110,67 @@ var af = {
 	},
 	load:function(){
 		//关机
-		$('#div_mo_img_close').mouseover(function(){this.src=""+getRootPath()+"/images/guanjianniu_mo.png";});
-		$('#div_mo_img_close').mouseout(function(){this.src=""+getRootPath()+"/images/guanjianniu.png";});
-		$('#div_mo_img_close').click(function(){});
-		//主页
-		$('#div_mo_img_strat').mouseover(function(){this.src=""+getRootPath()+"/images/fanhuianniu_mo.png";});
-		$('#div_mo_img_strat').mouseout(function(){this.src=""+getRootPath()+"/images/fanhuianniu.png";});
-		$('#div_mo_img_strat').click(function(){
-			af.click(getRootPath()+'/html/h_home.html');
+		$('#div_mo_img_close').mouseover(function(){
+			var url = getRootPath()+"/images/guanjianniu_mo.png";
+			$(this).attr("src",url);
+			return null;
 		});
-		$('#div_mo_img_strat').click();
+		$('#div_mo_img_close').mouseout(function(){
+			var url = getRootPath()+"/images/guanjianniu.png";
+			$(this).attr("src",url);
+			return null;
+		});
 		//用户设置
-		$('#yhsz').mouseover(function(){this.style.backgroundImage="url("+getRootPath()+"/images/yonghushezhi_huangse.png)";});
-		$('#yhsz').mouseout(function(){this.style.backgroundImage="url("+getRootPath()+"/images/yonghushezhi_huise.png)";});
 		$('#yhsz').mousedown(function(){
 			$('#yhsz_id_').show(0);
 			$('#yhsz').hide(0);
+			return null;
 		});
 		//系统设置
-		$('#xtsz').mouseover(function(){this.style.backgroundImage="url("+getRootPath()+"/images/xitongshezhi_huangse.png)";});
-		$('#xtsz').mouseout(function(){this.style.backgroundImage="url("+getRootPath()+"/images/xitongshezhi_huise.png)";});
 		$('#xtsz').mousedown(function(){
 			$('#xtsz_id_').show(0);
 			$('#xtsz').hide(0);
+			return null;
 		});
 		//按钮-主页
-		$('#anniuHome').mouseover(function(){this.style.backgroundImage="url("+getRootPath()+"/images/zhuyeanniu_huangse.png)";});
-		$('#anniuHome').mouseout(function(){this.style.backgroundImage="url("+getRootPath()+"/images/zhuyeanniu_huise.png)";});
-		$('#anniuHome').mousedown(function(){this.style.backgroundImage="url("+getRootPath()+"/images/zhuyeanniu_xiao.png)";});
-		$('#anniuHome').mouseup(function(){this.style.backgroundImage="url("+getRootPath()+"/images/zhuyeanniu_huangse.png)";});
 		$('#anniuHome').click(function(){
-			$("#homeRight").slideToggle(300);
+			$("#homeRight").slideToggle(300,function(){
+				return null;
+			});
+			return null;
 		});
-		//按钮-订单调度
-		$('#anniu1').mouseover(function(){this.style.backgroundImage="url("+getRootPath()+"/images/wuliaodiaodu66x55_huangse.png)";});
-		$('#anniu1').mouseout(function(){this.style.backgroundImage="url("+getRootPath()+"/images/wuliaodiaodu66x55_huise.png)";});
-		$('#anniu1').mousedown(function(){this.style.backgroundImage="url("+getRootPath()+"/images/wuliaodiaodu56x47_xiao.png)";});
-		$('#anniu1').mouseup(function(){this.style.backgroundImage="url("+getRootPath()+"/images/wuliaodiaodu66x55_huangse.png)";});
 		$('#anniu1').click(function(){
 			af.click(getRootPath()+'/html/dddd.html');
+			return null;
 		});
-		//按钮-信息查询
-		$('#anniu2').mouseover(function(){this.style.backgroundImage="url("+getRootPath()+"/images/xinxiguanli66x55_huangse.png)";});
-		$('#anniu2').mouseout(function(){this.style.backgroundImage="url("+getRootPath()+"/images/xinxiguanli66x55_huise.png)";});
-		$('#anniu2').mousedown(function(){this.style.backgroundImage="url("+getRootPath()+"/images/xinxiguanli56x47_xiao.png)";});
-		$('#anniu2').mouseup(function(){this.style.backgroundImage="url("+getRootPath()+"/images/xinxiguanli66x55_huangse.png)";});
+		//按钮-主页显示
 		$('#anniu2').click(function(){
-			af.click(getRootPath()+'/html/xxcx.html');
+			af.click(getRootPath()+'/html/h_home.html');
+			return null;
 		});
 		//按钮-订单管理
-		$('#anniu3').mouseover(function(){this.style.backgroundImage="url("+getRootPath()+"/images/dingdanguanli66x55_huangse.png)";});
-		$('#anniu3').mouseout(function(){this.style.backgroundImage="url("+getRootPath()+"/images/dingdanguanli66x55_huise.png)";});
-		$('#anniu3').mousedown(function(){this.style.backgroundImage="url("+getRootPath()+"/images/dingdanguanli56x47_xiao.png)";});
-		$('#anniu3').mouseup(function(){this.style.backgroundImage="url("+getRootPath()+"/images/dingdanguanli66x55_huangse.png)";});
 		$('#anniu3').click(function(){
 			af.click(getRootPath()+'/html/ddgl.html');
+			return null;
 		});
 		//按钮-库房操作
-		$('#anniu4').mouseover(function(){this.style.backgroundImage="url("+getRootPath()+"/images/kufangcaozuo66x50_huangse.png)";});
-		$('#anniu4').mouseout(function(){this.style.backgroundImage="url("+getRootPath()+"/images/kufangcaozuo66x55_huise.png)";});
-		$('#anniu4').mousedown(function(){this.style.backgroundImage="url("+getRootPath()+"/images/kufangcaozuo56x47_xiao.png)";});
-		$('#anniu4').mouseup(function(){this.style.backgroundImage="url("+getRootPath()+"/images/kufangcaozuo66x50_huangse.png)";});
 		$('#anniu4').click(function(){
 			af.click(getRootPath()+'/html/kfcz.html');
+			return null;
 		});
 		//按钮-基础设置
-		$('#anniu5').mouseover(function(){this.style.backgroundImage="url("+getRootPath()+"/images/shezhizhongxin66x55_huangse.png)";});
-		$('#anniu5').mouseout(function(){this.style.backgroundImage="url("+getRootPath()+"/images/shezhizhongxin66x55_huise.png)";});
-		$('#anniu5').mousedown(function(){this.style.backgroundImage="url("+getRootPath()+"/images/shezhizhongxin56x47_xiao.png)";});
-		$('#anniu5').mouseup(function(){this.style.backgroundImage = "url("+getRootPath()+"/images/shezhizhongxin66x55_huangse.png)";});
 		$('#anniu5').click(function(){
 			af.click(getRootPath()+'/html/jcsz.html');
+			return null;
 		});
 		$(document).keydown(function (event) {
 	        if (event.keyCode == 122) {
 	        	window.location.reload();
+				return null;
 	        }
 	    });
+		//显示主页;
+		$('#anniu2').click();
 		return null;
 	}
 };

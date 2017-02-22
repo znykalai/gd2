@@ -13,10 +13,12 @@
 function checkMsg(){
 	document.getElementById("UserName").focus();
 }
-var msg = "<%=msg%>";
-if(msg!=""&&msg!='null'){
-	layer.alert(msg);
-}
+(function(){
+	var msg = "<%=msg%>";
+	if(msg!=""&&msg!='null'){
+		layer.alert(msg);
+	}
+})();
 function onSubmit(){
 	if($("#UserName").val()==""){
 	 	$("#UserName").focus();
@@ -30,7 +32,7 @@ function onSubmit(){
 }
 </script>
 </head>
-<body class="login" onload="checkMsg();" background="<%=path%>/images/bg_01.gif">
+<body style="overflow-y:hidden;" onload="checkMsg();" background="<%=path%>/images/bg_01.gif">
 <form name="login" id="login" method="post" action="<%=path%>/LoginAction.do?operationType=login" onsubmit="return onSubmit();">
   <center>
   <table width='700' height='100%' border='0' cellspacing='0' cellpadding='2'>
@@ -43,13 +45,13 @@ function onSubmit(){
 				<tr align="center" valign="middle">
 				  <td class="hstd5" nowrap style="font-family:微软雅黑;">用户名：</td>
 				  <td align="left" nowrap >
-					<input type="text" id="UserName" name="UserName" value="zj221" size="20" maxlength="32" />
+					<input type="text" id="UserName" name="UserName" size="20" maxlength="32" />
 				  </td>
 				</tr>
 				<tr align="center" valign="middle">
 				  <td class="hstd5" nowrap style="font-family:微软雅黑;">密&nbsp;&nbsp;&nbsp;码：</td>
 				  <td align="left" nowrap >
-					<input type="password" id="Password" name="Password" value="1" size="20" maxlength="32"  onfocus="this.select();";/>
+					<input type="password" id="Password" name="Password" size="20" maxlength="32"  onfocus="this.select();";/>
 				  </td>
 				</tr>
 				<tr align="center" valign="middle">
