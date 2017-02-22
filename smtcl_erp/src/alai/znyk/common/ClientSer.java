@@ -26,10 +26,11 @@ public class ClientSer {
 	private static ClientSer INSTANCE;
 	private boolean isOpenPlc=false;
 	private ClientSer(){
+		//gd.setGDEndpointAddress("http://192.168.1.222:9005/GD?cgi");
 	//	 ((BindingProvider)gd).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,"serviceUrl");
 		try{//启动时先预热一下，避免首例处罚。
 			getState(10000);
-		   }catch(Exception ex){}
+		   }catch(Exception ex){ex.printStackTrace();}
 		/*
 		 Client client = ClientProxy.getClient(gd);
     	 HTTPConduit http = (HTTPConduit) client.getConduit();   
@@ -61,7 +62,7 @@ public class ClientSer {
 	public static String rffid2="0";
 	public String getState(int t) throws RemoteException, ServiceException{
 		
-		if(isOpenPlc)return gd.getGD().getState(t);
+	//	if(isOpenPlc)return gd.getGD().getState(t);
 		
 		if(t==SqlPro.A区输送线){
 			String s="501=1|502=0|503=1|504=0|505=1|506=0|507=1|508=0|"+
@@ -161,13 +162,25 @@ public class ClientSer {
 			
 	};
 	
+	public alai.GDT.Resint[] getReturnPlc(String startAddress,int nums,int valueLen,
+	          int machineID){
+			try{
+				if(isOpenPlc){
+					RST1=gd.getGD().getSirIntValuesFromCTR(startAddress, nums, valueLen, machineID);
+				return RST1;}
+				
+			}catch(Exception ex){ex.printStackTrace();}
+			return RST1;
+		
+		}
+	
 
 	public alai.GDT.Resint[] getSirIntValuesFromCTR(String startAddress,int nums,int valueLen,
           int machineID){
 		try{
 			if(isOpenPlc)
-				RST1=gd.getGD().getSirIntValuesFromCTR(startAddress, nums, valueLen, machineID);
-			return RST1;
+				return gd.getGD().getSirIntValuesFromCTR(startAddress, nums, valueLen, machineID);
+			
 			
 		}catch(Exception ex){}
 		return RST1;
@@ -180,7 +193,7 @@ public class ClientSer {
 			 
 				return gd.getGD().writeSirIntToCTR(strAddress, valuseLeng, tem, machineID);
 				
-			}catch(Exception ex){}
+			}catch(Exception ex){ex.printStackTrace();}
 		 }
 		 
 		 return 1;

@@ -438,6 +438,63 @@ public class SqlTool {
     	
     }
    
+  //用于手动上托盘，成功后返回包含“成功”的字样 
+   public static String manUpPallet(String tp,String wuliao,int num,String toID,String machineID){
+	   String back="";
+	   ConnactionPool p=ConnactionPool.getPool();
+       Conn conn=p.getCon2("");
+       ResultSet set=null;
+      Statement st=null;
+      Connection con=conn.getCon();
+ try{
+        st=con.createStatement();
+        con.setAutoCommit(false);
+        //第一步先把托盘的数量给按上
+        set=st.executeQuery("select 托盘编号 from 库存托盘  where 托盘编号="+"'"+tp+"'");   
+		   if(set.next()){
+			   st.executeUpdate("update 库存托盘  set 数量='"+num+"',方向='"+machineID+"',物料='"+wuliao+"' where 托盘编号='"+tp+"'");  
+		   }else{
+			   String  ql="insert into 库存托盘 (托盘编号,物料,数量,"+
+	                   "方向) values("+
+	                     "'"+tp+"',"+
+	                     "'"+wuliao+"',"+
+	                      "'"+num+"',"+
+	                      "'"+machineID+"'"+
+	                      
+	                    ")";
+			   st.executeUpdate(ql);	   
+			   
+		   }
+       
+		   back = add动作指令( tp,"60001", toID,"上货"/*上货，下货，输送线回流*/, 
+					  0,  machineID);
+		  
+
+       con.commit();
+       con.setAutoCommit(true);
+       if(set!=null)set.close();
+       st.close();
+       conn.realseCon();
+  }catch(Exception ex){ ex.printStackTrace();
+     try {
+         con.rollback();
+         con.setAutoCommit(true);
+         if(set!=null)set.close();
+         st.close();
+         conn.realseCon();
+          return ex.getMessage();
+       } catch (SQLException ex1) {
+           ex1.printStackTrace() ;
+           conn.realseCon();
+          return ex1.getMessage();
+       }
+
+    }
+       conn.realseCon();
+
+
+	   return back;
+   }
 //主要应用与来料升降台   
    public static String autoUpPallet(String tp,String wuliao,String fromID,String machineID)  {
 	   Integer id=Integer.parseInt(fromID);
@@ -460,8 +517,8 @@ public class SqlTool {
         boolean isToLine=false;
        if(fromID.equals("60001")){
     	 //判断这个货物应该去哪个工位，优先去7个工位,首先检测7个工位有没有指令，然后在检测工位上有没有托盘
-    	   String sql="SELECT DISTINCT 工位,数量-IFNULL(完成数量,0) from 配方指令队列   where 物料='"
-    	   +wuliao+"' AND 装配区='"+machineID+"' and 数量-IFNULL(完成数量,0)>0 ORDER BY 工单序号,模组序号,分解号,载具序号  LIMIT 2 ";
+    	  // String sql="SELECT DISTINCT 工位,数量-IFNULL(完成数量,0) from 配方指令队列   where 物料='"
+    	  // +wuliao+"' AND 装配区='"+machineID+"' and 数量-IFNULL(完成数量,0)>0 ORDER BY 工单序号,模组序号,分解号,载具序号  LIMIT 2 ";
     	  //1.首先判断当前指令队列有没有需要这个物料的
     	   for(int i=1;i<8;i++){
     	   String wul1= (machineID.equals(SqlPro.堆垛机1+"")?PLC.getIntance().STC1.get(i).firstST.get物料编码():
@@ -743,12 +800,37 @@ try{
         }
          else{
         	//上货架
+        	 boolean isHuowei=false;
+        	 //首先判断这个托盘有没有指定货位
+        	 String sql3="select max(idEvent),动作,状态,状态2,是否回大库,来源货位号,放回货位号,托盘编号,"
+             		+"请求区  from 立库动作指令   where  and 动作='输送线回流' and 状态='完成'"
+             		+" and 托盘编号='"+tp+"'";
+             set=st.executeQuery(sql3);
+             if(set.next()){
+            	 Object toID=set.getObject(7)==null?"":set.getObject(7);
+            	 String machineID=set.getObject(7)==null?"":set.getObject(9).toString();
+            	 if(!toID.equals("60001")&&!toID.equals("60002")&&!toID.equals("")){
+            		 
+            	 String iss=add动作指令( tp, "60002",toID+"","上货"/*上货，下货，输送线回流*/, 
+	    				  0/*1=回大库，非1=不回*/,  machineID);
+            	 if(iss.contains("成功")){
+            		 isHuowei=true;
+            		 back=iss+"!_!"+toID;
+            	   }
+            	 
+            	 }
+            	 
+             }
+             
+             if(!isHuowei){
         	 set=st.executeQuery("select 物料,方向  from 库存托盘  where 托盘编号="+"'"+tp+"'"); 	
+        	 
         	 if(set.next()){
         		 Object wul=set.getObject(1);
         		 back =autoUpPallet( tp,wul+"","60002",set.getObject(2)+"");
-        		 
-        	 }
+        	      }
+        	 
+             }
         	 
          }
       

@@ -603,7 +603,7 @@ public class CommentPanel extends JPanel {
 	ReST first=new ReST(new Resint());
 	ReST second=new ReST(new Resint());
 	public void setData(){
-		Resint[] rs=ClientSer.RST1;
+		Resint[] rs=ClientSer.getIntance().getReturnPlc("D11001",63,16,1);
 		String st=comboBox.getSelectedItem().toString();
 		int s=Integer.parseInt(st.replace("ST", ""));
 		Resint r1=rs[s*2];

@@ -14,6 +14,7 @@ import alai.GDT.Inint;
 import alai.GDT.Resint;
 import alai.localhost.GD_wsdl.GDLocator;
 import alai.znyk.common.ClientSer;
+import alai.znyk.common.SqlPro;
 import alai.znyk.server.SqlTool;
 
 public class PLC implements Serializable {
@@ -21,9 +22,17 @@ public class PLC implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public boolean stop1=false;
-	public boolean stop2=false;
 	
+	public boolean stop1=false;//停止调度系统从数据库里面读取数据
+	public boolean stop2=false;//停止调度系统从数据库里面读取数据
+	public void setDiaodu1(boolean state){
+		stop1=state;
+	}
+	public void setDiaodu2(boolean state){
+		stop2=state;
+	}
+	public boolean isStartDiaodu1(){return stop1;}
+	public boolean isStartDiaodu2(){return stop2;}
 	public Vector<STContent> STC1=new Vector<STContent>();
 	public Vector<STContent> STC2=new Vector<STContent>();
 	public CarryLine line=new CarryLine(this);
@@ -310,6 +319,12 @@ public class PLC implements Serializable {
 		}
 		
 	}
+	public void setAutoRfidUp(boolean state){
+		SqlPro.autoRFIDup=state;
+	}
+	public boolean getAutoRfidUp(){
+		  return SqlPro.autoRFIDup;
+	}
 	
 	public void writeO(){
 		try{
@@ -400,7 +415,7 @@ public class PLC implements Serializable {
 	//读取光大的状态，并更新托盘数量
     public ReST[] getFromPLC(int 装配区){
     	try{
-    		Resint r[]=	ClientSer.getIntance().getSirIntValuesFromCTR("D11001", 63, 16, 装配区);
+    		Resint r[]=	ClientSer.getIntance().getReturnPlc("D11001", 63, 16, 装配区);
     		
     		for(int i=0;i<16;i++){
     			
@@ -549,6 +564,7 @@ public class PLC implements Serializable {
    //如果立库没准备好，那么要做两件事，1，如果工位上有托盘，那么就是这个托盘的物料不是指令要取的物料，或者数量不够，这时候要让托盘走，调用一个新的托盘；要是没有托盘那么就调新的托盘来
    public boolean getSTRdy(int line,int st){
 	   //这步判断可以不需要，因为只有到位信号才更新托盘
+	   //STATE1,STATE2在主线程里面自动更新
 	  if(st>=2&&st<=8){
 	   if(line==1){
 		   

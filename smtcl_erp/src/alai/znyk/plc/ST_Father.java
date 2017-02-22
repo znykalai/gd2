@@ -1,6 +1,9 @@
 package alai.znyk.plc;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Hashtable;
 
 public class ST_Father implements STInterface, Serializable{
@@ -32,7 +35,7 @@ public class ST_Father implements STInterface, Serializable{
 	}
 
 	public Hashtable table=new Hashtable();
-	protected ST_Father old;
+	protected transient ST_Father old;
 	public String getName(){
 		//确定一个载具，前3位确定一个模组	
 		return get工单ID()+"="+get模组序ID()+"="+get分解号()+"="+get载具序号();
@@ -145,6 +148,7 @@ public class ST_Father implements STInterface, Serializable{
 	@Override
 	public String writeToPLC() {
 		// TODO Auto-generated method stub
+		System.out.println("======");
 		return "成功";
 	}
 	
@@ -177,6 +181,73 @@ public class ST_Father implements STInterface, Serializable{
 	public int getBoolContent() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+	public Hashtable getMap() {
+		Field f[]=this.getClass().getDeclaredFields();
+		 table.clear();
+		for(int i=0;i<f.length;i++){
+		 String name=f[i].getName();
+		 Object ty=f[i].getType();
+		
+		 try{
+			 
+		 if(ty.toString().equals("boolean")){
+			 String name2=name.substring(0, 1).toUpperCase()+name.substring(1, name.length());
+			 Method m2=	this.getClass().getMethod("is"+name2, null) ;
+			 table.put(name,  m2.invoke(this, null));
+			 }else{
+			 String name2=name.substring(0, 1).toUpperCase()+name.substring(1, name.length());		 
+				Method m2=	this.getClass().getMethod("get"+name2, null) ; 
+			    table.put(name,  m2.invoke(this, null));
+				 }
+			  
+		 }catch(Exception ex){ex.printStackTrace();}   
+		 
+		}
+		table.put("startAddress-", startAddress);
+		table.put("工单ID-", 工单ID);
+		table.put("模组序ID-", 模组序ID);
+		table.put("分解号-", 分解号);
+		table.put("载具序号-", 载具序号);
+		return table;
+	}
+	
+	public String setValueByName(String name,String value){
+		 try{
+			 Field f= this.getClass().getDeclaredField(name);
+			 String name2=name.substring(0, 1).toUpperCase()+name.substring(1, name.length());
+			 
+			 if(f.getType().toString().equals("boolean")){
+				
+			   Method m2=	this.getClass().getMethod("set"+name2, boolean.class) ; 
+			   if(value!=null&&value.equals("false"))
+			    m2.invoke(this, false);
+			   if(value!=null&&value.equals("true"))
+				   m2.invoke(this, true);
+			   return "成功";
+			 }
+			 if(f.getType().toString().equals("int")){
+					
+				   Method m2=	this.getClass().getMethod("set"+name2, int.class) ; 
+				   if(value!=null)
+				   m2.invoke(this, Integer.parseInt(value));
+				   return "成功";
+				 }
+			 
+			 if(f.getType().toString().equals("class java.lang.String")){
+					
+				   Method m2=	this.getClass().getMethod("set"+name2, String.class) ; 
+				   if(value!=null)
+				   m2.invoke(this, value);
+				   
+				   return "成功";
+				 }
+		 
+		 }catch(Exception ex){ex.printStackTrace();
+		   return ex.getMessage();
+		 }
+		
+		return "失败";
 	}
 
 }
