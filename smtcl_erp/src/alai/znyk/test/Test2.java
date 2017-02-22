@@ -1,5 +1,9 @@
 package alai.znyk.test;
 
+import java.lang.reflect.InvocationTargetException;
+
+import alai.znyk.common.ClientSer;
+import alai.znyk.plc.PLC;
 import alai.znyk.server.SqlTool;
 
 public class Test2 {
@@ -20,7 +24,14 @@ public class Test2 {
 		
 		//String st="1";
 		//System.out.println(st.equals(1+""));
-		System.out.println(0b1000);
+		//System.out.println(0b1000);
+		//ClientSer.getIntance();
+		String nam="你xy";
+		System.out.println(nam.substring(0, 1).toUpperCase()+nam.substring(1, nam.length()));
+		 
+			  System.out.println(PLC.getIntance().ST2_1.firstST.getMap());
+			  PLC.getIntance().ST2_1.firstST.setValueByName("需求数量", "1");
+		
 	}
 
 }

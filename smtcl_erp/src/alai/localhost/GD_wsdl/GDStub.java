@@ -82,7 +82,7 @@ public class GDStub extends org.apache.axis.client.Stub implements alai.localhos
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("getSirIntValuesFromCTR");
-        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("", "startAddress"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"), int.class, false, false);
+        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("", "startAddress"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"), int.class, false, false);
         oper.addParameter(param);
         param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("", "nums"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"), int.class, false, false);
         oper.addParameter(param);
@@ -131,7 +131,7 @@ public class GDStub extends org.apache.axis.client.Stub implements alai.localhos
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("WriteSirIntToCTR");
-        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("", "strAddress"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"), int.class, false, false);
+        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("", "strAddress"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"), int.class, false, false);
         oper.addParameter(param);
         param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("", "valuseLeng"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"), int.class, false, false);
         oper.addParameter(param);
@@ -258,8 +258,8 @@ public class GDStub extends org.apache.axis.client.Stub implements alai.localhos
         oper.setName("getState");
         param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("", "T"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"), int.class, false, false);
         oper.addParameter(param);
-        oper.setReturnType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"));
-        oper.setReturnClass(int.class);
+        oper.setReturnType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
+        oper.setReturnClass(java.lang.String.class);
         oper.setReturnQName(new javax.xml.namespace.QName("", "res"));
         oper.setStyle(org.apache.axis.constants.Style.RPC);
         oper.setUse(org.apache.axis.constants.Use.ENCODED);
@@ -579,7 +579,7 @@ public class GDStub extends org.apache.axis.client.Stub implements alai.localhos
 
         setRequestHeaders(_call);
         setAttachments(_call);
- try {        java.lang.Object _resp = _call.invoke(new java.lang.Object[] {new java.lang.Integer(startAddress), new java.lang.Integer(nums), new java.lang.Integer(valuseLen), new java.lang.Integer(machineID)});
+ try {        java.lang.Object _resp = _call.invoke(new java.lang.Object[] {new String(startAddress), new java.lang.Integer(nums), new java.lang.Integer(valuseLen), new java.lang.Integer(machineID)});
 
         if (_resp instanceof java.rmi.RemoteException) {
             throw (java.rmi.RemoteException)_resp;
@@ -672,7 +672,7 @@ public class GDStub extends org.apache.axis.client.Stub implements alai.localhos
 
         setRequestHeaders(_call);
         setAttachments(_call);
- try {        java.lang.Object _resp = _call.invoke(new java.lang.Object[] {new java.lang.Integer(strAddress), new java.lang.Integer(valuseLeng), invalues, new java.lang.Integer(machineID)});
+ try {        java.lang.Object _resp = _call.invoke(new java.lang.Object[] {new String(strAddress), new java.lang.Integer(valuseLeng), invalues, new java.lang.Integer(machineID)});
 
         if (_resp instanceof java.rmi.RemoteException) {
             throw (java.rmi.RemoteException)_resp;
@@ -921,7 +921,7 @@ public class GDStub extends org.apache.axis.client.Stub implements alai.localhos
         setRequestHeaders(_call);
         setAttachments(_call);
  try {        java.lang.Object _resp = _call.invoke(new java.lang.Object[] {new java.lang.Integer(t)});
-
+ //System.out.println(_resp.getClass());
         if (_resp instanceof java.rmi.RemoteException) {
             throw (java.rmi.RemoteException)_resp;
         }

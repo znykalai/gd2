@@ -114,13 +114,13 @@ public class _1_6ST extends ST_Father implements STInterface {
 	 public boolean isChange(){
 		
 		 if(old==null){
-			 
+			 System.out.println("ischange");
 			 old=new _1_6ST(plc, machineID,startAddress);
 			 return true;
 			 
 		 }else{
 			if(this.boolContent!=old.getBoolContent()||!this.getName().equals(old.getName())){
-				
+				 System.out.println("ischange2");
 				return true;} 
 			 
 		 }

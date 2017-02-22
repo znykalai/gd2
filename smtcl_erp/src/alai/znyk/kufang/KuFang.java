@@ -369,7 +369,9 @@ public void startlineAGV(){
 
   //启动升降机的型号检测
   public void startUpRFFID(){
+	  
 	  try {
+		  if(SqlPro.autoRFIDup){
 			String b=ClientSer.getIntance().getState(SqlPro.来料升);
 			if(b.equals("1")){//升降台上有货物
 			String tp=ClientSer.getIntance().ReadFromRffid("", 1);
@@ -389,6 +391,8 @@ public void startlineAGV(){
 			
 				
 			}
+			
+		  }
 			
 			
 		} catch (Exception e) {
@@ -413,7 +417,9 @@ public void startlineAGV(){
 			if(isRffid1.get(tp)!=null)return;
 			String back=SqlTool.exeRffid2(tp);
 			isRffid1.put(tp, "");
-				if(back.contains("成功")){}
+				if(back.contains("成功")){
+					
+				}
 			}
 			
 			

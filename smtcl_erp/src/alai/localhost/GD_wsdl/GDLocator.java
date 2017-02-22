@@ -26,7 +26,7 @@ public class GDLocator extends org.apache.axis.client.Service implements alai.lo
     }
 
     // Use to get a proxy class for GD
-    private java.lang.String GD_address = "http://192.168.1.222:9005/GD?cgi";
+    private java.lang.String GD_address = "http://10.24.251.33:9005/GD?wsdl";
 
     public java.lang.String getGDAddress() {
         return GD_address;
@@ -109,15 +109,15 @@ public class GDLocator extends org.apache.axis.client.Service implements alai.lo
     }
 
     public javax.xml.namespace.QName getServiceName() {
-        return new javax.xml.namespace.QName("http://192.168.1.222:9005/GD?wsdl", "GD");
+        return new javax.xml.namespace.QName("http://10.24.251.33:9005/GD?wsdl", "GD");
     }
-
+  
     private java.util.HashSet ports = null;
 
     public java.util.Iterator getPorts() {
         if (ports == null) {
             ports = new java.util.HashSet();
-            ports.add(new javax.xml.namespace.QName("http://192.168.1.222:9005/GD?wsdl", "GD"));
+            ports.add(new javax.xml.namespace.QName("http://10.24.251.33:9005/GD?wsdl", "GD"));
         }
         return ports.iterator();
     }
