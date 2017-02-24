@@ -12,9 +12,9 @@ var readyShow = {
 					if(winHeight == window.screen.height){
 						winHeight = document.body.clientHeight - 50;
 					}
+					//设置高度自适应
 					$('#xy').css('height', (winHeight - (window.screen.height - winHeight))/0.98);
 					$('.table-body').css('height', document.body.clientHeight /5.88);
-					
 					//刷新货位状态
 					$("#getHck").click(function(){
 						af.getHck();
@@ -23,9 +23,11 @@ var readyShow = {
 					$("#showGDFrame").click(function(){
 						af.getGDFrame();
 					});
-					
-					if(this.txload()&&this.getHck()&&dsState.state){
-						(function(){//定时刷新
+					this.txload();//图形渲染
+					this.loadButton();//按钮事件启动
+					//货位渲染
+					if(this.getHck()&&dsState.state){//是否启动定时刷新
+						(function(){
 							readyShow.deleteSetInterval = setInterval(function(){
 								if(af.getHck());
 							},dsState.tim);
@@ -40,6 +42,7 @@ var readyShow = {
 					this.removeTop = [];
 					this.removeArry = [];
 					this.removeBottom = [];
+					return null;
 				},
 				/**
 				 * 显示GDFrame
@@ -266,7 +269,7 @@ var readyShow = {
 					json.yAxis = yAxis; 
 					json.series = series;
 					$('#container-rpm').highcharts(json);
-					return true;
+					return null;
 				},
 				/**
 				 * 更新图片信息,参数必须是int类型
@@ -287,6 +290,128 @@ var readyShow = {
 				         point = chart.series[0].points[0];
 				         point.update(newVal2);
 				      }
+				      return null;
+				},
+				/**
+				 * 按钮：调度、复位、归零、断点
+				 */
+				loadButton:function(){
+					var but = {
+						//启动调度是否成功状态标识
+						qidongdiaodu_top_type:true,
+						qidongdiaodu_bottom_type:false,
+						//通用点击事件
+						butClick:function(e,type){
+							if(type == true){
+								if($(e).attr("class")=="qfgd"){
+									$(e).attr("class","qfgdStart");
+									return null;
+								}
+								return null;
+							}else{
+								if($(e).attr("class")=="qfgdStart"){
+									$(e).attr("class","qfgd");
+									return null;
+								}
+								return null;
+							}
+							return null;
+						},
+						buttonTop:function(){
+							//复位点击效果-top
+							$("#fuwei_top").mousedown(function(){
+								$(this).attr("class","qfgdStart");
+								return null;
+							});
+							$("#fuwei_top").mouseup(function(){
+								$(this).attr("class","qfgd");
+								return null;
+							});
+							$("#fuwei_top").click(function(){});
+							//归零启动点击效果-top
+							$("#guilingqidong_top").mousedown(function(){
+								$(this).attr("class","qfgdStart");
+								return null;
+							});
+							$("#guilingqidong_top").mouseup(function(){
+								$(this).attr("class","qfgd");
+								return null;
+							});
+							$("#guilingqidong_top").click(function(){});
+							//断点启动点击效果-top
+							$("#duandianqidong_top").mousedown(function(){
+								$(this).attr("class","qfgdStart");
+								return null;
+							});
+							$("#duandianqidong_top").mouseup(function(){
+								$(this).attr("class","qfgd");
+								return null;
+							});
+							$("#duandianqidong_top").click(function(){});
+							return null;
+						},
+						buttonBottom:function(){
+							//复位点击效果-bottom
+							$("#fuwei_bottom").mousedown(function(){
+								$(this).attr("class","qfgdStart");
+								return null;
+							});
+							$("#fuwei_bottom").mouseup(function(){
+								$(this).attr("class","qfgd");
+								return null;
+							});
+							$("#fuwei_bottom").click(function(){});
+							//归零启动点击效果-bottom
+							$("#guilingqidong_bottom").mousedown(function(){
+								$(this).attr("class","qfgdStart");
+								return null;
+							});
+							$("#guilingqidong_bottom").mouseup(function(){
+								$(this).attr("class","qfgd");
+								return null;
+							});
+							$("#guilingqidong_bottom").click(function(){});
+							//断点启动点击效果-bottom
+							$("#duandianqidong_bottom").mousedown(function(){
+								$(this).attr("class","qfgdStart");
+								return null;
+							});
+							$("#duandianqidong_bottom").mouseup(function(){
+								$(this).attr("class","qfgd");
+								return null;
+							});
+							$("#duandianqidong_bottom").click(function(){});
+							return null;
+						},
+						action:function(e,type,fun){
+							//ajax处理
+							var qidongdiaodu = null;
+							if(type=='top'){
+								but.qidongdiaodu_top_type = true;
+								qidongdiaodu = but.qidongdiaodu_top_type;
+							}else{
+								but.qidongdiaodu_bottom_type = true;
+								qidongdiaodu = but.qidongdiaodu_bottom_type;
+							}
+							return fun(e,qidongdiaodu);
+						},
+						loadEvn:function(){
+							//启动调度-top
+							$("#qidongdiaodu_top").click(function(){
+								but.action(this,'top',but.butClick);
+								return null;
+							});
+							//启动调度-bottom
+							$("#qidongdiaodu_bottom").click(function(){
+								but.action(this,'bottom',but.butClick);
+								return null;
+							});
+							this.buttonTop();
+							this.buttonBottom();
+							return null;
+						}
+					};
+					return but.loadEvn();
 				}
 			}
 			af.load(function(){
