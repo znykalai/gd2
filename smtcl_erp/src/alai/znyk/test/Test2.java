@@ -26,11 +26,13 @@ public class Test2 {
 		//System.out.println(st.equals(1+""));
 		//System.out.println(0b1000);
 		//ClientSer.getIntance();
-		String nam="你xy";
-		System.out.println(nam.substring(0, 1).toUpperCase()+nam.substring(1, nam.length()));
+		String nam="1";Integer i=1;
+		System.out.println(i.toString());
 		 
-			  System.out.println(PLC.getIntance().ST2_1.firstST.getMap());
-			  PLC.getIntance().ST2_1.firstST.setValueByName("需求数量", "1");
+		System.out.println(nam.equals(i+""+""));
+		 
+			 // System.out.println(PLC.getIntance().ST2_1.firstST.getMap());
+		System.out.println(PLC.getIntance().ST2_1.firstST.setValueByName("需求数量", "1","0"));
 		
 	}
 

@@ -634,25 +634,27 @@ public class SqlTool {
 
 }  
    
-   public static void setStateForEventID(int idEvent, int state, String ext) {
+   public static String setStateForEventID(int idEvent, int state, String ext) {
 		// TODO Auto-generated method stub
-	
+	  String back="";
 	  ConnactionPool p=ConnactionPool.getPool();
       Conn conn=p.getCon2("");
       ResultSet set=null;
      Statement st=null;
      Connection con=conn.getCon();
-try{
+try{  boolean isEvent=false;
        st=con.createStatement();
        con.setAutoCommit(false);
        String sql="select 动作,状态,状态2,是否回大库,来源货位号,放回货位号,托盘编号,请求区  from 立库动作指令  where idEvent='"+idEvent+"' and 状态<>'完成'";
        set=st.executeQuery(sql);
        if(set.next()){
+    	  
     	   String zong=set.getObject(1)+"";String zt1=set.getObject(2)+"";
     	   String zt2=set.getObject(3)+"";String isToback=set.getObject(4)+"";
            String fromID=set.getObject(5)+"";String toID=set.getObject(6)+"";
            String tp=set.getObject(7)+"";String qu=set.getObject(8)+"";
        if(state==SqlPro.完成){
+    	   isEvent=true;
     	   if(zong.equals("上货")){
     	   //1.第一步更新库存托盘表
     	  
@@ -682,6 +684,7 @@ try{
     		   }
     	   
     	   if(zong.equals("下货")){
+    		  
         	   //1.第一步更新库存托盘表
     		   if(toID.equals("60002")){//这儿应该把货位
     		   st.executeUpdate("update 库存托盘  set 货位号='"+toID+"' ,方向='"+qu+"' where 托盘编号='"+tp+"'");
@@ -698,6 +701,7 @@ try{
         		   }
     	   
     	   if(zong.equals("输送线回流")){
+    		  
     		 //1.第一步更新库存托盘表
          	  
     		  // st.executeUpdate("update 库存托盘  set 货位号='"+toID+"' ,方向='"+qu+"' where 托盘编号='"+tp+"'");
@@ -714,13 +718,15 @@ try{
           }
        
        if(state==SqlPro.执行中){
+    	   isEvent=true;
     	   //还没做
     	   st.executeUpdate("update 立库动作指令  set 状态='执行中',发送时间="+SqlPro.getDate()[1]+" where idEvent="+"'"+idEvent+"'");
     	   
     	   
           }
        }
-
+       if(isEvent){
+         back="成功";}else{back="没这个eventID";}
       con.commit();
       con.setAutoCommit(true);
       if(set!=null)set.close();
@@ -728,6 +734,7 @@ try{
       conn.realseCon();
  }catch(Exception ex){ ex.printStackTrace();
     try {
+    	
         con.rollback();
         con.setAutoCommit(true);
         if(set!=null)set.close();
@@ -743,7 +750,7 @@ try{
    }
       conn.realseCon();
 
-
+     return back;
      
 
 	}

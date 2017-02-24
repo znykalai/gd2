@@ -7,6 +7,8 @@
 
 package alai.localhost.GD_wsdl;
 
+import java.rmi.RemoteException;
+
 public class GDStub extends org.apache.axis.client.Stub implements alai.localhost.GD_wsdl.GDPortType {
     private java.util.Vector cachedSerClasses = new java.util.Vector();
     private java.util.Vector cachedSerQNames = new java.util.Vector();
@@ -16,7 +18,7 @@ public class GDStub extends org.apache.axis.client.Stub implements alai.localhos
     static org.apache.axis.description.OperationDesc [] _operations;
 
     static {
-        _operations = new org.apache.axis.description.OperationDesc[17];
+        _operations = new org.apache.axis.description.OperationDesc[18];
         _initOperationDesc1();
         _initOperationDesc2();
     }
@@ -279,6 +281,19 @@ public class GDStub extends org.apache.axis.client.Stub implements alai.localhos
         oper.setStyle(org.apache.axis.constants.Style.RPC);
         oper.setUse(org.apache.axis.constants.Use.ENCODED);
         _operations[16] = oper;
+        
+        oper = new org.apache.axis.description.OperationDesc();
+        oper.setName("c_exeComment");
+        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("", "comment"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"), java.lang.String.class, false, false);
+        oper.addParameter(param);
+        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("", "type"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"), int.class, false, false);
+        oper.addParameter(param);
+        oper.setReturnType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
+        oper.setReturnClass(java.lang.String.class);
+        oper.setReturnQName(new javax.xml.namespace.QName("", "res"));
+        oper.setStyle(org.apache.axis.constants.Style.RPC);
+        oper.setUse(org.apache.axis.constants.Use.ENCODED);
+        _operations[17] = oper;
 
     }
 
@@ -968,5 +983,37 @@ public class GDStub extends org.apache.axis.client.Stub implements alai.localhos
   throw axisFaultException;
 }
     }
+
+	
+	public String c_exeComment(String comment, int type) throws RemoteException {
+		  if (super.cachedEndpoint == null) {
+	            throw new org.apache.axis.NoEndPointException();
+	        }
+	        org.apache.axis.client.Call _call = createCall();
+	        _call.setOperation(_operations[17]);
+	        _call.setUseSOAPAction(true);
+	        _call.setSOAPActionURI("");
+	        _call.setSOAPVersion(org.apache.axis.soap.SOAPConstants.SOAP11_CONSTANTS);
+	        _call.setOperationName(new javax.xml.namespace.QName("urn:GD", "c_exeComment"));
+
+	        setRequestHeaders(_call);
+	        setAttachments(_call);
+	 try {        java.lang.Object _resp = _call.invoke(new java.lang.Object[] {comment,new java.lang.Integer(type)});
+	
+	        if (_resp instanceof java.rmi.RemoteException) {
+	            throw (java.rmi.RemoteException)_resp;
+	        }
+	        else {
+	            extractAttachments(_call);
+	            try {
+	                return ((java.lang.String) _resp);
+	            } catch (java.lang.Exception _exception) {
+	                return ((java.lang.String) org.apache.axis.utils.JavaUtils.convert(_resp, String.class));
+	            }
+	        }
+	  } catch (org.apache.axis.AxisFault axisFaultException) {
+	  throw axisFaultException;
+	}
+	}
 
 }

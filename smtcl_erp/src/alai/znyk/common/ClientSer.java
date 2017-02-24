@@ -240,4 +240,34 @@ public class ClientSer {
 			 return null; 
 	    	
 	    }
+	    
+	   public String c_exeComment(String comment, int type,int machineID){
+		   if(type==1){//急停
+			   
+			   
+		   }
+          if(type==6){//松开急停
+			   
+			   
+		   }
+          if(type==2){//A堆垛机复位
+			   
+			   
+		   }
+          if(type==3){//B堆垛机复位
+			   
+			   
+		   }
+          if(type==4){//故障后断点启动
+			//comment=eventID|fromID|toID|machineID|1=上货，2=下货，3=回流   
+			   
+		   }
+          if(type==5){//故障后从头启动
+  			//comment=eventID|fromID|toID|machineID|1=上货，2=下货，3=回流 
+  			   
+  		   }
+		   
+		   return "成功";
+		   
+	   }
 }
