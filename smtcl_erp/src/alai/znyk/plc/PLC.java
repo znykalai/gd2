@@ -33,6 +33,7 @@ public class PLC implements Serializable {
 	}
 	public boolean isStartDiaodu1(){return stop1;}
 	public boolean isStartDiaodu2(){return stop2;}
+	
 	public Vector<STContent> STC1=new Vector<STContent>();
 	public Vector<STContent> STC2=new Vector<STContent>();
 	public CarryLine line=new CarryLine(this);

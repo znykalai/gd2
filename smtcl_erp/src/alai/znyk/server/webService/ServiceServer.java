@@ -5,7 +5,7 @@ import javax.jws.WebService;
 
 @WebService
 public interface ServiceServer {
-	public void setStateForEventID(@WebParam(name="idEvent")int idEvent,
+	public int setStateForEventID(@WebParam(name="idEvent")int idEvent,
 			@WebParam(name="state")int state,
 			@WebParam(name="ext")String ext);
 	

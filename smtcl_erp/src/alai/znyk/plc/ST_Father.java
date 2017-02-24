@@ -182,7 +182,7 @@ public class ST_Father implements STInterface, Serializable{
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	public Hashtable getMap() {
+	public synchronized Hashtable  getMap() {
 		Field f[]=this.getClass().getDeclaredFields();
 		 table.clear();
 		for(int i=0;i<f.length;i++){
@@ -212,34 +212,60 @@ public class ST_Father implements STInterface, Serializable{
 		return table;
 	}
 	
-	public String setValueByName(String name,String value){
+	public String setValueByName(String name,String value,String oldValue){
+		if(oldValue==null)oldValue="";
+		
 		 try{
 			 Field f= this.getClass().getDeclaredField(name);
 			 String name2=name.substring(0, 1).toUpperCase()+name.substring(1, name.length());
 			 
 			 if(f.getType().toString().equals("boolean")){
-				
+				 
+			   Method m=	this.getClass().getMethod("is"+name2, null) ;
+			   Object b= m.invoke(this, null)==null?"": m.invoke(this, null);
+			   if(!oldValue.equals(b+"")){
+				    return "数据不同步，请同步后在更新数据！";  
+				   
+			   }
+			   ////////////////////////////////////////////////
 			   Method m2=	this.getClass().getMethod("set"+name2, boolean.class) ; 
 			   if(value!=null&&value.equals("false"))
 			    m2.invoke(this, false);
 			   if(value!=null&&value.equals("true"))
 				   m2.invoke(this, true);
+			        
 			   return "成功";
 			 }
 			 if(f.getType().toString().equals("int")){
-					
+				 
+				 Method m=	this.getClass().getMethod("get"+name2, null) ;
+				   Object b= m.invoke(this, null)==null?"": m.invoke(this, null);
+				   if(!oldValue.equals(b+"")){
+					    return "数据不同步，请同步后在更新数据！";  
+					   
+				   }
+				/////////////////////////////////////////////////////////////	
 				   Method m2=	this.getClass().getMethod("set"+name2, int.class) ; 
 				   if(value!=null)
 				   m2.invoke(this, Integer.parseInt(value));
+				  
 				   return "成功";
 				 }
 			 
 			 if(f.getType().toString().equals("class java.lang.String")){
+				 
+				 Method m=	this.getClass().getMethod("get"+name2, null) ;
+				 Object b= m.invoke(this, null)==null?"": m.invoke(this, null);
+				   if(!oldValue.equals(b+"")){
+					    return "数据不同步，请同步后在更新数据！";  
+					   
+				   }
+				/////////////////////////////////////////////////////////////	
 					
 				   Method m2=	this.getClass().getMethod("set"+name2, String.class) ; 
 				   if(value!=null)
 				   m2.invoke(this, value);
-				   
+				 
 				   return "成功";
 				 }
 		 

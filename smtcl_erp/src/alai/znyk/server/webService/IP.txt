@@ -1,1 +1,1 @@
-http://10.24.251.190:8080/ServiceServer
+http://192.168.1.101:8080/ServiceServer
