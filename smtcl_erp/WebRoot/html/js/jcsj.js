@@ -48,7 +48,7 @@ var readyShow = {
 		return null;
 	},
 	//加载主题
-	load:function(){
+	load:function(hdFun){
 		try{
 			var af = {
 				/**
@@ -64,76 +64,125 @@ var readyShow = {
 					    item.addClass('select');
 					    $(".stock").children().css("display", "none");
 					    $("#stock" + $(item).attr('data')).css("display", "block");
-				        return null;
+				        return (function(){
+				        	item = null;
+				        	return null;
+				        })();
 					});
 					//单位复选框加载
 					$('#danwei_name').click(function () {
-				        $('#danwei_name ul').toggle();
-				        return null;
+				        var a = $('#danwei_name ul').toggle();
+				        return (function(){
+				        	a = null;
+				        	return null;
+				        })();
 				    });
 				    $('#danwei_name ul').click(function (event) {
 				        var t2 = $(event.target).text();
-				        $('#danwei_id').val(t2);
-				        return null;
+				        var a = $('#danwei_id').val(t2);
+				        return (function(){
+				        	a = null;
+				        	t2 = null;
+				        	return null;
+				        })();
 				    });
 					//类别复选框加载
 					$('#leibie_name').click(function () {
-				        $('#leibie_name ul').toggle();
-				        return null;
+				        var a = $('#leibie_name ul').toggle();
+				        return (function(){
+				        	a = null;
+				        	return null;
+				        })();
 				    });
 				    $('#leibie_name ul').click(function (event) {
 				        var t2 = $(event.target).text();
-				        $('#leibie_id').val(t2);
-				        return null;
+				        var a = $('#leibie_id').val(t2);
+				        return (function(){
+				        	a = null;
+				        	t2 = null;
+				        	return null;
+				        })();
 				    });
 					//类型复选框加载
 					$('#leixing_name').click(function () {
-				        $('#leixing_name ul').toggle();
-				        return null;
+				        var a = $('#leixing_name ul').toggle();
+				        return (function(){
+				        	a = null;
+				        	return null;
+				        })();
 				    });
 				    $('#leixing_name ul').click(function (event) {
 				        var t2 = $(event.target).text();
-				        $('#leixing_id').val(t2);
-				        return null;
+				        var a = $('#leixing_id').val(t2);
+				        return (function(){
+				        	t2 = null;
+				        	a = null;
+				        	return null;
+				        })();
 				    });
 					//托盘类别复选框加载
 					$('#tuopanleibie_name').click(function () {
-				        $('#tuopanleibie_name ul').toggle();
-				        return null;
+				        var a = $('#tuopanleibie_name ul').toggle();
+				        return (function(){
+				        	a = null;
+				        	return null;
+				        })();
 				    });
 				    $('#tuopanleibie_name ul').click(function (event) {
 				        var t2 = $(event.target).text();
-				        $('#tuopanleibie_id').val(t2);
-				        return null;
+				        var a = $('#tuopanleibie_id').val(t2);
+				        return (function(){
+				        	a = null;
+				        	t2 = null;
+				        	return null;
+				        })();
 				    });
 				    
 				    //失效复选框加载
 					$('#shixiao').click(function () {
-				        $('#shixiao ul').toggle();
-				        return null;
+				        var a = $('#shixiao ul').toggle();
+				        return (function(){
+				        	a = null;
+				        	return null;
+				        })();
 				    });
 				    $('#shixiao ul').click(function (event) {
 				        var t2 = $(event.target).text();
-				        $('#shixiao_id').val(t2);
-				        return null;
+				        var a = $('#shixiao_id').val(t2);
+				        return (function(){
+				        	a = null;
+				        	t2 = null;
+				        	return null;
+				        })();
 				    });
 				    //新建
 				    $("#wl_newBtn").click(function(){
-				    	$('#wl_form')[0].reset();
+				    	var a = $('#wl_form')[0].reset();
 						//设置默认时间
-					    $('#wl_newDate').val(current());
-				   		$('#wuliao_code').attr("readOnly",false);
-				        return null;
+					    var b = $('#wl_newDate').val(current());
+				   		var c = $('#wuliao_code').attr("readOnly",false);
+				   		return (function(){
+				        	a = null;
+				        	b = null;
+				        	c = null;
+				        	return null;
+				        })();
 				    });
 				    //默认上货区
 				    $("#top_button").click(function(){
-			    		af.clickCcqy($("#shanghuoqu_id"));
-				        return null;
+			    		var a = af.clickCcqy($("#shanghuoqu_id"));
+			    		return (function(){
+				        	a = null;
+				        	return null;
+				        })();
 				    });
 				    //默认下货区
 				    $("#bottom_button").click(function(){
-			    		af.clickCcqy($("#xiahuoqu_id"));
-				        return null;
+			    		var a = af.clickCcqy($("#xiahuoqu_id"));
+			    		return (function(){
+				        	a = null;
+				        	return null;
+				        })();
 				    });
 				    //保存
 				    $("#wl_saveBtn").click(function(){
@@ -165,21 +214,25 @@ var readyShow = {
 				    		shanghuoqu_id		: $("#shanghuoqu_id").val(),		//默认上货区
 				    		xiahuoqu_id			: $("#xiahuoqu_id").val()			//默认下货区
 				    	};
-				    	$.ajax({
+				    	var a = $.ajax({
 						    url: getRootPath()+'/BaseDataAction.do?operType=saveWl',
 						    type: 'get',
 						    data: upload,cache:false, 
 						    success: function (data) {
 						    	var obj = eval("("+data+")");
 								if(obj.success){
-									layer.msg('物料'+upload.wuliao_code+'，保存成功！');
+									layer.msg('物料'+$("#wuliao_code").val()+'，保存成功！');
 				   					$('#wuliao_code').attr("readOnly",true);
 								}else{
-									layer.msg('物料'+upload.wuliao_code+'，保存失败！');
+									layer.msg('物料'+$("#wuliao_code").val()+'，保存失败！');
 								};
 							}
 						});
-				        return null;
+				    	return (function(){
+				        	a = null;
+				        	upload = null;
+				        	return null;
+				        })();
 				    });
 				    //删除
 				    $("#wl_deleteBtn").click(function(){
@@ -249,7 +302,7 @@ var readyShow = {
 						});
 						/*设置table高度*/
 						$('#commonSearchTableBody').css('height', document.body.clientHeight / 3);
-						$.ajax({
+						var a = $.ajax({
 							url: getRootPath()+'/BaseDataAction.do?operType=selectWlList',
 							type: 'get',
 							data: '',cache:false, 
@@ -295,7 +348,11 @@ var readyShow = {
 				            	});
 							}
 						});
-						return null;
+				    	return (function(){
+				        	a = null;
+				        	openWindow = null;
+				        	return null;
+				        })();
 				    });
 				    return true;
 				},
@@ -2100,7 +2157,10 @@ var readyShow = {
 						if(this.wuliaoLoad()&&this.mozuLoad()&&this.packLoad()){
 							return null;
 						};
-						return null;
+				    	return (function(){
+				    		winHeight = null;
+				        	return null;
+				        })();
 					}catch (e) {
 						return e;
 					}
@@ -2111,6 +2171,6 @@ var readyShow = {
 		}catch (e) {
 			return e;
 		}
-		return null;
+		return hdFun();
 	}
 };

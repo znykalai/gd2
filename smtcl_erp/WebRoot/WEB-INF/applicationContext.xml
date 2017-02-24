@@ -65,6 +65,9 @@
     <bean id="homeActionDAO" class="com.sygf.erp.baseData.dao.HomeActionDAO">
         <property name="sqlMapClient" ref="sqlMapClient" /> 
     </bean>
+    <bean id="kuFangActionDAO" class="com.sygf.erp.baseData.dao.KuFangActionDAO">
+        <property name="sqlMapClient" ref="sqlMapClient" /> 
+    </bean>
     <!--钱凤来的webservice配置
     <import resource="classpath:META-INF/cxf/cxf.xml" />
     <import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />

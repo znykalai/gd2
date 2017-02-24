@@ -27,7 +27,6 @@
 <link rel="stylesheet" type="text/css" href="<%=path%>/css/bootstrap-datetimepicker.min.css"/>
 <link rel="stylesheet" type="text/css" href="<%=path%>/css/button.css"/>
 <link rel="stylesheet" type="text/css" href="<%=path%>/css/general.css"/>
-<link rel="stylesheet" type="text/css" href="<%=path%>/css/home.css"/>
 <script src="<%=path%>/js/jquery.min.js"></script>
 <script src="<%=path%>/js/highcharts.js"></script>
 <script src="<%=path%>/js/highcharts-more.js"></script>
@@ -100,7 +99,7 @@
 					<div id="homeRight" class="homeRight">
 						<div id="anniu1" title="订单调度" class="订单调度"></div>
 						<div id="anniu2" title="主页信息" class="主页信息"></div>
-						<div id="anniu3" title="订单下载" class="订单下载"></div>
+						<div id="anniu3" title="PLC" class="PLC"></div>
 						<div id="anniu4" title="库房操作" class="库房操作"></div>
 						<div id="anniu5" title="基础设置" class="基础设置"></div>
 					</div>

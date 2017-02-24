@@ -389,15 +389,37 @@
 		WHERE a.`托盘编号`&lt;&gt;'' AND a.`货位编号`&lt;&gt;'60001' AND a.`货位编号`&lt;&gt;'60002'
 	</select>
 	<!-- 搬运机构指定队列-立体库动作  -->
-	<resultMap id="HomeActionDAO.getActionCommandMap" class="java.util.HashMap">
+	<resultMap id="KuFangActionDAO.getActionCommandMap" class="java.util.HashMap">
     	<result property="idEvent" column="idEvent" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     	<result property="动作" column="动作" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     	<result property="托盘编号" column="托盘编号" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     	<result property="状态" column="状态" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="来源货位号" column="来源货位号" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="放回货位号" column="放回货位号" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="是否回大库" column="是否回大库" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     	<result property="发送时间" column="发送时间" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     	<result property="完成时间" column="完成时间" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     </resultMap>
-	<select id="HomeActionDAO.getActionCommand" parameterClass="java.util.HashMap" resultMap="HomeActionDAO.getActionCommandMap">
-		SELECT a.idEvent,a.`动作`,a.`托盘编号`,a.`状态`,a.`发送时间`,a.`完成时间` FROM 立库动作指令 AS a WHERE a.`状态` &lt;&gt;'完成'
+	<select id="KuFangActionDAO.getActionCommand" parameterClass="java.util.HashMap" resultMap="KuFangActionDAO.getActionCommandMap">
+		SELECT a.idEvent,a.`动作`,a.`托盘编号`,
+			   a.`状态`,a.`发送时间`,a.`完成时间`,
+			   a.`来源货位号`,a.`放回货位号`,a.`是否回大库` 
+		FROM 立库动作指令 AS a WHERE a.`状态` &lt;&gt;'完成'
+	</select>
+	<!-- 库存 -->
+	<resultMap id="KuFangActionDAO.getKuCunListMap" class="java.util.HashMap">
+    	<result property="ID" column="ID" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="托盘编号" column="托盘编号" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="物料" column="物料" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="数量" column="数量" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="方向" column="方向" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="货位号" column="货位号" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="库房号" column="库房号" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    </resultMap>
+	<select id="KuFangActionDAO.getKuCunList" parameterClass="java.util.HashMap" resultMap="KuFangActionDAO.getKuCunListMap">
+		SELECT a.ID, a.`托盘编号`,
+			   a.`物料`,a.`数量`,a.`方向`,
+			   a.`货位号`,a.`库房号`
+		FROM `库存托盘` AS a
 	</select>
 </sqlMap>

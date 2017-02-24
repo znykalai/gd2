@@ -35,19 +35,6 @@ public class HomeActionDAO extends SqlMapClientDaoSupport {
 		return null;
 	}
 	/**
-	 * 立体库动作指令
-	 * @return
-	 */
-	public List getActionCommand() {
-		try{
-			return getSqlMapClientTemplate().queryForList("HomeActionDAO.getActionCommand",null);
-		}catch (Exception e) {
-			Log.error("HomeActionDAO.getActionCommand方法出现异常！" + e.getMessage());
-			e.printStackTrace();
-		}
-		return null;
-	}
-	/**
 	 * 货位使用率
 	 * @return
 	 */

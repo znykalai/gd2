@@ -1,11 +1,11 @@
 var readyShow = {
 	deleteSetInterval:null,
-	load:function (){
+	load:function (hdFun){
 		try{
 			var af = {
 				load:function(returnFunction,dsState){
-					this.show(dsState);
-					return returnFunction();
+					var a = this.show(dsState);
+					return returnFunction(a);
 				},
 				show:function(dsState){
 					layer.config({
@@ -397,13 +397,14 @@ var readyShow = {
 					return null;
 				}
 			}
-			af.load(function(){
+			af.load(function(e){
+				e = null;
 				return null;
 			},{state:false,tim:5000});//渲染主页面,function(){}--第一个返回参数,{ds:true--是否为定时刷新、tim:刷新时间毫秒为单位};
 			return null;
 		}catch (e) {
 			return e;
 		}
-		return null;
+		return hdFun();
 	}
 };
