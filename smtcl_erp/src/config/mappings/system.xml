@@ -422,4 +422,12 @@
 			   a.`货位号`,a.`库房号`
 		FROM `库存托盘` AS a
 	</select>
+	<!-- 获取托盘号，方向 -->
+	<resultMap id="KuFangActionDAO.getTpMachineIDMap" class="java.util.HashMap">
+    	<result property="托盘编号" column="托盘编号" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="方向" column="方向" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    </resultMap>
+	<select id="KuFangActionDAO.getTpMachineID" parameterClass="java.util.HashMap" resultMap="KuFangActionDAO.getTpMachineIDMap">
+		SELECT a.`托盘编号`,a.`方向` FROM `库存托盘` AS a WHERE a.`货位号`=#fromID#
+	</select>
 </sqlMap>

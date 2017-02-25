@@ -18,6 +18,10 @@ import org.springframework.context.ApplicationContext;
 import com.sygf.erp.baseData.dao.HomeActionDAO;
 import com.sygf.erp.baseData.dao.KuFangActionDAO;
 import com.sygf.erp.util.GetApplicationContext;
+import com.sygf.erp.util.GetParam;
+
+import alai.znyk.common.ClientSer;
+import alai.znyk.server.SqlTool;
 
 public class KuFangAction extends Action{
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -30,6 +34,10 @@ public class KuFangAction extends Action{
 				return getKuCun(mapping, form, request, response);
 			}else if (operType.equals("getHw")){
 				return getHw(mapping, form, request, response);
+			}else if (operType.equals("getTp")){
+				return getTp(mapping, form, request, response);
+			}else if (operType.equals("fsMingLing")){
+				return fsMingLing(mapping, form, request, response);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -154,6 +162,69 @@ public class KuFangAction extends Action{
 				}
 			}
 			result.put("hckTb", resultList);
+			response.setContentType("text/html;charset=utf-8");
+			response.getWriter().print(result);
+			response.getWriter().close();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	/**
+	 * 获取托盘编号
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	private ActionForward getTp(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) {
+		try{
+			//获取托盘编码
+			String tp_code = ClientSer.getIntance().ReadFromRffid("",1);
+			response.setContentType("text/html;charset=utf-8");
+			response.getWriter().print(tp_code);
+			response.getWriter().close();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	/**
+	 * 发送命令
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	private ActionForward fsMingLing(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) {
+		try{
+			request.setCharacterEncoding("utf-8");
+			response.setCharacterEncoding("utf-8");
+			HashMap map = GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
+			ApplicationContext context = GetApplicationContext.getContext(request);
+			KuFangActionDAO dao = (KuFangActionDAO)context.getBean("kuFangActionDAO");
+			System.out.println("map="+map);
+			String result = null;
+			if(map.get("title").equals("上货")){
+				result = SqlTool.manUpPallet(map.get("tp").toString(),
+						map.get("wuliao").toString(),Integer.parseInt(map.get("num").toString()),
+						map.get("toID").toString(),map.get("machineID").toString());
+			}else{
+				List hwList = dao.getTpMachineID(map);
+				if(hwList!=null&&hwList.size()>0){
+					String tp = ((HashMap)hwList.get(0)).get("托盘编号").toString();
+					String machineID = ((HashMap)hwList.get(0)).get("方向").toString();
+					result = SqlTool.add动作指令(tp,map.get("fromID").toString(),
+							map.get("toID").toString(),map.get("type").toString(),
+							Integer.parseInt(map.get("todaku").toString()),machineID);
+				}else{
+					result = "此货位没有托盘！";
+				}
+			}
 			response.setContentType("text/html;charset=utf-8");
 			response.getWriter().print(result);
 			response.getWriter().close();

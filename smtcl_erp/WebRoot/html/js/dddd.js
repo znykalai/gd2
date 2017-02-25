@@ -400,7 +400,7 @@ var readyShow = {
 			af.load(function(e){
 				e = null;
 				return null;
-			},{state:false,tim:5000});//渲染主页面,function(){}--第一个返回参数,{ds:true--是否为定时刷新、tim:刷新时间毫秒为单位};
+			},{state:true,tim:5000});//渲染主页面,function(){}--第一个返回参数,{ds:true--是否为定时刷新、tim:刷新时间毫秒为单位};
 			return null;
 		}catch (e) {
 			return e;
