@@ -244,7 +244,7 @@ public class SqlTool {
         }
         
         if(type.equals("下货")){
-        	if(!((fomI>0&&fomI<23)&&(toI==60002||(toI>500&&toI<615)))){
+        	if(!((fomI>0&&fomI<29)&&(toI!=60002||(toI>500&&toI<615)))){
       		  have=true;
             	  back="不允许从"+fomI+"货位把货下到"+toI+"货位";
       	  }
