@@ -5,50 +5,315 @@
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 </head>
 <body>
-	<div class="row margin-top-10 account-company-auth" id="xy" style="overflow-y:scroll;background-color:white;height:94%;width:98%;margin-left:2%;">
+	<div class="row margin-top-10 account-company-auth" id="xy" 
+			style="overflow-y:hidden;overflow-x:hidden;background-color:white;
+			height:94%;width:98%;margin-left:2%;">
 		<div id="kfcz_id" class="row">
 			<form id="kfcz_id" class="row">
-				<div class="col-md-6">
-				
+				<div class="row">
+					<div class="col-md-7">
+						<div class="account-company-auth" 
+							style="width:100%;height:305px;
+							min-height:305px;padding:3; margin-top:-40px;">
+					    	<div class="row">
+					    		<div class="col-md-2 text-right" style="padding: 5 0 0 0;">
+					                <span>显示物料位置:</span>
+					            </div>
+					            <div class="col-md-10">
+					            	<div class="cus-select" style="width:97.3%" id="show_wuliao_name">
+		                                <div class="cus-select-btn"></div>
+		                                <input id="show_wuliao" type="text" readonly/> 
+		                                <ul></ul>
+		                            </div>
+					            </div>
+					    	</div>
+					    	<div class="row" style="margin-left:2px;margin-top:4px;">
+					    		<div class="col-md-2" style="padding:0;margin-top:5px;">
+					    			<div class="row" style="margin-left:14px;" id="shanghuo">
+				    					<input type="radio" style="cursor:pointer;" name="radioName"/>
+				    					<span style="font-size:13px;cursor:pointer;">上货</span>
+					    			</div>
+					    		</div>
+					    		<div class="col-md-10">
+									<div class="col-md-2 text-right" style="padding: 5 0 0 0;">
+						                <span><span style="color:red;">*</span>托盘编号：</span>
+						            </div>
+						            <div class="col-md-4">
+						            	<div class="input-group">
+						               		<input id="tp_code" type="text" style="z-index:0;" readonly="readonly" class="form-control"/>
+							                <span class="input-group-btn">
+										        <button class="btn btn-default" id="tp_code_click" type="button">读取</button>
+									   		</span>
+								   		</div>
+						            </div>
+									<div class="col-md-2 text-right" style="padding: 5 0 0 0;">
+						                <span><span style="color:red;">*</span>物料：</span>
+						            </div>
+						            <div class="col-md-4">
+							            <div class="input-group">
+						               		<input id="wl_code" type="text" style="z-index:0;" readonly="readonly" class="form-control"/>
+							                <span class="input-group-btn">
+										        <button class="btn btn-default" id="wl_code_click" type="button">选择</button>
+									   		</span>
+								   		</div>
+						            </div>
+								</div>
+					    	</div>
+					    	<div class="row" style="margin-left:2px;margin-top:4px;">
+					    		<div class="col-md-2"></div>
+					    		<div class="col-md-10">
+									<div class="col-md-2 text-right" style="padding: 5 0 0 0;">
+						                <span><span style="color:red;">*</span>数量：</span>
+						            </div>
+						            <div class="col-md-2">
+						                <input id="up_number" type="number" min="1" style="width:80px;" class="form-control"/>
+						            </div>
+									<div class="col-md-2 text-right" style="padding: 5 0 0 0;">
+						                <span><span style="color:red;">*</span>去往货位：</span>
+						            </div>
+						            <div class="col-md-2">
+						                <input id="go_huowei" type="text" style="width:100px;" class="form-control"/>
+						            </div>
+									<div class="col-md-2 text-right" style="padding: 5 0 0 0;">
+						                <span><span style="color:red;">*</span>方向：</span>
+						            </div>
+						            <div class="col-md-2">
+						                <div class="cus-select" id="fangxiang_name">
+			                                <div class="cus-select-btn"></div>
+			                                <input id="fangxiang" type="text" readonly/> 
+			                                <ul>
+			                                	<li>1</li>
+			                                	<li>2</li>
+			                                </ul>
+			                            </div>
+						            </div>
+								</div>
+					    	</div>
+					    	<div class="row" style="margin-left:2px;margin-top:4px;">
+					    		<div class="col-md-2" style="padding:0;margin-top:5px;">
+					    			<div class="row" style="margin-left:14px;" id="xiahuodaoshusongxian">
+				    					<input type="radio" style="cursor:pointer;" name="radioName"/>
+				    					<span style="font-size:13px;cursor:pointer;">下货到输送线</span>
+					    			</div>
+					    		</div>
+					    		<div class="col-md-10">
+									<div class="col-md-2 text-right" style="padding: 5 0 0 0;">
+						                <span><span style="color:red;">*</span>从货位：</span>
+						            </div>
+						            <div class="col-md-4">
+						                <input id="cong_xhdssx_huowei" type="text" class="form-control"/>
+						            </div>
+									<div class="col-md-2 text-right" style="padding: 5 0 0 0;">
+						                <span><span style="color:red;">*</span>到货位：</span>
+						            </div>
+						            <div class="col-md-4">
+						                <input id="dao_xhdssx_huowei" type="text" class="form-control"/>
+						            </div>
+								</div>
+					    	</div>
+					    	<div class="row" style="margin-left:2px;margin-top:4px;">
+					    		<div class="col-md-2" style="padding:0;margin-top:5px;">
+					    			<div class="row" style="margin-left:14px;" id="congshusongxianhuihuojia">
+				    					<input type="radio" style="cursor:pointer;" name="radioName"/>
+				    					<span style="font-size:13px;cursor:pointer;">从输送线回货架</span>
+					    			</div>
+					    		</div>
+					    		<div class="col-md-10">
+									<div class="col-md-2 text-right" style="padding: 5 0 0 0;">
+						                <span><span style="color:red;">*</span>从工位：</span>
+						            </div>
+						            <div class="col-md-4">
+						                <input id="cong_ssxhhj_gongwei" type="text" class="form-control"/>
+						            </div>
+									<div class="col-md-2 text-right" style="padding: 5 0 0 0;">
+						                <span><span style="color:red;">*</span>到货位：</span>
+						            </div>
+						            <div class="col-md-4">
+						                <input id="dao_ssxhhj_huowei" type="text" class="form-control"/>
+						            </div>
+								</div>
+					    	</div>
+					    	<div class="row" style="margin-left:2px;margin-top:4px;">
+					    		<div class="col-md-2" style="padding:0;margin-top:5px;">
+					    			<div class="row" style="margin-left:14px;" id="congshusongxianhuidaku">
+				    					<input type="radio" style="cursor:pointer;" name="radioName"/>
+				    					<span style="font-size:13px;cursor:pointer;">从输送线回大库</span>
+					    			</div>
+					    		</div>
+					    		<div class="col-md-10">
+									<div class="col-md-2 text-right" style="padding: 5 0 0 0;">
+						                <span><span style="color:red;">*</span>从工位：</span>
+						            </div>
+						            <div class="col-md-10">
+						                <input id="cong_ssxhdk_gongwei" type="text" class="form-control"/>
+						            </div>
+								</div>
+					    	</div>
+					    	<div class="row" style="margin-left:2px;margin-top:4px;">
+					    		<div class="col-md-2" style="padding:0;margin-top:5px;">
+					    			<div class="row" style="margin-left:14px;" id="conghuojiahuidaku">
+				    					<input type="radio" style="cursor:pointer;" name="radioName"/>
+				    					<span style="font-size:13px;cursor:pointer;">从货架回大库</span>
+					    			</div>
+					    		</div>
+					    		<div class="col-md-10">
+									<div class="col-md-2 text-right" style="padding: 5 0 0 0;">
+						                <span><span style="color:red;">*</span>从货位：</span>
+						            </div>
+						            <div class="col-md-10">
+						                <input id="cong_hjhdk_huowei" type="text" class="form-control"/>
+						            </div>
+								</div>
+					    	</div>
+					    	<div class="row" style="margin-top:5px;">
+					    		<div class="col-md-9"></div>
+					    		<div class="col-md-3">
+									<div class="button button-primary button-rounded button-small" 
+										id="kcfsBtn" 
+							        	style="margin-left:15px;font-size:14px;font-family:'微软雅黑';" 
+							        	onselectstart="return false">
+							        	发送命令
+						        	</div>
+								</div>
+					    	</div>
+					    </div>
+					</div>
+				    <div class="col-md-5 huowei_id">
+						<div class="row" style="margin-left:25px;margin-top:-40px;width:100%;float:left;">
+							<div class="col-md-1 kf_shusongxian"><span>输送线</span></div>
+							<div class="col-md-10" style="width:345px;">
+								<div class="row">
+									<div class="kf_hui no" id="502" name="HCK-NAME">502</div>
+									<div class="kf_hui no" id="504" name="HCK-NAME">504</div>
+									<div class="kf_hui no" id="506" name="HCK-NAME">506</div>
+									<div class="kf_hui no" id="508" name="HCK-NAME">508</div>
+									<div class="kf_hui no" id="510" name="HCK-NAME">510</div>
+									<div class="kf_hui no" id="512" name="HCK-NAME">512</div>
+									<div class="kf_hui no" id="514" name="HCK-NAME">514</div>
+								</div>
+								<div class="row" style="margin-top:2px;">
+									<div class="kf_hui no" id="501" name="HCK-NAME">501</div>
+									<div class="kf_hui no" id="503" name="HCK-NAME">503</div>
+									<div class="kf_hui no" id="505" name="HCK-NAME">505</div>
+									<div class="kf_hui no" id="507" name="HCK-NAME">507</div>
+									<div class="kf_hui no" id="509" name="HCK-NAME">509</div>
+									<div class="kf_hui no" id="511" name="HCK-NAME">511</div>
+									<div class="kf_hui no" id="513" name="HCK-NAME">513</div>
+								</div>
+							</div>
+						</div>
+						<div class="row" style="margin-left:25px;margin-top:4px;width:100%;float:left;">
+							<div class="col-md-1 kf_shengjiangtai">左升降台</div>
+							<div class="col-md-10" style="width:345px;">
+								<div class="row">
+									<div class="kf_hui no" id="22" name="HCK-NAME">22</div>
+									<div class="kf_hui no" id="23" name="HCK-NAME">23</div>
+									<div class="kf_hui no" id="24" name="HCK-NAME">24</div>
+									<div class="kf_hui no" id="25" name="HCK-NAME">25</div>
+									<div class="kf_hui no" id="26" name="HCK-NAME">26</div>
+									<div class="kf_hui no" id="27" name="HCK-NAME">27</div>
+									<div class="kf_hui no" id="28" name="HCK-NAME">28</div>
+									<div class="kf_head_hui no" style="float:left;line-height:40px;">第四层</div>
+								</div>
+								<div class="row" style="margin-top:2px;">
+									<div class="kf_hui no" id="15" name="HCK-NAME">15</div>
+									<div class="kf_hui yes" id="16" name="HCK-NAME">16</div>
+									<div class="kf_hui yes" id="17" name="HCK-NAME">17</div>
+									<div class="kf_hui yes" id="18" name="HCK-NAME">18</div>
+									<div class="kf_hui no" id="19" name="HCK-NAME">19</div>
+									<div class="kf_hui no" id="20" name="HCK-NAME">20</div>
+									<div class="kf_hui no" id="21" name="HCK-NAME">21</div>
+									<div class="kf_head_hui no" style="float:left;line-height:40px;">第三层</div>
+								</div>
+								<div class="row" style="margin-top:2px;">
+									<div class="kf_hui no" id="8" name="HCK-NAME">8</div>
+									<div class="kf_hui no" id="9" name="HCK-NAME">9</div>
+									<div class="kf_hui no" id="10" name="HCK-NAME">10</div>
+									<div class="kf_hui yes" id="11" name="HCK-NAME">11</div>
+									<div class="kf_hui yes" id="12" name="HCK-NAME">12</div>
+									<div class="kf_hui no" id="13" name="HCK-NAME">13</div>
+									<div class="kf_hui no" id="14" name="HCK-NAME">14</div>
+									<div class="kf_head_hui no" style="float:left;line-height:40px;">第二层</div>
+								</div>
+								<div class="row" style="margin-top:2px;">
+									<div class="kf_hui yes" id="1" name="HCK-NAME">1</div>
+									<div class="kf_hui no" id="2" name="HCK-NAME">2</div>
+									<div class="kf_hui no" id="3" name="HCK-NAME">3</div>
+									<div class="kf_hui no" id="4" name="HCK-NAME">4</div>
+									<div class="kf_hui no" id="5" name="HCK-NAME">5</div>
+									<div class="kf_hui no" id="6" name="HCK-NAME">6</div>
+									<div class="kf_hui no" id="7" name="HCK-NAME">7</div>
+									<div class="kf_head_hui no" style="float:left;line-height:40px;">第一层</div>
+								</div>
+							</div>
+							<div class="col-md-1 kf_shengjiangtai">右升降台</div>
+						</div>
+						<div class="row" style="margin-left:25px;margin-top:4px;width:100%;float:left;">
+							<div class="col-md-1 kf_shusongxian">输送线</div>
+							<div class="col-md-5" style="width:345px;">
+								<div class="row">
+									<div class="kf_hui no" id="602" name="HCK-NAME">602</div>
+									<div class="kf_hui no" id="604" name="HCK-NAME">604</div>
+									<div class="kf_hui no" id="606" name="HCK-NAME">606</div>
+									<div class="kf_hui no" id="608" name="HCK-NAME">608</div>
+									<div class="kf_hui no" id="610" name="HCK-NAME">610</div>
+									<div class="kf_hui no" id="612" name="HCK-NAME">612</div>
+									<div class="kf_hui no" id="614" name="HCK-NAME">614</div>
+								</div>
+								<div class="row" style="margin-top:2px;">
+									<div class="kf_hui no" id="601" name="HCK-NAME">601</div>
+									<div class="kf_hui no" id="603" name="HCK-NAME">603</div>
+									<div class="kf_hui no" id="605" name="HCK-NAME">605</div>
+									<div class="kf_hui no" id="607" name="HCK-NAME">607</div>
+									<div class="kf_hui no" id="609" name="HCK-NAME">609</div>
+									<div class="kf_hui no" id="611" name="HCK-NAME">611</div>
+									<div class="kf_hui no" id="613" name="HCK-NAME">613</div>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
-				<div class="col-md-6">
-					<div class="row" style="margin-top:-40px;margin-left:4px;">
+				<div class="row" style="margin-top:2px;">
+					<div class="col-md-7">
 						<div style="padding-right:17px;">
-							<table class="table table-bordered" style="width:95%;">
+							<table class="table table-bordered" style="width:100%;">
 					           <thead>
 					               <tr>
-					                  <th class="text-center" style="width: 35px;" bgcolor="#EFEFEF">事件ID</th>
-					                  <th class="text-center" style="width: 50px;" bgcolor="#EFEFEF">动作</th>
-					                  <th class="text-center" style="width: 50px;" bgcolor="#EFEFEF">托盘编码</th>
-					                  <th class="text-center" style="width: 35px;" bgcolor="#EFEFEF">状态</th>
-					                  <th class="text-center" style="width: 50px;" bgcolor="#EFEFEF">开始时间</th>
-					                  <th class="text-center" style="width: 50px;" bgcolor="#EFEFEF">结束时间</th>
+					                  <th class="text-center" style="width:35px;" bgcolor="#EFEFEF">事件</th>
+					                  <th class="text-center" style="width:40px;" bgcolor="#EFEFEF">动作</th>
+					                  <th class="text-center" style="width:40px;" bgcolor="#EFEFEF">托盘</th>
+					                  <th class="text-center" style="width:40px;" bgcolor="#EFEFEF">来源</th>
+					                  <th class="text-center" style="width:40px;" bgcolor="#EFEFEF">去往</th>
+					                  <th class="text-center" style="width:40px;" bgcolor="#EFEFEF">状态</th>
+					                  <th class="text-center" style="width:40px;" bgcolor="#EFEFEF">回大库</th>
+					                  <th class="text-center" style="width:55px;" bgcolor="#EFEFEF">开始时间</th>
+					                  <th class="text-center" style="width:55px;" bgcolor="#EFEFEF">结束时间</th>
 					               </tr>
 					           </thead>
 							</table>
 						</div>
-				        <div class="table-body" style="width:95%;">
+				        <div class="table-body" style="width:100%;">
 				           <table class="table table-bordered text-center table-hover" id="hc_table">
 				               <tbody></tbody>
 				           </table>
 				        </div>
 					</div>
-					<div class="row" style="margin-top:2px;margin-left:4px;">
+					<div class="col-md-5">
 						<div style="padding-right:17px;">
-							<table class="table table-bordered" style="width:95%;">
+							<table class="table table-bordered table-layout" style="width:100%;">
 					           <thead>
 					               <tr>
-					                  <th class="text-center" style="width: 35px;" bgcolor="#EFEFEF">托盘</th>
+					                  <th class="text-center" style="width: 40px;" bgcolor="#EFEFEF">托盘</th>
 					                  <th class="text-center" style="width: 50px;" bgcolor="#EFEFEF">物料</th>
-					                  <th class="text-center" style="width: 50px;" bgcolor="#EFEFEF">数量</th>
-					                  <th class="text-center" style="width: 35px;" bgcolor="#EFEFEF">货位号</th>
-					                  <th class="text-center" style="width: 50px;" bgcolor="#EFEFEF">方向</th>
+					                  <th class="text-center" style="width: 40px;" bgcolor="#EFEFEF">数量</th>
+					                  <th class="text-center" style="width: 40px;" bgcolor="#EFEFEF">货位号</th>
+					                  <th class="text-center" style="width: 40px;" bgcolor="#EFEFEF">方向</th>
 					               </tr>
 					           </thead>
 							</table>
 						</div>
-				        <div class="table-body" style="width:95%;">
-				           <table class="table table-bordered text-center table-hover" id="kc_table">
+				        <div class="table-body" style="width:100%;">
+				           <table class="table table-bordered text-center table-hover table-layout" id="kc_table">
 				               <tbody></tbody>
 				           </table>
 				        </div>

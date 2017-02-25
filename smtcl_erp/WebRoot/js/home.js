@@ -1,4 +1,4 @@
-var dlInterval = false;
+var dlInterval = null;
 function mousePosition(evt){
     evt = evt || window.event;
     //Mozilla
@@ -25,6 +25,7 @@ var winId = null;
 function dragStart(event){
 	winId = event.target.id.split("_")[0];
    	event.dataTransfer.setData("Text", event.target.id);
+   	return null;
 }
 function allowDrop(event){
 	if(winId){
@@ -33,6 +34,7 @@ function allowDrop(event){
 		$("#"+winId+"_id_").hide(0);
 	}
     event.preventDefault();
+    return null;
 }
 function drop(event){
 	event.preventDefault();
@@ -59,7 +61,7 @@ function drop(event){
 		},
 		cancel: function(index){
 			$("#"+this.sw).show(0);
-			$("#"+this.sw.split("_")[0]).fadeToggle(1000);
+			$("#"+this.sw.split("_")[0]).fadeToggle(300);
 			layer.close(index);
 			return false; 
 		} 
@@ -82,15 +84,15 @@ function current() {
 	str += d.getHours() + ':';
 	str += d.getMinutes() + ':';
 	str += d.getSeconds();
-	return str;
+	return null;
 }
-var af = {
+var af_Home = {
 	arrBtn:null,
 	click:function(url_){
-		if(af.arrBtn == url_){return null;}
+		if(af_Home.arrBtn == url_){return null;}
 		if(dlInterval){dlInterval=null;clearInterval(readyShow.deleteSetInterval);}//销毁定时器
 		$("#home_div").val(null);$("#btn_id").val(null);
-		readyShow = null;af.arrBtn = url_;
+		readyShow=null;af_Home.arrBtn=url_;
 	 	$.ajax({
 		    url: url_,
 		    type: 'get',
@@ -103,22 +105,31 @@ var af = {
 		    	var home_btn = spl + html.split(spl)[1];
 				$("#home_div").html(home_html);
 				$("#btn_id").html(home_btn);
-				readyShow.load();
+				readyShow.load(function(){
+					spl = null,body = null,
+					home_html = null,home_btn = null;
+					return null;
+				});
+				return null;
 		    }
 		});
 	 	return null;
 	},
-	load:function(){
+	load:function(fun){
 		//关机
 		$('#div_mo_img_close').mouseover(function(){
 			var url = getRootPath()+"/images/guanjianniu_mo.png";
 			$(this).attr("src",url);
-			return null;
+			return (function(){
+				return url = null;
+			})();
 		});
 		$('#div_mo_img_close').mouseout(function(){
 			var url = getRootPath()+"/images/guanjianniu.png";
-			$(this).attr("src",url);
-			return null;
+			$(this).attr("src",url); 
+			return (function(){
+				return url = null;
+			})();
 		});
 		//用户设置
 		$('#yhsz').mousedown(function(){
@@ -134,46 +145,54 @@ var af = {
 		});
 		//按钮-主页
 		$('#anniuHome').click(function(){
-			$("#homeRight").slideToggle(300,function(){
-				return null;
+			var a = $("#homeRight").slideToggle(280,function(){
+				return a = null;
 			});
 			return null;
 		});
 		$('#anniu1').click(function(){
-			af.click(getRootPath()+'/html/dddd.html');
+			af_Home.click(getRootPath()+'/html/dddd.html');
 			return null;
 		});
 		//按钮-主页显示
 		$('#anniu2').click(function(){
-			af.click(getRootPath()+'/html/h_home.html');
+			af_Home.click(getRootPath()+'/html/h_home.html');
 			return null;
 		});
-		//按钮-订单管理
+		//按钮-plc
 		$('#anniu3').click(function(){
-			af.click(getRootPath()+'/html/ddgl.html');
+			af_Home.click(getRootPath()+'/html/plc.html');
 			return null;
 		});
 		//按钮-库房操作
 		$('#anniu4').click(function(){
-			af.click(getRootPath()+'/html/kfcz.html');
+			af_Home.click(getRootPath()+'/html/kfcz.html');
 			return null;
 		});
 		//按钮-基础设置
 		$('#anniu5').click(function(){
-			af.click(getRootPath()+'/html/jcsz.html');
+			af_Home.click(getRootPath()+'/html/jcsz.html');
 			return null;
 		});
 		$(document).keydown(function (event) {
 	        if (event.keyCode == 122) {
-	        	window.location.reload();
-				return null;
+	        	var a = window.location.reload();
+				return a=null;
 	        }
 	    });
 		//显示主页;
 		$('#anniu2').click();
-		return null;
+		return fun();
 	}
 };
 $(document).ready(function(){
-	af.load();
+	try{
+		var a = af_Home.load(function(){
+			return a = null;
+		});
+		return null;
+	}catch (e) {
+		return e;
+	}
+	return null;
 });

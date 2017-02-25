@@ -1,6 +1,6 @@
 var readyShow = {
 	deleteSetInterval:null,
-	load:function(){
+	load:function(hdFun){
 		try{
 			var af = {
 				/**
@@ -18,29 +18,28 @@ var readyShow = {
 					//刷新货位状态
 					$("#getHck").click(function(){
 						af.getHck();
+						return null;
 					});
 					//显示GDFrame
 					$("#showGDFrame").click(function(){
 						af.getGDFrame();
+						return null;
 					});
 					this.txload();//图形渲染
 					this.loadButton();//按钮事件启动
 					//货位渲染
 					if(this.getHck()&&dsState.state){//是否启动定时刷新
-						(function(){
-							readyShow.deleteSetInterval = setInterval(function(){
-								if(af.getHck());
-							},dsState.tim);
-							dlInterval = true;
-						})();
+						readyShow.deleteSetInterval = setInterval(function(){
+							if(af.getHck());
+						},dsState.tim),dlInterval=true;
 					}
-					layer.close(win);
+					var ly=layer.close(win),win=null,ly=null,winHeight=null;
 					return returnFunction();
 				},
 				//数组初始化
 				arrayInitialization:function(){
-					this.removeTop = [];
-					this.removeArry = [];
+					this.removeTop = [],
+					this.removeArry = [],
 					this.removeBottom = [];
 					return null;
 				},
@@ -406,8 +405,7 @@ var readyShow = {
 								but.action(this,'bottom',but.butClick);
 								return null;
 							});
-							this.buttonTop();
-							this.buttonBottom();
+							this.buttonTop(),this.buttonBottom();
 							return null;
 						}
 					};
@@ -416,10 +414,10 @@ var readyShow = {
 			}
 			af.load(function(){
 				return null;
-			},{state:false,tim:1000});//渲染主页面,function(){}--第一个返回参数,{ds:true--是否为定时刷新、tim:刷新时间毫秒为单位};
+			},{state:true,tim:1000});//渲染主页面,function(){}--第一个返回参数,{ds:true--是否为定时刷新、tim:刷新时间毫秒为单位};
 		}catch (e) {
 			return e;
 		}
-		return null;
+		return hdFun();
 	}
 };
