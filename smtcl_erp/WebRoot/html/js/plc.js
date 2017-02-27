@@ -5,6 +5,7 @@ var readyShow = {
 			winHeight = document.body.clientHeight - 50;
 		}
 		$('#xy').css('height', (winHeight - (window.screen.height - winHeight))/0.98);
+		
 		return hdFun();
 	}
 };
