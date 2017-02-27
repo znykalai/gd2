@@ -6,12 +6,13 @@ import java.util.Vector;
 
 import alai.znyk.common.ClientSer;
 import alai.znyk.common.SqlPro;
+
 import alai.znyk.server.SqlTool;
 
 public class KuFang {
 	int zl=0;
 	int agv=0;
-	
+	private static KuFang INSTANCE;
 	int rf1=0;
 	int rf2=0;
 	int line=0;
@@ -21,7 +22,7 @@ public class KuFang {
 		
 		new KuFang();
 	}
-	public KuFang(){
+	private KuFang(){
 		
 		new Thread(){
 			public void run(){
@@ -92,6 +93,16 @@ public class KuFang {
 			}
 			
 		}.start();
+	}
+	
+	public static synchronized KuFang getIntance(){
+		if(INSTANCE!=null){return INSTANCE;}else{
+			INSTANCE=new KuFang();
+			System.out.println("库房初始化---------------");
+			
+			return INSTANCE;
+		}
+		
 	}
 	
 //更新托盘在7条输送线上的位置	
@@ -384,7 +395,7 @@ public void startlineAGV(){
 				SqlTool.autoUpPallet(tp, row.get(0)+"", "60001",/* machineID*/"1");
 				
 			}else{
-				String sm[]=SqlTool.getWuliaoFromLK(tp).split("!_!");//物料=数量
+				String sm[]=SqlTool.getWuliaoFromLK(tp).split("!_!");//物料!_!数量
 				SqlTool.autoUpPallet(tp, sm[0], "60001",/* machineID*/"1");
 			}
 			

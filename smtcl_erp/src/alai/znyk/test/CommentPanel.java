@@ -178,7 +178,7 @@ public class CommentPanel extends JPanel {
 	 * Create the panel.
 	 */
 	public CommentPanel() {
-		KuFang f=new KuFang();
+		KuFang f=KuFang.getIntance();
 		colum3.addElement("工位");colum3.addElement("信号");
 		Vector v=SqlTool.findInVector("select 工位,信号 from 有货信号");
 		mode3.setDataVector(v, colum3);

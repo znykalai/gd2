@@ -40,7 +40,7 @@ public class SqlPro {
     public static int 排队=1;
     public static int 执行中=2;
     public static int 完成=3;
-    public static boolean autoRFIDup=false;//确定是否要自动发送上货取
+    public static boolean autoRFIDup=true;//确定是否要自动发送上货取
 
 
     public static String kind[]

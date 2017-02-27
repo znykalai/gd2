@@ -759,7 +759,7 @@ try{  boolean isEvent=false;
    public static String fromDKisTP="wuliao!_!1";
    public static String getWuliaoFromLK(String tp){
 	   
-	   return fromDKisTP;
+	   return findOneRecord("select 物料,数量,max(ID)  FROM 大库请求   where 托盘编码='"+tp+"'");
    }
    
    //通知升降台，可以升起向大库送货
@@ -804,6 +804,7 @@ try{  boolean isEvent=false;
         	   {
         	//3.更新立库指令队列
         	 st.executeUpdate("update 立库动作指令  set 状态2='1' where idEvent="+"'"+eventID+"'");
+        	 st.executeUpdate("update 货位表     set 托盘编号=NULL,堆垛机=NULL where 货位序号="+"'60002'");
         	   }
         	//4.如果去了升降机想大库送货失败怎办
         	
@@ -816,8 +817,10 @@ try{  boolean isEvent=false;
         	 String sql3="select max(idEvent),动作,状态,状态2,是否回大库,来源货位号,放回货位号,托盘编号,"
              		+"请求区  from 立库动作指令   where   动作='输送线回流' and 状态='完成' and 状态2<>'1'"
              		+" and 托盘编号='"+tp+"'";
+        	 System.out.println("RFID2-------------2="+tp);
              set=st.executeQuery(sql3);
              if(set.next()){
+            	 System.out.println("RFID2-------------3="+tp);
             	 Object eventID=set.getObject(1);
             	 Object toID=set.getObject(7)==null?"":set.getObject(7);
             	 String machineID=set.getObject(9)==null?"":set.getObject(9).toString();
@@ -826,9 +829,10 @@ try{  boolean isEvent=false;
             	 String iss=add动作指令( tp, "60002",toID+"","上货"/*上货，下货，输送线回流*/, 
 	    				  0/*1=回大库，非1=不回*/,  machineID);
             	 if(iss.contains("成功")){
+            		 System.out.println("RFID2-------------4="+tp);
             		 //更新状态二
             		 st.executeUpdate("update 立库动作指令  set 状态2='1' where idEvent="+"'"+eventID+"'");
-            		 st.executeUpdate("update 货位表     set 托盘编号=NULL,堆垛机=NULL where 货位序号="+"'60002'");
+            		
             		 isHuowei=true;
             		 back=iss+"!_!"+toID;
             		 
