@@ -287,7 +287,7 @@ public class SqlTool {
                     "'排队',"+
                      "'"+fromID+"',"+
                      "'"+toID+"',"+
-                      "'"+(todaku==1?0:1)+"',"+
+                      "'"+(0)+"',"+
                       "'"+machineID+"',"+
                       "'"+todaku+"',"+
                       SqlPro.getDate()[1]+
@@ -708,7 +708,7 @@ try{  boolean isEvent=false;
     		   st.executeUpdate("update 库存托盘  set 货位号=NULL  where 托盘编号='"+tp+"'");
     		   //2.第二步更新货位表
     		   st.executeUpdate("update 货位表     set 托盘编号=NULL,堆垛机=NULL where 货位序号="+"'"+fromID+"'");
-    		   if(!toID.equals("60002"))
+    		   if(toID.equals("60002"))
     		   st.executeUpdate("update 货位表     set 托盘编号='"+tp+"',堆垛机='"+qu+"'  where 货位序号="+"'"+toID+"'");
     		  //3.第三步更新配方指令队列表
     		   st.executeUpdate("update 立库动作指令  set 状态='完成',完成时间="+SqlPro.getDate()[1]+" where idEvent="+"'"+idEvent+"'");
@@ -766,7 +766,7 @@ try{  boolean isEvent=false;
  
    public static String informToDK(String tp,String wuliao,int shuliang){
 	   
-	   return "";
+	   return "成功";
    }
    
    //当去料升降台有信号时调用这个方法
@@ -788,7 +788,8 @@ try{  boolean isEvent=false;
         if(set.next()){
         	//如果这个托盘是回大库的
         	//1.首先删除库存托盘表里面的记录
-        	Object eventID=set.getObject(1);
+        	 System.out.println("RFID2-------------");
+        	 Object eventID=set.getObject(1);
         	 set=st.executeQuery("select 物料,数量  from 库存托盘  where 托盘编号="+"'"+tp+"'"); 
         	 String wuliao="";
         	 int shul=0;
@@ -797,10 +798,13 @@ try{  boolean isEvent=false;
         		 shul=set.getInt(2);
         	 }
         	 st.executeUpdate("DELETE from `库存托盘` where 托盘编号='"+tp+"'");
-        	 //2.更新立库指令队列
+        	 
+        	 //2.通知去料升降台向大库送去托盘
+        	 if( informToDK(tp,wuliao,shul).contains("成功"))
+        	   {
+        	//3.更新立库指令队列
         	 st.executeUpdate("update 立库动作指令  set 状态2='1' where idEvent="+"'"+eventID+"'");
-            //3.通知去料升降台向大库送去托盘
-        	 informToDK(tp,wuliao,shul);
+        	   }
         	//4.如果去了升降机想大库送货失败怎办
         	
         	 back="成功处理!_!100000";
@@ -810,19 +814,24 @@ try{  boolean isEvent=false;
         	 boolean isHuowei=false;
         	 //首先判断这个托盘有没有指定货位
         	 String sql3="select max(idEvent),动作,状态,状态2,是否回大库,来源货位号,放回货位号,托盘编号,"
-             		+"请求区  from 立库动作指令   where  and 动作='输送线回流' and 状态='完成'"
+             		+"请求区  from 立库动作指令   where   动作='输送线回流' and 状态='完成' and 状态2<>'1'"
              		+" and 托盘编号='"+tp+"'";
              set=st.executeQuery(sql3);
              if(set.next()){
+            	 Object eventID=set.getObject(1);
             	 Object toID=set.getObject(7)==null?"":set.getObject(7);
-            	 String machineID=set.getObject(7)==null?"":set.getObject(9).toString();
+            	 String machineID=set.getObject(9)==null?"":set.getObject(9).toString();
             	 if(!toID.equals("60001")&&!toID.equals("60002")&&!toID.equals("")){
             		 
             	 String iss=add动作指令( tp, "60002",toID+"","上货"/*上货，下货，输送线回流*/, 
 	    				  0/*1=回大库，非1=不回*/,  machineID);
             	 if(iss.contains("成功")){
+            		 //更新状态二
+            		 st.executeUpdate("update 立库动作指令  set 状态2='1' where idEvent="+"'"+eventID+"'");
+            		 st.executeUpdate("update 货位表     set 托盘编号=NULL,堆垛机=NULL where 货位序号="+"'60002'");
             		 isHuowei=true;
             		 back=iss+"!_!"+toID;
+            		 
             	   }
             	 
             	 }
@@ -835,6 +844,8 @@ try{  boolean isEvent=false;
         	 if(set.next()){
         		 Object wul=set.getObject(1);
         		 back =autoUpPallet( tp,wul+"","60002",set.getObject(2)+"");
+        		 if(back.contains("成功"))
+        		 st.executeUpdate("update 立库动作指令  set 状态2='1' where 托盘编号="+"'"+tp+"'");
         	      }
         	 
              }

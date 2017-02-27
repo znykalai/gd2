@@ -240,9 +240,8 @@ public class CommentPanel extends JPanel {
 				if(!textField.getText().equals("")&&!textField_1.getText().equals("")){
 				ClientSer.TP=textField.getText();	
 				SqlTool.fromDKisTP=textField_1.getText()+"!_!"+10;
+				  }
 				ClientSer.rffid1=textField_2.getText().equals("")?"0":"1";
-				
-				}
 			}
 		});
 		btnNewButton.setBounds(347, 24, 93, 23);
@@ -273,11 +272,11 @@ public class CommentPanel extends JPanel {
 		JButton button = new JButton("\u53D1\u9001");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(!textField_3.getText().equals("")){
+			
 					 ClientSer.TP=textField_3.getText();
 					 ClientSer.rffid2=textField_4.getText().equals("")?"0":"1";
 					
-					}
+				
 			}
 		});
 		button.setBounds(347, 66, 93, 23);

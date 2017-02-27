@@ -15,8 +15,8 @@ public class KuFang {
 	int rf1=0;
 	int rf2=0;
 	int line=0;
-	Hashtable<String,String> isRffid1=new Hashtable<String,String>();
-	Hashtable<String,String> isRffid2=new Hashtable<String,String>();
+	String isRffid1="";
+	String isRffid2="";
 	public static void main(String ss[]){
 		
 		new KuFang();
@@ -70,7 +70,7 @@ public class KuFang {
 			try{
 				while(true){
 					startUpRFFID();
-				Thread.sleep(100);
+				Thread.sleep(500);
 				
 				}
 			}catch(Exception ex){}
@@ -84,7 +84,7 @@ public class KuFang {
 			try{
 				while(true){
 					startDownRFFID();
-				Thread.sleep(100);
+				Thread.sleep(500);
 				
 				}
 			}catch(Exception ex){}
@@ -375,8 +375,8 @@ public void startlineAGV(){
 			String b=ClientSer.getIntance().getState(SqlPro.来料升);
 			if(b.equals("1")){//升降台上有货物
 			String tp=ClientSer.getIntance().ReadFromRffid("", 1);
-			if(isRffid2.get(tp)!=null)return;
-			isRffid2.put(tp, tp);
+			if(isRffid2!=null&&isRffid2.equals(tp))return;
+			   isRffid2=tp;
 			//先从库存托盘表里面看看有没有这个托盘
 			Vector tem=SqlTool.findInVector("select 物料  from 库存托盘  where 托盘编号="+"'"+tp+"'"  );
 			if(tem.size()>0){
@@ -413,10 +413,11 @@ public void startlineAGV(){
 			
 			
 			if(b.equals("1")){//升降台上有货物
+				//System.out.println("RFID2+++++");
 			String tp=ClientSer.getIntance().ReadFromRffid("", 2);
-			if(isRffid1.get(tp)!=null)return;
+			if(isRffid1!=null&&isRffid1.equals(tp))return;
 			String back=SqlTool.exeRffid2(tp);
-			isRffid1.put(tp, "");
+			isRffid1=tp;
 				if(back.contains("成功")){
 					
 				}
