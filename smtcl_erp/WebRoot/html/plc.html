@@ -5,10 +5,578 @@
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 </head>
 <body>
-	<div class="row margin-top-10 account-company-auth" id="xy" style="overflow-y:scroll;background-color:white;height:94%;width:98%;margin-left:2%;">
-		<div id="plc_id" class="row">
+	<div class="row margin-top-10 account-company-auth" id="xy" style="overflow-x:hidden;overflow-y:scroll;background-color:white;height:94%;width:98%;margin-left:2%;">
+		<div id="plc_id" class="row" style="margin-top:-45px;">
 			<form id="plc_form" class="row">
-				PLC
+				<div class="row">
+					<div class="plc_gongwei"></div>
+					<div class="plc_gongwei"></div>
+					<div class="plc_gongwei"></div>
+					<div class="plc_gongwei"></div>
+					<div class="plc_gongwei"></div>
+					<div class="plc_gongwei"></div>
+					<div class="plc_gongwei"></div>
+					<div class="plc_gongwei"></div>
+					<div class="plc_gongwei"></div>
+					<div class="plc_gongwei"></div>
+					<div class="plc_gongwei"></div>
+					<div class="plc_gongwei"></div>
+					<div class="plc_gongwei"></div>
+					<div class="plc_gongwei"></div>
+					<div class="plc_gongwei"></div>
+				</div>
+				<div class="row">
+			        <div id="basedata_tab" class="col-md-12" style="margin-top:-10px;margin-left:-14px;">
+			            <div class="row orders-search">
+			                <div class="col-md-10" id="mainStatusBar">
+	                        	<input type="hidden" id="cuttool-status-bar-value" value=""/>
+			                    <div class="sesol-btn mainOrder select" style="line-height:25px;height:25px;font-size:12px" data="1">装配区A</div>
+			                    <div class="sesol-btn mainOrder" style="line-height:25px;height:25px;font-size:12px" data="2">装配区B</div>
+			                </div>
+			            </div>
+				    </div>
+			    </div>
+			    <div class="plc_show row">
+				    <div id="plc_show1" style="margin-top:0px;">
+				    	<!-- 第一行 -->
+						<div class="col-md-12" style="padding:0;height:162px;">
+							<!-- 0工位 -->
+						 	<div class="col-md-2" style="padding:0;width:235px;height:162px;border:1px solid rgb( 155 , 155 , 155 );">
+						 		<div class="col-md-1 text-right" style="width:65px;padding:5px 0 0 0;">
+					                <span style="font-size:12px;">BOOL合并:</span>
+					            </div>
+					            <div class="col-md-1" style="width:65px;padding: 4px 2px 2px 2px;">
+					                <input id="" type="text" style="width:60px;height:20px;" class="form-control"/>
+					            </div>
+						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+					                <span style="font-size:12px;">首地址:</span>
+					            </div>
+					            <div class="col-md-1" style="width:60px;padding: 4px 2px 2px 2px;">
+					            	<input id="" type="text" style="width:60px;height:20px;" class="form-control"/>
+					            </div>
+					            <div class="col-md-12" style="padding:0 2 2 2;">
+				            		<div>
+										<table class="table-bordered" style="height:25px;width:213px;">
+							               <tr>
+							                  <th class="text-center" style="width:10%;font-size:12px;" bgcolor="#EFEFEF">项目</th>
+							                  <th class="text-center" style="width:10%;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center" style="width:10%;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							               </tr>
+										</table>
+									</div>
+							        <div class="table-body" style="margin-top:-1px;height:108px;width:230px;">
+							           <table class="table table-bordered text-center table-hover" id="">
+							               <tbody></tbody>
+							           </table>
+							        </div>
+					            </div>
+						 	</div>
+						 	<!-- 1工位 -->
+						 	<div class="col-md-2" style="padding:0;margin-left:10px;;width:235px;height:162px;border:1px solid rgb( 155 , 155 , 155 );">
+						 		<div class="col-md-1 text-right" style="width:65px;padding:5px 0 0 0;">
+					                <span style="font-size:12px;">BOOL合并:</span>
+					            </div>
+					            <div class="col-md-1" style="width:65px;padding: 4px 2px 2px 2px;">
+					                <input id="" type="text" style="width:60px;height:20px;" class="form-control"/>
+					            </div>
+						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+					                <span style="font-size:12px;">首地址:</span>
+					            </div>
+					            <div class="col-md-1" style="width:60px;padding: 4px 2px 2px 2px;">
+					            	<input id="" type="text" style="width:60px;height:20px;" class="form-control"/>
+					            </div>
+					            <div class="col-md-12" style="padding:0 2 2 2;">
+				            		<div>
+										<table class="table-bordered" style="height:25px;width:213px;">
+							               <tr>
+							                  <th class="text-center" style="width:10%;font-size:12px;" bgcolor="#EFEFEF">项目</th>
+							                  <th class="text-center" style="width:10%;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center" style="width:10%;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							               </tr>
+										</table>
+									</div>
+							        <div class="table-body" style="margin-top:-1px;height:108px;width:230px;">
+							           <table class="table table-bordered text-center table-hover" id="">
+							               <tbody>
+							                   <tr>
+							                       <td style="width:10%;"></td>
+							                       <td style="width:10%;"></td>
+							                       <td style="width:10%;"></td>
+							                   </tr>
+							                   <tr>
+							                       <td style="width:10%;"></td>
+							                       <td style="width:10%;"></td>
+							                       <td style="width:10%;"></td>
+							                   </tr>
+							                   <tr>
+							                       <td style="width:10%;"></td>
+							                       <td style="width:10%;"></td>
+							                       <td style="width:10%;"></td>
+							                   </tr>
+							                   <tr>
+							                       <td style="width:10%;"></td>
+							                       <td style="width:10%;"></td>
+							                       <td style="width:10%;"></td>
+							                   </tr>
+							                   <tr>
+							                       <td style="width:10%;"></td>
+							                       <td style="width:10%;"></td>
+							                       <td style="width:10%;"></td>
+							                   </tr>
+							                   <tr>
+							                       <td style="width:10%;"></td>
+							                       <td style="width:10%;"></td>
+							                       <td style="width:10%;"></td>
+							                   </tr>
+							               </tbody>
+							           </table>
+							        </div>
+					            </div>
+						 	</div>
+						 	<!-- 2工位 -->
+						 	<div class="col-md-2" style="padding:0;margin-left:10px;;width:235px;height:162px;border:1px solid rgb( 155 , 155 , 155 );">
+						 		<div class="col-md-1 text-right" style="width:65px;padding:5px 0 0 0;">
+					                <span style="font-size:12px;">BOOL合并:</span>
+					            </div>
+					            <div class="col-md-1" style="width:65px;padding: 4px 2px 2px 2px;">
+					                <input id="" type="text" style="width:60px;height:20px;" class="form-control"/>
+					            </div>
+						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+					                <span style="font-size:12px;">首地址:</span>
+					            </div>
+					            <div class="col-md-1" style="width:60px;padding: 4px 2px 2px 2px;">
+					            	<input id="" type="text" style="width:60px;height:20px;" class="form-control"/>
+					            </div>
+					            <div class="col-md-12" style="padding:0 2 2 2;">
+				            		<div>
+										<table class="table-bordered" style="height:25px;width:213px;">
+							               <tr>
+							                  <th class="text-center" style="width:10%;font-size:12px;" bgcolor="#EFEFEF">项目</th>
+							                  <th class="text-center" style="width:10%;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center" style="width:10%;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							               </tr>
+										</table>
+									</div>
+							        <div class="table-body" style="margin-top:-1px;height:108px;width:230px;">
+							           <table class="table table-bordered text-center table-hover" id="">
+							               <tbody></tbody>
+							           </table>
+							        </div>
+					            </div>
+						 	</div>
+						 	<!-- 3工位 -->
+						 	<div class="col-md-2" style="padding:0;margin-left:10px;;width:235px;height:162px;border:1px solid rgb( 155 , 155 , 155 );">
+						 		<div class="col-md-1 text-right" style="width:65px;padding:5px 0 0 0;">
+					                <span style="font-size:12px;">BOOL合并:</span>
+					            </div>
+					            <div class="col-md-1" style="width:65px;padding: 4px 2px 2px 2px;">
+					                <input id="" type="text" style="width:60px;height:20px;" class="form-control"/>
+					            </div>
+						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+					                <span style="font-size:12px;">首地址:</span>
+					            </div>
+					            <div class="col-md-1" style="width:60px;padding: 4px 2px 2px 2px;">
+					            	<input id="" type="text" style="width:60px;height:20px;" class="form-control"/>
+					            </div>
+					            <div class="col-md-12" style="padding:0 2 2 2;">
+				            		<div>
+										<table class="table-bordered" style="height:25px;width:213px;">
+							               <tr>
+							                  <th class="text-center" style="width:10%;font-size:12px;" bgcolor="#EFEFEF">项目</th>
+							                  <th class="text-center" style="width:10%;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center" style="width:10%;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							               </tr>
+										</table>
+									</div>
+							        <div class="table-body" style="margin-top:-1px;height:108px;width:230px;">
+							           <table class="table table-bordered text-center table-hover" id="">
+							               <tbody></tbody>
+							           </table>
+							        </div>
+					            </div>
+						 	</div>
+						 	<!-- 4工位 -->
+						 	<div class="col-md-2" style="padding:0;margin-left:10px;;width:235px;height:162px;border:1px solid rgb( 155 , 155 , 155 );">
+						 		<div class="col-md-1 text-right" style="width:65px;padding:5px 0 0 0;">
+					                <span style="font-size:12px;">BOOL合并:</span>
+					            </div>
+					            <div class="col-md-1" style="width:65px;padding: 4px 2px 2px 2px;">
+					                <input id="" type="text" style="width:60px;height:20px;" class="form-control"/>
+					            </div>
+						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+					                <span style="font-size:12px;">首地址:</span>
+					            </div>
+					            <div class="col-md-1" style="width:60px;padding: 4px 2px 2px 2px;">
+					            	<input id="" type="text" style="width:60px;height:20px;" class="form-control"/>
+					            </div>
+					            <div class="col-md-12" style="padding:0 2 2 2;">
+				            		<div>
+										<table class="table-bordered" style="height:25px;width:213px;">
+							               <tr>
+							                  <th class="text-center" style="width:10%;font-size:12px;" bgcolor="#EFEFEF">项目</th>
+							                  <th class="text-center" style="width:10%;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center" style="width:10%;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							               </tr>
+										</table>
+									</div>
+							        <div class="table-body" style="margin-top:-1px;height:108px;width:230px;">
+							           <table class="table table-bordered text-center table-hover" id="">
+							               <tbody></tbody>
+							           </table>
+							        </div>
+					            </div>
+						 	</div>
+						 </div>
+						 <!-- 第二行 -->
+						 <div class="col-md-12" style="padding:0;margin-top:4px;height:162px;">
+							<!-- 5工位 -->
+						 	<div class="col-md-2" style="padding:0;width:235px;height:162px;border:1px solid rgb( 155 , 155 , 155 );">
+						 		<div class="col-md-1 text-right" style="width:65px;padding:5px 0 0 0;">
+					                <span style="font-size:12px;">BOOL合并:</span>
+					            </div>
+					            <div class="col-md-1" style="width:65px;padding: 4px 2px 2px 2px;">
+					                <input id="" type="text" style="width:60px;height:20px;" class="form-control"/>
+					            </div>
+						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+					                <span style="font-size:12px;">首地址:</span>
+					            </div>
+					            <div class="col-md-1" style="width:60px;padding: 4px 2px 2px 2px;">
+					            	<input id="" type="text" style="width:60px;height:20px;" class="form-control"/>
+					            </div>
+					            <div class="col-md-12" style="padding:0 2 2 2;">
+				            		<div>
+										<table class="table-bordered" style="height:25px;width:213px;">
+							               <tr>
+							                  <th class="text-center" style="width:10%;font-size:12px;" bgcolor="#EFEFEF">项目</th>
+							                  <th class="text-center" style="width:10%;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center" style="width:10%;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							               </tr>
+										</table>
+									</div>
+							        <div class="table-body" style="margin-top:-1px;height:108px;width:230px;">
+							           <table class="table table-bordered text-center table-hover" id="">
+							               <tbody></tbody>
+							           </table>
+							        </div>
+					            </div>
+						 	</div>
+						 	<!-- 6工位 -->
+						 	<div class="col-md-2" style="padding:0;margin-left:10px;;width:235px;height:162px;border:1px solid rgb( 155 , 155 , 155 );">
+						 		<div class="col-md-1 text-right" style="width:65px;padding:5px 0 0 0;">
+					                <span style="font-size:12px;">BOOL合并:</span>
+					            </div>
+					            <div class="col-md-1" style="width:65px;padding: 4px 2px 2px 2px;">
+					                <input id="" type="text" style="width:60px;height:20px;" class="form-control"/>
+					            </div>
+						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+					                <span style="font-size:12px;">首地址:</span>
+					            </div>
+					            <div class="col-md-1" style="width:60px;padding: 4px 2px 2px 2px;">
+					            	<input id="" type="text" style="width:60px;height:20px;" class="form-control"/>
+					            </div>
+					            <div class="col-md-12" style="padding:0 2 2 2;">
+				            		<div>
+										<table class="table-bordered" style="height:25px;width:213px;">
+							               <tr>
+							                  <th class="text-center" style="width:10%;font-size:12px;" bgcolor="#EFEFEF">项目</th>
+							                  <th class="text-center" style="width:10%;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center" style="width:10%;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							               </tr>
+										</table>
+									</div>
+							        <div class="table-body" style="margin-top:-1px;height:108px;width:230px;">
+							           <table class="table table-bordered text-center table-hover" id="">
+							               <tbody></tbody>
+							           </table>
+							        </div>
+					            </div>
+						 	</div>
+						 	<!-- 7工位 -->
+						 	<div class="col-md-2" style="padding:0;margin-left:10px;;width:235px;height:162px;border:1px solid rgb( 155 , 155 , 155 );">
+						 		<div class="col-md-1 text-right" style="width:65px;padding:5px 0 0 0;">
+					                <span style="font-size:12px;">BOOL合并:</span>
+					            </div>
+					            <div class="col-md-1" style="width:65px;padding: 4px 2px 2px 2px;">
+					                <input id="" type="text" style="width:60px;height:20px;" class="form-control"/>
+					            </div>
+						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+					                <span style="font-size:12px;">首地址:</span>
+					            </div>
+					            <div class="col-md-1" style="width:60px;padding: 4px 2px 2px 2px;">
+					            	<input id="" type="text" style="width:60px;height:20px;" class="form-control"/>
+					            </div>
+					            <div class="col-md-12" style="padding:0 2 2 2;">
+				            		<div>
+										<table class="table-bordered" style="height:25px;width:213px;">
+							               <tr>
+							                  <th class="text-center" style="width:10%;font-size:12px;" bgcolor="#EFEFEF">项目</th>
+							                  <th class="text-center" style="width:10%;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center" style="width:10%;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							               </tr>
+										</table>
+									</div>
+							        <div class="table-body" style="margin-top:-1px;height:108px;width:230px;">
+							           <table class="table table-bordered text-center table-hover" id="">
+							               <tbody></tbody>
+							           </table>
+							        </div>
+					            </div>
+						 	</div>
+						 	<!-- 8工位 -->
+						 	<div class="col-md-2" style="padding:0;margin-left:10px;;width:235px;height:162px;border:1px solid rgb( 155 , 155 , 155 );">
+						 		<div class="col-md-1 text-right" style="width:65px;padding:5px 0 0 0;">
+					                <span style="font-size:12px;">BOOL合并:</span>
+					            </div>
+					            <div class="col-md-1" style="width:65px;padding: 4px 2px 2px 2px;">
+					                <input id="" type="text" style="width:60px;height:20px;" class="form-control"/>
+					            </div>
+						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+					                <span style="font-size:12px;">首地址:</span>
+					            </div>
+					            <div class="col-md-1" style="width:60px;padding: 4px 2px 2px 2px;">
+					            	<input id="" type="text" style="width:60px;height:20px;" class="form-control"/>
+					            </div>
+					            <div class="col-md-12" style="padding:0 2 2 2;">
+				            		<div>
+										<table class="table-bordered" style="height:25px;width:213px;">
+							               <tr>
+							                  <th class="text-center" style="width:10%;font-size:12px;" bgcolor="#EFEFEF">项目</th>
+							                  <th class="text-center" style="width:10%;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center" style="width:10%;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							               </tr>
+										</table>
+									</div>
+							        <div class="table-body" style="margin-top:-1px;height:108px;width:230px;">
+							           <table class="table table-bordered text-center table-hover" id="">
+							               <tbody></tbody>
+							           </table>
+							        </div>
+					            </div>
+						 	</div>
+						 	<!-- 9工位 -->
+						 	<div class="col-md-2" style="padding:0;margin-left:10px;;width:235px;height:162px;border:1px solid rgb( 155 , 155 , 155 );">
+						 		<div class="col-md-1 text-right" style="width:65px;padding:5px 0 0 0;">
+					                <span style="font-size:12px;">BOOL合并:</span>
+					            </div>
+					            <div class="col-md-1" style="width:65px;padding: 4px 2px 2px 2px;">
+					                <input id="" type="text" style="width:60px;height:20px;" class="form-control"/>
+					            </div>
+						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+					                <span style="font-size:12px;">首地址:</span>
+					            </div>
+					            <div class="col-md-1" style="width:60px;padding: 4px 2px 2px 2px;">
+					            	<input id="" type="text" style="width:60px;height:20px;" class="form-control"/>
+					            </div>
+					            <div class="col-md-12" style="padding:0 2 2 2;">
+				            		<div>
+										<table class="table-bordered" style="height:25px;width:213px;">
+							               <tr>
+							                  <th class="text-center" style="width:10%;font-size:12px;" bgcolor="#EFEFEF">项目</th>
+							                  <th class="text-center" style="width:10%;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center" style="width:10%;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							               </tr>
+										</table>
+									</div>
+							        <div class="table-body" style="margin-top:-1px;height:108px;width:230px;">
+							           <table class="table table-bordered text-center table-hover" id="">
+							               <tbody></tbody>
+							           </table>
+							        </div>
+					            </div>
+						 	</div>
+						 </div>
+						 <!-- 第三行 -->
+						 <div class="col-md-12" style="padding:0;margin-top:4px;height:162px;">
+							<!-- 10工位 -->
+						 	<div class="col-md-2" style="padding:0;width:235px;height:162px;border:1px solid rgb( 155 , 155 , 155 );">
+						 		<div class="col-md-1 text-right" style="width:65px;padding:5px 0 0 0;">
+					                <span style="font-size:12px;">BOOL合并:</span>
+					            </div>
+					            <div class="col-md-1" style="width:65px;padding: 4px 2px 2px 2px;">
+					                <input id="" type="text" style="width:60px;height:20px;" class="form-control"/>
+					            </div>
+						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+					                <span style="font-size:12px;">首地址:</span>
+					            </div>
+					            <div class="col-md-1" style="width:60px;padding: 4px 2px 2px 2px;">
+					            	<input id="" type="text" style="width:60px;height:20px;" class="form-control"/>
+					            </div>
+					            <div class="col-md-12" style="padding:0 2 2 2;">
+				            		<div>
+										<table class="table-bordered" style="height:25px;width:213px;">
+							               <tr>
+							                  <th class="text-center" style="width:10%;font-size:12px;" bgcolor="#EFEFEF">项目</th>
+							                  <th class="text-center" style="width:10%;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center" style="width:10%;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							               </tr>
+										</table>
+									</div>
+							        <div class="table-body" style="margin-top:-1px;height:108px;width:230px;">
+							           <table class="table table-bordered text-center table-hover" id="">
+							               <tbody></tbody>
+							           </table>
+							        </div>
+					            </div>
+						 	</div>
+						 	<!-- 11工位 -->
+						 	<div class="col-md-2" style="padding:0;margin-left:10px;;width:235px;height:162px;border:1px solid rgb( 155 , 155 , 155 );">
+						 		<div class="col-md-1 text-right" style="width:65px;padding:5px 0 0 0;">
+					                <span style="font-size:12px;">BOOL合并:</span>
+					            </div>
+					            <div class="col-md-1" style="width:65px;padding: 4px 2px 2px 2px;">
+					                <input id="" type="text" style="width:60px;height:20px;" class="form-control"/>
+					            </div>
+						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+					                <span style="font-size:12px;">首地址:</span>
+					            </div>
+					            <div class="col-md-1" style="width:60px;padding: 4px 2px 2px 2px;">
+					            	<input id="" type="text" style="width:60px;height:20px;" class="form-control"/>
+					            </div>
+					            <div class="col-md-12" style="padding:0 2 2 2;">
+				            		<div>
+										<table class="table-bordered" style="height:25px;width:213px;">
+							               <tr>
+							                  <th class="text-center" style="width:10%;font-size:12px;" bgcolor="#EFEFEF">项目</th>
+							                  <th class="text-center" style="width:10%;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center" style="width:10%;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							               </tr>
+										</table>
+									</div>
+							        <div class="table-body" style="margin-top:-1px;height:108px;width:230px;">
+							           <table class="table table-bordered text-center table-hover" id="">
+							               <tbody></tbody>
+							           </table>
+							        </div>
+					            </div>
+						 	</div>
+						 	<!-- 12工位 -->
+						 	<div class="col-md-2" style="padding:0;margin-left:10px;;width:235px;height:162px;border:1px solid rgb( 155 , 155 , 155 );">
+						 		<div class="col-md-1 text-right" style="width:65px;padding:5px 0 0 0;">
+					                <span style="font-size:12px;">BOOL合并:</span>
+					            </div>
+					            <div class="col-md-1" style="width:65px;padding: 4px 2px 2px 2px;">
+					                <input id="" type="text" style="width:60px;height:20px;" class="form-control"/>
+					            </div>
+						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+					                <span style="font-size:12px;">首地址:</span>
+					            </div>
+					            <div class="col-md-1" style="width:60px;padding: 4px 2px 2px 2px;">
+					            	<input id="" type="text" style="width:60px;height:20px;" class="form-control"/>
+					            </div>
+					            <div class="col-md-12" style="padding:0 2 2 2;">
+				            		<div>
+										<table class="table-bordered" style="height:25px;width:213px;">
+							               <tr>
+							                  <th class="text-center" style="width:10%;font-size:12px;" bgcolor="#EFEFEF">项目</th>
+							                  <th class="text-center" style="width:10%;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center" style="width:10%;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							               </tr>
+										</table>
+									</div>
+							        <div class="table-body" style="margin-top:-1px;height:108px;width:230px;">
+							           <table class="table table-bordered text-center table-hover" id="">
+							               <tbody></tbody>
+							           </table>
+							        </div>
+					            </div>
+						 	</div>
+						 	<!-- 13工位 -->
+						 	<div class="col-md-2" style="padding:0;margin-left:10px;;width:235px;height:162px;border:1px solid rgb( 155 , 155 , 155 );">
+						 		<div class="col-md-1 text-right" style="width:65px;padding:5px 0 0 0;">
+					                <span style="font-size:12px;">BOOL合并:</span>
+					            </div>
+					            <div class="col-md-1" style="width:65px;padding: 4px 2px 2px 2px;">
+					                <input id="" type="text" style="width:60px;height:20px;" class="form-control"/>
+					            </div>
+						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+					                <span style="font-size:12px;">首地址:</span>
+					            </div>
+					            <div class="col-md-1" style="width:60px;padding: 4px 2px 2px 2px;">
+					            	<input id="" type="text" style="width:60px;height:20px;" class="form-control"/>
+					            </div>
+					            <div class="col-md-12" style="padding:0 2 2 2;">
+				            		<div>
+										<table class="table-bordered" style="height:25px;width:213px;">
+							               <tr>
+							                  <th class="text-center" style="width:10%;font-size:12px;" bgcolor="#EFEFEF">项目</th>
+							                  <th class="text-center" style="width:10%;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center" style="width:10%;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							               </tr>
+										</table>
+									</div>
+							        <div class="table-body" style="margin-top:-1px;height:108px;width:230px;">
+							           <table class="table table-bordered text-center table-hover" id="">
+							               <tbody></tbody>
+							           </table>
+							        </div>
+					            </div>
+						 	</div>
+						 	<!-- 14工位 -->
+						 	<div class="col-md-2" style="padding:0;margin-left:10px;;width:235px;height:162px;border:1px solid rgb( 155 , 155 , 155 );">
+						 		<div class="col-md-1 text-right" style="width:65px;padding:5px 0 0 0;">
+					                <span style="font-size:12px;">BOOL合并:</span>
+					            </div>
+					            <div class="col-md-1" style="width:65px;padding: 4px 2px 2px 2px;">
+					                <input id="" type="text" style="width:60px;height:20px;" class="form-control"/>
+					            </div>
+						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+					                <span style="font-size:12px;">首地址:</span>
+					            </div>
+					            <div class="col-md-1" style="width:60px;padding: 4px 2px 2px 2px;">
+					            	<input id="" type="text" style="width:60px;height:20px;" class="form-control"/>
+					            </div>
+					            <div class="col-md-12" style="padding:0 2 2 2;">
+				            		<div>
+										<table class="table-bordered" style="height:25px;width:213px;">
+							               <tr>
+							                  <th class="text-center" style="width:10%;font-size:12px;" bgcolor="#EFEFEF">项目</th>
+							                  <th class="text-center" style="width:10%;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center" style="width:10%;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							               </tr>
+										</table>
+									</div>
+							        <div class="table-body" style="margin-top:-1px;height:108px;width:230px;">
+							           <table class="table table-bordered text-center table-hover" id="">
+							               <tbody></tbody>
+							           </table>
+							        </div>
+					            </div>
+						 	</div>
+						 	<!-- 15工位 -->
+						 	<div class="col-md-2" style="padding:0;margin-top:4px;width:235px;height:162px;border:1px solid rgb( 155 , 155 , 155 );">
+						 		<div class="col-md-1 text-right" style="width:65px;padding:5px 0 0 0;">
+					                <span style="font-size:12px;">BOOL合并:</span>
+					            </div>
+					            <div class="col-md-1" style="width:65px;padding: 4px 2px 2px 2px;">
+					                <input id="" type="text" style="width:60px;height:20px;" class="form-control"/>
+					            </div>
+						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+					                <span style="font-size:12px;">首地址:</span>
+					            </div>
+					            <div class="col-md-1" style="width:60px;padding: 4px 2px 2px 2px;">
+					            	<input id="" type="text" style="width:60px;height:20px;" class="form-control"/>
+					            </div>
+					            <div class="col-md-12" style="padding:0 2 2 2;">
+				            		<div>
+										<table class="table-bordered" style="height:25px;width:213px;">
+							               <tr>
+							                  <th class="text-center" style="width:10%;font-size:12px;" bgcolor="#EFEFEF">项目</th>
+							                  <th class="text-center" style="width:10%;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center" style="width:10%;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							               </tr>
+										</table>
+									</div>
+							        <div class="table-body" style="margin-top:-1px;height:108px;width:230px;">
+							           <table class="table table-bordered text-center table-hover" id="">
+							               <tbody></tbody>
+							           </table>
+							        </div>
+					            </div>
+						 	</div>
+						 </div>
+					</div>
+				    <div id="plc_show2" style="margin-top:-7px;display:none;"></div>
+				</div>
 			</form>
 		</div>
 	</div>

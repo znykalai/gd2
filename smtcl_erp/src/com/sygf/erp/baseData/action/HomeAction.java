@@ -130,7 +130,7 @@ public class HomeAction extends Action{
 			result.put("hckBottom", bottomArratList);
 			result.put("gdWcl",gdWcl);
 			result.put("hwSyl",hwSyl);
-			System.err.println("home---定时刷新");
+//			System.err.println("home---定时刷新");
 			response.setContentType("text/html;charset=utf-8");
 			response.getWriter().print(result);
 			response.getWriter().close();
@@ -159,27 +159,27 @@ public class HomeAction extends Action{
 			if(map.get("type").equals("get")){
 				result.put("A", PLC.getIntance().isStartDiaodu1());
 				result.put("B", PLC.getIntance().isStartDiaodu2());
-				System.out.println("result="+result);
+//				System.out.println("result="+result);
 			//A区,启动调度
 			}else if(map.get("type").equals("top")){
-				System.out.println("当前按钮是否开启中="+map.get("A"));
+//				System.out.println("当前按钮是否开启中="+map.get("A"));
 				if(map.get("A").equals("true")){
 					PLC.getIntance().setDiaodu1(false);
-					System.out.println("A区，关闭调度！");
+//					System.out.println("A区，关闭调度！");
 				}else{
 					PLC.getIntance().setDiaodu1(true);
-					System.out.println("A区，开启调度!");
+//					System.out.println("A区，开启调度!");
 				}
 				result.put("type",PLC.getIntance().isStartDiaodu1());
 			//B区,启动调度
 			}else if(map.get("type").equals("bottom")){
-				System.out.println("当前按钮是否开启中="+map.get("B"));
+//				System.out.println("当前按钮是否开启中="+map.get("B"));
 				if(map.get("B").equals("true")){
 					PLC.getIntance().setDiaodu2(false);
-					System.out.println("B区，关闭调度！");
+//					System.out.println("B区，关闭调度！");
 				}else{
 					PLC.getIntance().setDiaodu2(true);
-					System.out.println("B区，开启调度!");
+//					System.out.println("B区，开启调度!");
 				}
 				result.put("type", PLC.getIntance().isStartDiaodu2());
 			//A区,复位
