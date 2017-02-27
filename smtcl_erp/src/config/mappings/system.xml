@@ -371,7 +371,7 @@
     	<result property="货位序号" column="货位序号" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     </resultMap>
 	<select id="HomeActionDAO.getHckState" parameterClass="java.util.HashMap" resultMap="HomeActionDAO.getHckStateMap">
-		SELECT a.`货位ID`,a.`货位序号` FROM `货位表` AS a WHERE a.`托盘编号`&lt;&gt;''
+		SELECT a.`货位ID`,a.`货位序号` FROM `货位表` AS a WHERE a.`托盘编号`&lt;&gt;'' and a.`货位序号`&lt;&gt;'60001' and a.`货位序号`&lt;&gt;'60002'
 	</select>
 	<!-- 所以工单完成率 -->
 	<resultMap id="HomeActionDAO.getGdWanChengLvMap" class="java.util.HashMap">
