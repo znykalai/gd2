@@ -1517,6 +1517,10 @@ footer {
 	cursor: pointer; position: absolute;
 	top: 0px; left: 45px; width: 67px; height: 63px;z-index:1000;
 }
+.div_mo_img_strat{
+	cursor: pointer; position: absolute; 
+	top: 0px; left: 150px; width: 67px; height: 63px;z-index:1000;
+}
 .订单调度{
 	width: 66px; height: 50px; 
 	cursor: pointer; position: relative; top: 245px; left: 59px; 

@@ -15,11 +15,6 @@ var readyShow = {
 					//设置高度自适应
 					$('#xy').css('height', (winHeight - (window.screen.height - winHeight))/0.98);
 					$('.table-body').css('height', document.body.clientHeight /5.88);
-					//刷新货位状态
-					$("#getHck").click(function(){
-						af.getHck();
-						return null;
-					});
 					//显示GDFrame
 					$("#showGDFrame").click(function(){
 						af.getGDFrame();
@@ -178,6 +173,7 @@ var readyShow = {
 							var hwSyl = Number(obj.hwSyl)>0?Number(obj.hwSyl):0;
 							var gdWcl = Number(obj.gdWcl)>0?Number(obj.gdWcl):0;
 							af.upload(hwSyl,gdWcl);
+							return obj=null,hwSyl=null,gdWcl=null;
 						}
 					});
 					return true;
@@ -186,7 +182,7 @@ var readyShow = {
 				 * 图片渲染数据
 				 */
 				txload:function(){
-					var chart = {      
+					var chart = {
 					   type: 'solidgauge'
 					};
 					var pane = {
@@ -225,7 +221,7 @@ var readyShow = {
 						title: {
 						   text: ''
 						}
-					}; 
+					};
 					var plotOptions = {
 						solidgauge: {
 						   dataLabels: {
@@ -268,7 +264,7 @@ var readyShow = {
 					json.yAxis = yAxis; 
 					json.series = series;
 					$('#container-rpm').highcharts(json);
-					return null;
+					return chart=null,pane=null,tooltip=null,yAxis=null,plotOptions=null,credits=null,series=null,json=null;
 				},
 				/**
 				 * 更新图片信息,参数必须是int类型
@@ -289,15 +285,75 @@ var readyShow = {
 				         point = chart.series[0].points[0];
 				         point.update(newVal2);
 				      }
-				      return null;
+				      return chart=null,point=null,newVal=null,inc=null;
 				},
 				/**
 				 * 按钮：调度、复位、归零、断点
 				 */
 				loadButton:function(){
 					var but = {
+						buttonTop:function(){
+							//复位点击效果-top
+							$("#fuwei_top").mousedown(function(){
+								$(this).attr("class","qfgdStart");
+								return null;
+							});
+							$("#fuwei_top").mouseup(function(){
+								$(this).attr("class","qfgd");
+								return null;
+							});
+							//归零启动点击效果-top
+							$("#guilingqidong_top").mousedown(function(){
+								$(this).attr("class","qfgdStart");
+								return null;
+							});
+							$("#guilingqidong_top").mouseup(function(){
+								$(this).attr("class","qfgd");
+								return null;
+							});
+							//断点启动点击效果-top
+							$("#duandianqidong_top").mousedown(function(){
+								$(this).attr("class","qfgdStart");
+								return null;
+							});
+							$("#duandianqidong_top").mouseup(function(){
+								$(this).attr("class","qfgd");
+								return null;
+							});
+							return null;
+						},
+						buttonBottom:function(){
+							//复位点击效果-bottom
+							$("#fuwei_bottom").mousedown(function(){
+								$(this).attr("class","qfgdStart");
+								return null;
+							});
+							$("#fuwei_bottom").mouseup(function(){
+								$(this).attr("class","qfgd");
+								return null;
+							});
+							//归零启动点击效果-bottom
+							$("#guilingqidong_bottom").mousedown(function(){
+								$(this).attr("class","qfgdStart");
+								return null;
+							});
+							$("#guilingqidong_bottom").mouseup(function(){
+								$(this).attr("class","qfgd");
+								return null;
+							});
+							//断点启动点击效果-bottom
+							$("#duandianqidong_bottom").mousedown(function(){
+								$(this).attr("class","qfgdStart");
+								return null;
+							});
+							$("#duandianqidong_bottom").mouseup(function(){
+								$(this).attr("class","qfgd");
+								return null;
+							});
+							return null;
+						},
 						//启动调度是否成功状态标识
-						qidongdiaodu_top_type:true,
+						qidongdiaodu_top_type:false,
 						qidongdiaodu_bottom_type:false,
 						//通用点击事件
 						butClick:function(e,type){
@@ -316,96 +372,90 @@ var readyShow = {
 							}
 							return null;
 						},
-						buttonTop:function(){
-							//复位点击效果-top
-							$("#fuwei_top").mousedown(function(){
-								$(this).attr("class","qfgdStart");
-								return null;
-							});
-							$("#fuwei_top").mouseup(function(){
-								$(this).attr("class","qfgd");
-								return null;
-							});
-							$("#fuwei_top").click(function(){});
-							//归零启动点击效果-top
-							$("#guilingqidong_top").mousedown(function(){
-								$(this).attr("class","qfgdStart");
-								return null;
-							});
-							$("#guilingqidong_top").mouseup(function(){
-								$(this).attr("class","qfgd");
-								return null;
-							});
-							$("#guilingqidong_top").click(function(){});
-							//断点启动点击效果-top
-							$("#duandianqidong_top").mousedown(function(){
-								$(this).attr("class","qfgdStart");
-								return null;
-							});
-							$("#duandianqidong_top").mouseup(function(){
-								$(this).attr("class","qfgd");
-								return null;
-							});
-							$("#duandianqidong_top").click(function(){});
-							return null;
-						},
-						buttonBottom:function(){
-							//复位点击效果-bottom
-							$("#fuwei_bottom").mousedown(function(){
-								$(this).attr("class","qfgdStart");
-								return null;
-							});
-							$("#fuwei_bottom").mouseup(function(){
-								$(this).attr("class","qfgd");
-								return null;
-							});
-							$("#fuwei_bottom").click(function(){});
-							//归零启动点击效果-bottom
-							$("#guilingqidong_bottom").mousedown(function(){
-								$(this).attr("class","qfgdStart");
-								return null;
-							});
-							$("#guilingqidong_bottom").mouseup(function(){
-								$(this).attr("class","qfgd");
-								return null;
-							});
-							$("#guilingqidong_bottom").click(function(){});
-							//断点启动点击效果-bottom
-							$("#duandianqidong_bottom").mousedown(function(){
-								$(this).attr("class","qfgdStart");
-								return null;
-							});
-							$("#duandianqidong_bottom").mouseup(function(){
-								$(this).attr("class","qfgd");
-								return null;
-							});
-							$("#duandianqidong_bottom").click(function(){});
-							return null;
-						},
 						action:function(e,type,fun){
 							//ajax处理
-							var qidongdiaodu = null;
-							if(type=='top'){
-								but.qidongdiaodu_top_type = true;
-								qidongdiaodu = but.qidongdiaodu_top_type;
-							}else{
-								but.qidongdiaodu_bottom_type = true;
-								qidongdiaodu = but.qidongdiaodu_bottom_type;
-							}
-							return fun(e,qidongdiaodu);
+							var a = $.ajax({
+								url: getRootPath()+'/HomeAction.do?operType=getHckButton',
+								type: 'get',
+								data: "type="+type+"&" +
+										"A="+but.qidongdiaodu_top_type+"&" +
+										"B="+but.qidongdiaodu_bottom_type,
+								cache:false,
+								success: function (data) {
+									var obj = eval("("+data+")");
+									if(type=="get"){
+										but.qidongdiaodu_top_type = obj.A;
+										but.qidongdiaodu_bottom_type = obj.B;
+										return fun(e.A,obj.A),fun(e.B,obj.B),obj=null;
+									}else if(type=='top'){
+										but.qidongdiaodu_top_type = obj.type;
+									}else if(type=="bottom"){
+										but.qidongdiaodu_bottom_type = obj.type;
+									}else{
+										layer.msg(obj.type);
+									}
+									return fun(e,obj.type),obj=null;
+								}
+							});
+							return a=null;
 						},
 						loadEvn:function(){
-							//启动调度-top
+							/**************启动调度-top***************/
 							$("#qidongdiaodu_top").click(function(){
-								but.action(this,'top',but.butClick);
-								return null;
+								var e=but.action(this,'top',but.butClick);
+								return e=null;
 							});
-							//启动调度-bottom
+							//复位-top
+							$("#fuwei_top").click(function(){
+								var e=but.action(this,'fuwei_top',function(a,b){
+									return a=null,b=null;
+								});
+								return e=null;
+							});
+							//归零启动-top
+							$("#guilingqidong_top").click(function(){
+								var e=but.action(this,'guilingqidong_top',function(a,b){
+									return a=null,b=null;
+								});
+								return e=null;
+							});
+							//断点启动-top
+							$("#duandianqidong_top").click(function(){
+								var e=but.action(this,'duandianqidong_top',function(a,b){
+									return a=null,b=null;
+								});
+								return e=null;
+							});
+							/**************启动调度-bottom***************/
 							$("#qidongdiaodu_bottom").click(function(){
-								but.action(this,'bottom',but.butClick);
-								return null;
+								var e=but.action(this,'bottom',but.butClick);
+								return e=null;
 							});
-							this.buttonTop(),this.buttonBottom();
+							//复位-bottom
+							$("#fuwei_bottom").click(function(){
+								var e=but.action(this,'fuwei_bottom',function(a,b){
+									return a=null,b=null;
+								});
+								return e=null;
+							});
+							//归零启动-bottom
+							$("#guilingqidong_bottom").click(function(){
+								var e=but.action(this,'guilingqidong_bottom',function(a,b){
+									return a=null,b=null;
+								});
+								return e=null;
+							});
+							//断点启动-bottom
+							$("#duandianqidong_bottom").click(function(){
+								var e=but.action(this,'duandianqidong_bottom',function(a,b){
+									return a=null,b=null;
+								});
+								return e=null;
+							});
+							this.buttonTop(),
+							this.buttonBottom();
+							//获取启动调度按钮状态A,B
+							but.action({A:$("#qidongdiaodu_top"),B:$("#qidongdiaodu_bottom")},'get',but.butClick);
 							return null;
 						}
 					};

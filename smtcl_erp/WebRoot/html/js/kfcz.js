@@ -539,10 +539,13 @@ var readyShow = {
 											data:map,
 											cache:false,
 											success: function (data) {
-												alert(data);
-//												if(data.indexOf("成功")==-1){
-//													alert(data);
-//												}
+												if(data.indexOf("成功")==-1){
+													layer.msg(data);
+												};
+												var a = $("input[name='radioName']:checked").parent();
+										    	var b = $('#kfcz_id')[0].reset();
+												var c = a.click();
+												return a=null,b=null,c=null,data=null;
 											}
 										});
 										return type=null,map=null,a=null;
@@ -551,7 +554,6 @@ var readyShow = {
 									}
 									return null;
 								});
-								
 								return (function(){
 									//默认选择上货
 									var a = $("#shanghuo").click();

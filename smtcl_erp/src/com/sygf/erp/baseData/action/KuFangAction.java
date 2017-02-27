@@ -81,6 +81,7 @@ public class KuFangAction extends Action{
 					i++;
 				}
 			}
+			System.err.println("库房操作---定时刷新");
 			result.put("data", actionCommandList);
 			response.setContentType("text/html;charset=utf-8");
 			response.getWriter().print(result);

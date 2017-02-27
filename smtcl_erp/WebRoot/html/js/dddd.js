@@ -36,7 +36,7 @@ var readyShow = {
 						winHeight = document.body.clientHeight - 50;
 					}
 					$('#xy').css('height', (winHeight - (window.screen.height - winHeight))/0.98);
-					var dd_id,mz_xuhao,arrayGd=[],arrayMz=[];
+					var dd_id,mz_xuhao,arrayGd=[],arrayMz=[],winHeight=null;
 					$('.table-body').css('height', document.body.clientHeight /5.88);
 					//工单模组-配方显示
 					function showGdMzPfList(dd_id,mz_xuId){
@@ -75,6 +75,7 @@ var readyShow = {
 										'<td style="width: 8%;padding:2px;">'+obj[i].dd_gongwei+'</td>' +
 									'</tr>');
 								}
+								obj=null;
 							}
 						});
 						return null;
@@ -127,7 +128,7 @@ var readyShow = {
 								$('#mz_row0').click();
 							}
 						}
-						return null;
+						return obj=null;
 					}
 					//工单
 					function showGdList(getGdId,getPackeCode,getGdfenjieriqi,deleteType,win){
@@ -201,6 +202,7 @@ var readyShow = {
 									$('#mz_table tbody tr').remove();//模组table
 									$('#pf_table tbody tr').remove();//配方table
 				  				}
+				  				return obj=null;
 							}
 						});
 						return true;
@@ -242,6 +244,7 @@ var readyShow = {
 				  						layer.msg("分解成功！");
 									}
 								});
+								return dd_table=null,thisRow=null,yesFenjie=null,gd_id=null,pack_code=null;
 							}else{
 				  				layer.msg("非初始化数据不可分解！");
 							}
@@ -287,8 +290,10 @@ var readyShow = {
 										var obj = eval("("+data+")");
 										showGdList('','',$('#getGdfenjieriqi').val(),true,winLayer.open({type: 3}));
 				  						layer.msg(obj.body);
+				  						obj=null;
 									}
 								});
+								return gd_id=null;
 							}else{
 				  				layer.msg("此数据正在处理，不允许删除！");
 							}
@@ -329,6 +334,7 @@ var readyShow = {
 												var obj = eval("("+data+")");
 												showGdList('','',$('#getGdfenjieriqi').val(),false,winLayer.open({type: 3}));
 						  						layer.msg(obj.body);
+						  						obj=null;
 											}
 										});
 									}
@@ -373,6 +379,7 @@ var readyShow = {
 												var obj = eval("("+data+")");
 												showGdList('','',$('#getGdfenjieriqi').val(),false,winLayer.open({type: 3}));
 						  						layer.msg(obj.body);
+						  						obj = null;
 											}
 										});
 									}
@@ -389,8 +396,7 @@ var readyShow = {
 							//定时刷新
 							readyShow.deleteSetInterval = setInterval(function(){
 								showGdList('','','',false);
-							},dsState.tim);
-							dlInterval = true;
+							},dsState.tim),dlInterval = true;
 						})();
 					};
 					//工单显示
@@ -398,8 +404,7 @@ var readyShow = {
 				}
 			}
 			af.load(function(e){
-				e = null;
-				return null;
+				return e = null;
 			},{state:true,tim:5000});//渲染主页面,function(){}--第一个返回参数,{ds:true--是否为定时刷新、tim:刷新时间毫秒为单位};
 			return null;
 		}catch (e) {

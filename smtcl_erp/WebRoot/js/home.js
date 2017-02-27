@@ -120,17 +120,24 @@ var af_Home = {
 		$('#div_mo_img_close').mouseover(function(){
 			var url = getRootPath()+"/images/guanjianniu_mo.png";
 			$(this).attr("src",url);
-			return (function(){
-				return url = null;
-			})();
+			return url = null;
 		});
 		$('#div_mo_img_close').mouseout(function(){
 			var url = getRootPath()+"/images/guanjianniu.png";
 			$(this).attr("src",url); 
-			return (function(){
-				return url = null;
-			})();
+			return url = null;
 		});
+		//急停按钮
+//		$('#div_mo_img_strat').mouseover(function(){
+//			var url = getRootPath()+"/images/fanhuianniu_hui_mo.png";
+//			$(this).attr("src",url);
+//			return url = null;
+//		});
+//		$('#div_mo_img_strat').mouseout(function(){
+//			var url = getRootPath()+"/images/fanhuianniu_hui.png";
+//			$(this).attr("src",url); 
+//			return url = null;
+//		});
 		//用户设置
 		$('#yhsz').mousedown(function(){
 			$('#yhsz_id_').show(0);

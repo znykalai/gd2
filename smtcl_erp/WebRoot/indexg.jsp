@@ -61,6 +61,9 @@
 									<img id="div_mo_img_close" draggable="false" 
 										 class="div_mo_img_close" 
 										 src="<%=path%>/images/guanjianniu.png"/>
+									<img id="div_mo_img_strat" draggable="false"
+										class="div_mo_img_strat"
+										src="<%=path%>/images/fanhuianniu_hong.png" />
 									<div class="row" id="btn_id"></div>
 								</div>
 							</td>

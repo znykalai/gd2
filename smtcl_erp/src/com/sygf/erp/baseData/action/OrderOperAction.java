@@ -123,6 +123,7 @@ public class OrderOperAction extends Action{
 					result.add(mapPara);
 				}
 			}
+			System.err.println("订单调度---定时刷新");
 			response.setContentType("text/html;charset=utf-8");
 			response.getWriter().print(result.toString().replaceAll("'='", "':'"));
 			response.getWriter().close();
