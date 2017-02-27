@@ -37,6 +37,10 @@ public class LoginAction extends Action{
 			response.setCharacterEncoding("utf-8"); 	//用户密码  
 			ApplicationContext context = GetApplicationContext.getContext(request);
 			LoginDAO dao = (LoginDAO)context.getBean("loginDAO");
+			if(request.getParameter("UserName")==null){
+				request.setAttribute("msg", "用户名或密码不正确，请重新输入。");
+				return mapping.findForward("failureHttp");
+			}
 			String username = new String(request.getParameter("UserName").getBytes("iso-8859-1"),"utf-8");	//用户名?
 			String password = request.getParameter("Password"); 
 			MD5 md5 = new MD5();

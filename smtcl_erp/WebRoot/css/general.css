@@ -1716,11 +1716,12 @@ footer {
 	margin-left:2px;
 	line-height:25px;
 	height:25px;
-	width:75px;
+	width:79px;
 	color:#000000;
 	font-size:12px;
 	cursor:pointer;
 	float:left;
+	border:1px solid rgb(137,137,137);
 	background-color:rgb( 234 , 234 , 234 );
 }
 /************************afeng end**********************/
