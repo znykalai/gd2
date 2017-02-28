@@ -129,13 +129,23 @@ public class ClientSer {
 	}
 	
 	public int upPallet(int idEvent,int fromID,int toLocID,int machineID){
+		try{
+		if(isOpenPlc) return gd.getGD().upPallet(idEvent, fromID, toLocID, machineID);}
+		catch(Exception ex){ex.printStackTrace();}
 		System.out.println("上货");
 		return -1;
 	}
 	public int getPallet(int idEvent,String fromLocID,int toLocID,int machineID){
+		try{
+			if(isOpenPlc) return gd.getGD().getPallet(idEvent, fromLocID, toLocID, machineID);}
+			catch(Exception ex){ex.printStackTrace();}
 		System.out.println("下货");
 		return -1;}
 	public int toBackBuffer(int idEvent, int fromLocID,int toLocID){ 
+		 try{
+			if(isOpenPlc) return gd.getGD().toBackBuffer(idEvent, fromLocID, toLocID);
+			}
+			catch(Exception ex){ex.printStackTrace();}
 		System.out.println("回货");
 		return -1;}
 	

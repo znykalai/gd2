@@ -1,1 +1,1 @@
-http://192.168.1.101:8080/ServiceServer
+http://10.24.251.4:8080/smtcl_erp/ServiceServer/gd

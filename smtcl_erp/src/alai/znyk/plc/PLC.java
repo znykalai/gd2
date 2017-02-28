@@ -8,6 +8,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Hashtable;
 import java.util.Vector;
 
 import alai.GDT.Inint;
@@ -39,6 +40,8 @@ public class PLC implements Serializable {
 	public CarryLine line=new CarryLine(this);
 	public CarryLine line2=new CarryLine(this);
 	String STATE1="502=0|504=0|506=0|508=0|510=0|512=0|514=0";
+	
+
 	String STATE2="602=0|604=0|606=0|608=0|610=0|612=0|614=0";
 	
 	private _FST _FST_1_1=new _FST(this, 1, "D10001");
@@ -352,14 +355,37 @@ public class PLC implements Serializable {
 	    	 e.printStackTrace();
 	    	 return null;}
 	}
+	Object LOCK1="";
+	Object LOCK2="";
+	public  String getSTATE1() {
+		synchronized(LOCK1){
+		return STATE1;
+		}
+	}
+	public  void setSTATE1() {
+		synchronized(LOCK1){
+			try{
+			STATE1=ClientSer.getIntance().getState(10);}catch(Exception ex){ex.printStackTrace();}
+		}
+	}
+	public  String getSTATE2() {
+		synchronized(LOCK2){
+		return STATE2;}
+	}
+	public synchronized void setSTATE2() {
+		synchronized(LOCK2){
+			try{
+			STATE2=ClientSer.getIntance().getState(11);}catch(Exception ex){ex.printStackTrace();}
+		}
+	}
 	
 	public void startTiaodu(){
 		new Thread(){
 			public void run(){
 			while(true){
 				try{
-				STATE1=ClientSer.getIntance().getState(10);
-				STATE2=ClientSer.getIntance().getState(11);
+					setSTATE1();
+					setSTATE2();
 				}catch(Exception e){e.printStackTrace();}
 				ST0_1.initFromSql();
 				getSTRdy(1,2);
@@ -566,10 +592,11 @@ public class PLC implements Serializable {
    public boolean getSTRdy(int line,int st){
 	   //这步判断可以不需要，因为只有到位信号才更新托盘
 	   //STATE1,STATE2在主线程里面自动更新
+	   try{
 	  if(st>=2&&st<=8){
 	   if(line==1){
 		   
-		   String smm[]=STATE1.split("\\|");
+		   String smm[]=getSTATE1().split("\\|");
 		   if(st-2==0){
 			 //  System.out.println("=="+STATE1);
 		   }
@@ -581,7 +608,7 @@ public class PLC implements Serializable {
 		   }
 		   
 	   }else{
-		   String smm[]=STATE2.split("\\|");
+		   String smm[]=getSTATE2().split("\\|");
 		   if(smm[st-2].split("=")[1].equals("0")){
 			   STC2.get(st-1).firstST.set立库RDY(false);
 			   STC2.get(st-1).secondST.set立库RDY(false);
@@ -747,14 +774,136 @@ public class PLC implements Serializable {
 			      
 		   
 	   }
+	      return true;
+	   
+	   }catch(Exception ex){ex.printStackTrace();}
 	   
 	 
 	   
 	   
 	    
-	     return true;
+	     return false;
 	   
    }
    
-   
+    ReST first=new ReST(new Resint());
+	ReST second=new ReST(new Resint());
+	Hashtable table=new Hashtable();
+	String LOCK3="";
+	public Hashtable  getDataFromGD(int ST){
+		synchronized(LOCK3){
+		Resint[] rs=ClientSer.getIntance().getReturnPlc("D11001",63,16,1);
+		
+		Resint r1=rs[ST*2];
+		Resint r2=rs[(ST+16)*2];
+		first=new ReST(r1);
+		first.startAddres="D"+(11001+ST*2);
+	    second=new ReST(r2);
+	    second.startAddres="D"+(11033+ST*2);
+		try{
+		Field f[]=first.getClass().getDeclaredFields();
+		table.clear();
+		for(int i=0;i<f.length;i++){
+		    String name=f[i].getName();
+		    Object ty=f[i].getType();
+
+			 try{
+				 
+			 if(ty.toString().equals("boolean")){
+				 String name2=name.substring(0, 1).toUpperCase()+name.substring(1, name.length());
+				 Method m2=	first.getClass().getMethod("is"+name2, null) ;
+				 Method m3=	second.getClass().getMethod("is"+name2, null) ;
+				 table.put(name,  m2.invoke(first, null));
+				 table.put(name+"2",  m3.invoke(second, null));
+				 }else{
+					 String name2=name.substring(0, 1).toUpperCase()+name.substring(1, name.length());
+					 Method m2=	first.getClass().getMethod("get"+name2, null) ;
+					 Method m3=	second.getClass().getMethod("get"+name2, null) ;
+					 table.put(name,  m2.invoke(first, null));
+					 table.put(name+"2",  m3.invoke(second, null));
+					 }
+				  
+			 }catch(Exception ex){ex.printStackTrace();}   
+			 
+		
+			
+		}
+		
+		}catch(Exception ex){
+			ex.printStackTrace();
+			
+		}
+		
+		return table;
+		}
+     }
+	
+	public String setValueByName(String name,String value,String oldValue,int ST){
+		if(oldValue==null)oldValue="";
+		synchronized(LOCK3){
+		 try{
+			 getDataFromGD( ST);
+			 Field f= first.getClass().getDeclaredField(name);
+			 String name2=name.substring(0, 1).toUpperCase()+name.substring(1, name.length());
+			 
+			 if(f.getType().toString().equals("boolean")){
+				 
+			   Method m=	first.getClass().getMethod("is"+name2, null) ;
+			   Object b= m.invoke(first, null)==null?"": m.invoke(first, null);
+			   if(!oldValue.equals(b+"")){
+				    return "数据不同步，请同步后在更新数据！";  
+				   
+			   }
+			   ////////////////////////////////////////////////
+			   Method m2=	first.getClass().getMethod("set"+name2, boolean.class) ; 
+			   if(value!=null&&value.equals("false"))
+			    m2.invoke(first, false);
+			   if(value!=null&&value.equals("true"))
+				   m2.invoke(first, true);
+			       first.writeToPLC(); 
+			   return "成功";
+			 }
+			 if(f.getType().toString().equals("int")){
+				 
+				 Method m=	first.getClass().getMethod("get"+name2, null) ;
+				   Object b= m.invoke(first, null)==null?"": m.invoke(first, null);
+				   if(!oldValue.equals(b+"")){
+					    return "数据不同步，请同步后在更新数据！";  
+					   
+				   }
+				/////////////////////////////////////////////////////////////	
+				   Method m2=	first.getClass().getMethod("set"+name2, int.class) ; 
+				   if(value!=null)
+				   m2.invoke(first, Integer.parseInt(value));
+				   first.writeToPLC(); 
+				   return "成功";
+				 }
+			 
+			 if(f.getType().toString().equals("class java.lang.String")){
+				 
+				 Method m=	first.getClass().getMethod("get"+name2, null) ;
+				 Object b= m.invoke(first, null)==null?"": m.invoke(first, null);
+				   if(!oldValue.equals(b+"")){
+					    return "数据不同步，请同步后在更新数据！";  
+					   
+				   }
+				/////////////////////////////////////////////////////////////	
+					
+				   Method m2=	first.getClass().getMethod("set"+name2, String.class) ; 
+				   if(value!=null)
+				   m2.invoke(first, value);
+				   first.writeToPLC(); 
+				   return "成功";
+				 }
+		 
+		 }catch(Exception ex){ex.printStackTrace();
+		   return ex.getMessage();
+		 }
+		
+		   return "失败";
+		
+		 }
+	}
+
+	
 }
