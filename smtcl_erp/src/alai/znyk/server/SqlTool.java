@@ -652,7 +652,8 @@ try{  boolean isEvent=false;
     	   String zong=set.getObject(1)+"";String zt1=set.getObject(2)+"";
     	   String zt2=set.getObject(3)+"";String isToback=set.getObject(4)+"";
            String fromID=set.getObject(5)+"";String toID=set.getObject(6)+"";
-           String tp=set.getObject(7)+"";String qu=set.getObject(8)+"";
+           String tp=set.getObject(7)+"";
+           String qu=set.getObject(8)+"";
        if(state==SqlPro.完成){
     	   isEvent=true;
     	   if(zong.equals("上货")){

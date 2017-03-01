@@ -52,7 +52,7 @@ public class STContent implements Serializable {
     		}
     	}
     	if(plc.stop2){
-    		if(装配区==1){
+    		if(装配区==2){
     			if(stNum==1){
     				 firstST.writeifChangeToPLC();
     		    	 secondST.writeifChangeToPLC();
