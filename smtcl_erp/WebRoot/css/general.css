@@ -1711,7 +1711,7 @@ footer {
 	font-family:'微软雅黑';
 }
 /*plc*/
-.plc_gongwei{
+.plc_gongwei_hui{
 	text-align: center;
 	margin-left:2px;
 	line-height:25px;
@@ -1719,9 +1719,20 @@ footer {
 	width:79px;
 	color:#000000;
 	font-size:12px;
-	cursor:pointer;
 	float:left;
 	border:1px solid rgb(137,137,137);
 	background-color:rgb( 234 , 234 , 234 );
+}
+.plc_gongwei_lan{
+	text-align: center;
+	margin-left:2px;
+	line-height:25px;
+	height:25px;
+	width:79px;
+	font-size:12px;
+	float:left;
+	color:#ffffff;
+	background-color:rgb( 75 , 176 , 249 );
+	border:1px solid rgb(137,137,137);
 }
 /************************afeng end**********************/

@@ -82,6 +82,7 @@ public class KuFangAction extends Action{
 				}
 			}
 //			System.err.println("库房操作---定时刷新");
+//			System.out.println(request.getRemoteAddr()+"===");
 			result.put("data", actionCommandList);
 			response.setContentType("text/html;charset=utf-8");
 			response.getWriter().print(result);
@@ -208,7 +209,7 @@ public class KuFangAction extends Action{
 			HashMap map = GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
 			ApplicationContext context = GetApplicationContext.getContext(request);
 			KuFangActionDAO dao = (KuFangActionDAO)context.getBean("kuFangActionDAO");
-			System.out.println("map="+map);
+//			System.out.println("map="+map);
 			String result = null;
 			if(map.get("title").equals("上货")){
 				result = SqlTool.manUpPallet(map.get("tp").toString(),
@@ -225,7 +226,9 @@ public class KuFangAction extends Action{
 				}else{
 					result = "此货位没有托盘！";
 				}
+				hwList=null;
 			}
+			dao=null;context=null;map=null;
 			response.setContentType("text/html;charset=utf-8");
 			response.getWriter().print(result);
 			response.getWriter().close();

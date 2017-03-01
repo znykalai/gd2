@@ -17,6 +17,8 @@
 		<action path="/HomeAction" type="com.sygf.erp.baseData.action.HomeAction"></action>
 		<!-- 库房-缓存库指定队列 -->
 		<action path="/KuFangAction" type="com.sygf.erp.baseData.action.KuFangAction"></action>
+		<!-- PLC -->
+		<action path="/PLCAction" type="com.sygf.erp.baseData.action.PLCAction"></action>
 	</action-mappings>
 	<message-resources parameter="com.sygf.erp.ApplicationResources" />
 </struts-config>
