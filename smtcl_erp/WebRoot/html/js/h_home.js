@@ -357,7 +357,7 @@ var readyShow = {
 						qidongdiaodu_bottom_type:false,
 						//通用点击事件
 						butClick:function(e,type){
-							if(type == true){
+							if(type == false){
 								if($(e).attr("class")=="qfgd"){
 									$(e).attr("class","qfgdStart");
 									return null;
