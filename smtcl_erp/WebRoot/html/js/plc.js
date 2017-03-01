@@ -16,6 +16,7 @@ var readyShow = {
 		        return item = null;
 			});
 			var af = {
+				//获取	
 				action:function(fun){
 					var b=$("table[name='GW'] tbody tr").remove();
 					var a = $.ajax({
@@ -36,7 +37,9 @@ var readyShow = {
 						data: map,
 						cache:false,
 						success: function (data) {
-							alert("2="+data);
+							if(data.indexOf("成功")==-1){
+								layer.msg("数据已同步，请重新设置");
+							}
 							return fun();
 						}
 					});
@@ -49,7 +52,7 @@ var readyShow = {
 						var map = obj.data[j];
 						while(i<map.A_LIST.length){
 							if(map.A_LIST[i].A.indexOf('-')==-1&&map.A_LIST[i].A!="boolContent"){
-								$('#A_GW'+j+' tbody').append('<tr name="newTr" bgcolor="#ffffff" style="height:20px;">' +
+								$('#A_GW'+j+' tbody').append('<tr name="newTr" GW="'+j+'" bgcolor="#ffffff" style="height:20px;">' +
 									//项目
 									'<td id="newTd1_'+j+'_'+i+'" title="'+map.A_LIST[i].A+'" style="width:100px;font-size:12px;">' +
 										(map.A_LIST[i].A.length>6?map.A_LIST[i].A.substring(0,7)+'...':map.A_LIST[i].A) +
@@ -65,15 +68,18 @@ var readyShow = {
 									}else if($(this).text()=="false"){
 										$(this).html("true");
 									}
-									alert($('#newTd1_'+j+'_'+i).html());
+									var row = $(this).attr("id").split("_");
 									var data = {
-										type:'firstST',
-										name:$('#newTd1_'+j+'_'+i).html(),
+										cm:'firstST',
+										gwType:"A",
+										gw:$(this).parent().attr("GW"),
+										name:$('#newTd1_'+row[1]+'_'+row[2]).attr("title"),
 										value:$(this).text(),
 										oldValue:$(this).attr('oldValue')
 									};
 									var b=af.updateAction(data,function(){
-										af.action(function(e){af.showHtml(e);});
+										var c = af.action(function(e){af.showHtml(e);});
+										return c=null,data=null,row=null;
 									});
 									return b=null;
 								});
@@ -108,8 +114,15 @@ var readyShow = {
 				},	
 				load:function(fun){
 					var win = layer.open({type:3});
-					var a=this.getTableAGW(function(){
+					var a = this.getTableAGW(function(){
 						return layer.close(win),win=null;
+					});
+					//刷新按钮事件绑定
+					$("#shuxin").click(function(){
+						var win = layer.open({type:3});
+						var a = af.getTableAGW(function(){
+							return layer.close(win),win=null;
+						});
 					});
 					return fun(),a=null;
 				}

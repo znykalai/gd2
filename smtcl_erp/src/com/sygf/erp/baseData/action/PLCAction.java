@@ -133,10 +133,25 @@ public class PLCAction extends Action{
 			response.setCharacterEncoding("utf-8");
 			HashMap map = GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
 			ApplicationContext context = GetApplicationContext.getContext(request);
-			JSONObject result = new JSONObject();
-			
+			String result=null;
 			System.out.println("map="+map);
-			
+			//A区
+			if(map.get("gwType").equals("A")){
+				Vector<STContent> A = PLC.getIntance().STC1;
+				//i= 当前第几个工位
+				int i = Integer.parseInt(map.get("gw").toString());
+				//map.get("cm") = 当前工位下的第几个队列  firstST=1,secondST=2,
+				if(map.get("cm").equals("firstST")){
+					result = A.get(i).firstST.setValueByName(map.get("name").toString(), 
+							map.get("value").toString(), map.get("oldValue").toString());
+				}
+				A=null;i=0;
+			}
+			//B区
+			else{
+				
+			}
+			System.out.println("result="+result);
 			response.setContentType("text/html;charset=utf-8");
 			response.getWriter().print(result);
 			response.getWriter().close();
