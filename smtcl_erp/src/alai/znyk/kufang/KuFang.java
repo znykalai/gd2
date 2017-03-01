@@ -6,7 +6,7 @@ import java.util.Vector;
 
 import alai.znyk.common.ClientSer;
 import alai.znyk.common.SqlPro;
-
+import alai.znyk.plc.PLC;
 import alai.znyk.server.SqlTool;
 
 public class KuFang {
@@ -20,16 +20,17 @@ public class KuFang {
 	String isRffid2="";
 	public static void main(String ss[]){
 		
-		new KuFang();
+		KuFang.getIntance();
+		PLC.getIntance();
 	}
 	private KuFang(){
 		
 		new Thread(){
 			public void run(){
-			try{
+				try{
 				while(true){
 					startLine();
-				    Thread.sleep(100);
+				    Thread.sleep(500);
 				
 				}
 			}catch(Exception ex){}
@@ -43,7 +44,7 @@ public class KuFang {
 			try{
 				while(true){
 					 start堆垛机指令();
-				Thread.sleep(100);
+				Thread.sleep(500);
 				
 				}
 			}catch(Exception ex){}
@@ -57,7 +58,7 @@ public class KuFang {
 			try{
 				while(true){
 					startlineAGV();
-				Thread.sleep(100);
+				Thread.sleep(500);
 				
 				}
 			}catch(Exception ex){}
@@ -188,7 +189,7 @@ public void start堆垛机指令(){
     if(last1==1){//上货
     if(!run) {
     	//如果没有运行中的指令,那么就优先上料，上完料了在看看有没有下货的指令，如果有运行下货
-    	
+    	if(堆1上.size()>0){
     	try {
 			String state=ClientSer.getIntance().getState(SqlPro.堆垛机1状态);//获取堆垛机1的状态
 			if(state.equals(SqlPro.堆垛空闲码)){
@@ -206,6 +207,7 @@ public void start堆垛机指令(){
 				
 			}
 		   } catch (Exception e) {e.printStackTrace();}
+    	}
     	last1=2;
        }
 	
@@ -213,7 +215,7 @@ public void start堆垛机指令(){
     if(last1==2){//下货
         if(!run) {
         	//如果没有运行中的指令,那么就优先上料，上完料了在看看有没有下货的指令，如果有运行下货
-        	
+        	if(堆1下.size()>0){
         	try {
     			String state=ClientSer.getIntance().getState(SqlPro.堆垛机1状态);//获取堆垛机1的状态
     			if(state.equals(SqlPro.堆垛空闲码)){
@@ -229,6 +231,8 @@ public void start堆垛机指令(){
     				
     			}
     		   } catch (Exception e) {e.printStackTrace();}
+        	
+        	}
         	last1=1;
            }
     	
@@ -256,7 +260,7 @@ public void start堆垛机指令(){
    if(last2==1){//上货
    if(!run2) {
    	//如果没有运行中的指令,那么就优先上料，上完料了在看看有没有下货的指令，如果有运行下货
-   	
+	   if(堆2上.size()>0){
    	try {
 			String state=ClientSer.getIntance().getState(SqlPro.堆垛机2状态);//获取堆垛机2的状态
 			if(state.equals(SqlPro.堆垛空闲码)){
@@ -274,6 +278,7 @@ public void start堆垛机指令(){
 				
 			}
 		   } catch (Exception e) {e.printStackTrace();}
+	   }
    	last2=2;
       }
 	
@@ -281,7 +286,7 @@ public void start堆垛机指令(){
    if(last2==2){//下货
        if(!run2) {
        	//如果没有运行中的指令,那么就优先上料，上完料了在看看有没有下货的指令，如果有运行下货
-       	
+       	if(堆2下.size()>0){
        	try {
    			String state=ClientSer.getIntance().getState(SqlPro.堆垛机2状态);//获取堆垛机2的状态
    			if(state.equals(SqlPro.AGV空闲码)){
@@ -297,6 +302,8 @@ public void start堆垛机指令(){
    				
    			}
    		   } catch (Exception e) {e.printStackTrace();}
+       	}
+       	
        	last2=1;
           }
    	
@@ -329,7 +336,7 @@ public void startlineAGV(){
     
  if(!run) {
    	//如果没有运行中的指令,那么就优先上料，上完料了在看看有没有下货的指令，如果有运行下货
-   	
+	 if(堆1上.size()>0){
    	try {
 			String state=ClientSer.getIntance().getState(SqlPro.AGV1);//获取AGV1的状态
 			if(state.equals(SqlPro.AGV空闲码)){
@@ -347,6 +354,8 @@ public void startlineAGV(){
 				
 			}
 		   } catch (Exception e) {e.printStackTrace();}
+   	             
+	   }
   
       }
 	
@@ -354,7 +363,7 @@ public void startlineAGV(){
  
        if(!run2) {
        	//如果没有运行中的指令,那么就优先上料，上完料了在看看有没有下货的指令，如果有运行下货
-       	
+    	   if(堆2上.size()>0){
        	try {
    			String state=ClientSer.getIntance().getState(SqlPro.AGV2);//获取AGV2的状态
    			if(state.equals(SqlPro.AGV空闲码)){
@@ -370,6 +379,8 @@ public void startlineAGV(){
    				
    			}
    		   } catch (Exception e) {e.printStackTrace();}
+       	
+    	   }
        
           }
    	if(agv==0)

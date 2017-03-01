@@ -35,8 +35,8 @@ public class SqlPro {
     public static int AGV2=7;
     public static int AÇøÊäËÍÏß=8;
     public static int BÇøÊäËÍÏß=9;
-    public static int ¶Ñ¶â¿ÕÏĞÂë=3;
-    public static int AGV¿ÕÏĞÂë=3;
+    public static String ¶Ñ¶â¿ÕÏĞÂë="3";
+    public static String AGV¿ÕÏĞÂë="3";
     public static int ÅÅ¶Ó=1;
     public static int Ö´ĞĞÖĞ=2;
     public static int Íê³É=3;

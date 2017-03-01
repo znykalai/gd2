@@ -922,7 +922,7 @@ public class GDStub extends org.apache.axis.client.Stub implements alai.localhos
 }
     }
 
-    public String getState(int t) throws java.rmi.RemoteException {
+    public String getState(int T) throws java.rmi.RemoteException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
@@ -935,7 +935,7 @@ public class GDStub extends org.apache.axis.client.Stub implements alai.localhos
 
         setRequestHeaders(_call);
         setAttachments(_call);
- try {        java.lang.Object _resp = _call.invoke(new java.lang.Object[] {new java.lang.Integer(t)});
+ try {        java.lang.Object _resp = _call.invoke(new java.lang.Object[] {new java.lang.Integer(T)});
  //System.out.println(_resp.getClass());
         if (_resp instanceof java.rmi.RemoteException) {
             throw (java.rmi.RemoteException)_resp;
@@ -1012,8 +1012,9 @@ public class GDStub extends org.apache.axis.client.Stub implements alai.localhos
 	            }
 	        }
 	  } catch (org.apache.axis.AxisFault axisFaultException) {
-	  throw axisFaultException;
-	}
+	            throw axisFaultException;
+	   }
+	 
 	}
 
 }

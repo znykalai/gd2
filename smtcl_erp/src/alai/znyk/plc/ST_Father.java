@@ -182,7 +182,9 @@ public class ST_Father implements STInterface, Serializable{
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	public synchronized Hashtable  getMap() {
+	String LOCK="";
+	public  Hashtable  getMap() {
+		synchronized(LOCK){
 		Field f[]=this.getClass().getDeclaredFields();
 		 table.clear();
 		for(int i=0;i<f.length;i++){
@@ -210,11 +212,13 @@ public class ST_Father implements STInterface, Serializable{
 		table.put("·Ö½âºÅ-", ·Ö½âºÅ);
 		table.put("ÔØ¾ßÐòºÅ-", ÔØ¾ßÐòºÅ);
 		return table;
+		
+		}
 	}
 	
 	public String setValueByName(String name,String value,String oldValue){
 		if(oldValue==null)oldValue="";
-		
+		synchronized(LOCK){
 		 try{
 			 Field f= this.getClass().getDeclaredField(name);
 			 String name2=name.substring(0, 1).toUpperCase()+name.substring(1, name.length());
@@ -274,6 +278,8 @@ public class ST_Father implements STInterface, Serializable{
 		 }
 		
 		return "Ê§°Ü";
+		
+		}
 	}
 
 }

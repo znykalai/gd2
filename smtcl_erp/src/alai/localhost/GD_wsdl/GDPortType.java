@@ -87,7 +87,7 @@ public interface GDPortType extends java.rmi.Remote {
     /**
      * Service definition of function ns__getState
      */
-    public java.lang.String getState(int t) throws java.rmi.RemoteException;
+    public java.lang.String getState(int T) throws java.rmi.RemoteException;
 
     /**
      * Service definition of function ns__sendCommentToRobot
