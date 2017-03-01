@@ -862,9 +862,9 @@ public class PLC implements Serializable {
 	ReST second=new ReST(new Resint());
 	Hashtable table=new Hashtable();
 	String LOCK3="";
-	public Hashtable  getDataFromGD(int ST){
+	public Hashtable  getDataFromGD(int ST,int line){
 		synchronized(LOCK3){
-		Resint[] rs=ClientSer.getIntance().getReturnPlc("D11001",63,16,1);
+		Resint[] rs=ClientSer.getIntance().getReturnPlc("D11001",63,16,line);
 		
 		Resint r1=rs[ST*2];
 		Resint r2=rs[(ST+16)*2];
@@ -910,11 +910,11 @@ public class PLC implements Serializable {
 		}
      }
 	
-	public String setValueByName(String name,String value,String oldValue,int ST){
+	public String setValueByName(String name,String value,String oldValue,int ST,int line){
 		if(oldValue==null)oldValue="";
 		synchronized(LOCK3){
 		 try{
-			 getDataFromGD( ST);
+			 getDataFromGD( ST,line);
 			 Field f= first.getClass().getDeclaredField(name);
 			 String name2=name.substring(0, 1).toUpperCase()+name.substring(1, name.length());
 			 
