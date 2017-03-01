@@ -64,7 +64,7 @@ public class Test2 {
 		 
 		//System.out.println(nam.equals(i+""+""));
 		 
-			 // System.out.println(PLC.getIntance().ST2_1.firstST.getMap());
+			 System.out.println(PLC.getIntance().ST2_1.firstST.getMap());
 		//System.out.println(PLC.getIntance().ST2_1.firstST.setValueByName("需求数量", "1","0"));
 		
 		try{
@@ -72,12 +72,12 @@ public class Test2 {
 		  // System.out.println(s);
 			Test2 t=new Test2();
 			new Thread(){public void run(){
-				t.print1(1);
+				//t.print1(1);
 				
 			}}.start();
 			
 			new Thread(){public void run(){
-				t.print2();
+				//t.print2();
 				
 			}}.start();
 			

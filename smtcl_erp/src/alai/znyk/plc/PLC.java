@@ -25,7 +25,7 @@ public class PLC implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	public boolean stop1=false;//停止调度系统从数据库里面读取数据
-	public boolean stop2=false;//停止调度系统从数据库里面读取数据
+	public boolean stop2=true;//停止调度系统从数据库里面读取数据
 	public void setDiaodu1(boolean state){
 		stop1=state;
 	}
