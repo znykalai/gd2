@@ -161,7 +161,11 @@ var readyShow = {
 						oldValue:$(e).attr('oldValue')
 					};
 					var b=af.updateAction(data,function(){
-						var a=$("#shuxin").click();//刷新数据
+						var a = $("#shuxin").click();
+						var timename=setTimeout(function(){
+							var a=$("#shuxin").click();a=null;//刷新数据
+							clearTimeout(timename);timename=null;
+						},888);
 						return a=null;
 					});
 					return b=null,map=null,e=null,data=null;
