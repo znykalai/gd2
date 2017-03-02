@@ -23,10 +23,10 @@ public class ReST implements  Serializable{
 	}
 	
 	private  int machineID=1;
-	public int getmachineID() {
+	public int getMachineID() {
 		return machineID;
 	}
-	public void setmachineID(int machineID) {
+	public void setMachineID(int machineID) {
 		this.machineID = machineID;
 	}
 	public ReST(Resint boolCont){

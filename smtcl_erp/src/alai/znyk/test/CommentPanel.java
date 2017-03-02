@@ -62,20 +62,20 @@ public class CommentPanel extends JPanel {
 			 if(column==0)return;
 			  
 			 if(column==1){
-			  Object name=mode.getValueAt(row, 0);
+			  String name=mode.getValueAt(row, 0).toString();
 			  try{
-				  
+				  String name2=name.substring(0, 1).toUpperCase()+name.substring(1, name.length()); 
 				  if(aValue instanceof Boolean){
-			Method m=	first.getClass().getMethod("set"+name, boolean.class) ;
+			Method m=	first.getClass().getMethod("set"+name2, boolean.class) ;
 			m.invoke(first, aValue);}
 				  if(aValue instanceof Integer){
 					 
-					Method m=	first.getClass().getMethod("set"+name, int.class) ;
+					Method m=	first.getClass().getMethod("set"+name2, int.class) ;
 					m.invoke(first, aValue);
 				  }	
 				  if(aValue instanceof String){
 						 
-						Method m=	first.getClass().getMethod("set"+name, String.class) ;
+						Method m=	first.getClass().getMethod("set"+name2, String.class) ;
 						m.invoke(first, aValue);
 					  }	
 				
@@ -88,19 +88,20 @@ public class CommentPanel extends JPanel {
 			 
 			 if(column==2){
 				
-				  Object name=mode.getValueAt(row, 0);
+				  String name=mode.getValueAt(row, 0).toString();
+				  String name2=name.substring(0, 1).toUpperCase()+name.substring(1, name.length());
 				  try{
 					  if(aValue instanceof Boolean){
-				Method m=	second.getClass().getMethod("set"+name, boolean.class) ;
+				Method m=	second.getClass().getMethod("set"+name2, boolean.class) ;
 				m.invoke(second, aValue);}
 					  if(aValue instanceof Integer){
-						Method m=	second.getClass().getMethod("set"+name, int.class) ;
+						Method m=	second.getClass().getMethod("set"+name2, int.class) ;
 						m.invoke(second, aValue);
 						
 					
 				}
 			       if(aValue instanceof String){
-							Method m=	second.getClass().getMethod("set"+name, String.class) ;
+							Method m=	second.getClass().getMethod("set"+name2, String.class) ;
 							m.invoke(second, aValue);
 							
 						
@@ -620,11 +621,12 @@ public class CommentPanel extends JPanel {
 			
 		    Object ty=f[i].getType();
 			row.addElement(name);
+			 String name2=name.substring(0, 1).toUpperCase()+name.substring(1, name.length());
 		    if(ty.toString().equals("boolean")){
 			
-			Method m2=	first.getClass().getMethod("is"+name, null) ;
+			Method m2=	first.getClass().getMethod("is"+name2, null) ;
 			row.addElement(m2.invoke(first, null));
-			Method m3=	second.getClass().getMethod("is"+name, null) ;
+			Method m3=	second.getClass().getMethod("is"+name2, null) ;
 			row.addElement(m3.invoke(second, null));
 		    //b.println();
 			mode.addRow(row);
@@ -632,9 +634,9 @@ public class CommentPanel extends JPanel {
 		  
 		    if(ty.toString().equals("class java.lang.String")){
 		    	 // System.out.println(ty);
-				Method m2=	first.getClass().getMethod("get"+name, null) ;
+				Method m2=	first.getClass().getMethod("get"+name2, null) ;
 				row.addElement(m2.invoke(first, null));
-				Method m3=	second.getClass().getMethod("get"+name, null) ;
+				Method m3=	second.getClass().getMethod("get"+name2, null) ;
 				row.addElement(m3.invoke(second, null));
 			    //b.println();
 				mode.addRow(row);

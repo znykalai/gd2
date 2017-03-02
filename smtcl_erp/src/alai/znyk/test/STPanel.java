@@ -38,30 +38,31 @@ public class STPanel extends JPanel {
 			 if(column==0)return;
 			  
 			 if(column==1){
-			  Object name=mode.getValueAt(row, 0);
+			  String name=mode.getValueAt(row, 0).toString();
+			  String name2=name.substring(0, 1).toUpperCase()+name.substring(1, name.length());
 			  try{
 				  if(row<mode.getRowCount()-4){
 				  if(aValue instanceof Boolean){
-			Method m=	ST.firstST.getClass().getMethod("set"+name, boolean.class) ;
+			Method m=	ST.firstST.getClass().getMethod("set"+name2, boolean.class) ;
 			m.invoke(ST.firstST, aValue);}
 				  if(aValue instanceof Integer){
 					 
-					Method m=	ST.firstST.getClass().getMethod("set"+name, int.class) ;
+					Method m=	ST.firstST.getClass().getMethod("set"+name2, int.class) ;
 					m.invoke(ST.firstST, aValue);
 				  }	
 				  if(aValue instanceof String){
 						 
-						Method m=	ST.firstST.getClass().getMethod("set"+name, String.class) ;
-						m.invoke(ST.firstST, aValue);
+					Method m=	ST.firstST.getClass().getMethod("set"+name2, String.class) ;
+					m.invoke(ST.firstST, aValue);
 					  }	
 				
 			}else{
 				
 				 if(aValue instanceof Boolean){
-						Method m=	RS.getClass().getMethod("set"+name, boolean.class) ;
+						Method m=	RS.getClass().getMethod("set"+name2, boolean.class) ;
 						m.invoke(RS, aValue);}
 							  else{
-								Method m=	RS.getClass().getMethod("set"+name, int.class) ;
+								Method m=	RS.getClass().getMethod("set"+name2, int.class) ;
 								m.invoke(RS, aValue);
 							  }	
 				 System.out.println(RS.getBoolCont().getResInt());
@@ -74,19 +75,20 @@ public class STPanel extends JPanel {
 			 
 			 if(column==2){
 				 if(row<mode.getRowCount()-4){
-				  Object name=mode.getValueAt(row, 0);
+				   String name=mode.getValueAt(row, 0).toString();
+				  String name2=name.substring(0, 1).toUpperCase()+name.substring(1, name.length());
 				  try{
 					  if(aValue instanceof Boolean){
-				Method m=	ST.secondST.getClass().getMethod("set"+name, boolean.class) ;
+				Method m=	ST.secondST.getClass().getMethod("set"+name2, boolean.class) ;
 				m.invoke(ST.secondST, aValue);}
 					  if(aValue instanceof Integer){
-						Method m=	ST.secondST.getClass().getMethod("set"+name, int.class) ;
+						Method m=	ST.secondST.getClass().getMethod("set"+name2, int.class) ;
 						m.invoke(ST.secondST, aValue);
 						
 					
 				}
 			       if(aValue instanceof String){
-							Method m=	ST.secondST.getClass().getMethod("set"+name, String.class) ;
+							Method m=	ST.secondST.getClass().getMethod("set"+name2, String.class) ;
 							m.invoke(ST.secondST, aValue);
 							
 						
@@ -240,7 +242,7 @@ public class STPanel extends JPanel {
 			try{  
 				Vector row=new Vector();
 				String name=f[i].getName();
-				
+				String name2=name.substring(0, 1).toUpperCase()+name.substring(1, name.length());
 				if(name.contains("bool")){
 					String boolcont=ST.firstST.getBoolContent()+"";
 					textField.setText(boolcont);
@@ -249,16 +251,16 @@ public class STPanel extends JPanel {
 				row.addElement(name);
 			    if(ty.toString().equals("boolean")){
 				
-				Method m2=	ST.firstST.getClass().getMethod("is"+name, null) ;
+				Method m2=	ST.firstST.getClass().getMethod("is"+name2, null) ;
 				row.addElement(m2.invoke(ST.firstST, null));
-				Method m3=	ST.secondST.getClass().getMethod("is"+name, null) ;
+				Method m3=	ST.secondST.getClass().getMethod("is"+name2, null) ;
 				row.addElement(m3.invoke(ST.secondST, null));
 			    //b.println();
 				 }
 				 else{
-				Method m2=	ST.firstST.getClass().getMethod("get"+name, null) ;
+				Method m2=	ST.firstST.getClass().getMethod("get"+name2, null) ;
 				row.addElement(m2.invoke(ST.firstST, null));
-				Method m3=	ST.secondST.getClass().getMethod("get"+name, null) ;
+				Method m3=	ST.secondST.getClass().getMethod("get"+name2, null) ;
 				row.addElement(m3.invoke(ST.secondST, null));
 					 
 				 }
@@ -311,7 +313,7 @@ public class STPanel extends JPanel {
 			
 			   
 				String name=f2[i].getName();
-				
+				 String name2=name.substring(0, 1).toUpperCase()+name.substring(1, name.length());
 				if(name.equals("serialVersionUID"))continue;
 				 Vector row=new Vector();
 				if(name.contains("bool"))continue;
@@ -319,13 +321,13 @@ public class STPanel extends JPanel {
 				row.addElement(name);
 			    if(ty.toString().equals("boolean")){
 				
-				Method m2=	RS.getClass().getMethod("is"+name, null) ;
+				Method m2=	RS.getClass().getMethod("is"+name2, null) ;
 				row.addElement(m2.invoke(RS, null));
 				row.addElement(null);
 			    //b.println();
 				 }
 				 else{
-				Method m2=	RS.getClass().getMethod("get"+name, null) ;
+				Method m2=	RS.getClass().getMethod("get"+name2, null) ;
 				row.addElement(m2.invoke(RS, null));
 				row.addElement(null);
 					 
