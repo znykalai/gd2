@@ -23,7 +23,21 @@ public class PLC implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+	public boolean 不检测取料数量=true;
+	public boolean is不检测取料数量() {
+		return 不检测取料数量;
+	}
+	public void set不检测取料数量(boolean 不检测取料数量) {
+		this.不检测取料数量 = 不检测取料数量;
+	}
+	public boolean is不检测动作完成() {
+		return 不检测动作完成;
+	}
+	public void set不检测动作完成(boolean 不检测动作完成) {
+		this.不检测动作完成 = 不检测动作完成;
+	}
+
+	public boolean 不检测动作完成=false;
 	public boolean stop1=false;//停止调度系统从数据库里面读取数据
 	public boolean stop2=true;//停止调度系统从数据库里面读取数据
 	public void setDiaodu1(boolean state){
@@ -459,14 +473,16 @@ public class PLC implements Serializable {
     			getRePLC(装配区)[i].set人工组装线模式((tem1&0b1000)==8?true:false);
     			getRePLC(装配区)[i].set载具放行((tem1&0b100)==4?true:false);
     			getRePLC(装配区)[i].set动作完成((tem1&0b10)==2?true:false);
-    			if(取料完成1!=取料完成2){
+    			if(取料完成1!=取料完成2){//模拟一个信号改变
     				//更新托盘的物料数量
-    				if(取料完成1==1){
+    				if(取料完成1==1){//模拟一个上升沿
     					//检测本工位有没有托盘
     					if(getCarryLine(装配区).getCarry(i)!=null){
     					getWrPLC(装配区).get(i).updataDB(getWrPLC(装配区).get(i).firstST);//更新托盘的数量
     				 
-    				    System.out.println("取料完成1");}
+    				    System.out.println("取料完成1");
+    				    
+    					}
     				
     				}
     				
@@ -482,19 +498,21 @@ public class PLC implements Serializable {
     					if(car!=null){
     					if(car.getName().equals(getWrPLC(装配区).get(i).firstST.getName())){
     						//如果这个托盘是本工位需要的托盘
-    						 if( getWrPLC(装配区).get(i).firstST.get剩余数量()==0){
-    						  System.out.println("载具放行1");
-    						  getWrPLC(装配区).get(i).firstST.set数据更新完成(true);
+    						 if( getWrPLC(装配区).get(i).firstST.get剩余数量()==0||不检测取料数量){
+    							 if(取料完成1==1||不检测动作完成){
+    							 System.out.println("载具放行1");
+    						   getWrPLC(装配区).get(i).firstST.set数据更新完成(true);
     						   String back=STC1.get(i).firstST.writeifChangeToPLC();
+    						   System.out.println("载具放行1"+back);
     						  if(back.contains("成功")){
     							  //写入PLC成功后
     	    				 if( getCarryLine(装配区).removeToNext(i))
     	    					 getWrPLC(装配区).get(i).firstST.setWrite(false);
     	    				  }
-    						  
+    							  } //end 判断取料完成
     						 }
     					}
-    					else{
+    					else{//如托盘在本工位没有任何需要的动作，不判断动作完成标志
     						getCarryLine(装配区).removeToNext(i);
     	    				  
     					}

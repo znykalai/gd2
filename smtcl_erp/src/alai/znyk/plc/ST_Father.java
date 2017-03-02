@@ -160,6 +160,8 @@ public class ST_Father implements STInterface, Serializable{
 				//System.out.println("00000");
 				old.intFromST(this);
 				return "³É¹¦!";
+			}else{
+				return back;
 			}
 		}
 		

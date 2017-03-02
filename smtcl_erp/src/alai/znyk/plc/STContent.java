@@ -971,14 +971,15 @@ public class STContent implements Serializable {
 		}
     }
     
-    
-    
+
     private boolean updataSTDB(int 货位, ST_Father st){
     	if(stNum<2||stNum>8){return false;}
     	if(stNum>=2&&stNum<=7){
+    		//System.out.println("id="+st.getId());
   	  String tem=SqlTool.findOneRecord("select  物料,数量  from 配方指令队列   where  ID='"+st.getId()+"'");
   	  if(tem!=null){
   		String wuliao=tem.split("!_!")[0];
+  		//System.out.println("id2="+wuliao);
   		int shul=Integer.parseInt(tem.split("!_!")[1]);
   		String tem2=SqlTool.findOneRecord("select  托盘编号,物料,数量  from 库存托盘   where  货位号='"+货位+"'");
   		
