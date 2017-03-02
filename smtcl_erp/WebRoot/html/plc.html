@@ -32,12 +32,14 @@
 	                        	<input type="hidden" id="cuttool-status-bar-value" value=""/>
 			                    <div class="sesol-btn mainOrder select" style="line-height:25px;height:25px;font-size:12px" data="1">装配区A</div>
 			                    <div class="sesol-btn mainOrder" style="line-height:25px;height:25px;font-size:12px" data="2">装配区B</div>
+			                	<div class="sesol-btn mainOrder" style="line-height:25px;height:25px;font-size:12px" data="3">选择PLC返回工位A</div>
+			                	<div class="sesol-btn mainOrder" style="line-height:25px;height:25px;font-size:12px" data="4">选择PLC返回工位B</div>
 			                </div>
 			            </div>
 				    </div>
 			    </div>
-			    <!-- A -->
 			    <div class="plc_show row">
+			    	<!-- 装配区A -->
 				    <div id="plc_show1" style="margin-top:0px;">
 				    	<!-- 第一行 -->
 						<div class="col-md-12" style="padding:0;height:162px;">
@@ -593,6 +595,7 @@
 							</div>
 						 </div>
 					</div>
+					<!-- 装配区B -->
 				    <div id="plc_show2" style="margin-top:0px;display:none;">
 				    	<!-- 第一行 -->
 						<div class="col-md-12" style="padding:0;height:162px;">
@@ -1148,6 +1151,122 @@
 							</div>
 						 </div>
 				    </div>
+				    <!-- A选择PLC返回工位 -->
+				    <div id="plc_show3" style="margin-top:0px;display:none;">
+						<div class="col-md-12" style="padding:0;height:162px;">
+							<div class="col-md-6" style="margin-top:4px;padding:0;width:450px;height:300px;border:1px solid rgb( 155 , 155 , 155 );">
+						 		<div class="col-md-1 text-right" style="width:38px;padding:5px 0 0 0;">
+					                <span style="font-size:12px;">BOOL:</span>
+					            </div>
+					            <div class="col-md-1" style="width:40px;padding: 4px 2px 2px 2px;">
+					                <input id="BOOL0_C" type="text" style="padding:0;font-size:10px;width:35px;height:20px;" class="form-control"/>
+					            </div>
+						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+					                <span style="font-size:12px;">首地址:</span>
+					            </div>
+					            <div class="col-md-1" style="width:70px;padding: 4px 2px 2px 2px;">
+					            	<input id="DIZHI0_C" type="text" style="font-size:10px;width:70px;height:20px;" class="form-control"/>
+					            </div>
+						 		<div class="col-md-3 text-right" style="padding:5px 0 0 0;">
+					                <span style="font-size:12px;">选择PLC返回工会:</span>
+					            </div>
+					            <div class="col-md-3" style="padding: 4px 2px 2px 2px;">
+					            	<select class="selectpicker" id="returnPlcA" style="font-size:12px;width:100%;">
+										<option value="0">0ST</option>
+										<option value="1">1ST</option>
+										<option value="2">2ST</option>
+										<option value="3">3ST</option>
+										<option value="4">4ST</option>
+										<option value="5">5ST</option>
+										<option value="6">6ST</option>
+										<option value="7">7ST</option>
+										<option value="8">8ST</option>
+										<option value="9">9ST</option>
+										<option value="10">10ST</option>
+										<option value="11">11ST</option>
+										<option value="12">12ST</option>
+										<option value="13">13ST</option>
+										<option value="14">14ST</option>
+										<option value="15">15ST</option>
+									</select>
+								</div>
+					            <div class="col-md-12" style="padding:0 2 2 2;">
+				            		<div>
+										<table class="table-bordered" style="height:25px;width:425px;">
+							               <tr>
+							                  <th class="text-center" style="width:100px;font-size:12px;" bgcolor="#EFEFEF">光大返回</th>
+							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							               </tr>
+										</table>
+									</div>
+							        <div class="table-body" style="margin-top:-1px;height:245px;width:442px;">
+							           <table class="table-bordered text-center table-hover" style="width:425px;" name="returnTablePlc" id="returnTablePlcA">
+							               <tbody></tbody>
+							           </table>
+							        </div>
+					            </div>
+							</div>
+						</div>
+					</div>
+				    <!-- B选择PLC返回工位 -->
+				    <div id="plc_show4" style="margin-top:0px;display:none;">
+				    	<div class="col-md-12" style="padding:0;height:162px;">
+							<div class="col-md-6" style="margin-top:4px;padding:0;width:450px;height:300px;border:1px solid rgb( 155 , 155 , 155 );">
+						 		<div class="col-md-1 text-right" style="width:38px;padding:5px 0 0 0;">
+					                <span style="font-size:12px;">BOOL:</span>
+					            </div>
+					            <div class="col-md-1" style="width:40px;padding: 4px 2px 2px 2px;">
+					                <input id="BOOL0_D" type="text" style="padding:0;font-size:10px;width:35px;height:20px;" class="form-control"/>
+					            </div>
+						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+					                <span style="font-size:12px;">首地址:</span>
+					            </div>
+					            <div class="col-md-1" style="width:70px;padding: 4px 2px 2px 2px;">
+					            	<input id="DIZHI0_D" type="text" style="font-size:10px;width:70px;height:20px;" class="form-control"/>
+					            </div>
+						 		<div class="col-md-3 text-right" style="padding:5px 0 0 0;">
+					                <span style="font-size:12px;">选择PLC返回工会:</span>
+					            </div>
+					            <div class="col-md-3" style="padding: 4px 2px 2px 2px;">
+					            	<select class="selectpicker" id="returnPlcB" style="font-size:12px;width:100%;">
+										<option value="0">0ST</option>
+										<option value="1">1ST</option>
+										<option value="2">2ST</option>
+										<option value="3">3ST</option>
+										<option value="4">4ST</option>
+										<option value="5">5ST</option>
+										<option value="6">6ST</option>
+										<option value="7">7ST</option>
+										<option value="8">8ST</option>
+										<option value="9">9ST</option>
+										<option value="10">10ST</option>
+										<option value="11">11ST</option>
+										<option value="12">12ST</option>
+										<option value="13">13ST</option>
+										<option value="14">14ST</option>
+										<option value="15">15ST</option>
+									</select>
+								</div>
+					            <div class="col-md-12" style="padding:0 2 2 2;">
+				            		<div>
+										<table class="table-bordered" style="height:25px;width:425px;">
+							               <tr>
+							                  <th class="text-center" style="width:100px;font-size:12px;" bgcolor="#EFEFEF">光大返回</th>
+							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							               </tr>
+										</table>
+									</div>
+							        <div class="table-body" style="margin-top:-1px;height:245px;width:442px;">
+							           <table class="table-bordered text-center table-hover" style="width:425px;" name="returnTablePlc" id="returnTablePlcB">
+							               <tbody></tbody>
+							           </table>
+							        </div>
+					            </div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</form>
 		</div>
