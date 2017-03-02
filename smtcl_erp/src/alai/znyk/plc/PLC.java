@@ -24,7 +24,7 @@ public class PLC implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	public boolean stop1=true;//停止调度系统从数据库里面读取数据
+	public boolean stop1=false;//停止调度系统从数据库里面读取数据
 	public boolean stop2=true;//停止调度系统从数据库里面读取数据
 	public void setDiaodu1(boolean state){
 		stop1=state;
@@ -410,7 +410,7 @@ public class PLC implements Serializable {
 				ST13_1.initFromSql();
 				ST14_1.initFromSql();
 				ST15_1.initFromSql();
-				getFromPLC(1);
+				getFromPLC(1);//必须写在最后
 				writeO();
 				try {
 					Thread.sleep(500);
@@ -877,6 +877,7 @@ public class PLC implements Serializable {
 		table.clear();
 		for(int i=0;i<f.length;i++){
 		    String name=f[i].getName();
+		    if(name.equals("serialVersionUID"))continue;
 		    Object ty=f[i].getType();
 
 			 try{

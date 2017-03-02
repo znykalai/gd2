@@ -41,6 +41,7 @@ public class STContent implements Serializable {
     	
     	if(plc.stop1){//不再重数据库里面读数了，单是不影响搬运机构的继续执行
     		if(装配区==1){
+    		   //System.out.println("return----");
     			if(stNum==1){ 
     				 firstST.writeifChangeToPLC();
     		    	 secondST.writeifChangeToPLC();
@@ -145,7 +146,9 @@ public class STContent implements Serializable {
     	     		 carr2.set工位(carr2.get工位()+""+vv.get(0));
     	     	 
     	         }
+    	    if(装配区==1) 	 
   		 PLC.getIntance().line.setBuffer(carr2);
+    	    else  PLC.getIntance().line2.setBuffer(carr2);
     	 		 
     	 	}else{
     	 		if(tem.size()==1){
@@ -181,7 +184,9 @@ public class STContent implements Serializable {
 	    	     		 carr.set工位(carr.get工位()+""+vv.get(0));
 	    	     	 
 	    	         }
+	    	     	 if(装配区==1) 	 
 	  		 PLC.getIntance().line.addFist(carr);
+	    	     	 else  PLC.getIntance().line2.addFist(carr);
     	 		}
     	 		
     	 	}
@@ -222,7 +227,9 @@ public class STContent implements Serializable {
         	     		 carr2.set工位(carr2.get工位()+""+vv.get(0));
         	     	 
         	         }
-      		 PLC.getIntance().line.setBuffer(carr2);
+        	     	if(装配区==1) 
+      		           PLC.getIntance().line.setBuffer(carr2);
+        	     	else  PLC.getIntance().line2.setBuffer(carr2);
         	 		 
     	 		}
     	 		
@@ -233,8 +240,14 @@ public class STContent implements Serializable {
     		 firstST.intFromST(secondST);
     		 secondST.setWrite(false);
     		 secondST.clear();
+    		 if(装配区==1) {
     		 PLC.getIntance().line.addFist(PLC.getIntance().line.buffer);
-    		 PLC.getIntance().line.buffer=null;
+    		 PLC.getIntance().line.buffer=null;}
+    		 else{
+    			 
+    			 PLC.getIntance().line2.addFist(PLC.getIntance().line2.buffer);
+        		 PLC.getIntance().line2.buffer=null;	 
+    		 }
     		 
     	 }
     	
@@ -244,7 +257,18 @@ public class STContent implements Serializable {
     	if(stNum>=2&&stNum<=7){
     		
     		if(!firstST.isWrite()&&!secondST.isWrite()){
-    Vector<Vector> tem=SqlTool.findInVector("select  ID,工单序号,分解号,载具序号,pack编码,模组编码,物料,数量,翻面否,工位 ,模组类型,电芯类型 ,工单ID,模组序ID from 配方指令队列  where  装配区="+装配区+" and IFNULL(ST读取标志,0)<>1  and 工位='"+(stNum-1)+"ST' ORDER BY 工单序号,模组序号,分解号,载具序号  LIMIT 3");
+    			Vector<Vector> tem=new Vector<Vector>();
+    			Carry cc=null;
+    			if(装配区==1){cc=PLC.getIntance().line.getCarry(0);
+    			}else{
+    				cc=PLC.getIntance().line2.getCarry(0);
+    			}
+    			if(cc!=null){
+          tem=SqlTool.findInVector("select  ID,工单序号,分解号,载具序号,pack编码,模组编码,物料,数量,翻面否,工位 ,模组类型,电芯类型 ,工单ID,模组序ID from 配方指令队列 "+
+    "  where  工单ID="+cc.get工单ID()+" and IFNULL(ST读取标志,0)<>1  and 装配区='"+装配区+"' and 模组序ID='"+cc.get模组序ID()+"' and 分解号='"+cc.get分解号()+"' "
+    		+ " and 工位='"+(stNum-1)+"ST' ORDER BY 工单序号,模组序号,分解号,载具序号  LIMIT 3");
+          
+    			}
     	    	 	if(tem.size()>1){
     	    	 		 Vector row=(Vector)tem.get(0);
     	    	 		 Vector row2=(Vector)tem.get(1);
@@ -311,7 +335,19 @@ public class STContent implements Serializable {
     		 }
     		
     		if(firstST.isWrite()&&!secondST.isWrite()){
-				 Vector<Vector> tem=SqlTool.findInVector("select  ID,工单序号,分解号,载具序号,pack编码,模组编码,物料,数量,翻面否,工位 ,模组类型,电芯类型 ,工单ID,模组序ID from 配方指令队列  where  装配区="+装配区+" and IFNULL(ST读取标志,0)<>1  and 工位='"+(stNum-1)+"ST' ORDER BY 工单序号,模组序号,分解号,载具序号  LIMIT 3");		
+    			Vector<Vector> tem=new Vector<Vector>();
+    			Carry cc=null;
+    			if(装配区==1){cc=PLC.getIntance().line.getCarry(0);
+    			}else{
+    				cc=PLC.getIntance().line2.getCarry(0);
+    			}
+    			if(cc!=null){
+          tem=SqlTool.findInVector("select  ID,工单序号,分解号,载具序号,pack编码,模组编码,物料,数量,翻面否,工位 ,模组类型,电芯类型 ,工单ID,模组序ID from 配方指令队列 "+
+    "  where  工单ID="+cc.get工单ID()+" and IFNULL(ST读取标志,0)<>1  and 装配区='"+装配区+"' and 模组序ID='"+cc.get模组序ID()+"' and 分解号='"+cc.get分解号()+"' "
+    		+ " and 工位='"+(stNum-1)+"ST' ORDER BY 工单序号,模组序号,分解号,载具序号  LIMIT 3");
+          
+    			}
+		// Vector<Vector> tem=SqlTool.findInVector("select  ID,工单序号,分解号,载具序号,pack编码,模组编码,物料,数量,翻面否,工位 ,模组类型,电芯类型 ,工单ID,模组序ID from 配方指令队列  where  装配区="+装配区+" and IFNULL(ST读取标志,0)<>1  and 工位='"+(stNum-1)+"ST' ORDER BY 工单序号,模组序号,分解号,载具序号  LIMIT 3");		
 				 if(tem.size()>0){
 				    Vector row=(Vector)tem.get(0); 
 				   ((_1_6ST)secondST).clear();
@@ -333,6 +369,7 @@ public class STContent implements Serializable {
 				 
 				 }
     		}
+    		
     		if(!firstST.isWrite()&&secondST.isWrite()){
     			//那么secondST移动到first,然后secondST重读
     			
@@ -349,8 +386,20 @@ public class STContent implements Serializable {
     	 if(stNum==8){
    		    //假电芯工位
            if(!firstST.isWrite()&&!secondST.isWrite()){
-     Vector<Vector> tem=SqlTool.findInVector("select  ID,工单序号,分解号,载具序号,pack编码,模组编码,物料,数量,翻面否,工位 ,模组类型,电芯类型,假电芯1,假电芯2,工单ID,模组序ID "
-     		+"  from 配方指令队列  where  装配区="+装配区+" and IFNULL(ST读取标志,0)<>3  and 工位='7ST' ORDER BY 工单序号,模组序号,分解号,载具序号  LIMIT 3");
+        	   Vector<Vector> tem=new Vector<Vector>();
+   			Carry cc=null;
+   			if(装配区==1){cc=PLC.getIntance().line.getCarry(0);
+   			}else{
+   				cc=PLC.getIntance().line2.getCarry(0);
+   			}
+   			if(cc!=null){
+         tem=SqlTool.findInVector("select  ID,工单序号,分解号,载具序号,pack编码,模组编码,物料,数量,翻面否,工位 ,模组类型,电芯类型 ,假电芯1,假电芯2,工单ID,模组序ID from 配方指令队列 "+
+   "  where 工单ID="+cc.get工单ID()+" and IFNULL(ST读取标志,0)<>1  and 装配区='"+装配区+"' and 模组序ID='"+cc.get模组序ID()+"' and 分解号='"+cc.get分解号()+"' "
+   		+ " and 工位='"+(stNum-1)+"ST' ORDER BY 工单序号,模组序号,分解号,载具序号  LIMIT 3");
+         
+   			}    	   
+    // Vector<Vector> tem=SqlTool.findInVector("select  ID,工单序号,分解号,载具序号,pack编码,模组编码,物料,数量,翻面否,工位 ,模组类型,电芯类型,假电芯1,假电芯2,工单ID,模组序ID "
+     	//	+"  from 配方指令队列  where  装配区="+装配区+" and IFNULL(ST读取标志,0)<>3  and 工位='7ST' ORDER BY 工单序号,模组序号,分解号,载具序号  LIMIT 3");
      	    	 	if(tem.size()>1){
      	    	 		 Vector row=(Vector)tem.get(0);
      	    	 		 Vector row2=(Vector)tem.get(1);
@@ -421,8 +470,20 @@ public class STContent implements Serializable {
      		 }
      		
      		if(firstST.isWrite()&&!secondST.isWrite()){
-     			 Vector<Vector> tem=SqlTool.findInVector("select  ID,工单序号,分解号,载具序号,pack编码,模组编码,物料,数量,翻面否,工位 ,模组类型,电芯类型,假电芯1,假电芯2,工单ID,模组序ID "
-     		     		+"  from 配方指令队列  where  装配区="+装配区+" and IFNULL(ST读取标志,0)<>1  and 工位='7ST' ORDER BY 工单序号,模组序号,分解号,载具序号  LIMIT 3");
+     			  Vector<Vector> tem=new Vector<Vector>();
+     	   			Carry cc=null;
+     	   			if(装配区==1){cc=PLC.getIntance().line.getCarry(0);
+     	   			}else{
+     	   				cc=PLC.getIntance().line2.getCarry(0);
+     	   			}
+     	   			if(cc!=null){
+     	         tem=SqlTool.findInVector("select  ID,工单序号,分解号,载具序号,pack编码,模组编码,物料,数量,翻面否,工位 ,模组类型,电芯类型 ,假电芯1,假电芯2,工单ID,模组序ID from 配方指令队列 "+
+     	   "  where  工单ID="+cc.get工单ID()+" and IFNULL(ST读取标志,0)<>1  and 装配区='"+装配区+"' and 模组序ID='"+cc.get模组序ID()+"' and 分解号='"+cc.get分解号()+"' "
+     	   		+ " and 工位='"+(stNum-1)+"ST' ORDER BY 工单序号,模组序号,分解号,载具序号  LIMIT 3");
+     	         
+     	   			}    	 
+     			// Vector<Vector> tem=SqlTool.findInVector("select  ID,工单序号,分解号,载具序号,pack编码,模组编码,物料,数量,翻面否,工位 ,模组类型,电芯类型,假电芯1,假电芯2,工单ID,模组序ID "
+     		  //   		+"  from 配方指令队列  where  装配区="+装配区+" and IFNULL(ST读取标志,0)<>1  and 工位='7ST' ORDER BY 工单序号,模组序号,分解号,载具序号  LIMIT 3");
  				 if(tem.size()>0){
  				    Vector row=(Vector)tem.get(0); 
  				    
