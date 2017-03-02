@@ -15,12 +15,13 @@ public class ReST implements  Serializable{
 	public boolean 人工组装线模式;
 	public Resint boolCont;
 	public String startAddres="D0";
-	public String getstartAddres() {
+	public String getStartAddres() {
 		return startAddres;
 	}
-	public void setstartAddres(String startAddres) {
+	public void setStartAddres(String startAddres) {
 		//this.startAddres = startAddres;
 	}
+	
 	private  int machineID=1;
 	public int getmachineID() {
 		return machineID;

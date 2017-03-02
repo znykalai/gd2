@@ -889,11 +889,20 @@ public class PLC implements Serializable {
 				 table.put(name,  m2.invoke(first, null));
 				 table.put(name+"2",  m3.invoke(second, null));
 				 }else{
+					 if(name.equals("boolCont")){
+						 String name2=name.substring(0, 1).toUpperCase()+name.substring(1, name.length());
+						 Method m2=	first.getClass().getMethod("get"+name2, null) ;
+						 Method m3=	second.getClass().getMethod("get"+name2, null) ;
+						 table.put(name,  ((Resint)m2.invoke(first, null)).getResInt());
+						 table.put(name+"2",((Resint)m3.invoke(second, null)).getResInt());
+					 }else{
 					 String name2=name.substring(0, 1).toUpperCase()+name.substring(1, name.length());
 					 Method m2=	first.getClass().getMethod("get"+name2, null) ;
 					 Method m3=	second.getClass().getMethod("get"+name2, null) ;
 					 table.put(name,  m2.invoke(first, null));
 					 table.put(name+"2",  m3.invoke(second, null));
+					 }
+					 
 					 }
 				  
 			 }catch(Exception ex){ex.printStackTrace();}   
@@ -968,6 +977,10 @@ public class PLC implements Serializable {
 				   first.writeToPLC(); 
 				   return "成功";
 				 }
+			 if(f.getType().toString().equals("class alai.GDT.Resint")){
+				   return "成功";
+				 
+			    }
 		 
 		 }catch(Exception ex){ex.printStackTrace();
 		   return ex.getMessage();
