@@ -88,7 +88,7 @@ public class STContent implements Serializable {
     	 		 ((_FST)firstST).set载具序号(row.get(3)==null?0:(int)row.get(3));
     	 		 ((_FST)firstST).set翻B面(row.get(8).equals("是")?true:false);
     	 		 ((_FST)firstST).set允许工位动作标志(true);
-    	 		 ((_FST)firstST).set立库RDY(plc.getSTRdy(装配区,stNum));
+    	 		 ((_FST)firstST).set立库RDY(false);
     	 		  firstST.set工单ID(row.get(10)==null?0:(int)row.get(10));
     	 		  firstST.set模组序ID(row.get(11)==null?0:(int)row.get(11));
     	 		  firstST.setWrite(true);
@@ -122,7 +122,7 @@ public class STContent implements Serializable {
    	 		 ((_FST)secondST).set载具序号(row2.get(3)==null?0:(int)row2.get(3));
    	 		 ((_FST)secondST).set翻B面(row2.get(8).equals("是")?true:false);
    	 		 ((_FST)secondST).set允许工位动作标志(true);
-   	 		 ((_FST)secondST).set立库RDY(plc.getSTRdy(装配区,stNum));
+   	 		 ((_FST)secondST).set立库RDY(false);
    	 	     secondST.set工单ID(row2.get(10)==null?0:(int)row2.get(10));
    	         secondST.set模组序ID(row2.get(11)==null?0:(int)row2.get(11));
    	 		 secondST.setWrite(true);
@@ -160,7 +160,7 @@ public class STContent implements Serializable {
     	 		 ((_FST)firstST).set载具序号(row.get(3)==null?0:(int)row.get(3));
        	 		 ((_FST)firstST).set翻B面(row.get(8).equals("是")?true:false);
        	 		 ((_FST)firstST).set允许工位动作标志(true);
-       	 		 ((_FST)firstST).set立库RDY(plc.getSTRdy(装配区,stNum));
+       	 		 ((_FST)firstST).set立库RDY(false);
        	 	    firstST.set工单ID(row.get(10)==null?0:(int)row.get(10));
 	 		    firstST.set模组序ID(row.get(11)==null?0:(int)row.get(11));
        	 		firstST.setWrite(true);
@@ -204,7 +204,7 @@ public class STContent implements Serializable {
        	 		 ((_FST)secondST).set载具序号(row.get(3)==null?0:(int)row.get(3));
        	 		 ((_FST)secondST).set翻B面(row.get(8).equals("是")?true:false);
        	 		 ((_FST)secondST).set允许工位动作标志(true);
-       	 		 ((_FST)secondST).set立库RDY(plc.getSTRdy(装配区,stNum));
+       	 		 ((_FST)secondST).set立库RDY(false);
        	 		secondST.set工单ID(row.get(10)==null?0:(int)row.get(10));
        	 	    secondST.set模组序ID(row.get(11)==null?0:(int)row.get(11));
        	 		secondST.setWrite(true);
@@ -284,7 +284,7 @@ public class STContent implements Serializable {
     	    	 		 
     	    	 		 ((_1_6ST)firstST).set电芯类型标志((int)row.get(11));
     	    	 		 ((_1_6ST)firstST).set需求数量((int)row.get(7));
-    	    	 		 ((_1_6ST)firstST).set立库RDY(plc.getSTRdy(装配区,stNum));
+    	    	 		 ((_1_6ST)firstST).set立库RDY(false);
     	    	 		 firstST.set工单ID((int)row.get(12));
     	    	 		 firstST.set模组序ID((int)row.get(13));
     	    	 		 firstST.set物料编码((String)row.get(6));
@@ -302,7 +302,7 @@ public class STContent implements Serializable {
     	    	 		 ((_1_6ST)secondST).set模组类型标志((int)row2.get(10));
     	    	 		 ((_1_6ST)secondST).set电芯类型标志((int)row2.get(11));
     	    	 		 ((_1_6ST)secondST).set需求数量((int)row2.get(7));
-    	    	 		 ((_1_6ST)secondST).set立库RDY(plc.getSTRdy(装配区,stNum));
+    	    	 		 ((_1_6ST)secondST).set立库RDY(false);
     	    	 		 secondST.set工单ID((int)row2.get(12));
     	    	 		 secondST.set模组序ID((int)row2.get(13));
     	    	 		 secondST.set物料编码((String)row2.get(6));
@@ -322,7 +322,7 @@ public class STContent implements Serializable {
     	    	 		 ((_1_6ST)firstST).set模组类型标志((int)row.get(10));
     	    	 		 ((_1_6ST)firstST).set电芯类型标志((int)row.get(11));
     	    	 		 ((_1_6ST)firstST).set需求数量((int)row.get(7));
-    	    	 		 ((_1_6ST)firstST).set立库RDY(plc.getSTRdy(装配区,stNum));
+    	    	 		 ((_1_6ST)firstST).set立库RDY(false);
     	    	 		firstST.set工单ID((int)row.get(12));
     	    	 		firstST.set模组序ID((int)row.get(13));
     	    	 		firstST.set物料编码((String)row.get(6));
@@ -360,7 +360,7 @@ public class STContent implements Serializable {
 				   ((_1_6ST)secondST).set模组类型标志((int)row.get(10));
 				   ((_1_6ST)secondST).set电芯类型标志((int)row.get(11));
 				   ((_1_6ST)secondST).set需求数量((int)row.get(7));
-				   ((_1_6ST)secondST).set立库RDY(plc.getSTRdy(装配区,stNum));
+				   ((_1_6ST)secondST).set立库RDY(false);
 				   secondST.set工单ID((int)row.get(12));
 	    	 	   secondST.set模组序ID((int)row.get(13));
 	    	 	   secondST.set物料编码((String)row.get(6));
@@ -416,7 +416,7 @@ public class STContent implements Serializable {
      	    	 		 ((_7ST)firstST).set模组类型标志((int)row.get(10));
      	    	 		 ((_7ST)firstST).set电芯类型标志((int)row.get(11));
      	    	 		 ((_7ST)firstST).set需求数量((int)row.get(7));
-     	    	 		 ((_7ST)firstST).set立库RDY(plc.getSTRdy(装配区,stNum));
+     	    	 		 ((_7ST)firstST).set立库RDY(false);
      	    	 		 firstST.set工单ID((int)row.get(14));
     	    	 		 firstST.set模组序ID((int)row.get(15));
     	    	 		firstST.set物料编码((String)row.get(6));
@@ -435,7 +435,7 @@ public class STContent implements Serializable {
      	    	 		 ((_7ST)secondST).set模组类型标志((int)row2.get(10));
      	    	 		 ((_7ST)secondST).set电芯类型标志((int)row2.get(11));
      	    	 		 ((_7ST)secondST).set需求数量((int)row2.get(7));
-     	    	 		 ((_7ST)secondST).set立库RDY(plc.getSTRdy(装配区,stNum));
+     	    	 		 ((_7ST)secondST).set立库RDY(false);
      	    	 		 secondST.set工单ID((int)row2.get(14));
      	    	 		 secondST.set模组序ID((int)row2.get(15));
      	    	 		 secondST.set物料编码((String)row2.get(6));
@@ -457,7 +457,7 @@ public class STContent implements Serializable {
      	    	 		 ((_7ST)firstST).set模组类型标志((int)row.get(10));
      	    	 		 ((_7ST)firstST).set电芯类型标志((int)row.get(11));
      	    	 		 ((_7ST)firstST).set需求数量((int)row.get(7));
-     	    	 		 ((_7ST)firstST).set立库RDY(plc.getSTRdy(装配区,stNum));
+     	    	 		 ((_7ST)firstST).set立库RDY(false);
      	    	 		 firstST.set工单ID((int)row.get(14));
     	    	 		 firstST.set模组序ID((int)row.get(15));
     	    	 		 firstST.set物料编码((String)row.get(6));
@@ -498,7 +498,7 @@ public class STContent implements Serializable {
  				   ((_7ST)secondST).set模组类型标志((int)row.get(10));
  				   ((_7ST)secondST).set电芯类型标志((int)row.get(11));
  				   ((_7ST)secondST).set需求数量((int)row.get(7));
- 				   ((_7ST)secondST).set立库RDY(plc.getSTRdy(装配区,stNum));
+ 				   ((_7ST)secondST).set立库RDY(false);
  				   secondST.set工单ID((int)row.get(14));
  				   secondST.set模组序ID((int)row.get(15));
  				   secondST.set物料编码((String)row.get(6));
@@ -522,7 +522,7 @@ public class STContent implements Serializable {
     	 if(stNum==9||stNum==11||stNum==12){
     		 ((_1_6ST)firstST).clear();
     		 ((_1_6ST)firstST).set允许工位动作标志(true);
-    		 ((_1_6ST)firstST).set立库RDY(plc.getSTRdy(装配区,stNum));
+    		 ((_1_6ST)firstST).set立库RDY(true);
     		 Carry ca= plc.line.getCarry(stNum-1);//本工位
     		 if(ca!=null){
     			
@@ -570,7 +570,7 @@ public class STContent implements Serializable {
 			((_9ST)firstST).set第2个电芯位置(d2);
 			((_9ST)firstST).set第3个电芯位置(d3);
 			((_9ST)firstST).set第4个电芯位置(d4);
-			((_9ST)firstST).set立库RDY(plc.getSTRdy(装配区,stNum));
+			((_9ST)firstST).set立库RDY(true);
 			((_9ST)firstST).setWrite(true);
 			  next=i;
 			    break;
@@ -607,7 +607,7 @@ public class STContent implements Serializable {
         				((_9ST)secondST).set第2个电芯位置(d2);
         				((_9ST)secondST).set第3个电芯位置(d3);
         				((_9ST)secondST).set第4个电芯位置(d4);
-        				((_9ST)secondST).set立库RDY(plc.getSTRdy(装配区,stNum));
+        				((_9ST)secondST).set立库RDY(true);
         				((_9ST)secondST).setWrite(true);
     			  
     			    break;
@@ -652,7 +652,7 @@ public class STContent implements Serializable {
  				((_9ST)secondST).set第2个电芯位置(d2);
  				((_9ST)secondST).set第3个电芯位置(d3);
  				((_9ST)secondST).set第4个电芯位置(d4);
- 				((_9ST)secondST).set立库RDY(plc.getSTRdy(装配区,stNum));
+ 				((_9ST)secondST).set立库RDY(true);
  				((_9ST)secondST).setWrite(true);
     			    break;
         			 }
@@ -686,7 +686,7 @@ public class STContent implements Serializable {
 	    	 		 ((_12ST)firstST).set模组类型标志(car.get模组类型());
 	    	 		 ((_12ST)firstST).set电芯类型标志(car.get电芯类型());
                     // ((_12ST)firstST).set需求数量(0);
-	    	 		 ((_12ST)firstST).set立库RDY(plc.getSTRdy(装配区,stNum));
+	    	 		 ((_12ST)firstST).set立库RDY(true);
 	    	 		 firstST.set工单ID(car.get工单ID());
 	    	 		 firstST.set模组序ID(car.get模组序ID());
 	    	 		 firstST.setWrite(true);	 
@@ -773,7 +773,7 @@ public class STContent implements Serializable {
 		    ((_DST)firstST).set电芯类型标志(car.get电芯类型());
 			((_DST)firstST).set翻B面(fan);
 			
-			((_DST)firstST).set立库RDY(plc.getSTRdy(装配区,stNum));
+			((_DST)firstST).set立库RDY(true);
 			((_DST)firstST).setWrite(true);
 			  
     			 }
@@ -792,7 +792,7 @@ public class STContent implements Serializable {
     		    ((_DST)secondST).set电芯类型标志(car.get电芯类型());
     			((_DST)secondST).set翻B面(fan);
     			
-    			((_DST)secondST).set立库RDY(plc.getSTRdy(装配区,stNum));
+    			((_DST)secondST).set立库RDY(true);
     			((_DST)secondST).setWrite(true);
     			  
         			 }
@@ -867,7 +867,7 @@ public class STContent implements Serializable {
     		    ((_DST)secondST).set电芯类型标志(car.get电芯类型());
     			((_DST)secondST).set翻B面(fan);
     			
-    			((_DST)secondST).set立库RDY(plc.getSTRdy(装配区,stNum));
+    			((_DST)secondST).set立库RDY(true);
     			((_DST)secondST).setWrite(true);
     			  
         			 }
@@ -962,7 +962,7 @@ public class STContent implements Serializable {
 				( (_7ST)secondST).set允许工位动作标志(true);
 				 if(secondST instanceof _9ST ){
 				( (_9ST)secondST).set允许工位动作标志(true);
-				System.out.println("____+++++++___");
+				//System.out.println("____+++++++___");
 				
 				 }
 			    }

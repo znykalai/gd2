@@ -43,6 +43,7 @@ public class KuFang {
 			public void run(){
 			try{
 				while(true){
+					//if(SqlPro.is指令调度)
 					 start堆垛机指令();
 				Thread.sleep(500);
 				

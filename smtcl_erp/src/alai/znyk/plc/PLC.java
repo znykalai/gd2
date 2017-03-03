@@ -402,19 +402,12 @@ public class PLC implements Serializable {
 					setSTATE2();
 				}catch(Exception e){e.printStackTrace();}
 				ST0_1.initFromSql();
-				getSTRdy(1,2);
 				ST1_1.initFromSql();
-				getSTRdy(1,3);
 				ST2_1.initFromSql();
-				getSTRdy(1,4);
 				ST3_1.initFromSql();
-				getSTRdy(1,5);
 				ST4_1.initFromSql();
-				getSTRdy(1,6);
 				ST5_1.initFromSql();
-				getSTRdy(1,7);
 				ST6_1.initFromSql();
-				getSTRdy(1,8);
 				ST7_1.initFromSql();
 				ST8_1.initFromSql();
 				ST9_1.initFromSql();
@@ -424,6 +417,14 @@ public class PLC implements Serializable {
 				ST13_1.initFromSql();
 				ST14_1.initFromSql();
 				ST15_1.initFromSql();
+				
+				getSTRdy(1,2);
+				getSTRdy(1,3);
+				getSTRdy(1,4);
+				getSTRdy(1,5);
+				getSTRdy(1,6);
+				getSTRdy(1,7);
+				getSTRdy(1,8);
 				getFromPLC(1);//必须写在最后
 				writeO();
 				try {
@@ -513,7 +514,7 @@ public class PLC implements Serializable {
     						 }
     					}
     					else{//如托盘在本工位没有任何需要的动作，不判断动作完成标志
-    						getCarryLine(装配区).removeToNext(i);
+    						 getCarryLine(装配区).removeToNext(i);
     	    				  
     					}
     					
@@ -610,28 +611,46 @@ public class PLC implements Serializable {
    public boolean getSTRdy(int line,int st){
 	   //这步判断可以不需要，因为只有到位信号才更新托盘
 	   //STATE1,STATE2在主线程里面自动更新
+	   boolean 到位1=false; boolean 到位2=false;
 	   try{
+		  if(st==1){
+			   if(line==1){
+				   STC1.get(st-1).firstST.set立库RDY(true);
+				   STC1.get(st-1).secondST.set立库RDY(true);
+				   return true;
+			   }else{
+				   STC2.get(st-1).firstST.set立库RDY(true);
+				   STC2.get(st-1).secondST.set立库RDY(true);
+				   return true;
+			   }
+		   }
+		  
 	  if(st>=2&&st<=8){
 	   if(line==1){
 		   
 		   String smm[]=getSTATE1().split("\\|");
-		   if(st-2==0){
-			 //  System.out.println("=="+STATE1);
-		   }
+		   
 		   if(smm[st-2].split("=")[1].equals("0")){
 			  
 			   STC1.get(st-1).firstST.set立库RDY(false);
 			   STC1.get(st-1).secondST.set立库RDY(false);
-			   return false;  
+			     到位1=false;
+			   //return false;  
+		   }else{
+			     到位1=true;
 		   }
 		   
 	   }else{
 		   String smm[]=getSTATE2().split("\\|");
+		   
 		   if(smm[st-2].split("=")[1].equals("0")){
 			   STC2.get(st-1).firstST.set立库RDY(false);
 			   STC2.get(st-1).secondST.set立库RDY(false);
-			   return false;  
-		   }
+			   到位2=false;
+			  // return false;  
+		   }else{
+			   到位2=true;
+		    }
 		   
 	   }
 	   }
@@ -659,7 +678,7 @@ public class PLC implements Serializable {
 		         String sql1=SqlTool.findOneRecord("select  托盘编号,物料,数量,货位号  from 库存托盘   where  物料='"+wuliao+"' and 数量>0 and 方向='"+line+"'"); 
 				  if(sql1!=null){
 					 String sm6[]=sql1.split("!_!") ;
-					  SqlTool.add动作指令(sm6[0], sm6[3],  (gw1[st-2]-1)+"", "下货", 0, line+"");
+					 SqlTool.add动作指令(sm6[0], sm6[3],  (gw1[st-2]-1)+"", "下货", 0, line+"");
 					   
 				    }
 				  }else{
@@ -676,7 +695,7 @@ public class PLC implements Serializable {
 			  
 			  return false;}
 		 
-		  else{
+		  else{//有托盘的情况
 			  String sm[]=tem2.split("!_!");
 			  int tpshul=Integer.parseInt(sm[2]);
 		      
@@ -690,7 +709,11 @@ public class PLC implements Serializable {
 				   //如果第一个队列还没取完，那就判断第一个队列
 		       
 		       String tem=SqlTool.findOneRecord("select  物料,数量  from 配方指令队列   where  ID='"+id+"'");
-		       if(tem==null)tem="-1!_!-1";
+		          if(tem==null){//没有意思，工位还没初始好
+		        	  cot.firstST.set立库RDY(false);
+		        	  tem="-1!_!-1";
+		    	     return false;
+		    	     }
 		       if(sm[1].equals(tem.split("!_!")[0])){//判断队列需要的物料，跟当前工位托盘的物料是不是一样
 		    	   
 		    	   if(需求数量-完成数量>tpshul){
@@ -698,11 +721,17 @@ public class PLC implements Serializable {
 		    		   cot.firstST.set立库RDY(false);
 		    		   
 		    		   SqlTool.add动作指令(sm[0], sm[3], "60002", "输送线回流", 1, line+"");
+		    		   System.out.println("要取的不够了------而回流="+sm[1]+"=="+tem.split("!_!")[0]);
 		    		   
 					    return false;
 					   }else{
-					   cot.firstST.set立库RDY(true);  
-						   return true;
+						if(line==1){   
+					    cot.firstST.set立库RDY(true&&到位1);  
+					    return true&&到位1;}
+						else{
+							 cot.firstST.set立库RDY(true&&到位2);  
+							 return true&&到位2;
+					        }
 					   
 					   }
 		    	   
@@ -710,8 +739,10 @@ public class PLC implements Serializable {
 		    	      //叫托盘回流  
 		    	   if(tpshul>2){//回货架
 		    	     SqlTool.add动作指令(sm[0], sm[3], "60002", "输送线回流", 0, line+"");
+		    	     System.out.println("因为托盘物料不是本工位要的物料------而回到货架"+sm[1]+"=="+tem.split("!_!")[0]);
 		    	     }else{//回大库
 		    	     SqlTool.add动作指令(sm[0], sm[3], "60002", "输送线回流", 1, line+"");	 
+		    	     System.out.println("因为托盘数量<3且不是本工位要的物料------而回到大库"+sm[1]+"=="+tem.split("!_!")[0]);
 		    	     }
 		    	   
 		    	   cot.firstST.set立库RDY(false);
@@ -720,7 +751,12 @@ public class PLC implements Serializable {
 		    }
 			   else{//如果第一个队列取完了，才判断第二个队列	   
 				   String tem=SqlTool.findOneRecord("select  物料,数量  from 配方指令队列   where  ID='"+id2+"'");
-				   if(tem==null)tem="-1!_!-1";
+				 
+				   if(tem==null){//没有意思，工位还没初始好
+			        	  cot.secondST.set立库RDY(false);
+			        	  tem="-1!_!-1";
+			    	     return false;
+			    	     }
 				   if(sm[1].equals(tem.split("!_!")[0])){
 					   int 需求数量2=((_1_6ST)cot.secondST).get需求数量();
 					   int 完成数量2=((_1_6ST)cot.secondST).get完成数量();
@@ -730,8 +766,14 @@ public class PLC implements Serializable {
 						   SqlTool.add动作指令(sm[0], sm[3], "60002", "输送线回流", 1, line+"");  
 						   return false;
 						   }else{
-							cot.secondST.set立库RDY(true);
-							   return true;}
+							   if(line==1){   
+								    cot.secondST.set立库RDY(true&&到位1);  
+								    return true&&到位1;}
+									else{
+										 cot.secondST.set立库RDY(true&&到位2);  
+										 return true&&到位2;
+								        }
+							   }
 					   
 				   }
 				        else{
@@ -739,11 +781,15 @@ public class PLC implements Serializable {
 				        cot.secondST.set立库RDY(false);
 				        if(tpshul>2){//回货架
 				    	     SqlTool.add动作指令(sm[0], sm[3], "60002", "输送线回流", 0, line+"");
+				    	     System.out.println("2因为托盘物料不是本工位要的物料------而回到货架"+sm[1]+"=="+tem.split("!_!")[0]);
 				    	     }else{//回大库
 				    	     SqlTool.add动作指令(sm[0], sm[3], "60002", "输送线回流", 1, line+"");	 
+				    	     System.out.println("2因为托盘数量<3且不是本工位要的物料------而回到大库"+sm[1]+"=="+tem.split("!_!")[0]);
 				    	     }
 				    	 return false;  
 				       }
+				   
+				   /////////////////////////////
 				   
 			   }
 		       
@@ -792,7 +838,7 @@ public class PLC implements Serializable {
 				  
 				  return false;}
 			 
-			  else{
+			  else{//有托盘的情况
 				  String sm[]=tem2.split("!_!");
 				   int tpshul=Integer.parseInt(sm[2]);
 			       int id=((_7ST)cot.firstST).id;
@@ -805,18 +851,30 @@ public class PLC implements Serializable {
 					   //如果第一个队列还没取完，那就判断第一个队列
 			       
 			       String tem=SqlTool.findOneRecord("select  物料,数量  from 配方指令队列   where  ID='"+id+"'");
-			       if(tem==null)tem="-1!_!-1";
+
+				   if(tem==null){//没有意思，工位还没初始好
+			        	  cot.firstST.set立库RDY(false);
+			        	  tem="-1!_!-1";
+			    	     return false;
+			    	     }
 			       if(sm[1].equals(tem.split("!_!")[0])){
-			    	   if(tpshul>0){
+			    	   if(tpshul<1){//因为电芯每次只取一个，所以只判断大于0的情况
 						   //叫托盘回流
 			    		   cot.firstST.set立库RDY(false);
 			    		   SqlTool.add动作指令(sm[0], sm[3], "60002", "输送线回流", 1, line+"");  
 						   return false;
 						   }else{
-						   cot.firstST.set立库RDY(true);
-							   return true;}
+							   if(line==1){   
+								    cot.firstST.set立库RDY(true&&到位1);  
+								    return true&&到位1;}
+									else{
+										 cot.firstST.set立库RDY(true&&到位2);  
+										 return true&&到位2;
+								        }
+							   
+						   }
 			    	   
-			       }else{
+			       }else{//如果物料不相等
 			    	      //叫托盘回流  
 			    	   cot.firstST.set立库RDY(false);
 			    	   
@@ -831,18 +889,28 @@ public class PLC implements Serializable {
 				   else{
 					     //如果第一个队列取完了，才判断第二个队列	   
 					   String tem=SqlTool.findOneRecord("select  物料,数量  from 配方指令队列   where  ID='"+id2+"'");
-					   if(tem==null)tem="-1!_!-1";
+
+					   if(tem==null){//没有意思，工位还没初始好
+				        	  cot.secondST.set立库RDY(false);
+				        	  tem="-1!_!-1";
+				    	     return false;
+				    	     }
 					   if(sm[1].equals(tem.split("!_!")[0])){
 						   int 需求数量2=((_7ST)cot.secondST).get需求数量();
 						   int 完成数量2=((_7ST)cot.secondST).get完成数量();
-						   if(tpshul>0){
+						   if(tpshul<1){
 							   //叫托盘回流
 							   cot.secondST.set立库RDY(false);
 							   SqlTool.add动作指令(sm[0], sm[3], "60002", "输送线回流", 1, line+"");  
 							   return false;
 							   }else{
-								   cot.secondST.set立库RDY(true);
-								   return true;
+								   if(line==1){   
+									    cot.secondST.set立库RDY(true&&到位1);  
+									    return true&&到位1;}
+										else{
+										cot.secondST.set立库RDY(true&&到位2);  
+										return true&&到位2;
+									        }
 								   }
 						   
 					   }
@@ -864,6 +932,8 @@ public class PLC implements Serializable {
 			      
 		   
 	   }
+	   
+	   
 	      return true;
 	   
 	   }catch(Exception ex){ex.printStackTrace();}

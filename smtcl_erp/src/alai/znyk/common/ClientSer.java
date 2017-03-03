@@ -123,7 +123,8 @@ public class ClientSer {
 	  public static String TP="1";
 	public String ReadFromRffid(String message,int id) throws RemoteException, ServiceException{
 		if(isOpenPlc) return gd.getGD().readFromRffid(message, id);
-		 //TP= Math.round(Math.random()*10000)+"";
+        if(id==1)
+         TP= Math.round(Math.random()*10000)+"";
 		return TP;
 		
 	}
