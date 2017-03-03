@@ -26,7 +26,7 @@ var readyShow = {
 					if(this.getHck()&&dsState.state){//是否启动定时刷新
 						readyShow.deleteSetInterval = setInterval(function(){
 							if(af.getHck());
-						},dsState.tim),dlInterval=true;
+						},dsState.tim),af_Home.dlInterval=true;
 					}
 					var ly=layer.close(win),win=null,ly=null,winHeight=null;
 					return returnFunction();

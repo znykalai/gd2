@@ -24,6 +24,7 @@ import com.sygf.erp.util.GetApplicationContext;
 import com.sygf.erp.util.GetParam;
 
 import alai.znyk.common.ClientSer;
+import alai.znyk.common.SqlPro;
 import alai.znyk.plc.PLC;
 
 public class HomeAction extends Action{
@@ -37,6 +38,8 @@ public class HomeAction extends Action{
 				return getGDFrame(mapping, form, request, response);
 			}else if(operType.equals("getHckButton")){
 				return getHckButton(mapping, form, request, response);
+			}else if(operType.equals("getCKButton")){
+				return getCKButton(mapping, form, request, response);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -200,6 +203,58 @@ public class HomeAction extends Action{
 			//B区,断点启动
 			}else if(map.get("type").equals("duandianqidong_bottom")){
 				result.put("type", ClientSer.getIntance().c_exeComment("",4,2));
+			}
+			response.setContentType("text/html;charset=utf-8");
+			response.getWriter().print(result);
+			response.getWriter().close();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	/**
+	 * 获取操控按钮状态
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	private ActionForward getCKButton(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) {
+		try{
+			request.setCharacterEncoding("utf-8");
+			response.setCharacterEncoding("utf-8");
+			HashMap map = GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
+			JSONObject result = new JSONObject();
+			if(map.get("type").equals("get")){
+				result.put("A", PLC.getIntance().is不检测取料数量());
+				result.put("B", PLC.getIntance().is不检测动作完成());
+				result.put("C", SqlPro.autoRFIDup);
+				result.put("D", false);
+			}else if(map.get("type").equals("A")){
+				if(map.get("buttonA").equals("true")){
+					PLC.getIntance().set不检测取料数量(false);
+				}else{
+					PLC.getIntance().set不检测取料数量(true);
+				};
+				result.put("type", PLC.getIntance().is不检测取料数量());
+			}else if(map.get("type").equals("B")){
+				if(map.get("buttonB").equals("true")){
+					PLC.getIntance().set不检测动作完成(false);
+				}else{
+					PLC.getIntance().set不检测动作完成(true);
+				};
+				result.put("type", PLC.getIntance().is不检测动作完成());
+			}else if(map.get("type").equals("C")){
+				if(map.get("buttonC").equals("true")){
+					SqlPro.autoRFIDup=false;
+				}else{
+					SqlPro.autoRFIDup=true;
+				};
+				result.put("type", SqlPro.autoRFIDup);
+			}else{
+				result.put("type", true);
 			}
 			response.setContentType("text/html;charset=utf-8");
 			response.getWriter().print(result);

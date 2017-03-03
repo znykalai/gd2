@@ -34,6 +34,7 @@
 <script src="<%=path%>/bootstrap/js/bootstrap.min.js"></script>
 <script src="<%=path%>/bootstrap/js/bootstrap-datetimepicker.min.js"></script>
 <script src="<%=path%>/js/layer/layer.js"></script>
+<script src="<%=path%>/js/public.js"></script>
 <script src="<%=path%>/js/home.js"></script>
 </head>
 <body draggable="false" 
@@ -74,26 +75,22 @@
 				<!-- 右侧菜单 -->
 				<td style="position: relative;height:100%;">
 					<div>
-						<div ondragstart="dragStart(event)" draggable="true" 
-							 id="xtsz_home" title="系统信息" class="xtsz_home">
-							<div id="xtsz" class="系统信息"></div>
-							<div id="xtsz_id_" class="xtsz_id_">
-								<div class="layui-layer-title" style="cursor: move;">
-									系统信息
-								</div>
-								<div id="" class="layui-layer-content" style="height: 436px;">
-									<div id="系统信息"></div>
+						<div ondragstart="dragStart(event)" ondragover="allowDrop(event)" ondrop="drop(event)" draggable="true" 
+							 id="xtsz_home" title="按钮操控" class="xtsz_home">
+							<div id="xtsz" class="按钮操控"></div>
+							<div id="xtsz_id_" class="xtsz_id_" style="width:200px;height:280px;">
+								<div class="layui-layer-title" style="cursor:move;"></div>
+								<div id="" class="layui-layer-content">
+									<div id="按钮操控"></div>
 								</div>
 							</div>
 						</div>
-						<div ondragstart="dragStart(event)" draggable="true" 
+						<div ondragstart="dragStart(event)" ondragover="allowDrop(event)" ondrop="drop(event)" draggable="true" 
 							 id="yhsz_home" title="用户信息" class="yhsz_home">
 							<div id="yhsz" class="用户信息"></div>
-							<div id="yhsz_id_" class="yhsz_id_">
-								<div class="layui-layer-title" style="cursor: move;">
-									用户信息
-								</div>
-								<div id="" class="layui-layer-content" style="height: 436px;">
+							<div id="yhsz_id_" class="yhsz_id_" style="width:200px;height:280px;">
+								<div class="layui-layer-title" style="cursor: move;"></div>
+								<div id="" class="layui-layer-content">
 									<div id="用户信息"></div>
 								</div>
 							</div>

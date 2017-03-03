@@ -53,7 +53,7 @@ public class PLCAction extends Action{
 			request.setCharacterEncoding("utf-8");
 			response.setCharacterEncoding("utf-8");
 			HashMap typeMap = GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
-			System.out.println("typeMap="+typeMap);
+//			System.out.println("typeMap="+typeMap);
 			JSONObject result = new JSONObject();
 			ArrayList mapList = new ArrayList();//返回table数据
 			ArrayList sszList = new ArrayList();//返回到输送线

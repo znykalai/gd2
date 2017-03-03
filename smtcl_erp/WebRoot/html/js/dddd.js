@@ -396,7 +396,7 @@ var readyShow = {
 							//定时刷新
 							readyShow.deleteSetInterval = setInterval(function(){
 								showGdList('','','',false);
-							},dsState.tim),dlInterval = true;
+							},dsState.tim),af_Home.dlInterval=true;
 						})();
 					};
 					//工单显示

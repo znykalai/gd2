@@ -15,7 +15,7 @@ var readyShow = {
 					if(af.hwLoad()&&af.table.load()&&dsState.state){//是否启动定时
 						readyShow.deleteSetInterval = setInterval(function(){
 							if(af.table.load()&&af.hwLoad());
-						},dsState.tim),dlInterval=true;
+						},dsState.tim),af_Home.dlInterval=true;
 					}
 					var ly=layer.close(win),winHeight=null,win=null,ly=null;
 					return null;
