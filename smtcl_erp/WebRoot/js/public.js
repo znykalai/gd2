@@ -55,9 +55,6 @@ function allowDrop(event){
 }
 function drop(event,a){
 	event.preventDefault();
-	if(a==1){
-		return null;
-	};
 	var data = event.dataTransfer.getData("Text");
 	var html;
 	var a = af_Home.winHtml(function(val){
