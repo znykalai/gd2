@@ -675,14 +675,14 @@ public class PLC implements Serializable {
 			  String wuliao=cot.firstST.get物料编码()==null?"":cot.firstST.get物料编码();
 			  if(!wuliao.equals("")){
 				  if(line==1){	  
-		         String sql1=SqlTool.findOneRecord("select  托盘编号,物料,数量,货位号  from 库存托盘   where  物料='"+wuliao+"' and 数量>0 and 方向='"+line+"'"); 
+		         String sql1=SqlTool.findOneRecord("select  托盘编号,物料,数量,货位号  from 库存托盘   where  物料='"+wuliao+"' and 数量>0 and 货位号  between 1 and 28 and 方向='"+line+"'"); 
 				  if(sql1!=null){
 					 String sm6[]=sql1.split("!_!") ;
 					 SqlTool.add动作指令(sm6[0], sm6[3],  (gw1[st-2]-1)+"", "下货", 0, line+"");
 					   
 				    }
 				  }else{
-					  String sql1=SqlTool.findOneRecord("select  托盘编号,物料,数量,货位号  from 库存托盘   where  物料='"+wuliao+"' and 数量>0 and 方向='"+2+"'"); 
+					  String sql1=SqlTool.findOneRecord("select  托盘编号,物料,数量,货位号  from 库存托盘   where  物料='"+wuliao+"' and 数量>0 and 货位号  between 1 and 28 and 方向='"+2+"'"); 
 					  if(sql1!=null){
 						 String sm6[]=sql1.split("!_!") ;
 						 SqlTool.add动作指令(sm6[0], sm6[3],  (gw2[st-2]-1)+"", "下货", 0, line+"");
@@ -691,7 +691,7 @@ public class PLC implements Serializable {
 					  
 				  }
 			  }
-			  //可以在哪儿请求托盘
+			  //可以在这儿请求托盘
 			  
 			  return false;}
 		 
@@ -818,14 +818,14 @@ public class PLC implements Serializable {
 				 String wuliao=cot.firstST.get物料编码()==null?"":cot.firstST.get物料编码();
 				  if(!wuliao.equals("")){
 					  if(line==1){	  
-			         String sql1=SqlTool.findOneRecord("select  托盘编号,物料,数量,货位号  from 库存托盘   where  物料='"+wuliao+"' and 数量>0 and 方向='"+line+"'"); 
+			         String sql1=SqlTool.findOneRecord("select  托盘编号,物料,数量,货位号  from 库存托盘   where  物料='"+wuliao+"' and 数量>0 and 货位号  between 1 and 28 and 方向='"+line+"'"); 
 					  if(sql1!=null){
 						 String sm6[]=sql1.split("!_!") ;
 						  SqlTool.add动作指令(sm6[0], sm6[3],  (gw1[st-2]-1)+"", "下货", 0, line+"");
 						   
 					    }
 					  }else{
-						  String sql1=SqlTool.findOneRecord("select  托盘编号,物料,数量,货位号  from 库存托盘   where  物料='"+wuliao+"' and 数量>0 and 方向='"+2+"'"); 
+						  String sql1=SqlTool.findOneRecord("select  托盘编号,物料,数量,货位号  from 库存托盘   where  物料='"+wuliao+"' and 数量>0 and 货位号  between 1 and 28 and 方向='"+2+"'"); 
 						  if(sql1!=null){
 							 String sm6[]=sql1.split("!_!") ;
 							 SqlTool.add动作指令(sm6[0], sm6[3],  (gw2[st-2]-1)+"", "下货", 0, line+"");
