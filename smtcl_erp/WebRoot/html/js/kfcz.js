@@ -11,6 +11,11 @@ var readyShow = {
 					}
 					$('#xy').css('height', (winHeight - (window.screen.height - winHeight))/0.98);
 					$('.table-body').css('height', document.body.clientHeight / 3.5);
+					//显示GDFrame
+					$("#showGDFrame").click(function(){
+						af.getGDFrame();
+						return null;
+					});
 					this.readyEvent();
 					if(af.hwLoad()&&af.table.load()&&dsState.state){//是否启动定时
 						readyShow.deleteSetInterval = setInterval(function(){
@@ -18,6 +23,18 @@ var readyShow = {
 						},dsState.tim),af_Home.dlInterval=true;
 					}
 					var ly=layer.close(win),winHeight=null,win=null,ly=null;
+					return null;
+				},
+				/**
+				 * 显示GDFrame
+				 */
+				getGDFrame:function(){
+					$.ajax({
+						url: getRootPath()+'/HomeAction.do?operType=getGDFrame',
+						type: 'get',
+						cache:false,
+						success: function (data) {}
+					});
 					return null;
 				},
 				//显示物料位置记录仪

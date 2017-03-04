@@ -15,11 +15,6 @@ var readyShow = {
 					//设置高度自适应
 					$('#xy').css('height', (winHeight - (window.screen.height - winHeight))/0.98);
 					$('.table-body').css('height', document.body.clientHeight /5.88);
-					//显示GDFrame
-					$("#showGDFrame").click(function(){
-						af.getGDFrame();
-						return null;
-					});
 					this.txload();//图形渲染
 					this.loadButton();//按钮事件启动
 					//货位渲染
@@ -36,18 +31,6 @@ var readyShow = {
 					this.removeTop = [],
 					this.removeArry = [],
 					this.removeBottom = [];
-					return null;
-				},
-				/**
-				 * 显示GDFrame
-				 */
-				getGDFrame:function(){
-					$.ajax({
-						url: getRootPath()+'/HomeAction.do?operType=getGDFrame',
-						type: 'get',
-						cache:false,
-						success: function (data) {}
-					});
 					return null;
 				},
 				/**
