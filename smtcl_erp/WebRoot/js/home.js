@@ -142,6 +142,26 @@ var af_Home = {
 		});
 	 	return null;
 	},
+	//获取急停按钮状态&&同时也是set函数
+	getState:function(type,e,fun){
+		var a = $.ajax({
+			url: getRootPath()+'/HomeAction.do?operType=getState',
+			type: 'get',
+			data: "type="+type,
+			cache:false,
+			success: function (data){
+				if(data==1){
+					af_Home.div_mo_img_strat=true;
+				}else{
+					af_Home.div_mo_img_strat=false;
+				};
+				return fun(af_Home.div_mo_img_strat,e);
+			}
+		});
+		return a=null;
+	},
+	//当前急停按钮的状态=默认停止状态
+	div_mo_img_strat:true,
 	load:function(fun){
 		//关机
 		$('#div_mo_img_close').mouseover(function(){
@@ -154,20 +174,24 @@ var af_Home = {
 			$(this).attr("src",url); 
 			return url = null;
 		});
-		$("#jiancequliaoshuliang").click(function(){
-			alert(1111);
-		});
 		//急停按钮
-//		$('#div_mo_img_strat').mouseover(function(){
-//			var url = getRootPath()+"/images/fanhuianniu_hui_mo.png";
-//			$(this).attr("src",url);
-//			return url = null;
-//		});
-//		$('#div_mo_img_strat').mouseout(function(){
-//			var url = getRootPath()+"/images/fanhuianniu_hui.png";
-//			$(this).attr("src",url); 
-//			return url = null;
-//		});
+		$('#div_mo_img_strat').click(function(){
+			var type=null;
+			if(af_Home.div_mo_img_strat){//如果当前是停止状态则改为允许状态
+				type=false;
+			}else{
+				type=true;
+			};
+			var a=af_Home.getState(type,this,function(r,e){
+				var url = getRootPath()+"/images/fanhuianniu_hong.png";
+				if(!r){
+					url = getRootPath()+"/images/fanhuianniu_lv.png";	
+				};
+				$(e).attr("src",url);
+				return url = null;
+			});
+			return type=null,a=null;
+		});
 		//用户设置
 		$('#yhsz').mousedown(function(){
 			var a=$('#yhsz_id_').show(0);
@@ -219,6 +243,18 @@ var af_Home = {
 	    });
 		//显示主页;
 		var a=$('#anniu2').click();
+		//定时更新急停按钮状态
+//		setInterval(function(){
+//			var a=af_Home.getState('get',$('#div_mo_img_strat'),function(r,e){
+//				var url = getRootPath()+"/images/fanhuianniu_hong.png";
+//				if(!r){
+//					url = getRootPath()+"/images/fanhuianniu_lv.png";	
+//				};
+//				$(e).attr("src",url);
+//				return url = null;
+//			});
+//			return a=null;
+//		},200);
 		return fun(),a=null;
 	}
 };

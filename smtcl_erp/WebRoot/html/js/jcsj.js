@@ -1189,14 +1189,28 @@ var readyShow = {
 							}else{
 								this.ck = true;
 							}
-							var optionHtml = "<option></option>" +
-											 "<option"+($(this).html()=='1ST'?' selected':'')+">1ST</option>" +
-										 	 "<option"+($(this).html()=='2ST'?' selected':'')+">2ST</option>" +
-											 "<option"+($(this).html()=='3ST'?' selected':'')+">3ST</option>" +
-											 "<option"+($(this).html()=='4ST'?' selected':'')+">4ST</option>" +
-											 "<option"+($(this).html()=='5ST'?' selected':'')+">5ST</option>" +
-											 "<option"+($(this).html()=='6ST'?' selected':'')+">6ST</option>" +
-											 "<option"+($(this).html()=='7ST'?' selected':'')+">7ST</option>";
+							var optionHtml = null;
+							if($("#mozu_gongweileibie").val()=="奇数"){
+								optionHtml = "<option></option>" +
+								 "<option"+($(this).html()=='1ST'?' selected':'')+">1ST</option>" +
+								 "<option"+($(this).html()=='3ST'?' selected':'')+">3ST</option>" +
+								 "<option"+($(this).html()=='5ST'?' selected':'')+">5ST</option>" +
+								 "<option"+($(this).html()=='7ST'?' selected':'')+">7ST</option>";
+							}else if($("#mozu_gongweileibie").val()=="偶数"){
+								optionHtml = "<option></option>" +
+								 "<option"+($(this).html()=='2ST'?' selected':'')+">2ST</option>" +
+								 "<option"+($(this).html()=='4ST'?' selected':'')+">4ST</option>" +
+								 "<option"+($(this).html()=='6ST'?' selected':'')+">6ST</option>";
+							}else{
+								optionHtml = "<option></option>" +
+								 "<option"+($(this).html()=='1ST'?' selected':'')+">1ST</option>" +
+							 	 "<option"+($(this).html()=='2ST'?' selected':'')+">2ST</option>" +
+								 "<option"+($(this).html()=='3ST'?' selected':'')+">3ST</option>" +
+								 "<option"+($(this).html()=='4ST'?' selected':'')+">4ST</option>" +
+								 "<option"+($(this).html()=='5ST'?' selected':'')+">5ST</option>" +
+								 "<option"+($(this).html()=='6ST'?' selected':'')+">6ST</option>" +
+								 "<option"+($(this).html()=='7ST'?' selected':'')+">7ST</option>";
+							};
 							$(this).html('<select class="selectpicker"  id="zlhNewTd6_text_' + row + '" style="width:100%;height:100%;">'+optionHtml+'</select>');
 							$('#zlhNewTd6_text_' + row).focus();
 					        $('#zlhNewTd6_text_' + row).blur(function (){
