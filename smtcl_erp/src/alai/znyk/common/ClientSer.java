@@ -258,29 +258,73 @@ public class ClientSer {
 	    
 	   public String c_exeComment(String comment, int type,int machineID){
 		   if(type==1){//急停
-			   
+			   if(isOpenPlc){
+				   try{
+				   return gd.getGD().c_exeComment(comment, type);
+					     
+				   }catch(Exception ex){}
+			   }
 			   
 		   }
           if(type==6){//松开急停
 			   
-			   
+        	  if(isOpenPlc){
+				   try{
+				   return gd.getGD().c_exeComment(comment, type);
+					     
+				   }catch(Exception ex){}
+			   }   
 		   }
           if(type==2){//A堆垛机复位
-			   
+        	  
+        	  if(isOpenPlc){
+				   try{
+				   return gd.getGD().c_exeComment(comment, type);
+					     
+				   }catch(Exception ex){}
+			   }
 			   
 		   }
           if(type==3){//B堆垛机复位
-			   
+        	  
+        	  if(isOpenPlc){
+				   try{
+				   return gd.getGD().c_exeComment(comment, type);
+					     
+				   }catch(Exception ex){}
+			   }
 			   
 		   }
-          if(type==4){//故障后断点启动
+          if(type==4||type==5){//故障后断点启动,返回-1说明方法执行不成功
 			//comment=eventID|fromID|toID|machineID|1=上货，2=下货，3=回流   
+        	 //不判断回流，回流不需中断点
+        		  Vector 堆1=SqlTool.findInVector("select idEvent,来源,任务类别,动作,托盘编号,来源货位号,放回货位号,请求区,状态,状态2 from 立库动作指令  where 状态='执行中' and 动作<>'输送线回流' and 请求区= '"+machineID+"' order by idEvent");		
+  				if(堆1.size()>0){
+  					Vector row=(Vector)堆1.get(0);
+  					try{
+  					String back= row.get(0)+"|"+row.get(5)+"|"+row.get(6)+"|"+machineID+"|"+(row.get(3).equals("上货")?1:2);
+  					 if(isOpenPlc){
+  						return gd.getGD().c_exeComment(back, type);
+  					 }
+  					}catch(Exception e){
+  						e.printStackTrace();
+  						return "-1";
+  					}
+  				}else{
+  					 if(isOpenPlc){
+  						 try{
+   						return gd.getGD().c_exeComment("-1", type);
+   						}catch(Exception ex){
+   							ex.printStackTrace();
+   						}
+   					 }	
+  					
+  				}
+        		  
+  				return "-1";
 			   
 		   }
-          if(type==5){//故障后从头启动
-  			//comment=eventID|fromID|toID|machineID|1=上货，2=下货，3=回流 
-  			   
-  		   }
+         
 		   
 		   return "成功";
 		   
