@@ -1049,8 +1049,10 @@ var readyShow = {
 				                    showMzzj(obj.mz_id);//显示模组载具行
 					  				layer.msg("保存模组成功！");
 					  			}
+					  			obj=null;
 							}
 						});
+						head=null,add=null,update=null,mz_zj_table=null;
 				        return null;
 					});
 					//模组指令行显示
@@ -1075,7 +1077,9 @@ var readyShow = {
 				  					};
 				  					addMzZlhRow(map);
 				  					zlhNum = Number(map.num) + 1;
+				  					map=null;
 				  				}
+				  				zlh_obj=null;
 							}
 						});
 				        return null;
@@ -1127,8 +1131,8 @@ var readyShow = {
 					            	$(node).html("");
 					            	ck.ck?ck.ck=false:null;
 					            	return null;
-					            }
-					        	$.ajax({
+					            };
+					        	var a=$.ajax({
 									url: getRootPath()+'/BaseDataAction.do?operType=selectWlList',
 									type: 'get',cache:false, 
 									data: e,
@@ -1145,6 +1149,8 @@ var readyShow = {
 										}
 									}
 								});
+					        	node=null,e=null,a=null;
+					        	return null;
 					        });
 				            //判断当前行 修改还是新增
 				            $('#zlhNewTd3_text_' + row + '').change(function () {
@@ -1170,6 +1176,7 @@ var readyShow = {
 					            var node = this.parentNode;
 					            $(node).html(this.value);
 					            ck.ck?ck.ck=false:null;
+					            node=null;
 						        return null;
 					        });
 				            //判断当前行 修改还是新增
@@ -1212,6 +1219,7 @@ var readyShow = {
 								 "<option"+($(this).html()=='7ST'?' selected':'')+">7ST</option>";
 							};
 							$(this).html('<select class="selectpicker"  id="zlhNewTd6_text_' + row + '" style="width:100%;height:100%;">'+optionHtml+'</select>');
+							optionHtml=null;
 							$('#zlhNewTd6_text_' + row).focus();
 					        $('#zlhNewTd6_text_' + row).blur(function (){
 					            var node = this.parentNode;
@@ -1227,6 +1235,7 @@ var readyShow = {
 					            	}
 					            	i++;
 					            }
+					            node=null,mz_zlh_table=null;
 						        return null;
 					        });
 				            //判断当前行 修改还是新增

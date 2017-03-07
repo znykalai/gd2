@@ -21,7 +21,7 @@ var readyShow = {
 						readyShow.deleteSetInterval = setInterval(function(){
 							if(af.table.load()&&af.hwLoad());
 						},dsState.tim),af_Home.dlInterval=true;
-					}
+					};
 					var ly=layer.close(win),winHeight=null,win=null,ly=null;
 					return null;
 				},
@@ -37,10 +37,10 @@ var readyShow = {
 					});
 					return null;
 				},
-				//显示物料位置记录仪
-				showWlIp:{
-					ip:null
-				},
+				/**
+				 * 显示物料位置记录仪
+				 */
+				showWlIp:{ip:[],oip:''},
 				/**
 				 * 渲染所有事件
 				 */
@@ -285,19 +285,25 @@ var readyShow = {
 							        var a = $('#show_wuliao_name ul').toggle();
 							        return a=null;
 							    });
-							    $('#show_wuliao_name ul').click(function (event) {
+							    $('#show_wuliao_name ul').click(function (event){
 							        var t2 = $(event.target).text();
 							        var a = $('#show_wuliao').val(t2);
-							        var hwId = $("#"+t2).val();
-							        if(af.showWlIp.ip){
-							        	$("#"+af.showWlIp.ip).attr("class","kf_lan yes");
-							        	af.showWlIp.ip=null;
-							        }
-							        if(hwId){
-							        	af.showWlIp.ip = hwId;
-							        	$("#"+hwId).attr("class","kf_lv show");
-							        }
-							        return a = null,t2 = null,hwId=null;
+							        af.showWlIp.oip='';
+							        if(t2!=""){
+								        $.each(af.showWlIp.ip, function(i,val){
+								        	var wl = val.split("&");
+								        	if(t2==wl[1]){
+								        		af.showWlIp.oip+="‘"+wl[0]+"’,";
+								        		$("#"+wl[0]).attr("class","kf_lv show");
+								        	};
+								        	wl=null;
+								        });
+								        //去掉，号
+								        if(af.showWlIp.oip.length>0){
+								        	af.showWlIp.oip=af.showWlIp.oip.substring(0,af.showWlIp.oip.length-1);
+								        };
+							        };
+							        return a=null,t2=null;
 							    });
 							    //托盘选择事件
 							    $("#tp_code_click").click(function(e){
@@ -549,7 +555,7 @@ var readyShow = {
 												type:'下货',
 												todaku:1
 											}
-										}
+										};
 										var a = $.ajax({
 											url: getRootPath()+'/KuFangAction.do?operType=fsMingLing',
 											type:'get',
@@ -561,6 +567,8 @@ var readyShow = {
 												};
 												var a = $("input[name='radioName']:checked").parent();
 										    	var b = $('#kfcz_id')[0].reset();
+										    	af.showWlIp.ip=[];
+										    	af.showWlIp.oip='';
 												var c = a.click();
 												return a=null,b=null,c=null,data=null;
 											}
@@ -574,7 +582,7 @@ var readyShow = {
 								return (function(){
 									//默认选择上货
 									var a = $("#shanghuo").click();
-									return a = null;
+									return a=null;
 								})();
 							}
 						};
@@ -593,10 +601,8 @@ var readyShow = {
 					load:function(fun){
 						var a = this.getTableValue(this.hckzdd,'getHckzddl');
 						var b = this.getTableValue(this.kuCun,'getKuCun');
-						return (function(){
-							a=null,b=null;
-							return true;
-						})();
+						a=null,b=null;
+						return true;
 					},
 					getTableValue:function(fun,operType){
 						//获取输送线 库房状态
@@ -609,9 +615,7 @@ var readyShow = {
 								return fun(obj.data);
 							}
 						});
-						return (function(){
-							return a = null;
-						})();
+						return a=null;
 					},
 					/**
 					 * 缓存库指定队列
@@ -642,18 +646,15 @@ var readyShow = {
 							'</tr>');
 							i++;
 						}
-						return (function(){
-							return i = null;
-						})();
+						return i=null;
 					},
 					/**
 					 * 库存
 					 */
 					kuCun:function(e){
 						$("#kc_table tbody tr").remove();
-						var i = 0;
-						//物料显示位置
-						var li = "<li></li>";
+						var i=0;
+                    	var li="<li></li>";
 						while(i < e.length){
 							$('#kc_table tbody').append('<tr bgcolor="#ffffff" style="height:22px;">' +
 								//托盘
@@ -667,19 +668,18 @@ var readyShow = {
 								//方向
 								'<td title="'+e[i].fangxiang+'" style="width:40px;padding:0px;font-size:10px;">'+e[i].fangxiang+'</td>' +
 							'</tr>');
-							li+="<li>"+e[i].wl_code+"<input type='hidden' " +
-									"id='"+e[i].wl_code+"' " +
-									"value='"+e[i].huoweihao+"'></li>";
-							if($('#show_wuliao').val()==e[i].wl_code){
-								af.showWlIp.ip=e[i].huoweihao;
-							}
+							//获取当前库存中的所有物料
+							if(li.indexOf(e[i].wl_code)==-1){
+								li+="<li>"+e[i].wl_code+"</li>";
+							};
+							//获取每个物料对应的库位号
+							if(e[i].huoweihao!=""){
+								af.showWlIp.ip[i] = e[i].huoweihao+"&"+e[i].wl_code;
+							};
 							i++;
-						}
-						$('#show_wuliao_name ul').html(li);
-						return (function(){
-							i = null,li = null;
-							return null;
-						})();
+						};
+                    	var a=$('#show_wuliao_name ul').html(li);
+						return i=null,li=null,a=null;
 					}
 				},
 				/**
@@ -702,33 +702,29 @@ var readyShow = {
 								for(var i=0,j=0,k=af.arrayHome.length;i<k;i++){
 									try{
 										if(af.arrayHome.toString().indexOf('‘'+obj.hckTb[i][i]+'’') > -1){
-											if(af.showWlIp.ip==obj.hckTb[i][i]){
+											if(af.showWlIp.oip.indexOf("‘"+obj.hckTb[i][i]+"’")>-1){
 												$("#"+obj.hckTb[i][i]).attr("class","kf_lv show");
 											}else{
 												$("#"+obj.hckTb[i][i]).attr("class","kf_lan yes");
-											}
+											};
 											af.removeArry[i] = '‘'+obj.hckTb[i][i]+'’';
 											k++;
-										}
+										};
 									}catch (e) {
 										if(af.removeArry.toString().indexOf(af.arrayHome[j]) == -1){
 											var upId = af.arrayHome[j].split("’")[0].split('‘')[1];
 											$("#"+upId).attr("class","kf_hui no");
-										}
+										};
 										j++;
-									}
-								}
+									};
+								};
 							}else{
 								$("div[name='HCK-NAME']").attr("class","kf_hui no");
-							}
-							return (function(){
-								return obj = null;
-							})();
+							};
+							return obj=null;
 						}
-					});
-					return (function(){
-						return a = true;
-					})();
+					});a=null;
+					return true;
 				}
 			};
 			return af.load({state:true,tim:1000});
