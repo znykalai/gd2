@@ -633,9 +633,11 @@ public class SqlTool {
        return back;
 
 }  
-   
+   static String  lock="";
    public static String setStateForEventID(int idEvent, int state, String ext) {
 		// TODO Auto-generated method stub
+	   synchronized(lock){
+		   
 	  String back="";
 	  ConnactionPool p=ConnactionPool.getPool();
       Conn conn=p.getCon2("");
@@ -753,7 +755,8 @@ try{  boolean isEvent=false;
 
      return back;
      
-
+	   }
+	   
 	}
    
    //从大库根据托盘编码或取物料和数量的方法

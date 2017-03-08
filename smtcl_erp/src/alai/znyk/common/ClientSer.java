@@ -25,7 +25,7 @@ public class ClientSer {
 	
 	public GDLocator gd =new GDLocator();
 	private static ClientSer INSTANCE;
-	private boolean isOpenPlc=false;
+	private boolean isOpenPlc=true;
 	private ClientSer(){
 		//gd.setGDEndpointAddress("http://192.168.1.222:9005/GD?cgi");
 	//	 ((BindingProvider)gd).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,"serviceUrl");

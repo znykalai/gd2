@@ -281,16 +281,15 @@ public class HomeAction extends Action{
 			request.setCharacterEncoding("utf-8");
 			response.setCharacterEncoding("utf-8");
 			HashMap map = GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
-			int result=0;
+			String result="0";
 			if(map.get("type").equals("true")){
 				System.out.println("急停");
-				result=1;
 				ClientSer.getIntance().c_exeComment("", 1,1);
 			}else if(map.get("type").equals("false")){
 				System.out.println("放行");
-				ClientSer.getIntance().c_exeComment("", 2,1);
+				ClientSer.getIntance().c_exeComment("", 6,1);
 			};
-			//result=ClientSer.getIntance().getState(2);
+			result=ClientSer.getIntance().getState(2);
 			response.setContentType("text/html;charset=utf-8");
 			response.getWriter().print(result);
 			response.getWriter().close();

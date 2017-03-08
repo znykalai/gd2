@@ -1,29 +1,29 @@
 var af_Home = {
 	arrBtn:null,
-	winId:null,//拖拽windowID
-	dlInterval:null,//定时摧毁器
+	winId:null,//鎷栨嫿windowID
+	dlInterval:null,//瀹氭椂鎽ф瘉鍣�
 	winHtml:function(fun,type){
 		var html = "<div class='col-md-11'>" +
 			 "<div class='col-md-7' style='margin-top:25px;'>" +
 				"<div class='qfgd' id='A'>" +
-					"<span style='font-size:12px;'>不检测数量</span>" +
+					"<span style='font-size:12px;'>涓嶆娴嬫暟閲�</span>" +
 				"</div>" +
 			 "</div>"+
 			 "<div class='col-md-2' style='margin-top:25px;'>" +
 				"<div class='qfgd' id='B'>" +
-					"<span style='font-size:12px;'>不检测动作</span>" +
+					"<span style='font-size:12px;'>涓嶆娴嬪姩浣�</span>" +
 				"</div>" +
 			 "</div>" +
 		"</div>" +
 		"<div class='col-md-11'>" +
 			 "<div class='col-md-7' style='margin-top:10px;'>" +
 				"<div class='qfgd' id='C'>" +
-					"<span style='font-size:12px;'>RFD自动读取</span>" +
+					"<span style='font-size:12px;'>RFD鑷姩璇诲彇</span>" +
 				"</div>" +
 			 "</div>"+
 			 "<div class='col-md-2' style='margin-top:10px;'>" +
 				"<div class='qfgd' id='D'>" +
-					"<span style='font-size:12px;'>启动库指令</span>" +
+					"<span style='font-size:12px;'>鍚姩搴撴寚浠�</span>" +
 				"</div>" +
 			 "</div>" +
 		"</div>";
@@ -32,7 +32,7 @@ var af_Home = {
 		};
 		return fun(html),html=null;
 	},
-	//按钮点击事件
+	//鎸夐挳鐐瑰嚮浜嬩欢
 	butClick:function(e,type){
 		if(type == true){
 			if($(e).attr("class")=="qfgd"){
@@ -51,9 +51,9 @@ var af_Home = {
 	},
 	buttonA:true,buttonB:true,
 	buttonC:true,buttonD:true,
-	//获取当前操控按钮状态
+	//鑾峰彇褰撳墠鎿嶆帶鎸夐挳鐘舵��
 	action:function(e,type,fun){
-		//ajax处理
+		//ajax澶勭悊
 		var a = $.ajax({
 			url: getRootPath()+'/HomeAction.do?operType=getCKButton',
 			type: 'get',
@@ -94,7 +94,7 @@ var af_Home = {
 		});
 		return a=null;
 	},
-	//按钮操作事件
+	//鎸夐挳鎿嶄綔浜嬩欢
 	winHtmlEvent:function(){
 		$("#A").click(function(){
 			var e=af_Home.action(this,'A',af_Home.butClick);
@@ -117,7 +117,7 @@ var af_Home = {
 	},
 	click:function(url_){
 		if(af_Home.arrBtn == url_){return null;}
-		if(af_Home.dlInterval){af_Home.dlInterval=null;clearInterval(readyShow.deleteSetInterval);}//销毁定时器
+		if(af_Home.dlInterval){af_Home.dlInterval=null;clearInterval(readyShow.deleteSetInterval);}//閿�姣佸畾鏃跺櫒
 		$("#home_div").val(null);$("#btn_id").val(null);
 		readyShow=null;af_Home.arrBtn=url_;
 	 	$.ajax({
@@ -142,7 +142,7 @@ var af_Home = {
 		});
 	 	return null;
 	},
-	//获取急停按钮状态&&同时也是set函数
+	//鑾峰彇鎬ュ仠鎸夐挳鐘舵��&&鍚屾椂涔熸槸set鍑芥暟
 	getState:function(type,e,fun){
 		var a = $.ajax({
 			url: getRootPath()+'/HomeAction.do?operType=getState',
@@ -160,10 +160,10 @@ var af_Home = {
 		});
 		return a=null;
 	},
-	//当前急停按钮的状态=默认停止状态
+	//褰撳墠鎬ュ仠鎸夐挳鐨勭姸鎬�=榛樿鍋滄鐘舵��
 	div_mo_img_strat:true,
 	load:function(fun){
-		//关机
+		//鍏虫満
 		$('#div_mo_img_close').mouseover(function(){
 			var url = getRootPath()+"/images/guanjianniu_mo.png";
 			$(this).attr("src",url);
@@ -174,10 +174,10 @@ var af_Home = {
 			$(this).attr("src",url); 
 			return url = null;
 		});
-		//急停按钮
+		//鎬ュ仠鎸夐挳
 		$('#div_mo_img_strat').click(function(){
 			var type=null;
-			if(af_Home.div_mo_img_strat){//如果当前是停止状态则改为允许状态
+			if(af_Home.div_mo_img_strat){//濡傛灉褰撳墠鏄仠姝㈢姸鎬佸垯鏀逛负鍏佽鐘舵��
 				type=false;
 			}else{
 				type=true;
@@ -192,19 +192,19 @@ var af_Home = {
 			});
 			return type=null,a=null;
 		});
-		//用户设置
+		//鐢ㄦ埛璁剧疆
 		$('#yhsz').mousedown(function(){
 			var a=$('#yhsz_id_').show(0);
 				a=$('#yhsz').hide(0);
 			return a=null;
 		});
-		//系统设置
+		//绯荤粺璁剧疆
 		$('#xtsz').mousedown(function(){
 			var a=$('#xtsz_id_').show(0);
 				a=$('#xtsz').hide(0);
 			return a=null;
 		});
-		//按钮-主页
+		//鎸夐挳-涓婚〉
 		$('#anniuHome').click(function(){
 			var a = $("#homeRight").slideToggle(280,function(){
 				return a = null;
@@ -215,22 +215,22 @@ var af_Home = {
 			var a=af_Home.click(getRootPath()+'/html/dddd.html');
 			return a=null;
 		});
-		//按钮-主页显示
+		//鎸夐挳-涓婚〉鏄剧ず
 		$('#anniu2').click(function(){
 			var a=af_Home.click(getRootPath()+'/html/h_home.html');
 			return a=null;
 		});
-		//按钮-plc
+		//鎸夐挳-plc
 		$('#anniu3').click(function(){
 			var a=af_Home.click(getRootPath()+'/html/plc.html');
 			return a=null;
 		});
-		//按钮-库房操作
+		//鎸夐挳-搴撴埧鎿嶄綔
 		$('#anniu4').click(function(){
 			var a=af_Home.click(getRootPath()+'/html/kfcz.html');
 			return a=null;
 		});
-		//按钮-基础设置
+		//鎸夐挳-鍩虹璁剧疆
 		$('#anniu5').click(function(){
 			var a=af_Home.click(getRootPath()+'/html/jcsz.html');
 			return a=null;
@@ -241,20 +241,20 @@ var af_Home = {
 				return a=null;
 	        }
 	    });
-		//显示主页;
+		//鏄剧ず涓婚〉;
 		var a=$('#anniu2').click();
-		//定时更新急停按钮状态
-//		setInterval(function(){
-//			var a=af_Home.getState('get',$('#div_mo_img_strat'),function(r,e){
-//				var url = getRootPath()+"/images/fanhuianniu_hong.png";
-//				if(!r){
-//					url = getRootPath()+"/images/fanhuianniu_lv.png";	
-//				};
-//				$(e).attr("src",url);
-//				return url = null;
-//			});
-//			return a=null;
-//		},200);
+		//瀹氭椂鏇存柊鎬ュ仠鎸夐挳鐘舵��
+		setInterval(function(){
+			var a=af_Home.getState('get',$('#div_mo_img_strat'),function(r,e){
+				var url = getRootPath()+"/images/fanhuianniu_hong.png";
+				if(!r){
+					url = getRootPath()+"/images/fanhuianniu_lv.png";	
+				};
+				$(e).attr("src",url);
+				return url = null;
+			});
+			return a=null;
+		},400);
 		return fun(),a=null;
 	}
 };

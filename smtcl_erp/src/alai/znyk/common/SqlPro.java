@@ -18,6 +18,7 @@ import java.net.Socket;
 import java.io.DataInputStream;
 
 public class SqlPro {
+	
     public static String tp=null;
       public static boolean 演示=false;
      public static float 默认数量=5;//当物料没设定装载系数时的值
@@ -36,7 +37,7 @@ public class SqlPro {
     public static int A区输送线=8;
     public static int B区输送线=9;
     public static String 堆垛空闲码="3";
-    public static String AGV空闲码="3";
+    public static String AGV空闲码="1";
     public static int 排队=1;
     public static int 执行中=2;
     public static int 完成=3;

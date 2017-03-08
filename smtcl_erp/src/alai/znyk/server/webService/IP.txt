@@ -1,1 +1,1 @@
-http://10.24.251.4:8080/smtcl_erp/ServiceServer/gd
+http://10.24.251.45:8080/smtcl_erp/ServiceServer/gd

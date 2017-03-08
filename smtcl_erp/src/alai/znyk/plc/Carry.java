@@ -31,6 +31,7 @@ public class Carry implements Serializable{
 	public int 分解号;//模组号
     public int 载具序号;
     public int pack编码;//
+    public int pack类型;//
     public int 模组编码;//
     public int 电芯类型;//
     public int 模组类型;//
@@ -111,6 +112,14 @@ public class Carry implements Serializable{
 	}
 	public int get模组编码() {
 		return 模组编码;
+	}
+	
+	public void setPack类型(int pack类型) {
+		this.pack类型 = pack类型;
+	}
+	
+	public int getPack类型() {
+		return pack类型;
 	}
 	public void set模组编码(int 模组编码) {
 		this.模组编码 = 模组编码;

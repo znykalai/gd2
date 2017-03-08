@@ -23,6 +23,7 @@ public class PLC implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	 
 	public boolean 不检测取料数量=true;
 	public boolean is不检测取料数量() {
 		return 不检测取料数量;
@@ -36,10 +37,11 @@ public class PLC implements Serializable {
 	public void set不检测动作完成(boolean 不检测动作完成) {
 		this.不检测动作完成 = 不检测动作完成;
 	}
-
+    
 	public boolean 不检测动作完成=false;
 	public boolean stop1=false;//停止调度系统从数据库里面读取数据
 	public boolean stop2=true;//停止调度系统从数据库里面读取数据
+	
 	public void setDiaodu1(boolean state){
 		stop1=state;
 	}

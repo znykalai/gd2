@@ -399,7 +399,8 @@ public void startlineAGV(){
 			if(b.equals("1")){//升降台上有货物
 			String tp=ClientSer.getIntance().ReadFromRffid("", 1);
 			if(isRffid2!=null&&isRffid2.equals(tp))return;
-			   isRffid2=tp;
+		      isRffid2=tp;
+				if(tp.equals(""))return;
 			//先从库存托盘表里面看看有没有这个托盘
 			Vector tem=SqlTool.findInVector("select 物料  from 库存托盘  where 托盘编号="+"'"+tp+"'"  );
 			if(tem.size()>0){
@@ -436,11 +437,15 @@ public void startlineAGV(){
 			
 			
 			if(b.equals("1")){//升降台上有货物
-				//System.out.println("RFID2+++++");
+				System.out.println("RFID2+++++");
 			String tp=ClientSer.getIntance().ReadFromRffid("", 2);
+			System.out.println("RFID2+++++="+tp);
 			if(isRffid1!=null&&isRffid1.equals(tp))return;
+			 isRffid1=tp;
+			if(tp.equals(""))return;
+			 
 			String back=SqlTool.exeRffid2(tp);
-			isRffid1=tp;
+			
 				if(back.contains("成功")){
 					
 				}
