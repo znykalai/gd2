@@ -23,7 +23,7 @@ var af_Home = {
 			 "</div>"+
 			 "<div class='col-md-2' style='margin-top:10px;'>" +
 				"<div class='qfgd' id='D'>" +
-					"<span style='font-size:12px;'></span>" +
+					"<span style='font-size:12px;'>启动库指令</span>" +
 				"</div>" +
 			 "</div>" +
 		"</div>";
