@@ -64,7 +64,6 @@ public class OrderOperAction extends Action{
 			request.setCharacterEncoding("utf-8");
 			response.setCharacterEncoding("utf-8");
 			HashMap map = GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
-			HttpSession session = request.getSession();
 			ApplicationContext context = GetApplicationContext.getContext(request);
 			OrderOperactionDAO dao = (OrderOperactionDAO)context.getBean("orderOperactionDAO");
 			ArrayList result = new ArrayList();
@@ -84,6 +83,7 @@ public class OrderOperAction extends Action{
 				sql = sql.substring(0,sql.length()-4);
 			}
 			map.put("sql", sql);
+			sql=null;
 			List list = dao.getDdList(map);
 			if(list!=null&&list.size()>0){
 				for(int i=0;i<list.size();i++){
@@ -96,6 +96,7 @@ public class OrderOperAction extends Action{
 								"((`配方指令队列`.`前升读标志` IS NOT NULL OR `配方指令队列`.`前升读标志`<>'') OR " +
 								"`配方指令队列`.`ST读取标志` IS NOT NULL OR `配方指令队列`.`ST读取标志`<>'')";
 						map.put("sql", sql);
+						sql=null;
 						List zlList = dao.getGdtype(map);
 						if(zlList!=null&&zlList.size()>0){
 							start_type = "正在处理";
@@ -104,11 +105,13 @@ public class OrderOperAction extends Action{
 							"((`配方指令队列`.`前升读标志` IS NULL OR `配方指令队列`.`前升读标志`='') OR " +
 							"`配方指令队列`.`ST读取标志` IS NULL OR `配方指令队列`.`ST读取标志`='')";
 							map.put("sql", sql);
+							sql=null;
 							zlList = dao.getGdtype(map);
 							if(zlList!=null&&zlList.size()>0){
 								start_type = "已分解";
 							}
 						}
+						zlList=null;
 					}
 					mapPara.put("'id'", "'"+((HashMap)list.get(i)).get("ID")+"'");
 					mapPara.put("'dd_zhuangtai'", "'"+start_type+"'");
@@ -121,8 +124,10 @@ public class OrderOperAction extends Action{
 					mapPara.put("'dd_fenjieriqi'", "'"+((HashMap)list.get(i)).get("分解日期")+"'");
 					mapPara.put("'dd_jindu'", "'"+((HashMap)list.get(i)).get("工单完成率")+"'");
 					result.add(mapPara);
+					mapPara=null;
 				}
-			}
+			};
+			map=null;list=null;dao=null;context=null;
 //			System.err.println("订单调度---定时刷新");
 			response.setContentType("text/html;charset=utf-8");
 			response.getWriter().print(result.toString().replaceAll("'='", "':'"));
@@ -147,7 +152,6 @@ public class OrderOperAction extends Action{
 			request.setCharacterEncoding("utf-8");
 			response.setCharacterEncoding("utf-8");
 			HashMap map = GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
-			HttpSession session = request.getSession();
 			ApplicationContext context = GetApplicationContext.getContext(request);
 			OrderOperactionDAO dao = (OrderOperactionDAO)context.getBean("orderOperactionDAO");
 			ArrayList result = new ArrayList();
@@ -162,8 +166,10 @@ public class OrderOperAction extends Action{
 					mapPara.put("'mz_shuliang'", "'"+((HashMap)list.get(i)).get("数量")+"'");
 					mapPara.put("'mz_jindu'", "'"+((HashMap)list.get(i)).get("模组完成率")+"'");
 					result.add(mapPara);
+					mapPara=null;
 				}
-			}
+			};
+			list=null;context=null;dao=null;map=null;
 			response.setContentType("text/html;charset=utf-8");
 			response.getWriter().print(result.toString().replaceAll("'='", "':'"));
 			response.getWriter().close();
@@ -187,13 +193,13 @@ public class OrderOperAction extends Action{
 			request.setCharacterEncoding("utf-8");
 			response.setCharacterEncoding("utf-8");
 			HashMap map = GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
-			HttpSession session = request.getSession();
 			ApplicationContext context = GetApplicationContext.getContext(request);
 			OrderOperactionDAO dao = (OrderOperactionDAO)context.getBean("orderOperactionDAO");
 			ArrayList result = new ArrayList();
 			String sql = "SELECT a.* FROM `配方指令队列` a WHERE " +
 					"a.`工单ID`='"+map.get("dd_id")+"' AND a.`模组序ID`='"+map.get("mz_xuId")+"' ORDER BY a.`分解号`,a.`载具序号`";
 			map.put("sql", sql);
+			sql=null;
 			List list = dao.getZlpfList(map);
 			if(list!=null&&list.size()>0){
 				for(int i=0;i<list.size();i++){
@@ -211,8 +217,10 @@ public class OrderOperAction extends Action{
 					mapPara.put("'dd_dianxin4'", "'"+((HashMap)list.get(i)).get("电芯位置4")+"'");
 					mapPara.put("'dd_gongwei'", "'"+((HashMap)list.get(i)).get("工位")+"'");
 					result.add(mapPara);
+					mapPara=null;
 				}
-			}
+			};
+			list=null;context=null;dao=null;map=null;
 			response.setContentType("text/html;charset=utf-8");
 			response.getWriter().print(result.toString().replaceAll("'='", "':'"));
 			response.getWriter().close();
@@ -237,7 +245,6 @@ public class OrderOperAction extends Action{
 			request.setCharacterEncoding("utf-8");
 			response.setCharacterEncoding("utf-8");
 			HashMap map = GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
-			HttpSession session = request.getSession();
 			ApplicationContext context = GetApplicationContext.getContext(request);
 			OrderOperactionDAO dao = (OrderOperactionDAO)context.getBean("orderOperactionDAO");
 			String sql = "SELECT " +
@@ -245,6 +252,7 @@ public class OrderOperAction extends Action{
 						 "a.ID AS 工单ID," +
 						 "a.`工单序号`, " +
 						 "b.`pack编码`," +
+						 "b.`pack类型`," +
 						 "b.`默认生产线` AS 装配区," +
 						 "c.`模组序ID` AS 模组序ID," +
 						 "c.`序号` AS `模组序号`," +
@@ -280,6 +288,7 @@ public class OrderOperAction extends Action{
 						 "LEFT JOIN `模组指令行` f ON d.`模组ID`=f.`模组ID` AND e.`载具ID` = f.`载具ID`" +
 						 "WHERE a.`pack编码`='"+map.get("pack_code")+"' AND a.ID = '"+map.get("dd_id")+"' AND (f.`物料` <> '' or f.`物料`=NULL) ORDER BY a.`工单序号`,c.`序号`";
 			map.put("sql", sql);
+			sql=null;
 			List list = dao.getZlList(map);
 			if(list!=null&&list.size()>0){
 				int fenjiehao = (int)Double.parseDouble(((HashMap)list.get(0)).get("分解号").toString());
@@ -292,6 +301,7 @@ public class OrderOperAction extends Action{
 							map.put("工单ID", ((HashMap)list.get(j)).get("工单ID"));
 							map.put("工单序号", ((HashMap)list.get(j)).get("工单序号"));
 							map.put("pack编码", ((HashMap)list.get(j)).get("pack编码"));
+							map.put("pack类型", ((HashMap)list.get(j)).get("pack类型"));
 							map.put("装配区", ((HashMap)list.get(j)).get("装配区"));
 							map.put("分解号", i);
 							map.put("模组序号", ((HashMap)list.get(j)).get("模组序号"));
@@ -330,18 +340,19 @@ public class OrderOperAction extends Action{
 							mz_xuId = ((HashMap)list.get(0)).get("模组序ID").toString();
 						}else{
 							//更新分解日期
-							sql = "UPDATE `工单表` SET `分解日期`=DATE_FORMAT(NOW(),'%Y-%m-%d') WHERE `ID`='"+map.get("dd_id")+"'";
+							sql = "UPDATE `工单表` SET `分解日期`=DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i:%s') WHERE `ID`='"+map.get("dd_id")+"'";
 							map.put("sql", sql);
 							dao.updateGdState(map);
 							return null;
-						}
-					}
+						};
+					};
 					i++;
-				}
-			}
-			ArrayList result = new ArrayList();
+				};
+				mz_xuId=null;fenjiehao=0;i=0;
+			};
+			list=null;map=null;sql=null;dao=null;context=null;
 			response.setContentType("text/html;charset=utf-8");
-			response.getWriter().print(result.toString().replaceAll("'='", "':'"));
+			response.getWriter().print("true");
 			response.getWriter().close();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -363,7 +374,6 @@ public class OrderOperAction extends Action{
 			request.setCharacterEncoding("utf-8");
 			response.setCharacterEncoding("utf-8");
 			HashMap map = GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
-			HttpSession session = request.getSession();
 			ApplicationContext context = GetApplicationContext.getContext(request);
 			OrderOperactionDAO dao = (OrderOperactionDAO)context.getBean("orderOperactionDAO");
 			String sql = "SELECT " +
@@ -371,6 +381,7 @@ public class OrderOperAction extends Action{
 						 "a.ID AS 工单ID," +
 						 "a.`工单序号`, " +
 						 "b.`pack编码`," +
+						 "b.`pack类型`," +
 						 "b.`默认生产线` AS 装配区," +
 						 "c.`模组序ID`," +
 						 "c.`序号` AS `模组序号`," +
@@ -407,13 +418,15 @@ public class OrderOperAction extends Action{
 						 "LEFT JOIN `配方指令队列` g ON a.ID = g.`工单ID` " +
 						 "WHERE (f.`物料` <> '' or f.`物料`=NULL) AND (g.`工单ID` is NULL OR g.`工单ID` ='') ORDER BY a.`工单序号`,c.`序号`";
 			map.put("sql", sql);
+			sql=null;
 			List list = dao.getZlList(map);
 			if(list!=null&&list.size()>0){
 				//更新分解日期
 				sql = "UPDATE `工单表` a " +
 						"LEFT JOIN `配方指令队列` b ON a.ID = b.`工单ID` " +
-						"SET a.`分解日期`=DATE_FORMAT(NOW(),'%Y-%m-%d') WHERE b.`工单ID` IS NULL OR b.`工单ID` = ''";
+						"SET a.`分解日期`=DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i:%s') WHERE b.`工单ID` IS NULL OR b.`工单ID` = ''";
 				map.put("sql", sql);
+				sql=null;
 				dao.updateGdState(map);
 				//处理配方表
 				int fenjiehao = (int)Double.parseDouble(((HashMap)list.get(0)).get("分解号").toString());
@@ -427,6 +440,7 @@ public class OrderOperAction extends Action{
 							map.put("工单ID", ((HashMap)list.get(j)).get("工单ID"));
 							map.put("工单序号", ((HashMap)list.get(j)).get("工单序号"));
 							map.put("pack编码", ((HashMap)list.get(j)).get("pack编码"));
+							map.put("pack类型", ((HashMap)list.get(j)).get("pack类型"));
 							map.put("装配区", ((HashMap)list.get(j)).get("装配区"));
 							map.put("分解号", i);
 							map.put("模组序号", ((HashMap)list.get(j)).get("模组序号"));
@@ -467,15 +481,15 @@ public class OrderOperAction extends Action{
 							mz_xuId = ((HashMap)list.get(0)).get("模组序ID").toString();
 						}else{
 							return null;
-						}
-					}
+						};
+					};
 					i++;
-				}
-				
-			}
-			ArrayList result = new ArrayList();
+				};
+				fenjiehao=0;gd_id=null;mz_xuId=null;i=0;
+			};
+			context=null;dao=null;map=null;list=null;
 			response.setContentType("text/html;charset=utf-8");
-			response.getWriter().print(result.toString().replaceAll("'='", "':'"));
+			response.getWriter().print("true");
 			response.getWriter().close();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -496,7 +510,6 @@ public class OrderOperAction extends Action{
 			request.setCharacterEncoding("utf-8");
 			response.setCharacterEncoding("utf-8");
 			HashMap map = GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
-			HttpSession session = request.getSession();
 			ApplicationContext context = GetApplicationContext.getContext(request);
 			OrderOperactionDAO dao = (OrderOperactionDAO)context.getBean("orderOperactionDAO");
 			String sql = "SELECT a.`ID`,a.`工单号`,a.`pack编码`,a.`工单数量`,a.`装配区`,a.`传送否`,a.`释放否` FROM `工单下载` a";
@@ -512,7 +525,8 @@ public class OrderOperAction extends Action{
 						int maxGdxh = 0;
 						if(maxList!=null&&maxList.size()>0){
 							maxGdxh = Integer.parseInt(((HashMap)maxList.get(0)).get("工单序号").toString().equals("")?"0":((HashMap)maxList.get(0)).get("工单序号").toString());
-						}
+						};
+						maxList=null;
 						sql = "insert into `工单表`(`工单序号`,`工单号`,`pack编码`,`工单数量`,`装配区`,`传送否`,`释放否`,`完成数量`)"+
 								"values("+(maxGdxh+1)+","+
 										""+((HashMap)list.get(i)).get("工单号")+"," +
@@ -532,10 +546,10 @@ public class OrderOperAction extends Action{
 					map.put("sql", sql);
 					dao.removeAll(map);
 				}
-			}
-			ArrayList result = new ArrayList();
+			};
+			list=null;map=null;dao=null;sql=null;context=null;
 			response.setContentType("text/html;charset=utf-8");
-			response.getWriter().print(result.toString().replaceAll("'='", "':'"));
+			response.getWriter().print("true");
 			response.getWriter().close();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -557,7 +571,6 @@ public class OrderOperAction extends Action{
 			request.setCharacterEncoding("utf-8");
 			response.setCharacterEncoding("utf-8");
 			HashMap map = GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
-			HttpSession session = request.getSession();
 			ApplicationContext context = GetApplicationContext.getContext(request);
 			OrderOperactionDAO dao = (OrderOperactionDAO)context.getBean("orderOperactionDAO");
 			JSONObject result = new JSONObject();
@@ -577,7 +590,8 @@ public class OrderOperAction extends Action{
 				dao.removeAll(map);
 				result.put("body","删除成功！");
 				result.put("success",true);
-			}
+			};
+			list=null;map=null;dao=null;context=null;sql=null;
 			response.setContentType("text/html;charset=utf-8");
 			response.getWriter().print(result);
 			response.getWriter().close();
@@ -601,11 +615,9 @@ public class OrderOperAction extends Action{
 			request.setCharacterEncoding("utf-8"); 
 			response.setCharacterEncoding("utf-8");
 			HashMap map = GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
-			HttpSession session = request.getSession();
 			ApplicationContext context = GetApplicationContext.getContext(request);
 			BaseDataDAO dao = (BaseDataDAO)context.getBean("baseDataDAO");
 			JSONObject result = new JSONObject();
-//			System.out.println(map);
 			String gd_id = map.get("gd_id").toString();
 			String up_gd_id = map.get("up_gd_id").toString();
 			int gd_xuhao = Integer.parseInt(map.get("gd_xuhao").toString());
@@ -640,6 +652,11 @@ public class OrderOperAction extends Action{
 				result.put("body","上调失败！");
 				result.put("success",false);
 			}
+			gd_id=null;
+			up_gd_id=null;
+			gd_xuhao=0;
+			up_gd_xuhao=0;
+			context=null;dao=null;map=null;
 			response.setContentType("text/html;charset=utf-8");
 			response.getWriter().print(result);
 			response.getWriter().close();
@@ -662,7 +679,6 @@ public class OrderOperAction extends Action{
 			request.setCharacterEncoding("utf-8"); 
 			response.setCharacterEncoding("utf-8");
 			HashMap map = GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
-			HttpSession session = request.getSession();
 			ApplicationContext context = GetApplicationContext.getContext(request);
 			BaseDataDAO dao = (BaseDataDAO)context.getBean("baseDataDAO");
 			JSONObject result = new JSONObject();
@@ -701,6 +717,11 @@ public class OrderOperAction extends Action{
 				result.put("body","下调失败！");
 				result.put("success",false);
 			}
+			gd_id=null;
+			up_gd_id=null;
+			gd_xuhao=0;
+			up_gd_xuhao=0;
+			context=null;dao=null;map=null;
 			response.setContentType("text/html;charset=utf-8");
 			response.getWriter().print(result);
 			response.getWriter().close();

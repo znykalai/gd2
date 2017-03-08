@@ -251,6 +251,7 @@
     	<result property="工单ID" column="工单ID" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     	<result property="工单序号" column="工单序号" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     	<result property="pack编码" column="pack编码" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="pack类型" column="pack类型" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     	<result property="模组序ID" column="模组序ID" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     	<result property="模组序号" column="模组序号" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     	<result property="模组编码" column="模组编码" javaType="String" jdbcType="VARCHAR" nullValue=""/>
@@ -322,8 +323,8 @@
 	</select>
 	<!-- 配方指令队列 保存 -->
 	<insert id="OrderOperactionDAO.savePfzldl" parameterClass="java.util.HashMap">
-		insert into `配方指令队列`(`工单ID`,`工单序号`,`pack编码`,`装配区`,`模组序ID`,`模组序号`,`模组编码`,`载具序号`,`模组类型`,`电芯类型`,`物料`,`物料描述`,`数量`,`工位`,`电芯数量`,`翻面否`,`电芯位置1`,`电芯位置2`,`电芯位置3`,`电芯位置4`,`假电芯1`,`假电芯2`,`叠装否`,`有效型腔`,`完成数量`,`分解号`)
-		values(#工单ID#,#工单序号#,#pack编码#,#装配区#,#模组序ID#,#模组序号#,#模组编码#,#载具序号#,#模组类型#,#电芯类型#,#物料#,#物料描述#,#数量#,#工位#,#电芯数量#,#翻面否#,#电芯位置1#,#电芯位置2#,#电芯位置3#,#电芯位置4#,#假电芯1#,#假电芯2#,#叠装否#,#有效型腔#,#完成数量#,#分解号#)
+		insert into `配方指令队列`(`工单ID`,`工单序号`,`pack编码`,`pack类型`,`装配区`,`模组序ID`,`模组序号`,`模组编码`,`载具序号`,`模组类型`,`电芯类型`,`物料`,`物料描述`,`数量`,`工位`,`电芯数量`,`翻面否`,`电芯位置1`,`电芯位置2`,`电芯位置3`,`电芯位置4`,`假电芯1`,`假电芯2`,`叠装否`,`有效型腔`,`完成数量`,`分解号`)
+		values(#工单ID#,#工单序号#,#pack编码#,#pack类型#,#装配区#,#模组序ID#,#模组序号#,#模组编码#,#载具序号#,#模组类型#,#电芯类型#,#物料#,#物料描述#,#数量#,#工位#,#电芯数量#,#翻面否#,#电芯位置1#,#电芯位置2#,#电芯位置3#,#电芯位置4#,#假电芯1#,#假电芯2#,#叠装否#,#有效型腔#,#完成数量#,#分解号#)
 	</insert>
 	<!-- 修改工单分解日期 -->
 	<update id="OrderOperactionDAO.updateGdState" parameterClass="java.util.HashMap">
