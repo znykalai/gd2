@@ -443,6 +443,56 @@ public class PLC implements Serializable {
 		
 	}
 	
+	public void startTiaodu2(){
+		new Thread(){
+			public void run(){
+			while(true){
+				/*try{
+					setSTATE1();
+					setSTATE2();
+				}catch(Exception e){e.printStackTrace();}*/
+				
+				ST0_2.initFromSql();
+				ST1_2.initFromSql();
+				ST2_2.initFromSql();
+				ST3_2.initFromSql();
+				ST4_2.initFromSql();
+				ST5_2.initFromSql();
+				ST6_2.initFromSql();
+				ST7_2.initFromSql();
+				ST8_2.initFromSql();
+				ST9_2.initFromSql();
+				ST10_2.initFromSql();
+				ST11_2.initFromSql();
+				ST12_2.initFromSql();
+				ST13_2.initFromSql();
+				ST14_2.initFromSql();
+				ST15_2.initFromSql();
+				
+				getSTRdy(2,2);
+				getSTRdy(2,3);
+				getSTRdy(2,4);
+				getSTRdy(2,5);
+				getSTRdy(2,6);
+				getSTRdy(2,7);
+				getSTRdy(2,8);
+				getFromPLC(2);//必须写在最后
+				//writeO();
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+			}
+			
+		}.start();
+		
+	}
+	
+	
 	public ReST[] getRePLC(int machine){
 		if(machine==1)return RST;else return RST2;
 		

@@ -145,11 +145,11 @@ public class GDPortTypeProxy implements alai.localhost.GD_wsdl.GDPortType {
       _initGDPortTypeProxy();
     return gDPortType.sendCommentToRobot(comment, machineID, toRobotID);
   }
-  public java.lang.String c_exeComment(java.lang.String comment,int type)throws java.rmi.RemoteException
+  public java.lang.String wexeComment(java.lang.String comment,int type)throws java.rmi.RemoteException
   {
 	  if (gDPortType == null)
 	      _initGDPortTypeProxy();
-	    return gDPortType.c_exeComment( comment, type) ;
+	    return gDPortType.wexeComment( comment, type) ;
 	  
   }
   

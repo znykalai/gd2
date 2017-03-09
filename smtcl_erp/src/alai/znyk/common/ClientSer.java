@@ -260,9 +260,9 @@ public class ClientSer {
 		   if(type==1){//º±Õ£
 			   if(isOpenPlc){
 				   try{
-				   return gd.getGD().c_exeComment(comment, type);
+				   return gd.getGD().wexeComment(comment, type);
 					     
-				   }catch(Exception ex){}
+				   }catch(Exception ex){ex.printStackTrace();}
 			   }
 			   
 		   }
@@ -270,7 +270,7 @@ public class ClientSer {
 			   
         	  if(isOpenPlc){
 				   try{
-				   return gd.getGD().c_exeComment(comment, type);
+				   return gd.getGD().wexeComment(comment, type);
 					     
 				   }catch(Exception ex){}
 			   }   
@@ -279,7 +279,7 @@ public class ClientSer {
         	  
         	  if(isOpenPlc){
 				   try{
-				   return gd.getGD().c_exeComment(comment, type);
+				   return gd.getGD().wexeComment(comment, type);
 					     
 				   }catch(Exception ex){}
 			   }
@@ -289,7 +289,7 @@ public class ClientSer {
         	  
         	  if(isOpenPlc){
 				   try{
-				   return gd.getGD().c_exeComment(comment, type);
+				   return gd.getGD().wexeComment(comment, type);
 					     
 				   }catch(Exception ex){}
 			   }
@@ -304,7 +304,7 @@ public class ClientSer {
   					try{
   					String back= row.get(0)+"|"+row.get(5)+"|"+row.get(6)+"|"+machineID+"|"+(row.get(3).equals("…œªı")?1:2);
   					 if(isOpenPlc){
-  						return gd.getGD().c_exeComment(back, type);
+  						return gd.getGD().wexeComment(back, type);
   					 }
   					}catch(Exception e){
   						e.printStackTrace();
@@ -313,7 +313,7 @@ public class ClientSer {
   				}else{
   					 if(isOpenPlc){
   						 try{
-   						return gd.getGD().c_exeComment("-1", type);
+   						return gd.getGD().wexeComment("-1", type);
    						}catch(Exception ex){
    							ex.printStackTrace();
    						}
