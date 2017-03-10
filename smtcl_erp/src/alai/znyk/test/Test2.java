@@ -64,10 +64,10 @@ public class Test2 {
 		 
 		//System.out.println(nam.equals(i+""+""));
 		 
-			 System.out.println(PLC.getIntance().ST2_1.firstST.getMap());
+			// System.out.println(PLC.getIntance().ST2_1.firstST.getMap());
 		//System.out.println(PLC.getIntance().ST2_1.firstST.setValueByName("需求数量", "1","0"));
 		
-		try{
+		/*try{
 		//	String s=ClientSer.getIntance().ReadFromRffid("", 1);
 		  // System.out.println(s);
 			Test2 t=new Test2();
@@ -81,7 +81,10 @@ public class Test2 {
 				
 			}}.start();
 			
-		}catch(Exception ex){}
+		}catch(Exception ex){}*/
+			 
+			String s= ClientSer.getIntance().c_exeComment("11", 1, 1) ;
+			System.out.println(s);
 		
 	}
 

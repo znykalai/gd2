@@ -94,6 +94,6 @@ public interface GDPortType extends java.rmi.Remote {
      */
     public int sendCommentToRobot(java.lang.String comment, int machineID, int toRobotID) throws java.rmi.RemoteException;
    
-    public java.lang.String c_exeComment(java.lang.String comment,int type)throws java.rmi.RemoteException;
+    public java.lang.String wexeComment(java.lang.String comment,int type)throws java.rmi.RemoteException;
 
 }

@@ -283,7 +283,7 @@ public class GDStub extends org.apache.axis.client.Stub implements alai.localhos
         _operations[16] = oper;
         
         oper = new org.apache.axis.description.OperationDesc();
-        oper.setName("c_exeComment");
+        oper.setName("wexeComment");
         param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("", "comment"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"), java.lang.String.class, false, false);
         oper.addParameter(param);
         param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("", "type"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"), int.class, false, false);
@@ -985,7 +985,7 @@ public class GDStub extends org.apache.axis.client.Stub implements alai.localhos
     }
 
 	
-	public String c_exeComment(String comment, int type) throws RemoteException {
+	public String wexeComment(String comment, int type) throws RemoteException {
 		  if (super.cachedEndpoint == null) {
 	            throw new org.apache.axis.NoEndPointException();
 	        }
@@ -994,7 +994,7 @@ public class GDStub extends org.apache.axis.client.Stub implements alai.localhos
 	        _call.setUseSOAPAction(true);
 	        _call.setSOAPActionURI("");
 	        _call.setSOAPVersion(org.apache.axis.soap.SOAPConstants.SOAP11_CONSTANTS);
-	        _call.setOperationName(new javax.xml.namespace.QName("urn:GD", "c_exeComment"));
+	        _call.setOperationName(new javax.xml.namespace.QName("urn:GD", "wexeComment"));
 
 	        setRequestHeaders(_call);
 	        setAttachments(_call);
