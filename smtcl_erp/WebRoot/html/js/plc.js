@@ -1,19 +1,29 @@
-var readyShow = {
+var readyShow={
+	showThis:function(e){
+		if($(e).css("display")=="block"){
+			return null;
+		};
+		var a=$(".showWindow").fadeOut(0,function(){
+			var a=$(e).fadeIn(0);a=null;
+			return null;
+		});a=null;
+		return null;
+	},
 	load:function(hdFun){
 		try{
-			var winHeight = document.body.clientHeight;
-			if(winHeight == window.screen.height){
-				winHeight = document.body.clientHeight - 50;
+			var winHeight=document.body.clientHeight;
+			if(winHeight==window.screen.height){
+				winHeight=document.body.clientHeight-50;
 			}
-			$('#xy').css('height', (winHeight - (window.screen.height - winHeight))/0.98);
+			$('#xy').css('height',(winHeight-(window.screen.height-winHeight))/0.98);
 			winHeight=null;
 			$('.mainOrder').click(function (e) {
-			    var item = $(e.target);
+			    var item=$(e.target);
 			    $('#mainStatusBar').find('div').removeClass('select');
 			    item.addClass('select');
-			    $(".plc_show").children().css("display", "none");
-			    $("#plc_show" + $(item).attr('data')).css("display", "block");
-			    var gw = null;
+			    $(".plc_show").children().css("display","none");
+			    $("#plc_show" + $(item).attr('data')).css("display","block");
+			    var gw=null;
 			    //如果当前是装配区A 不需要重复调用刷新事件
 			    if($(item).attr('data')==1&&af.showType=="A"){
 			    	return item=null;
@@ -32,82 +42,59 @@ var readyShow = {
 			    	af.showType="B";	//渲染B区
 			    }else if($(item).attr('data')==3){
 			    	af.showType="C";	//渲染C区，PLC选择返回工位
-					gw = $("#returnPlcA").val();
+					gw=$("#returnPlcA").val();
 			    }else{
 			    	af.showType="D";	//渲染D区，PLC选择返回工位
-					gw = $("#returnPlcB").val();
+					gw=$("#returnPlcB").val();
 			    };
-				var a = af.getTableGW(function(){//调用渲染html函数
+				var a=af.getTableGW(function(){//调用渲染html函数
 					return null;
 				},af.showType,gw),a=null,gw=null;
 				return item=null;
 			});
-			var af = {
+			var af={
 				//默认渲染A区条件
 				showType:"A",
 				//物料查询窗体
 				getWuliao:function(fun){
 					try{
-						var openWindow = '<div style="width: 100%;margin-right: 0;">' +
-							'<div class="margin-top-10">' +
-								'<div class="col-md-11" style="margin-left: 20px;">' +
-								'<!-- 标题 -->' +
-								'<div style="padding-right:17px;">' +
-								'<table class="table table-bordered text-center" id="commonSearchTableHead">' +
-								'<thead>' +
-								'<tr>' +
-								'<td style="width: 50%;">编号</td>' +
-								'<td style="width: 50%;">描述</td>' +
-								'</tr>' +
-								'</thead>' +
-								'</table>' +
-								'</div>' +
-								'<!-- 标题 end-->' +
-								'<!-- 内容 -->' +
-								'<div class="table-body" id="commonSearchTableBody">' +
-								'<table class="table table-bordered text-center table-hover" id="searchTable">' +
-								'</table>' +
-								'</div>' +
-								'<!-- 内容 end-->' +
-								'</div>' +
-							'</div>' +
-						'</div>';
-						var win = layer.open({
-						    type: 1,
-						    title: '物料查询',
-						    shadeClose: false,
+						var openWindow='<div style="width:100%;margin-right:0;"><div class="margin-top-10"><div class="col-md-11" style="margin-left:20px;"><!-- 标题 --><div style="padding-right:17px;"><table class="table table-bordered text-center" id="commonSearchTableHead"><thead><tr><td style="width:50%;">编号</td><td style="width:50%;">描述</td></tr></thead></table></div><!-- 标题 end--><!-- 内容 --><div class="table-body" id="commonSearchTableBody"><table class="table table-bordered text-center table-hover" id="searchTable"></table></div><!-- 内容 end--></div></div></div>';
+						var win=layer.open({
+						    type:1,
+						    title:'物料查询',
+						    shadeClose:false,
 						    scrollbar:false,
 						    anim:5,
-						    move: false,
-						    shade: [0.5, '#393D49'],
-						    area: ['45%', '50%'],
-						    content: openWindow
-						});
+						    move:false,
+						    shade:[0.5,'#393D49'],
+						    area:['45%','50%'],
+						    content:openWindow
+						});openWindow=null;
 						/*设置table高度*/
-						$('#commonSearchTableBody').css('height', document.body.clientHeight / 3);
-						var a = $.ajax({
-							url: getRootPath()+'/BaseDataAction.do?operType=selectWlList',
-							type: 'get',
-							data: 'leibie=配方',
+						$('#commonSearchTableBody').css('height',document.body.clientHeight / 3);
+						var a=$.ajax({
+							url:getRootPath()+'/BaseDataAction.do?operType=selectWlList',
+							type:'get',
+							data:'leibie=配方',
 							cache:false,
-							success: function (data) {
-						    	var obj = eval("("+data+")");
+							success:function (data) {
+						    	var obj=eval("("+data+")");
 								for(var i=0;i<obj.length;i++){
-					                $('#searchTable').append('<tr class="commonTr" style="cursor: pointer;"></tr>');
+					                $('#searchTable').append('<tr class="commonTr" style="cursor:pointer;"></tr>');
 					                $('#searchTable tbody tr:last').
-					                append('<td class="wuliao_code" style="width: 50%;">' + obj[i].wuliao_code + '</td>');
+					                append('<td class="wuliao_code" style="width:50%;">' + obj[i].wuliao_code + '</td>');
 					                $('#searchTable tbody tr:last').
-					                append('<td class="wuliao_miaoshu" style="width: 50%;">' + obj[i].wuliao_miaoshu + '</td>');
+					                append('<td class="wuliao_miaoshu" style="width:50%;">' + obj[i].wuliao_miaoshu + '</td>');
 								}
 								/*绑定双击事件*/
-				            	$('.commonTr').bind('dblclick', function (e) {
-									var tr = $(e.target).parent();
+				            	$('.commonTr').bind('dblclick',function (e) {
+									var tr=$(e.target).parent();
 									fun(tr.find('.wuliao_code').text());
 				            		layer.close(win);
 				            		return openWindow=null,win=null,obj=null,tr=null,a=null;
 				            	});
 							}
-						});
+						});a=null;
 						return null;
 					}catch (e) {
 						return e;
@@ -122,13 +109,13 @@ var readyShow = {
 					}else{
 						b=$("table[name='GW_B'] tbody tr").remove();
 					};
-					var a = $.ajax({
-						url: getRootPath()+'/PLCAction.do?operType=getGw',
-						type: 'get',
+					var a=$.ajax({
+						url:getRootPath()+'/PLCAction.do?operType=getGw',
+						type:'get',
 						cache:false,
 						data:"type="+type+"&gw="+gw,
-						success: function (data) {
-							var obj = eval("("+data+")");
+						success:function (data) {
+							var obj=eval("("+data+")");
 							return fun(obj),obj=null;
 						}
 					});
@@ -136,12 +123,12 @@ var readyShow = {
 				},
 				//更新数据函数
 				updateAction:function(map,fun){
-					var a = $.ajax({
-						url: getRootPath()+'/PLCAction.do?operType=updateGw',
-						type: 'get',
-						data: map,
+					var a=$.ajax({
+						url:getRootPath()+'/PLCAction.do?operType=updateGw',
+						type:'get',
+						data:map,
 						cache:false,
-						success: function (data) {
+						success:function (data) {
 							if(data.indexOf("成功")==-1){
 								layer.msg("数据已同步，请重新设置");
 							}
@@ -152,7 +139,7 @@ var readyShow = {
 				},
 				//获取当前工位所修改的值并且提交;
 				setValue:function(e,map){
-					var data = {
+					var data={
 						cm:map.cm,
 						gwType:map.gwType,
 						gw:$(e).parent().attr("GW"),
@@ -160,13 +147,16 @@ var readyShow = {
 						value:$(e).attr("title"),
 						oldValue:$(e).attr('oldValue')
 					};
+					var type=map.gwType;
 					var b=af.updateAction(data,function(){
-						var a = $("#shuxin").click();
-						var timename=setTimeout(function(){
-							var a=$("#shuxin").click();a=null;//刷新数据
-							clearTimeout(timename);timename=null;
-						},888);
-						return a=null;
+						var a=$("#shuxin").click();
+						if(type=="C"||type=="D"){
+							var timename=setTimeout(function(){
+								var a=$("#shuxin").click();a=null;//刷新数据
+								clearTimeout(timename);timename=null;
+							},1000);
+						};a=null;type=null;
+						return null;
 					});
 					return b=null,map=null,e=null,data=null;
 				},
@@ -174,22 +164,22 @@ var readyShow = {
 				dblclick:function(e,map){
 					if($(e).text()=="true"){
 						$(e).attr("title",false);
-						var a = af.setValue(e,map);//update
+						var a=af.setValue(e,map);//update
 						return map=null,a=null;
 					}else if($(e).text()=="false"){
 						$(e).attr("title",true);
-						var a = af.setValue(e,map);//update
+						var a=af.setValue(e,map);//update
 						return map=null,a=null;
 					}else{
 						if(e.ck==false||e.ck==undefined){
-							e.ck = true;
+							e.ck=true;
 							//只有物料编码可输入string
 							if($(e).parent().find('td').eq(0).html()=="物料编码"){
 								af.getWuliao(function(d){
 						            $(e).html(d.length>6?d.substring(0,6)+'..':d);
 						            $(e).attr("title",d);
 						            e.ck?e.ck=false:null;
-									var a = af.setValue(e,map);//update
+									var a=af.setValue(e,map);//update
 									return map=null,a=null;
 								});
 							//只允许输入数字
@@ -207,7 +197,7 @@ var readyShow = {
 						            $(e).html(this.value.length>6?this.value.substring(0,6)+'..':this.value);
 						            $(e).attr("title",this.value);
 						            e.ck?e.ck=false:null;
-									var a = af.setValue(e,map);//update
+									var a=af.setValue(e,map);//update
 									return map=null,a=null,node=null;
 						        });
 								$("#td_input").keydown(function (event){
@@ -218,7 +208,7 @@ var readyShow = {
 							            $(e).html(this.value.length>6?this.value.substring(0,6)+'..':this.value);
 							            $(e).attr("title",this.value);
 							            e.ck?e.ck=false:null;
-										var a = af.setValue(e,map);//update
+										var a=af.setValue(e,map);//update
 										return map=null,a=null,node=null;
 						            }
 							        return null;
@@ -259,7 +249,7 @@ var readyShow = {
 						var j=0;
 						while(j<obj.data.length){
 							var i=0;
-							var map = obj.data[j];
+							var map=obj.data[j];
 							while(i<map.A_LIST.length){
 								if(map.A_LIST[i].A.indexOf('-')==-1&&map.A_LIST[i].A!="boolContent"){
 									$('#'+mm.tableId+''+j+' tbody').append('<tr name="'+mm.trId+'" GW="'+j+'" bgcolor="#ffffff" style="height:20px;">' +
@@ -278,8 +268,8 @@ var readyShow = {
 									'</tr>');
 									//队列1
 									$('#'+mm.tdId2+''+j+'_'+i).dblclick(function(){
-										var row = $(this).attr("id").split("_");
-										var map = {
+										var row=$(this).attr("id").split("_");
+										var map={
 											cm:"firstST",
 											name:mm.tdId1+''+row[1]+'_'+row[2],
 											gwType:mm.gwType
@@ -289,8 +279,8 @@ var readyShow = {
 									});
 									//队列2
 									$('#'+mm.tdId3+''+j+'_'+i).dblclick(function(){
-										var row = $(this).attr("id").split("_");
-										var map = {
+										var row=$(this).attr("id").split("_");
+										var map={
 											cm:"secondST",
 											name:mm.tdId1+''+row[1]+'_'+row[2],
 											gwType:mm.gwType
@@ -313,8 +303,8 @@ var readyShow = {
 						var a=$("table[name='GW'] tbody tr").remove(),a=null;
 						var b=$("table[name='GW_B'] tbody tr").remove(),b=null;
 						var c=$("table[name='returnTablePlc'] tbody tr").remove(),c=null;
-						var map = obj.data[0];
-						var i = 0;
+						var map=obj.data[0];
+						var i=0;
 						while(i<map.A_LIST.length){
 							$('#'+mm.tableId+' tbody').append('<tr name="'+mm.trId+'" GW="'+mm.gw+'" bgcolor="#ffffff" style="height:20px;">' +
 								//项目
@@ -332,8 +322,8 @@ var readyShow = {
 							'</tr>');
 							//队列1
 							$('#'+mm.tdId2+'_'+i).dblclick(function(){
-								var row = $(this).attr("id").split("_");
-								var map = {
+								var row=$(this).attr("id").split("_");
+								var map={
 									cm:'',
 									name:mm.tdId1+'_'+row[1],
 									gwType:mm.gwType
@@ -343,8 +333,8 @@ var readyShow = {
 							});
 							//队列2
 							$('#'+mm.tdId3+'_'+i).dblclick(function(){
-								var row = $(this).attr("id").split("_");
-								var map = {
+								var row=$(this).attr("id").split("_");
+								var map={
 									cm:'',
 									name:mm.tdId1+'_'+row[1],
 									gwType:mm.gwType
@@ -364,16 +354,16 @@ var readyShow = {
 				},
 				//所以元素ID结合map
 				map:function(type,gw){
-					var map = {};
+					var map={};
 					if(type=="A"){//装配区A
-						map = {
+						map={
 							type:"A",gw:null,
 							tableId:"A_GW",trId:"newTr_A",
 							tdId1:"newTd1_",tdId2:"newTd2_",
 							tdId3:"newTd3_",gwType:"A"
 						};
 					}else if(type=="B"){//装配区B
-						map = {
+						map={
 							type:"B",gw:null,
 							tableId:"B_GW",trId:"newTr_B",
 							tdId1:"BnewTd1_",tdId2:"BnewTd2_",
@@ -402,8 +392,8 @@ var readyShow = {
 				},
 				//获取所有工位信息启动函数 fun=回调函数，type=当前那个装配区,gw=当前第几个工位
 				getTableGW:function(fun,type,gw){
-					var a = this.action(function(obj){
-						var map = af.map(type,gw);
+					var a=this.action(function(obj){
+						var map=af.map(type,gw);
 						var b=af.showHtml(obj,map);
 						b=null,map=null,type=null,gw=null;
 					},type,gw),a=null;
@@ -413,26 +403,27 @@ var readyShow = {
 				load:function(fun){
 					//刷新按钮事件绑定
 					$("#shuxin").click(function(){
-						var win = layer.open({type:3});
-						var gw = null;
+						var win=layer.open({type:3});
+						var gw=null;
 						if(af.showType=='C'){
 							//光大返回A
-							gw = $("#returnPlcA").val();
+							gw=$("#returnPlcA").val();
 						}else if(af.showType=='D'){
 							//光大返回B
-							gw = $("#returnPlcB").val();
+							gw=$("#returnPlcB").val();
 						};
-						var a = af.getTableGW(function(){
-							return layer.close(win);win=null;
+						var a=af.getTableGW(function(){
+							layer.close(win);win=null;
+							return null;
 						},af.showType,gw),gw=null;//默认渲染A区
 						return null;
 					});
 					$("#shuxin").click();
 					//选择PLC返回工位
 					$(".selectpicker").change(function(){
-						var win = layer.open({type:3});
-						var gw = $(this).val();
-						var a = af.getTableGW(function(){
+						var win=layer.open({type:3});
+						var gw=$(this).val();
+						var a=af.getTableGW(function(){
 							return layer.close(win),win=null;
 						},af.showType,gw),gw=null;
 						return null;

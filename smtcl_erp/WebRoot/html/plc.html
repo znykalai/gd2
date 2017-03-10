@@ -6,7 +6,7 @@
 </head>
 <body>
 	<div class="row margin-top-10 account-company-auth" id="xy" style="overflow-x:hidden;overflow-y:scroll;background-color:white;height:94%;width:98%;margin-left:2%;">
-		<div id="plc_id" class="row" style="margin-top:-45px;">
+		<div id="plc_id" class="row showWindow" style="margin-top:-45px;">
 			<form id="plc_form" class="row">
 				<div class="row">
 					<div class="plc_gongwei_hui" name="ssx" id="ssx0"></div>
@@ -30,10 +30,10 @@
 			            <div class="row orders-search">
 			                <div class="col-md-10" id="mainStatusBar">
 	                        	<input type="hidden" id="cuttool-status-bar-value" value=""/>
-			                    <div class="sesol-btn mainOrder select" style="line-height:25px;height:25px;font-size:12px" data="1">装配区A</div>
-			                    <div class="sesol-btn mainOrder" style="line-height:25px;height:25px;font-size:12px" data="2">装配区B</div>
-			                	<div class="sesol-btn mainOrder" style="line-height:25px;height:25px;font-size:12px" data="3">选择PLC返回工位A</div>
-			                	<div class="sesol-btn mainOrder" style="line-height:25px;height:25px;font-size:12px" data="4">选择PLC返回工位B</div>
+			                    <div class="sesol-btn mainOrder basedata_tab select" data="1">装配区A</div>
+			                    <div class="sesol-btn mainOrder basedata_tab" data="2">装配区B</div>
+			                	<div class="sesol-btn mainOrder basedata_tab" data="3">选择PLC返回工位A</div>
+			                	<div class="sesol-btn mainOrder basedata_tab" data="4">选择PLC返回工位B</div>
 			                </div>
 			            </div>
 				    </div>
@@ -44,33 +44,33 @@
 				    	<!-- 第一行 -->
 						<div class="col-md-12" style="padding:0;height:162px;">
 							<!-- 0工位 -->
-						 	<div class="col-md-2" style="padding:0;width:235px;height:162px;border:1px solid rgb( 155 , 155 , 155 );">
-						 		<div class="col-md-1 text-right" style="width:38px;padding:5px 0 0 0;">
+						 	<div class="col-md-2 gongwei0Div">
+						 		<div class="col-md-1 text-right gongweiBoolLabe0">
 					                <span style="font-size:12px;">BOOL:</span>
 					            </div>
-					            <div class="col-md-1" style="width:33px;padding: 4px 2px 2px 2px;">
-					                <input id="BOOL0_A" type="text" style="padding:0;font-size:10px;width:30px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiBoolLabe">
+					                <input id="BOOL0_A" type="text" class="gongweiBool form-control"/>
 					            </div>
-					            <div class="col-md-1" style="width:48px;padding: 4px 2px 2px 2px;">
-					                <input id="GW0_A" type="text" value="0工位" readonly="readonly" style="padding:0;font-size:10px;width:45px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gwInputLabe">
+					                <input id="GW0_A" type="text" value="0工位" readonly="readonly" class="gwInput form-control"/>
 					            </div>
-						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+						 		<div class="col-md-1 text-right gongweiDizhilabe0">
 					                <span style="font-size:12px;">首地址:</span>
 					            </div>
-					            <div class="col-md-1" style="width:73px;padding: 4px 2px 2px 2px;">
-					            	<input id="DIZHI0_A" type="text" style="font-size:10px;width:70px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiDizhilabe">
+					            	<input id="DIZHI0_A" type="text" class="gongweiDizhiInput form-control"/>
 					            </div>
 					            <div class="col-md-12" style="padding:0 2 2 2;">
 				            		<div>
 										<table class="table-bordered" style="height:25px;width:213px;">
 							               <tr>
-							                  <th class="text-center" style="width:100px;font-size:12px;" bgcolor="#EFEFEF">项目</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							                  <th class="text-center gongweiXiangMu" bgcolor="#EFEFEF">项目</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队2值</th>
 							               </tr>
 										</table>
 									</div>
-							        <div class="table-body" style="margin-top:-1px;height:108px;width:230px;">
+							        <div class="table-body gongweiTable">
 							           <table class="table-bordered text-center table-hover" style="width:213px;" name="GW" id="A_GW0">
 							               <tbody></tbody>
 							           </table>
@@ -78,33 +78,33 @@
 					            </div>
 						 	</div>
 						 	<!-- 1工位 -->
-						 	<div class="col-md-2" style="margin-left:10px;padding:0;width:235px;height:162px;border:1px solid rgb( 155 , 155 , 155 );">
-						 		<div class="col-md-1 text-right" style="width:38px;padding:5px 0 0 0;">
+						 	<div class="col-md-2 gongweiDiv">
+						 		<div class="col-md-1 text-right gongweiBoolLabe0">
 					                <span style="font-size:12px;">BOOL:</span>
 					            </div>
-					            <div class="col-md-1" style="width:33px;padding: 4px 2px 2px 2px;">
-					                <input id="BOOL1_A" type="text" style="padding:0;font-size:10px;width:30px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiBoolLabe">
+					                <input id="BOOL1_A" type="text" class="gongweiBool form-control"/>
 					            </div>
-					            <div class="col-md-1" style="width:48px;padding: 4px 2px 2px 2px;">
-					                <input id="GW1_A" type="text" value="1工位" readonly="readonly" style="padding:0;font-size:10px;width:45px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gwInputLabe">
+					                <input id="GW1_A" type="text" value="1工位" readonly="readonly" class="gwInput form-control"/>
 					            </div>
-						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+						 		<div class="col-md-1 text-right gongweiDizhilabe0">
 					                <span style="font-size:12px;">首地址:</span>
 					            </div>
-					            <div class="col-md-1" style="width:73px;padding: 4px 2px 2px 2px;">
-					            	<input id="DIZHI1_A" type="text" style="font-size:10px;width:70px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiDizhilabe">
+					            	<input id="DIZHI1_A" type="text" class="gongweiDizhiInput form-control"/>
 					            </div>
 					            <div class="col-md-12" style="padding:0 2 2 2;">
 				            		<div>
 										<table class="table-bordered" style="height:25px;width:213px;">
 							               <tr>
-							                  <th class="text-center" style="width:100px;font-size:12px;" bgcolor="#EFEFEF">项目</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							                  <th class="text-center gongweiXiangMu" bgcolor="#EFEFEF">项目</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队2值</th>
 							               </tr>
 										</table>
 									</div>
-							        <div class="table-body" style="margin-top:-1px;height:108px;width:230px;">
+							        <div class="table-body gongweiTable">
 							           <table class="table-bordered text-center table-hover" style="width:213px;" name="GW" id="A_GW1">
 							               <tbody></tbody>
 							           </table>
@@ -112,33 +112,33 @@
 					            </div>
 						 	</div>
 						 	<!-- 2工位 -->
-						 	<div class="col-md-2" style="margin-left:10px;padding:0;width:235px;height:162px;border:1px solid rgb( 155 , 155 , 155 );">
-						 		<div class="col-md-1 text-right" style="width:38px;padding:5px 0 0 0;">
+						 	<div class="col-md-2 gongweiDiv">
+						 		<div class="col-md-1 text-right gongweiBoolLabe0">
 					                <span style="font-size:12px;">BOOL:</span>
 					            </div>
-					            <div class="col-md-1" style="width:33px;padding: 4px 2px 2px 2px;">
-					                <input id="BOOL2_A" type="text" style="padding:0;font-size:10px;width:30px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiBoolLabe">
+					                <input id="BOOL2_A" type="text" class="gongweiBool form-control"/>
 					            </div>
-					            <div class="col-md-1" style="width:48px;padding: 4px 2px 2px 2px;">
-					                <input id="GW2_A" type="text" value="2工位" readonly="readonly" style="padding:0;font-size:10px;width:45px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gwInputLabe">
+					                <input id="GW2_A" type="text" value="2工位" readonly="readonly" class="gwInput form-control"/>
 					            </div>
-						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+						 		<div class="col-md-1 text-right gongweiDizhilabe0">
 					                <span style="font-size:12px;">首地址:</span>
 					            </div>
-					            <div class="col-md-1" style="width:73px;padding: 4px 2px 2px 2px;">
-					            	<input id="DIZHI2_A" type="text" style="font-size:10px;width:70px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiDizhilabe">
+					            	<input id="DIZHI2_A" type="text" class="gongweiDizhiInput form-control"/>
 					            </div>
 					            <div class="col-md-12" style="padding:0 2 2 2;">
 				            		<div>
 										<table class="table-bordered" style="height:25px;width:213px;">
 							               <tr>
-							                  <th class="text-center" style="width:100px;font-size:12px;" bgcolor="#EFEFEF">项目</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							                  <th class="text-center gongweiXiangMu" bgcolor="#EFEFEF">项目</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队2值</th>
 							               </tr>
 										</table>
 									</div>
-							        <div class="table-body" style="margin-top:-1px;height:108px;width:230px;">
+							        <div class="table-body gongweiTable">
 							           <table class="table-bordered text-center table-hover" style="width:213px;" name="GW" id="A_GW2">
 							               <tbody></tbody>
 							           </table>
@@ -146,33 +146,33 @@
 					            </div>
 						 	</div>
 						 	<!-- 3工位 -->
-						 	<div class="col-md-2" style="margin-left:10px;padding:0;width:235px;height:162px;border:1px solid rgb( 155 , 155 , 155 );">
-						 		<div class="col-md-1 text-right" style="width:38px;padding:5px 0 0 0;">
+						 	<div class="col-md-2 gongweiDiv">
+						 		<div class="col-md-1 text-right gongweiBoolLabe0">
 					                <span style="font-size:12px;">BOOL:</span>
 					            </div>
-					            <div class="col-md-1" style="width:33px;padding: 4px 2px 2px 2px;">
-					                <input id="BOOL3_A" type="text" style="padding:0;font-size:10px;width:30px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiBoolLabe">
+					                <input id="BOOL3_A" type="text" class="gongweiBool form-control"/>
 					            </div>
-					            <div class="col-md-1" style="width:48px;padding: 4px 2px 2px 2px;">
-					                <input id="GW3_A" type="text" value="3工位" readonly="readonly" style="padding:0;font-size:10px;width:45px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gwInputLabe">
+					                <input id="GW3_A" type="text" value="3工位" readonly="readonly" class="gwInput form-control"/>
 					            </div>
-						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+						 		<div class="col-md-1 text-right gongweiDizhilabe0">
 					                <span style="font-size:12px;">首地址:</span>
 					            </div>
-					            <div class="col-md-1" style="width:73px;padding: 4px 2px 2px 2px;">
-					            	<input id="DIZHI3_A" type="text" style="font-size:10px;width:70px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiDizhilabe">
+					            	<input id="DIZHI3_A" type="text" class="gongweiDizhiInput form-control"/>
 					            </div>
 					            <div class="col-md-12" style="padding:0 2 2 2;">
 				            		<div>
 										<table class="table-bordered" style="height:25px;width:213px;">
 							               <tr>
-							                  <th class="text-center" style="width:100px;font-size:12px;" bgcolor="#EFEFEF">项目</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							                  <th class="text-center gongweiXiangMu" bgcolor="#EFEFEF">项目</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队2值</th>
 							               </tr>
 										</table>
 									</div>
-							        <div class="table-body" style="margin-top:-1px;height:108px;width:230px;">
+							        <div class="table-body gongweiTable">
 							           <table class="table-bordered text-center table-hover" style="width:213px;" name="GW" id="A_GW3">
 							               <tbody></tbody>
 							           </table>
@@ -180,33 +180,33 @@
 					            </div>
 						 	</div>
 						 	<!-- 4工位 -->
-						 	<div class="col-md-2" style="margin-left:10px;padding:0;width:235px;height:162px;border:1px solid rgb( 155 , 155 , 155 );">
-						 		<div class="col-md-1 text-right" style="width:38px;padding:5px 0 0 0;">
+						 	<div class="col-md-2 gongweiDiv">
+						 		<div class="col-md-1 text-right gongweiBoolLabe0">
 					                <span style="font-size:12px;">BOOL:</span>
 					            </div>
-					            <div class="col-md-1" style="width:33px;padding: 4px 2px 2px 2px;">
-					                <input id="BOOL4_A" type="text" style="padding:0;font-size:10px;width:30px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiBoolLabe">
+					                <input id="BOOL4_A" type="text" class="gongweiBool form-control"/>
 					            </div>
-					            <div class="col-md-1" style="width:48px;padding: 4px 2px 2px 2px;">
-					                <input id="GW4_A" type="text" value="4工位" readonly="readonly" style="padding:0;font-size:10px;width:45px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gwInputLabe">
+					                <input id="GW4_A" type="text" value="4工位" readonly="readonly" class="gwInput form-control"/>
 					            </div>
-						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+						 		<div class="col-md-1 text-right gongweiDizhilabe0">
 					                <span style="font-size:12px;">首地址:</span>
 					            </div>
-					            <div class="col-md-1" style="width:73px;padding: 4px 2px 2px 2px;">
-					            	<input id="DIZHI4_A" type="text" style="font-size:10px;width:70px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiDizhilabe">
+					            	<input id="DIZHI4_A" type="text" class="gongweiDizhiInput form-control"/>
 					            </div>
 					            <div class="col-md-12" style="padding:0 2 2 2;">
 				            		<div>
 										<table class="table-bordered" style="height:25px;width:213px;">
 							               <tr>
-							                  <th class="text-center" style="width:100px;font-size:12px;" bgcolor="#EFEFEF">项目</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							                  <th class="text-center gongweiXiangMu" bgcolor="#EFEFEF">项目</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队2值</th>
 							               </tr>
 										</table>
 									</div>
-							        <div class="table-body" style="margin-top:-1px;height:108px;width:230px;">
+							        <div class="table-body gongweiTable">
 							           <table class="table-bordered text-center table-hover" style="width:213px;" name="GW" id="A_GW4">
 							               <tbody></tbody>
 							           </table>
@@ -217,33 +217,33 @@
 						<!-- 第二行 -->
 						<div class="col-md-12" style="padding:0;margin-top:4px;height:162px;">
 							<!-- 5工位 -->
-						 	<div class="col-md-2" style="padding:0;width:235px;height:162px;border:1px solid rgb( 155 , 155 , 155 );">
-						 		<div class="col-md-1 text-right" style="width:38px;padding:5px 0 0 0;">
+						 	<div class="col-md-2 gongwei0Div">
+						 		<div class="col-md-1 text-right gongweiBoolLabe0">
 					                <span style="font-size:12px;">BOOL:</span>
 					            </div>
-					            <div class="col-md-1" style="width:33px;padding: 4px 2px 2px 2px;">
-					                <input id="BOOL5_A" type="text" style="padding:0;font-size:10px;width:30px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiBoolLabe">
+					                <input id="BOOL5_A" type="text" class="gongweiBool form-control"/>
 					            </div>
-					            <div class="col-md-1" style="width:48px;padding: 4px 2px 2px 2px;">
-					                <input id="GW5_A" type="text" value="5工位" readonly="readonly" style="padding:0;font-size:10px;width:45px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gwInputLabe">
+					                <input id="GW5_A" type="text" value="5工位" readonly="readonly" class="gwInput form-control"/>
 					            </div>
-						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+						 		<div class="col-md-1 text-right gongweiDizhilabe0">
 					                <span style="font-size:12px;">首地址:</span>
 					            </div>
-					            <div class="col-md-1" style="width:73px;padding: 4px 2px 2px 2px;">
-					            	<input id="DIZHI5_A" type="text" style="font-size:10px;width:70px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiDizhilabe">
+					            	<input id="DIZHI5_A" type="text" class="gongweiDizhiInput form-control"/>
 					            </div>
 					            <div class="col-md-12" style="padding:0 2 2 2;">
 				            		<div>
 										<table class="table-bordered" style="height:25px;width:213px;">
 							               <tr>
-							                  <th class="text-center" style="width:100px;font-size:12px;" bgcolor="#EFEFEF">项目</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							                  <th class="text-center gongweiXiangMu" bgcolor="#EFEFEF">项目</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队2值</th>
 							               </tr>
 										</table>
 									</div>
-							        <div class="table-body" style="margin-top:-1px;height:108px;width:230px;">
+							        <div class="table-body gongweiTable">
 							           <table class="table-bordered text-center table-hover" style="width:213px;" name="GW" id="A_GW5">
 							               <tbody></tbody>
 							           </table>
@@ -251,33 +251,33 @@
 					            </div>
 							</div>
 						 	<!-- 6工位 -->
-						 	<div class="col-md-2" style="margin-left:10px;padding:0;width:235px;height:162px;border:1px solid rgb( 155 , 155 , 155 );">
-						 		<div class="col-md-1 text-right" style="width:38px;padding:5px 0 0 0;">
+						 	<div class="col-md-2 gongweiDiv">
+						 		<div class="col-md-1 text-right gongweiBoolLabe0">
 					                <span style="font-size:12px;">BOOL:</span>
 					            </div>
-					            <div class="col-md-1" style="width:33px;padding: 4px 2px 2px 2px;">
-					                <input id="BOOL6_A" type="text" style="padding:0;font-size:10px;width:30px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiBoolLabe">
+					                <input id="BOOL6_A" type="text" class="gongweiBool form-control"/>
 					            </div>
-					            <div class="col-md-1" style="width:48px;padding: 4px 2px 2px 2px;">
-					                <input id="GW6_A" type="text" value="6工位" readonly="readonly" style="padding:0;font-size:10px;width:45px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gwInputLabe">
+					                <input id="GW6_A" type="text" value="6工位" readonly="readonly" class="gwInput form-control"/>
 					            </div>
-						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+						 		<div class="col-md-1 text-right gongweiDizhilabe0">
 					                <span style="font-size:12px;">首地址:</span>
 					            </div>
-					            <div class="col-md-1" style="width:73px;padding: 4px 2px 2px 2px;">
-					            	<input id="DIZHI6_A" type="text" style="font-size:10px;width:70px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiDizhilabe">
+					            	<input id="DIZHI6_A" type="text" class="gongweiDizhiInput form-control"/>
 					            </div>
 					            <div class="col-md-12" style="padding:0 2 2 2;">
 				            		<div>
 										<table class="table-bordered" style="height:25px;width:213px;">
 							               <tr>
-							                  <th class="text-center" style="width:100px;font-size:12px;" bgcolor="#EFEFEF">项目</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							                  <th class="text-center gongweiXiangMu" bgcolor="#EFEFEF">项目</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队2值</th>
 							               </tr>
 										</table>
 									</div>
-							        <div class="table-body" style="margin-top:-1px;height:108px;width:230px;">
+							        <div class="table-body gongweiTable">
 							           <table class="table-bordered text-center table-hover" style="width:213px;" name="GW" id="A_GW6">
 							               <tbody></tbody>
 							           </table>
@@ -285,33 +285,33 @@
 					            </div>
 							</div>
 						 	<!-- 7工位 -->
-						 	<div class="col-md-2" style="margin-left:10px;padding:0;width:235px;height:162px;border:1px solid rgb( 155 , 155 , 155 );">
-						 		<div class="col-md-1 text-right" style="width:38px;padding:5px 0 0 0;">
+						 	<div class="col-md-2 gongweiDiv">
+						 		<div class="col-md-1 text-right gongweiBoolLabe0">
 					                <span style="font-size:12px;">BOOL:</span>
 					            </div>
-					            <div class="col-md-1" style="width:33px;padding: 4px 2px 2px 2px;">
-					                <input id="BOOL7_A" type="text" style="padding:0;font-size:10px;width:30px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiBoolLabe">
+					                <input id="BOOL7_A" type="text" class="gongweiBool form-control"/>
 					            </div>
-					            <div class="col-md-1" style="width:48px;padding: 4px 2px 2px 2px;">
-					                <input id="GW7_A" type="text" value="7工位" readonly="readonly" style="padding:0;font-size:10px;width:45px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gwInputLabe">
+					                <input id="GW7_A" type="text" value="7工位" readonly="readonly" class="gwInput form-control"/>
 					            </div>
-						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+						 		<div class="col-md-1 text-right gongweiDizhilabe0">
 					                <span style="font-size:12px;">首地址:</span>
 					            </div>
-					            <div class="col-md-1" style="width:73px;padding: 4px 2px 2px 2px;">
-					            	<input id="DIZHI7_A" type="text" style="font-size:10px;width:70px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiDizhilabe">
+					            	<input id="DIZHI7_A" type="text" class="gongweiDizhiInput form-control"/>
 					            </div>
 					            <div class="col-md-12" style="padding:0 2 2 2;">
 				            		<div>
 										<table class="table-bordered" style="height:25px;width:213px;">
 							               <tr>
-							                  <th class="text-center" style="width:100px;font-size:12px;" bgcolor="#EFEFEF">项目</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							                  <th class="text-center gongweiXiangMu" bgcolor="#EFEFEF">项目</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队2值</th>
 							               </tr>
 										</table>
 									</div>
-							        <div class="table-body" style="margin-top:-1px;height:108px;width:230px;">
+							        <div class="table-body gongweiTable">
 							           <table class="table-bordered text-center table-hover" style="width:213px;" name="GW" id="A_GW7">
 							               <tbody></tbody>
 							           </table>
@@ -319,33 +319,33 @@
 					            </div>
 							</div>
 						 	<!-- 8工位 -->
-						 	<div class="col-md-2" style="margin-left:10px;padding:0;width:235px;height:162px;border:1px solid rgb( 155 , 155 , 155 );">
-						 		<div class="col-md-1 text-right" style="width:38px;padding:5px 0 0 0;">
+						 	<div class="col-md-2 gongweiDiv">
+						 		<div class="col-md-1 text-right gongweiBoolLabe0">
 					                <span style="font-size:12px;">BOOL:</span>
 					            </div>
-					            <div class="col-md-1" style="width:33px;padding: 4px 2px 2px 2px;">
-					                <input id="BOOL8_A" type="text" style="padding:0;font-size:10px;width:30px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiBoolLabe">
+					                <input id="BOOL8_A" type="text" class="gongweiBool form-control"/>
 					            </div>
-					            <div class="col-md-1" style="width:48px;padding: 4px 2px 2px 2px;">
-					                <input id="GW8_A" type="text" value="8工位" readonly="readonly" style="padding:0;font-size:10px;width:45px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gwInputLabe">
+					                <input id="GW8_A" type="text" value="8工位" readonly="readonly" class="gwInput form-control"/>
 					            </div>
-						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+						 		<div class="col-md-1 text-right gongweiDizhilabe0">
 					                <span style="font-size:12px;">首地址:</span>
 					            </div>
-					            <div class="col-md-1" style="width:73px;padding: 4px 2px 2px 2px;">
-					            	<input id="DIZHI8_A" type="text" style="font-size:10px;width:70px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiDizhilabe">
+					            	<input id="DIZHI8_A" type="text" class="gongweiDizhiInput form-control"/>
 					            </div>
 					            <div class="col-md-12" style="padding:0 2 2 2;">
 				            		<div>
 										<table class="table-bordered" style="height:25px;width:213px;">
 							               <tr>
-							                  <th class="text-center" style="width:100px;font-size:12px;" bgcolor="#EFEFEF">项目</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							                  <th class="text-center gongweiXiangMu" bgcolor="#EFEFEF">项目</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队2值</th>
 							               </tr>
 										</table>
 									</div>
-							        <div class="table-body" style="margin-top:-1px;height:108px;width:230px;">
+							        <div class="table-body gongweiTable">
 							           <table class="table-bordered text-center table-hover" style="width:213px;" name="GW" id="A_GW8">
 							               <tbody></tbody>
 							           </table>
@@ -353,33 +353,33 @@
 					            </div>
 							</div>
 						 	<!-- 9工位 -->
-						 	<div class="col-md-2" style="margin-left:10px;padding:0;width:235px;height:162px;border:1px solid rgb( 155 , 155 , 155 );">
-						 		<div class="col-md-1 text-right" style="width:38px;padding:5px 0 0 0;">
+						 	<div class="col-md-2 gongweiDiv">
+						 		<div class="col-md-1 text-right gongweiBoolLabe0">
 					                <span style="font-size:12px;">BOOL:</span>
 					            </div>
-					            <div class="col-md-1" style="width:33px;padding: 4px 2px 2px 2px;">
-					                <input id="BOOL9_A" type="text" style="padding:0;font-size:10px;width:30px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiBoolLabe">
+					                <input id="BOOL9_A" type="text" class="gongweiBool form-control"/>
 					            </div>
-					            <div class="col-md-1" style="width:48px;padding: 4px 2px 2px 2px;">
-					                <input id="GW9_A" type="text" value="9工位" readonly="readonly" style="padding:0;font-size:10px;width:45px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gwInputLabe">
+					                <input id="GW9_A" type="text" value="9工位" readonly="readonly" class="gwInput form-control"/>
 					            </div>
-						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+						 		<div class="col-md-1 text-right gongweiDizhilabe0">
 					                <span style="font-size:12px;">首地址:</span>
 					            </div>
-					            <div class="col-md-1" style="width:73px;padding: 4px 2px 2px 2px;">
-					            	<input id="DIZHI9_A" type="text" style="font-size:10px;width:70px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiDizhilabe">
+					            	<input id="DIZHI9_A" type="text" class="gongweiDizhiInput form-control"/>
 					            </div>
 					            <div class="col-md-12" style="padding:0 2 2 2;">
 				            		<div>
 										<table class="table-bordered" style="height:25px;width:213px;">
 							               <tr>
-							                  <th class="text-center" style="width:100px;font-size:12px;" bgcolor="#EFEFEF">项目</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							                  <th class="text-center gongweiXiangMu" bgcolor="#EFEFEF">项目</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队2值</th>
 							               </tr>
 										</table>
 									</div>
-							        <div class="table-body" style="margin-top:-1px;height:108px;width:230px;">
+							        <div class="table-body gongweiTable">
 							           <table class="table-bordered text-center table-hover" style="width:213px;" name="GW" id="A_GW9">
 							               <tbody></tbody>
 							           </table>
@@ -390,33 +390,33 @@
 						<!-- 第三行 -->
 						<div class="col-md-12" style="padding:0;margin-top:4px;height:162px;">
 							<!-- 10工位 -->
-						 	<div class="col-md-2" style="padding:0;width:235px;height:162px;border:1px solid rgb( 155 , 155 , 155 );">
-						 		<div class="col-md-1 text-right" style="width:38px;padding:5px 0 0 0;">
+						 	<div class="col-md-2 gongwei0Div">
+						 		<div class="col-md-1 text-right gongweiBoolLabe0">
 					                <span style="font-size:12px;">BOOL:</span>
 					            </div>
-					            <div class="col-md-1" style="width:33px;padding: 4px 2px 2px 2px;">
-					                <input id="BOOL10_A" type="text" style="padding:0;font-size:10px;width:30px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiBoolLabe">
+					                <input id="BOOL10_A" type="text" class="gongweiBool form-control"/>
 					            </div>
-					            <div class="col-md-1" style="width:48px;padding: 4px 2px 2px 2px;">
-					                <input id="GW10_A" type="text" value="10工位" readonly="readonly" style="padding:0;font-size:10px;width:45px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gwInputLabe">
+					                <input id="GW10_A" type="text" value="10工位" readonly="readonly" class="gwInput form-control"/>
 					            </div>
-						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+						 		<div class="col-md-1 text-right gongweiDizhilabe0">
 					                <span style="font-size:12px;">首地址:</span>
 					            </div>
-					            <div class="col-md-1" style="width:73px;padding: 4px 2px 2px 2px;">
-					            	<input id="DIZHI10_A" type="text" style="font-size:10px;width:70px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiDizhilabe">
+					            	<input id="DIZHI10_A" type="text" class="gongweiDizhiInput form-control"/>
 					            </div>
 					            <div class="col-md-12" style="padding:0 2 2 2;">
 				            		<div>
 										<table class="table-bordered" style="height:25px;width:213px;">
 							               <tr>
-							                  <th class="text-center" style="width:100px;font-size:12px;" bgcolor="#EFEFEF">项目</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							                  <th class="text-center gongweiXiangMu" bgcolor="#EFEFEF">项目</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队2值</th>
 							               </tr>
 										</table>
 									</div>
-							        <div class="table-body" style="margin-top:-1px;height:108px;width:230px;">
+							        <div class="table-body gongweiTable">
 							           <table class="table-bordered text-center table-hover" style="width:213px;" name="GW" id="A_GW10">
 							               <tbody></tbody>
 							           </table>
@@ -424,33 +424,33 @@
 					            </div>
 							</div>
 						 	<!-- 11工位 -->
-						 	<div class="col-md-2" style="margin-left:10px;padding:0;width:235px;height:162px;border:1px solid rgb( 155 , 155 , 155 );">
-						 		<div class="col-md-1 text-right" style="width:38px;padding:5px 0 0 0;">
+						 	<div class="col-md-2 gongweiDiv">
+						 		<div class="col-md-1 text-right gongweiBoolLabe0">
 					                <span style="font-size:12px;">BOOL:</span>
 					            </div>
-					            <div class="col-md-1" style="width:33px;padding: 4px 2px 2px 2px;">
-					                <input id="BOOL11_A" type="text" style="padding:0;font-size:10px;width:30px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiBoolLabe">
+					                <input id="BOOL11_A" type="text" class="gongweiBool form-control"/>
 					            </div>
-					            <div class="col-md-1" style="width:48px;padding: 4px 2px 2px 2px;">
-					                <input id="GW11_A" type="text" value="11工位" readonly="readonly" style="padding:0;font-size:10px;width:45px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gwInputLabe">
+					                <input id="GW11_A" type="text" value="11工位" readonly="readonly" class="gwInput form-control"/>
 					            </div>
-						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+						 		<div class="col-md-1 text-right gongweiDizhilabe0">
 					                <span style="font-size:12px;">首地址:</span>
 					            </div>
-					            <div class="col-md-1" style="width:73px;padding: 4px 2px 2px 2px;">
-					            	<input id="DIZHI11_A" type="text" style="font-size:10px;width:70px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiDizhilabe">
+					            	<input id="DIZHI11_A" type="text" class="gongweiDizhiInput form-control"/>
 					            </div>
 					            <div class="col-md-12" style="padding:0 2 2 2;">
 				            		<div>
 										<table class="table-bordered" style="height:25px;width:213px;">
 							               <tr>
-							                  <th class="text-center" style="width:100px;font-size:12px;" bgcolor="#EFEFEF">项目</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							                  <th class="text-center gongweiXiangMu" bgcolor="#EFEFEF">项目</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队2值</th>
 							               </tr>
 										</table>
 									</div>
-							        <div class="table-body" style="margin-top:-1px;height:108px;width:230px;">
+							        <div class="table-body gongweiTable">
 							           <table class="table-bordered text-center table-hover" style="width:213px;" name="GW" id="A_GW11">
 							               <tbody></tbody>
 							           </table>
@@ -458,33 +458,33 @@
 					            </div>
 							</div>
 						 	<!-- 12工位 -->
-						 	<div class="col-md-2" style="margin-left:10px;padding:0;width:235px;height:162px;border:1px solid rgb( 155 , 155 , 155 );">
-						 		<div class="col-md-1 text-right" style="width:38px;padding:5px 0 0 0;">
+						 	<div class="col-md-2 gongweiDiv">
+						 		<div class="col-md-1 text-right gongweiBoolLabe0">
 					                <span style="font-size:12px;">BOOL:</span>
 					            </div>
-					            <div class="col-md-1" style="width:33px;padding: 4px 2px 2px 2px;">
-					                <input id="BOOL12_A" type="text" style="padding:0;font-size:10px;width:30px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiBoolLabe">
+					                <input id="BOOL12_A" type="text" class="gongweiBool form-control"/>
 					            </div>
-					            <div class="col-md-1" style="width:48px;padding: 4px 2px 2px 2px;">
-					                <input id="GW12_A" type="text" value="12工位" readonly="readonly" style="padding:0;font-size:10px;width:45px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gwInputLabe">
+					                <input id="GW12_A" type="text" value="12工位" readonly="readonly" class="gwInput form-control"/>
 					            </div>
-						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+						 		<div class="col-md-1 text-right gongweiDizhilabe0">
 					                <span style="font-size:12px;">首地址:</span>
 					            </div>
-					            <div class="col-md-1" style="width:73px;padding: 4px 2px 2px 2px;">
-					            	<input id="DIZHI12_A" type="text" style="font-size:10px;width:70px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiDizhilabe">
+					            	<input id="DIZHI12_A" type="text" class="gongweiDizhiInput form-control"/>
 					            </div>
 					            <div class="col-md-12" style="padding:0 2 2 2;">
 				            		<div>
 										<table class="table-bordered" style="height:25px;width:213px;">
 							               <tr>
-							                  <th class="text-center" style="width:100px;font-size:12px;" bgcolor="#EFEFEF">项目</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							                  <th class="text-center gongweiXiangMu" bgcolor="#EFEFEF">项目</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队2值</th>
 							               </tr>
 										</table>
 									</div>
-							        <div class="table-body" style="margin-top:-1px;height:108px;width:230px;">
+							        <div class="table-body gongweiTable">
 							           <table class="table-bordered text-center table-hover" style="width:213px;" name="GW" id="A_GW12">
 							               <tbody></tbody>
 							           </table>
@@ -492,33 +492,33 @@
 					            </div>
 							</div>
 						 	<!-- 13工位 -->
-						 	<div class="col-md-2" style="margin-left:10px;padding:0;width:235px;height:162px;border:1px solid rgb( 155 , 155 , 155 );">
-						 		<div class="col-md-1 text-right" style="width:38px;padding:5px 0 0 0;">
+						 	<div class="col-md-2 gongweiDiv">
+						 		<div class="col-md-1 text-right gongweiBoolLabe0">
 					                <span style="font-size:12px;">BOOL:</span>
 					            </div>
-					            <div class="col-md-1" style="width:33px;padding: 4px 2px 2px 2px;">
-					                <input id="BOOL13_A" type="text" style="padding:0;font-size:10px;width:30px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiBoolLabe">
+					                <input id="BOOL13_A" type="text" class="gongweiBool form-control"/>
 					            </div>
-					            <div class="col-md-1" style="width:48px;padding: 4px 2px 2px 2px;">
-					                <input id="GW13_A" type="text" value="13工位" readonly="readonly" style="padding:0;font-size:10px;width:45px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gwInputLabe">
+					                <input id="GW13_A" type="text" value="13工位" readonly="readonly" class="gwInput form-control"/>
 					            </div>
-						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+						 		<div class="col-md-1 text-right gongweiDizhilabe0">
 					                <span style="font-size:12px;">首地址:</span>
 					            </div>
-					            <div class="col-md-1" style="width:73px;padding: 4px 2px 2px 2px;">
-					            	<input id="DIZHI13_A" type="text" style="font-size:10px;width:70px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiDizhilabe">
+					            	<input id="DIZHI13_A" type="text" class="gongweiDizhiInput form-control"/>
 					            </div>
 					            <div class="col-md-12" style="padding:0 2 2 2;">
 				            		<div>
 										<table class="table-bordered" style="height:25px;width:213px;">
 							               <tr>
-							                  <th class="text-center" style="width:100px;font-size:12px;" bgcolor="#EFEFEF">项目</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							                  <th class="text-center gongweiXiangMu" bgcolor="#EFEFEF">项目</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队2值</th>
 							               </tr>
 										</table>
 									</div>
-							        <div class="table-body" style="margin-top:-1px;height:108px;width:230px;">
+							        <div class="table-body gongweiTable">
 							           <table class="table-bordered text-center table-hover" style="width:213px;" name="GW" id="A_GW13">
 							               <tbody></tbody>
 							           </table>
@@ -526,33 +526,33 @@
 					            </div>
 							</div>
 						 	<!-- 14工位 -->
-						 	<div class="col-md-2" style="margin-left:10px;padding:0;width:235px;height:162px;border:1px solid rgb( 155 , 155 , 155 );">
-						 		<div class="col-md-1 text-right" style="width:38px;padding:5px 0 0 0;">
+						 	<div class="col-md-2 gongweiDiv">
+						 		<div class="col-md-1 text-right gongweiBoolLabe0">
 					                <span style="font-size:12px;">BOOL:</span>
 					            </div>
-					            <div class="col-md-1" style="width:33px;padding: 4px 2px 2px 2px;">
-					                <input id="BOOL14_A" type="text" style="padding:0;font-size:10px;width:30px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiBoolLabe">
+					                <input id="BOOL14_A" type="text" class="gongweiBool form-control"/>
 					            </div>
-					            <div class="col-md-1" style="width:48px;padding: 4px 2px 2px 2px;">
-					                <input id="GW14_A" type="text" value="14工位" readonly="readonly" style="padding:0;font-size:10px;width:45px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gwInputLabe">
+					                <input id="GW14_A" type="text" value="14工位" readonly="readonly" class="gwInput form-control"/>
 					            </div>
-						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+						 		<div class="col-md-1 text-right gongweiDizhilabe0">
 					                <span style="font-size:12px;">首地址:</span>
 					            </div>
-					            <div class="col-md-1" style="width:73px;padding: 4px 2px 2px 2px;">
-					            	<input id="DIZHI14_A" type="text" style="font-size:10px;width:70px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiDizhilabe">
+					            	<input id="DIZHI14_A" type="text" class="gongweiDizhiInput form-control"/>
 					            </div>
 					            <div class="col-md-12" style="padding:0 2 2 2;">
 				            		<div>
 										<table class="table-bordered" style="height:25px;width:213px;">
 							               <tr>
-							                  <th class="text-center" style="width:100px;font-size:12px;" bgcolor="#EFEFEF">项目</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							                  <th class="text-center gongweiXiangMu" bgcolor="#EFEFEF">项目</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队2值</th>
 							               </tr>
 										</table>
 									</div>
-							        <div class="table-body" style="margin-top:-1px;height:108px;width:230px;">
+							        <div class="table-body gongweiTable">
 							           <table class="table-bordered text-center table-hover" style="width:213px;" name="GW" id="A_GW14">
 							               <tbody></tbody>
 							           </table>
@@ -561,32 +561,32 @@
 							</div>
 						 	<!-- 15工位 -->
 						 	<div class="col-md-2" style="margin-top:4px;padding:0;width:235px;height:162px;border:1px solid rgb( 155 , 155 , 155 );">
-						 		<div class="col-md-1 text-right" style="width:38px;padding:5px 0 0 0;">
+						 		<div class="col-md-1 text-right gongweiBoolLabe0">
 					                <span style="font-size:12px;">BOOL:</span>
 					            </div>
-					            <div class="col-md-1" style="width:33px;padding: 4px 2px 2px 2px;">
-					                <input id="BOOL15_A" type="text" style="padding:0;font-size:10px;width:30px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiBoolLabe">
+					                <input id="BOOL15_A" type="text" class="gongweiBool form-control"/>
 					            </div>
-					            <div class="col-md-1" style="width:48px;padding: 4px 2px 2px 2px;">
-					                <input id="GW15_A" type="text" value="15工位" readonly="readonly" style="padding:0;font-size:10px;width:45px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gwInputLabe">
+					                <input id="GW15_A" type="text" value="15工位" readonly="readonly" class="gwInput form-control"/>
 					            </div>
-						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+						 		<div class="col-md-1 text-right gongweiDizhilabe0">
 					                <span style="font-size:12px;">首地址:</span>
 					            </div>
-					            <div class="col-md-1" style="width:73px;padding: 4px 2px 2px 2px;">
-					            	<input id="DIZHI15_A" type="text" style="font-size:10px;width:70px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiDizhilabe">
+					            	<input id="DIZHI15_A" type="text" class="gongweiDizhiInput form-control"/>
 					            </div>
 					            <div class="col-md-12" style="padding:0 2 2 2;">
 				            		<div>
 										<table class="table-bordered" style="height:25px;width:213px;">
 							               <tr>
-							                  <th class="text-center" style="width:100px;font-size:12px;" bgcolor="#EFEFEF">项目</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							                  <th class="text-center gongweiXiangMu" bgcolor="#EFEFEF">项目</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队2值</th>
 							               </tr>
 										</table>
 									</div>
-							        <div class="table-body" style="margin-top:-1px;height:108px;width:230px;">
+							        <div class="table-body gongweiTable">
 							           <table class="table-bordered text-center table-hover" style="width:213px;" name="GW" id="A_GW15">
 							               <tbody></tbody>
 							           </table>
@@ -600,33 +600,33 @@
 				    	<!-- 第一行 -->
 						<div class="col-md-12" style="padding:0;height:162px;">
 							<!-- 0工位 -->
-						 	<div class="col-md-2" style="padding:0;width:235px;height:162px;border:1px solid rgb( 155 , 155 , 155 );">
-						 		<div class="col-md-1 text-right" style="width:38px;padding:5px 0 0 0;">
+						 	<div class="col-md-2 gongwei0Div">
+						 		<div class="col-md-1 text-right gongweiBoolLabe0">
 					                <span style="font-size:12px;">BOOL:</span>
 					            </div>
-					            <div class="col-md-1" style="width:33px;padding: 4px 2px 2px 2px;">
-					                <input id="BOOL0_B" type="text" style="padding:0;font-size:10px;width:30px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiBoolLabe">
+					                <input id="BOOL0_B" type="text" class="gongweiBool form-control"/>
 					            </div>
-					            <div class="col-md-1" style="width:48px;padding: 4px 2px 2px 2px;">
-					                <input id="GW0_B" type="text" value="0工位" readonly="readonly" style="padding:0;font-size:10px;width:45px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gwInputLabe">
+					                <input id="GW0_B" type="text" value="0工位" readonly="readonly" class="gwInput form-control"/>
 					            </div>
-						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+						 		<div class="col-md-1 text-right gongweiDizhilabe0">
 					                <span style="font-size:12px;">首地址:</span>
 					            </div>
-					            <div class="col-md-1" style="width:73px;padding: 4px 2px 2px 2px;">
-					            	<input id="DIZHI0_B" type="text" style="font-size:10px;width:70px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiDizhilabe">
+					            	<input id="DIZHI0_B" type="text" class="gongweiDizhiInput form-control"/>
 					            </div>
 					            <div class="col-md-12" style="padding:0 2 2 2;">
 				            		<div>
 										<table class="table-bordered" style="height:25px;width:213px;">
 							               <tr>
-							                  <th class="text-center" style="width:100px;font-size:12px;" bgcolor="#EFEFEF">项目</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							                  <th class="text-center gongweiXiangMu" bgcolor="#EFEFEF">项目</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队2值</th>
 							               </tr>
 										</table>
 									</div>
-							        <div class="table-body" style="margin-top:-1px;height:108px;width:230px;">
+							        <div class="table-body gongweiTable">
 							           <table class="table-bordered text-center table-hover" style="width:213px;" name="GW_B" id="B_GW0">
 							               <tbody></tbody>
 							           </table>
@@ -634,33 +634,33 @@
 					            </div>
 						 	</div>
 						 	<!-- 1工位 -->
-						 	<div class="col-md-2" style="margin-left:10px;padding:0;width:235px;height:162px;border:1px solid rgb( 155 , 155 , 155 );">
-						 		<div class="col-md-1 text-right" style="width:38px;padding:5px 0 0 0;">
+						 	<div class="col-md-2 gongweiDiv">
+						 		<div class="col-md-1 text-right gongweiBoolLabe0">
 					                <span style="font-size:12px;">BOOL:</span>
 					            </div>
-					            <div class="col-md-1" style="width:33px;padding: 4px 2px 2px 2px;">
-					                <input id="BOOL1_B" type="text" style="padding:0;font-size:10px;width:30px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiBoolLabe">
+					                <input id="BOOL1_B" type="text" class="gongweiBool form-control"/>
 					            </div>
-					            <div class="col-md-1" style="width:48px;padding: 4px 2px 2px 2px;">
-					                <input id="GW1_B" type="text" value="1工位" readonly="readonly" style="padding:0;font-size:10px;width:45px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gwInputLabe">
+					                <input id="GW1_B" type="text" value="1工位" readonly="readonly" class="gwInput form-control"/>
 					            </div>
-						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+						 		<div class="col-md-1 text-right gongweiDizhilabe0">
 					                <span style="font-size:12px;">首地址:</span>
 					            </div>
-					            <div class="col-md-1" style="width:73px;padding: 4px 2px 2px 2px;">
-					            	<input id="DIZHI1_B" type="text" style="font-size:10px;width:70px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiDizhilabe">
+					            	<input id="DIZHI1_B" type="text" class="gongweiDizhiInput form-control"/>
 					            </div>
 					            <div class="col-md-12" style="padding:0 2 2 2;">
 				            		<div>
 										<table class="table-bordered" style="height:25px;width:213px;">
 							               <tr>
-							                  <th class="text-center" style="width:100px;font-size:12px;" bgcolor="#EFEFEF">项目</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							                  <th class="text-center gongweiXiangMu" bgcolor="#EFEFEF">项目</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队2值</th>
 							               </tr>
 										</table>
 									</div>
-							        <div class="table-body" style="margin-top:-1px;height:108px;width:230px;">
+							        <div class="table-body gongweiTable">
 							           <table class="table-bordered text-center table-hover" style="width:213px;" name="GW_B" id="B_GW1">
 							               <tbody></tbody>
 							           </table>
@@ -668,33 +668,33 @@
 					            </div>
 						 	</div>
 						 	<!-- 2工位 -->
-						 	<div class="col-md-2" style="margin-left:10px;padding:0;width:235px;height:162px;border:1px solid rgb( 155 , 155 , 155 );">
-						 		<div class="col-md-1 text-right" style="width:38px;padding:5px 0 0 0;">
+						 	<div class="col-md-2 gongweiDiv">
+						 		<div class="col-md-1 text-right gongweiBoolLabe0">
 					                <span style="font-size:12px;">BOOL:</span>
 					            </div>
-					            <div class="col-md-1" style="width:33px;padding: 4px 2px 2px 2px;">
-					                <input id="BOOL2_B" type="text" style="padding:0;font-size:10px;width:30px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiBoolLabe">
+					                <input id="BOOL2_B" type="text" class="gongweiBool form-control"/>
 					            </div>
-					            <div class="col-md-1" style="width:48px;padding: 4px 2px 2px 2px;">
-					                <input id="GW2_B" type="text" value="2工位" readonly="readonly" style="padding:0;font-size:10px;width:45px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gwInputLabe">
+					                <input id="GW2_B" type="text" value="2工位" readonly="readonly" class="gwInput form-control"/>
 					            </div>
-						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+						 		<div class="col-md-1 text-right gongweiDizhilabe0">
 					                <span style="font-size:12px;">首地址:</span>
 					            </div>
-					            <div class="col-md-1" style="width:73px;padding: 4px 2px 2px 2px;">
-					            	<input id="DIZHI2_B" type="text" style="font-size:10px;width:70px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiDizhilabe">
+					            	<input id="DIZHI2_B" type="text" class="gongweiDizhiInput form-control"/>
 					            </div>
 					            <div class="col-md-12" style="padding:0 2 2 2;">
 				            		<div>
 										<table class="table-bordered" style="height:25px;width:213px;">
 							               <tr>
-							                  <th class="text-center" style="width:100px;font-size:12px;" bgcolor="#EFEFEF">项目</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							                  <th class="text-center gongweiXiangMu" bgcolor="#EFEFEF">项目</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队2值</th>
 							               </tr>
 										</table>
 									</div>
-							        <div class="table-body" style="margin-top:-1px;height:108px;width:230px;">
+							        <div class="table-body gongweiTable">
 							           <table class="table-bordered text-center table-hover" style="width:213px;" name="GW_B" id="B_GW2">
 							               <tbody></tbody>
 							           </table>
@@ -702,33 +702,33 @@
 					            </div>
 						 	</div>
 						 	<!-- 3工位 -->
-						 	<div class="col-md-2" style="margin-left:10px;padding:0;width:235px;height:162px;border:1px solid rgb( 155 , 155 , 155 );">
-						 		<div class="col-md-1 text-right" style="width:38px;padding:5px 0 0 0;">
+						 	<div class="col-md-2 gongweiDiv">
+						 		<div class="col-md-1 text-right gongweiBoolLabe0">
 					                <span style="font-size:12px;">BOOL:</span>
 					            </div>
-					            <div class="col-md-1" style="width:33px;padding: 4px 2px 2px 2px;">
-					                <input id="BOOL3_B" type="text" style="padding:0;font-size:10px;width:30px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiBoolLabe">
+					                <input id="BOOL3_B" type="text" class="gongweiBool form-control"/>
 					            </div>
-					            <div class="col-md-1" style="width:48px;padding: 4px 2px 2px 2px;">
-					                <input id="GW3_B" type="text" value="3工位" readonly="readonly" style="padding:0;font-size:10px;width:45px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gwInputLabe">
+					                <input id="GW3_B" type="text" value="3工位" readonly="readonly" class="gwInput form-control"/>
 					            </div>
-						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+						 		<div class="col-md-1 text-right gongweiDizhilabe0">
 					                <span style="font-size:12px;">首地址:</span>
 					            </div>
-					            <div class="col-md-1" style="width:73px;padding: 4px 2px 2px 2px;">
-					            	<input id="DIZHI3_B" type="text" style="font-size:10px;width:70px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiDizhilabe">
+					            	<input id="DIZHI3_B" type="text" class="gongweiDizhiInput form-control"/>
 					            </div>
 					            <div class="col-md-12" style="padding:0 2 2 2;">
 				            		<div>
 										<table class="table-bordered" style="height:25px;width:213px;">
 							               <tr>
-							                  <th class="text-center" style="width:100px;font-size:12px;" bgcolor="#EFEFEF">项目</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							                  <th class="text-center gongweiXiangMu" bgcolor="#EFEFEF">项目</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队2值</th>
 							               </tr>
 										</table>
 									</div>
-							        <div class="table-body" style="margin-top:-1px;height:108px;width:230px;">
+							        <div class="table-body gongweiTable">
 							           <table class="table-bordered text-center table-hover" style="width:213px;" name="GW_B" id="B_GW3">
 							               <tbody></tbody>
 							           </table>
@@ -736,33 +736,33 @@
 					            </div>
 						 	</div>
 						 	<!-- 4工位 -->
-						 	<div class="col-md-2" style="margin-left:10px;padding:0;width:235px;height:162px;border:1px solid rgb( 155 , 155 , 155 );">
-						 		<div class="col-md-1 text-right" style="width:38px;padding:5px 0 0 0;">
+						 	<div class="col-md-2 gongweiDiv">
+						 		<div class="col-md-1 text-right gongweiBoolLabe0">
 					                <span style="font-size:12px;">BOOL:</span>
 					            </div>
-					            <div class="col-md-1" style="width:33px;padding: 4px 2px 2px 2px;">
-					                <input id="BOOL4_B" type="text" style="padding:0;font-size:10px;width:30px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiBoolLabe">
+					                <input id="BOOL4_B" type="text" class="gongweiBool form-control"/>
 					            </div>
-					            <div class="col-md-1" style="width:48px;padding: 4px 2px 2px 2px;">
-					                <input id="GW4_B" type="text" value="4工位" readonly="readonly" style="padding:0;font-size:10px;width:45px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gwInputLabe">
+					                <input id="GW4_B" type="text" value="4工位" readonly="readonly" class="gwInput form-control"/>
 					            </div>
-						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+						 		<div class="col-md-1 text-right gongweiDizhilabe0">
 					                <span style="font-size:12px;">首地址:</span>
 					            </div>
-					            <div class="col-md-1" style="width:73px;padding: 4px 2px 2px 2px;">
-					            	<input id="DIZHI4_B" type="text" style="font-size:10px;width:70px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiDizhilabe">
+					            	<input id="DIZHI4_B" type="text" class="gongweiDizhiInput form-control"/>
 					            </div>
 					            <div class="col-md-12" style="padding:0 2 2 2;">
 				            		<div>
 										<table class="table-bordered" style="height:25px;width:213px;">
 							               <tr>
-							                  <th class="text-center" style="width:100px;font-size:12px;" bgcolor="#EFEFEF">项目</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							                  <th class="text-center gongweiXiangMu" bgcolor="#EFEFEF">项目</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队2值</th>
 							               </tr>
 										</table>
 									</div>
-							        <div class="table-body" style="margin-top:-1px;height:108px;width:230px;">
+							        <div class="table-body gongweiTable">
 							           <table class="table-bordered text-center table-hover" style="width:213px;" name="GW_B" id="B_GW4">
 							               <tbody></tbody>
 							           </table>
@@ -773,33 +773,33 @@
 						<!-- 第二行 -->
 						<div class="col-md-12" style="padding:0;margin-top:4px;height:162px;">
 							<!-- 5工位 -->
-						 	<div class="col-md-2" style="padding:0;width:235px;height:162px;border:1px solid rgb( 155 , 155 , 155 );">
-						 		<div class="col-md-1 text-right" style="width:38px;padding:5px 0 0 0;">
+						 	<div class="col-md-2 gongwei0Div">
+						 		<div class="col-md-1 text-right gongweiBoolLabe0">
 					                <span style="font-size:12px;">BOOL:</span>
 					            </div>
-					            <div class="col-md-1" style="width:33px;padding: 4px 2px 2px 2px;">
-					                <input id="BOOL5_B" type="text" style="padding:0;font-size:10px;width:30px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiBoolLabe">
+					                <input id="BOOL5_B" type="text" class="gongweiBool form-control"/>
 					            </div>
-					            <div class="col-md-1" style="width:48px;padding: 4px 2px 2px 2px;">
-					                <input id="GW5_B" type="text" value="5工位" readonly="readonly" style="padding:0;font-size:10px;width:45px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gwInputLabe">
+					                <input id="GW5_B" type="text" value="5工位" readonly="readonly" class="gwInput form-control"/>
 					            </div>
-						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+						 		<div class="col-md-1 text-right gongweiDizhilabe0">
 					                <span style="font-size:12px;">首地址:</span>
 					            </div>
-					            <div class="col-md-1" style="width:73px;padding: 4px 2px 2px 2px;">
-					            	<input id="DIZHI5_B" type="text" style="font-size:10px;width:70px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiDizhilabe">
+					            	<input id="DIZHI5_B" type="text" class="gongweiDizhiInput form-control"/>
 					            </div>
 					            <div class="col-md-12" style="padding:0 2 2 2;">
 				            		<div>
 										<table class="table-bordered" style="height:25px;width:213px;">
 							               <tr>
-							                  <th class="text-center" style="width:100px;font-size:12px;" bgcolor="#EFEFEF">项目</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							                  <th class="text-center gongweiXiangMu" bgcolor="#EFEFEF">项目</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队2值</th>
 							               </tr>
 										</table>
 									</div>
-							        <div class="table-body" style="margin-top:-1px;height:108px;width:230px;">
+							        <div class="table-body gongweiTable">
 							           <table class="table-bordered text-center table-hover" style="width:213px;" name="GW_B" id="B_GW5">
 							               <tbody></tbody>
 							           </table>
@@ -807,33 +807,33 @@
 					            </div>
 							</div>
 						 	<!-- 6工位 -->
-						 	<div class="col-md-2" style="margin-left:10px;padding:0;width:235px;height:162px;border:1px solid rgb( 155 , 155 , 155 );">
-						 		<div class="col-md-1 text-right" style="width:38px;padding:5px 0 0 0;">
+						 	<div class="col-md-2 gongweiDiv">
+						 		<div class="col-md-1 text-right gongweiBoolLabe0">
 					                <span style="font-size:12px;">BOOL:</span>
 					            </div>
-					            <div class="col-md-1" style="width:33px;padding: 4px 2px 2px 2px;">
-					                <input id="BOOL6_B" type="text" style="padding:0;font-size:10px;width:30px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiBoolLabe">
+					                <input id="BOOL6_B" type="text" class="gongweiBool form-control"/>
 					            </div>
-					            <div class="col-md-1" style="width:48px;padding: 4px 2px 2px 2px;">
-					                <input id="GW6_B" type="text" value="6工位" readonly="readonly" style="padding:0;font-size:10px;width:45px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gwInputLabe">
+					                <input id="GW6_B" type="text" value="6工位" readonly="readonly" class="gwInput form-control"/>
 					            </div>
-						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+						 		<div class="col-md-1 text-right gongweiDizhilabe0">
 					                <span style="font-size:12px;">首地址:</span>
 					            </div>
-					            <div class="col-md-1" style="width:73px;padding: 4px 2px 2px 2px;">
-					            	<input id="DIZHI6_B" type="text" style="font-size:10px;width:70px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiDizhilabe">
+					            	<input id="DIZHI6_B" type="text" class="gongweiDizhiInput form-control"/>
 					            </div>
 					            <div class="col-md-12" style="padding:0 2 2 2;">
 				            		<div>
 										<table class="table-bordered" style="height:25px;width:213px;">
 							               <tr>
-							                  <th class="text-center" style="width:100px;font-size:12px;" bgcolor="#EFEFEF">项目</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							                  <th class="text-center gongweiXiangMu" bgcolor="#EFEFEF">项目</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队2值</th>
 							               </tr>
 										</table>
 									</div>
-							        <div class="table-body" style="margin-top:-1px;height:108px;width:230px;">
+							        <div class="table-body gongweiTable">
 							           <table class="table-bordered text-center table-hover" style="width:213px;" name="GW_B" id="B_GW6">
 							               <tbody></tbody>
 							           </table>
@@ -841,33 +841,33 @@
 					            </div>
 							</div>
 						 	<!-- 7工位 -->
-						 	<div class="col-md-2" style="margin-left:10px;padding:0;width:235px;height:162px;border:1px solid rgb( 155 , 155 , 155 );">
-						 		<div class="col-md-1 text-right" style="width:38px;padding:5px 0 0 0;">
+						 	<div class="col-md-2 gongweiDiv">
+						 		<div class="col-md-1 text-right gongweiBoolLabe0">
 					                <span style="font-size:12px;">BOOL:</span>
 					            </div>
-					            <div class="col-md-1" style="width:33px;padding: 4px 2px 2px 2px;">
-					                <input id="BOOL7_B" type="text" style="padding:0;font-size:10px;width:30px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiBoolLabe">
+					                <input id="BOOL7_B" type="text" class="gongweiBool form-control"/>
 					            </div>
-					            <div class="col-md-1" style="width:48px;padding: 4px 2px 2px 2px;">
-					                <input id="GW7_B" type="text" value="7工位" readonly="readonly" style="padding:0;font-size:10px;width:45px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gwInputLabe">
+					                <input id="GW7_B" type="text" value="7工位" readonly="readonly" class="gwInput form-control"/>
 					            </div>
-						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+						 		<div class="col-md-1 text-right gongweiDizhilabe0">
 					                <span style="font-size:12px;">首地址:</span>
 					            </div>
-					            <div class="col-md-1" style="width:73px;padding: 4px 2px 2px 2px;">
-					            	<input id="DIZHI7_B" type="text" style="font-size:10px;width:70px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiDizhilabe">
+					            	<input id="DIZHI7_B" type="text" class="gongweiDizhiInput form-control"/>
 					            </div>
 					            <div class="col-md-12" style="padding:0 2 2 2;">
 				            		<div>
 										<table class="table-bordered" style="height:25px;width:213px;">
 							               <tr>
-							                  <th class="text-center" style="width:100px;font-size:12px;" bgcolor="#EFEFEF">项目</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							                  <th class="text-center gongweiXiangMu" bgcolor="#EFEFEF">项目</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队2值</th>
 							               </tr>
 										</table>
 									</div>
-							        <div class="table-body" style="margin-top:-1px;height:108px;width:230px;">
+							        <div class="table-body gongweiTable">
 							           <table class="table-bordered text-center table-hover" style="width:213px;" name="GW_B" id="B_GW7">
 							               <tbody></tbody>
 							           </table>
@@ -875,33 +875,33 @@
 					            </div>
 							</div>
 						 	<!-- 8工位 -->
-						 	<div class="col-md-2" style="margin-left:10px;padding:0;width:235px;height:162px;border:1px solid rgb( 155 , 155 , 155 );">
-						 		<div class="col-md-1 text-right" style="width:38px;padding:5px 0 0 0;">
+						 	<div class="col-md-2 gongweiDiv">
+						 		<div class="col-md-1 text-right gongweiBoolLabe0">
 					                <span style="font-size:12px;">BOOL:</span>
 					            </div>
-					            <div class="col-md-1" style="width:33px;padding: 4px 2px 2px 2px;">
-					                <input id="BOOL8_B" type="text" style="padding:0;font-size:10px;width:30px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiBoolLabe">
+					                <input id="BOOL8_B" type="text" class="gongweiBool form-control"/>
 					            </div>
-					            <div class="col-md-1" style="width:48px;padding: 4px 2px 2px 2px;">
-					                <input id="GW8_B" type="text" value="8工位" readonly="readonly" style="padding:0;font-size:10px;width:45px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gwInputLabe">
+					                <input id="GW8_B" type="text" value="8工位" readonly="readonly" class="gwInput form-control"/>
 					            </div>
-						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+						 		<div class="col-md-1 text-right gongweiDizhilabe0">
 					                <span style="font-size:12px;">首地址:</span>
 					            </div>
-					            <div class="col-md-1" style="width:73px;padding: 4px 2px 2px 2px;">
-					            	<input id="DIZHI8_B" type="text" style="font-size:10px;width:70px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiDizhilabe">
+					            	<input id="DIZHI8_B" type="text" class="gongweiDizhiInput form-control"/>
 					            </div>
 					            <div class="col-md-12" style="padding:0 2 2 2;">
 				            		<div>
 										<table class="table-bordered" style="height:25px;width:213px;">
 							               <tr>
-							                  <th class="text-center" style="width:100px;font-size:12px;" bgcolor="#EFEFEF">项目</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							                  <th class="text-center gongweiXiangMu" bgcolor="#EFEFEF">项目</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队2值</th>
 							               </tr>
 										</table>
 									</div>
-							        <div class="table-body" style="margin-top:-1px;height:108px;width:230px;">
+							        <div class="table-body gongweiTable">
 							           <table class="table-bordered text-center table-hover" style="width:213px;" name="GW_B" id="B_GW8">
 							               <tbody></tbody>
 							           </table>
@@ -909,33 +909,33 @@
 					            </div>
 							</div>
 						 	<!-- 9工位 -->
-						 	<div class="col-md-2" style="margin-left:10px;padding:0;width:235px;height:162px;border:1px solid rgb( 155 , 155 , 155 );">
-						 		<div class="col-md-1 text-right" style="width:38px;padding:5px 0 0 0;">
+						 	<div class="col-md-2 gongweiDiv">
+						 		<div class="col-md-1 text-right gongweiBoolLabe0">
 					                <span style="font-size:12px;">BOOL:</span>
 					            </div>
-					            <div class="col-md-1" style="width:33px;padding: 4px 2px 2px 2px;">
-					                <input id="BOOL9_B" type="text" style="padding:0;font-size:10px;width:30px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiBoolLabe">
+					                <input id="BOOL9_B" type="text" class="gongweiBool form-control"/>
 					            </div>
-					            <div class="col-md-1" style="width:48px;padding: 4px 2px 2px 2px;">
-					                <input id="GW9_B" type="text" value="9工位" readonly="readonly" style="padding:0;font-size:10px;width:45px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gwInputLabe">
+					                <input id="GW9_B" type="text" value="9工位" readonly="readonly" class="gwInput form-control"/>
 					            </div>
-						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+						 		<div class="col-md-1 text-right gongweiDizhilabe0">
 					                <span style="font-size:12px;">首地址:</span>
 					            </div>
-					            <div class="col-md-1" style="width:73px;padding: 4px 2px 2px 2px;">
-					            	<input id="DIZHI9_B" type="text" style="font-size:10px;width:70px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiDizhilabe">
+					            	<input id="DIZHI9_B" type="text" class="gongweiDizhiInput form-control"/>
 					            </div>
 					            <div class="col-md-12" style="padding:0 2 2 2;">
 				            		<div>
 										<table class="table-bordered" style="height:25px;width:213px;">
 							               <tr>
-							                  <th class="text-center" style="width:100px;font-size:12px;" bgcolor="#EFEFEF">项目</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							                  <th class="text-center gongweiXiangMu" bgcolor="#EFEFEF">项目</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队2值</th>
 							               </tr>
 										</table>
 									</div>
-							        <div class="table-body" style="margin-top:-1px;height:108px;width:230px;">
+							        <div class="table-body gongweiTable">
 							           <table class="table-bordered text-center table-hover" style="width:213px;" name="GW_B" id="B_GW9">
 							               <tbody></tbody>
 							           </table>
@@ -946,33 +946,33 @@
 						<!-- 第三行 -->
 						<div class="col-md-12" style="padding:0;margin-top:4px;height:162px;">
 							<!-- 10工位 -->
-						 	<div class="col-md-2" style="padding:0;width:235px;height:162px;border:1px solid rgb( 155 , 155 , 155 );">
-						 		<div class="col-md-1 text-right" style="width:38px;padding:5px 0 0 0;">
+						 	<div class="col-md-2 gongwei0Div">
+						 		<div class="col-md-1 text-right gongweiBoolLabe0">
 					                <span style="font-size:12px;">BOOL:</span>
 					            </div>
-					            <div class="col-md-1" style="width:33px;padding: 4px 2px 2px 2px;">
-					                <input id="BOOL10_B" type="text" style="padding:0;font-size:10px;width:30px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiBoolLabe">
+					                <input id="BOOL10_B" type="text" class="gongweiBool form-control"/>
 					            </div>
-					            <div class="col-md-1" style="width:48px;padding: 4px 2px 2px 2px;">
-					                <input id="GW10_B" type="text" value="10工位" readonly="readonly" style="padding:0;font-size:10px;width:45px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gwInputLabe">
+					                <input id="GW10_B" type="text" value="10工位" readonly="readonly" class="gwInput form-control"/>
 					            </div>
-						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+						 		<div class="col-md-1 text-right gongweiDizhilabe0">
 					                <span style="font-size:12px;">首地址:</span>
 					            </div>
-					            <div class="col-md-1" style="width:73px;padding: 4px 2px 2px 2px;">
-					            	<input id="DIZHI10_B" type="text" style="font-size:10px;width:70px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiDizhilabe">
+					            	<input id="DIZHI10_B" type="text" class="gongweiDizhiInput form-control"/>
 					            </div>
 					            <div class="col-md-12" style="padding:0 2 2 2;">
 				            		<div>
 										<table class="table-bordered" style="height:25px;width:213px;">
 							               <tr>
-							                  <th class="text-center" style="width:100px;font-size:12px;" bgcolor="#EFEFEF">项目</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							                  <th class="text-center gongweiXiangMu" bgcolor="#EFEFEF">项目</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队2值</th>
 							               </tr>
 										</table>
 									</div>
-							        <div class="table-body" style="margin-top:-1px;height:108px;width:230px;">
+							        <div class="table-body gongweiTable">
 							           <table class="table-bordered text-center table-hover" style="width:213px;" name="GW_B" id="B_GW10">
 							               <tbody></tbody>
 							           </table>
@@ -980,33 +980,33 @@
 					            </div>
 							</div>
 						 	<!-- 11工位 -->
-						 	<div class="col-md-2" style="margin-left:10px;padding:0;width:235px;height:162px;border:1px solid rgb( 155 , 155 , 155 );">
-						 		<div class="col-md-1 text-right" style="width:38px;padding:5px 0 0 0;">
+						 	<div class="col-md-2 gongweiDiv">
+						 		<div class="col-md-1 text-right gongweiBoolLabe0">
 					                <span style="font-size:12px;">BOOL:</span>
 					            </div>
-					            <div class="col-md-1" style="width:33px;padding: 4px 2px 2px 2px;">
-					                <input id="BOOL11_B" type="text" style="padding:0;font-size:10px;width:30px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiBoolLabe">
+					                <input id="BOOL11_B" type="text" class="gongweiBool form-control"/>
 					            </div>
-					            <div class="col-md-1" style="width:48px;padding: 4px 2px 2px 2px;">
-					                <input id="GW11_B" type="text" value="11工位" readonly="readonly" style="padding:0;font-size:10px;width:45px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gwInputLabe">
+					                <input id="GW11_B" type="text" value="11工位" readonly="readonly" class="gwInput form-control"/>
 					            </div>
-						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+						 		<div class="col-md-1 text-right gongweiDizhilabe0">
 					                <span style="font-size:12px;">首地址:</span>
 					            </div>
-					            <div class="col-md-1" style="width:73px;padding: 4px 2px 2px 2px;">
-					            	<input id="DIZHI11_B" type="text" style="font-size:10px;width:70px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiDizhilabe">
+					            	<input id="DIZHI11_B" type="text" class="gongweiDizhiInput form-control"/>
 					            </div>
 					            <div class="col-md-12" style="padding:0 2 2 2;">
 				            		<div>
 										<table class="table-bordered" style="height:25px;width:213px;">
 							               <tr>
-							                  <th class="text-center" style="width:100px;font-size:12px;" bgcolor="#EFEFEF">项目</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							                  <th class="text-center gongweiXiangMu" bgcolor="#EFEFEF">项目</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队2值</th>
 							               </tr>
 										</table>
 									</div>
-							        <div class="table-body" style="margin-top:-1px;height:108px;width:230px;">
+							        <div class="table-body gongweiTable">
 							           <table class="table-bordered text-center table-hover" style="width:213px;" name="GW_B" id="B_GW11">
 							               <tbody></tbody>
 							           </table>
@@ -1014,33 +1014,33 @@
 					            </div>
 							</div>
 						 	<!-- 12工位 -->
-						 	<div class="col-md-2" style="margin-left:10px;padding:0;width:235px;height:162px;border:1px solid rgb( 155 , 155 , 155 );">
-						 		<div class="col-md-1 text-right" style="width:38px;padding:5px 0 0 0;">
+						 	<div class="col-md-2 gongweiDiv">
+						 		<div class="col-md-1 text-right gongweiBoolLabe0">
 					                <span style="font-size:12px;">BOOL:</span>
 					            </div>
-					            <div class="col-md-1" style="width:33px;padding: 4px 2px 2px 2px;">
-					                <input id="BOOL12_B" type="text" style="padding:0;font-size:10px;width:30px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiBoolLabe">
+					                <input id="BOOL12_B" type="text" class="gongweiBool form-control"/>
 					            </div>
-					            <div class="col-md-1" style="width:48px;padding: 4px 2px 2px 2px;">
-					                <input id="GW12_B" type="text" value="12工位" readonly="readonly" style="padding:0;font-size:10px;width:45px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gwInputLabe">
+					                <input id="GW12_B" type="text" value="12工位" readonly="readonly" class="gwInput form-control"/>
 					            </div>
-						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+						 		<div class="col-md-1 text-right gongweiDizhilabe0">
 					                <span style="font-size:12px;">首地址:</span>
 					            </div>
-					            <div class="col-md-1" style="width:73px;padding: 4px 2px 2px 2px;">
-					            	<input id="DIZHI12_B" type="text" style="font-size:10px;width:70px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiDizhilabe">
+					            	<input id="DIZHI12_B" type="text" class="gongweiDizhiInput form-control"/>
 					            </div>
 					            <div class="col-md-12" style="padding:0 2 2 2;">
 				            		<div>
 										<table class="table-bordered" style="height:25px;width:213px;">
 							               <tr>
-							                  <th class="text-center" style="width:100px;font-size:12px;" bgcolor="#EFEFEF">项目</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							                  <th class="text-center gongweiXiangMu" bgcolor="#EFEFEF">项目</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队2值</th>
 							               </tr>
 										</table>
 									</div>
-							        <div class="table-body" style="margin-top:-1px;height:108px;width:230px;">
+							        <div class="table-body gongweiTable">
 							           <table class="table-bordered text-center table-hover" style="width:213px;" name="GW_B" id="B_GW12">
 							               <tbody></tbody>
 							           </table>
@@ -1048,33 +1048,33 @@
 					            </div>
 							</div>
 						 	<!-- 13工位 -->
-						 	<div class="col-md-2" style="margin-left:10px;padding:0;width:235px;height:162px;border:1px solid rgb( 155 , 155 , 155 );">
-						 		<div class="col-md-1 text-right" style="width:38px;padding:5px 0 0 0;">
+						 	<div class="col-md-2 gongweiDiv">
+						 		<div class="col-md-1 text-right gongweiBoolLabe0">
 					                <span style="font-size:12px;">BOOL:</span>
 					            </div>
-					            <div class="col-md-1" style="width:33px;padding: 4px 2px 2px 2px;">
-					                <input id="BOOL13_B" type="text" style="padding:0;font-size:10px;width:30px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiBoolLabe">
+					                <input id="BOOL13_B" type="text" class="gongweiBool form-control"/>
 					            </div>
-					            <div class="col-md-1" style="width:48px;padding: 4px 2px 2px 2px;">
-					                <input id="GW13_B" type="text" value="13工位" readonly="readonly" style="padding:0;font-size:10px;width:45px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gwInputLabe">
+					                <input id="GW13_B" type="text" value="13工位" readonly="readonly" class="gwInput form-control"/>
 					            </div>
-						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+						 		<div class="col-md-1 text-right gongweiDizhilabe0">
 					                <span style="font-size:12px;">首地址:</span>
 					            </div>
-					            <div class="col-md-1" style="width:73px;padding: 4px 2px 2px 2px;">
-					            	<input id="DIZHI13_B" type="text" style="font-size:10px;width:70px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiDizhilabe">
+					            	<input id="DIZHI13_B" type="text" class="gongweiDizhiInput form-control"/>
 					            </div>
 					            <div class="col-md-12" style="padding:0 2 2 2;">
 				            		<div>
 										<table class="table-bordered" style="height:25px;width:213px;">
 							               <tr>
-							                  <th class="text-center" style="width:100px;font-size:12px;" bgcolor="#EFEFEF">项目</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							                  <th class="text-center gongweiXiangMu" bgcolor="#EFEFEF">项目</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队2值</th>
 							               </tr>
 										</table>
 									</div>
-							        <div class="table-body" style="margin-top:-1px;height:108px;width:230px;">
+							        <div class="table-body gongweiTable">
 							           <table class="table-bordered text-center table-hover" style="width:213px;" name="GW_B" id="B_GW13">
 							               <tbody></tbody>
 							           </table>
@@ -1082,33 +1082,33 @@
 					            </div>
 							</div>
 						 	<!-- 14工位 -->
-						 	<div class="col-md-2" style="margin-left:10px;padding:0;width:235px;height:162px;border:1px solid rgb( 155 , 155 , 155 );">
-						 		<div class="col-md-1 text-right" style="width:38px;padding:5px 0 0 0;">
+						 	<div class="col-md-2 gongweiDiv">
+						 		<div class="col-md-1 text-right gongweiBoolLabe0">
 					                <span style="font-size:12px;">BOOL:</span>
 					            </div>
-					            <div class="col-md-1" style="width:33px;padding: 4px 2px 2px 2px;">
-					                <input id="BOOL14_B" type="text" style="padding:0;font-size:10px;width:30px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiBoolLabe">
+					                <input id="BOOL14_B" type="text" class="gongweiBool form-control"/>
 					            </div>
-					            <div class="col-md-1" style="width:48px;padding: 4px 2px 2px 2px;">
-					                <input id="GW14_B" type="text" value="14工位" readonly="readonly" style="padding:0;font-size:10px;width:45px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gwInputLabe">
+					                <input id="GW14_B" type="text" value="14工位" readonly="readonly" class="gwInput form-control"/>
 					            </div>
-						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+						 		<div class="col-md-1 text-right gongweiDizhilabe0">
 					                <span style="font-size:12px;">首地址:</span>
 					            </div>
-					            <div class="col-md-1" style="width:73px;padding: 4px 2px 2px 2px;">
-					            	<input id="DIZHI14_B" type="text" style="font-size:10px;width:70px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiDizhilabe">
+					            	<input id="DIZHI14_B" type="text" class="gongweiDizhiInput form-control"/>
 					            </div>
 					            <div class="col-md-12" style="padding:0 2 2 2;">
 				            		<div>
 										<table class="table-bordered" style="height:25px;width:213px;">
 							               <tr>
-							                  <th class="text-center" style="width:100px;font-size:12px;" bgcolor="#EFEFEF">项目</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							                  <th class="text-center gongweiXiangMu" bgcolor="#EFEFEF">项目</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队2值</th>
 							               </tr>
 										</table>
 									</div>
-							        <div class="table-body" style="margin-top:-1px;height:108px;width:230px;">
+							        <div class="table-body gongweiTable">
 							           <table class="table-bordered text-center table-hover" style="width:213px;" name="GW_B" id="B_GW14">
 							               <tbody></tbody>
 							           </table>
@@ -1116,33 +1116,33 @@
 					            </div>
 							</div>
 						 	<!-- 15工位 -->
-						 	<div class="col-md-2" style="margin-top:4px;padding:0;width:235px;height:162px;border:1px solid rgb( 155 , 155 , 155 );">
-						 		<div class="col-md-1 text-right" style="width:38px;padding:5px 0 0 0;">
+						 	<div class="col-md-2 gongwei15Div">
+						 		<div class="col-md-1 text-right gongweiBoolLabe0">
 					                <span style="font-size:12px;">BOOL:</span>
 					            </div>
-					            <div class="col-md-1" style="width:33px;padding: 4px 2px 2px 2px;">
-					                <input id="BOOL15_B" type="text" style="padding:0;font-size:10px;width:30px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiBoolLabe">
+					                <input id="BOOL15_B" type="text" class="gongweiBool form-control"/>
 					            </div>
-					            <div class="col-md-1" style="width:48px;padding: 4px 2px 2px 2px;">
-					                <input id="GW15_B" type="text" value="15工位" readonly="readonly" style="padding:0;font-size:10px;width:45px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gwInputLabe">
+					                <input id="GW15_B" type="text" value="15工位" readonly="readonly" class="gwInput form-control"/>
 					            </div>
-						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+						 		<div class="col-md-1 text-right gongweiDizhilabe0">
 					                <span style="font-size:12px;">首地址:</span>
 					            </div>
-					            <div class="col-md-1" style="width:73px;padding: 4px 2px 2px 2px;">
-					            	<input id="DIZHI15_B" type="text" style="font-size:10px;width:70px;height:20px;" class="form-control"/>
+					            <div class="col-md-1 gongweiDizhilabe">
+					            	<input id="DIZHI15_B" type="text" class="gongweiDizhiInput form-control"/>
 					            </div>
 					            <div class="col-md-12" style="padding:0 2 2 2;">
 				            		<div>
 										<table class="table-bordered" style="height:25px;width:213px;">
 							               <tr>
-							                  <th class="text-center" style="width:100px;font-size:12px;" bgcolor="#EFEFEF">项目</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							                  <th class="text-center gongweiXiangMu" bgcolor="#EFEFEF">项目</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队2值</th>
 							               </tr>
 										</table>
 									</div>
-							        <div class="table-body" style="margin-top:-1px;height:108px;width:230px;">
+							        <div class="table-body gongweiTable">
 							           <table class="table-bordered text-center table-hover" style="width:213px;" name="GW_B" id="B_GW15">
 							               <tbody></tbody>
 							           </table>
@@ -1154,18 +1154,18 @@
 				    <!-- A选择PLC返回工位 -->
 				    <div id="plc_show3" style="margin-top:0px;display:none;">
 						<div class="col-md-12" style="padding:0;height:162px;">
-							<div class="col-md-6" style="margin-top:4px;padding:0;width:450px;height:300px;border:1px solid rgb( 155 , 155 , 155 );">
-						 		<div class="col-md-1 text-right" style="width:38px;padding:5px 0 0 0;">
+							<div class="col-md-6 plcFanHui">
+						 		<div class="col-md-1 text-right gongweiBoolLabe0">
 					                <span style="font-size:12px;">BOOL:</span>
 					            </div>
 					            <div class="col-md-1" style="width:40px;padding: 4px 2px 2px 2px;">
-					                <input id="BOOL0_C" type="text" style="padding:0;font-size:10px;width:35px;height:20px;" class="form-control"/>
+					                <input id="BOOL0_C" type="text" class="plcFanHuiBoolInput form-control"/>
 					            </div>
-						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+						 		<div class="col-md-1 text-right gongweiDizhilabe0">
 					                <span style="font-size:12px;">首地址:</span>
 					            </div>
 					            <div class="col-md-1" style="width:70px;padding: 4px 2px 2px 2px;">
-					            	<input id="DIZHI0_C" type="text" style="font-size:10px;width:70px;height:20px;" class="form-control"/>
+					            	<input id="DIZHI0_C" type="text" class="gongweiDizhiInput form-control"/>
 					            </div>
 						 		<div class="col-md-3 text-right" style="padding:5px 0 0 0;">
 					                <span style="font-size:12px;">选择PLC返回工位:</span>
@@ -1194,9 +1194,9 @@
 				            		<div>
 										<table class="table-bordered" style="height:25px;width:425px;">
 							               <tr>
-							                  <th class="text-center" style="width:100px;font-size:12px;" bgcolor="#EFEFEF">光大返回</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							                  <th class="text-center gongweiXiangMu" bgcolor="#EFEFEF">光大返回</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队2值</th>
 							               </tr>
 										</table>
 									</div>
@@ -1212,18 +1212,18 @@
 				    <!-- B选择PLC返回工位 -->
 				    <div id="plc_show4" style="margin-top:0px;display:none;">
 				    	<div class="col-md-12" style="padding:0;height:162px;">
-							<div class="col-md-6" style="margin-top:4px;padding:0;width:450px;height:300px;border:1px solid rgb( 155 , 155 , 155 );">
-						 		<div class="col-md-1 text-right" style="width:38px;padding:5px 0 0 0;">
+							<div class="col-md-6 plcFanHui">
+						 		<div class="col-md-1 text-right gongweiBoolLabe0">
 					                <span style="font-size:12px;">BOOL:</span>
 					            </div>
 					            <div class="col-md-1" style="width:40px;padding: 4px 2px 2px 2px;">
-					                <input id="BOOL0_D" type="text" style="padding:0;font-size:10px;width:35px;height:20px;" class="form-control"/>
+					                <input id="BOOL0_D" type="text" class="plcFanHuiBoolInput form-control"/>
 					            </div>
-						 		<div class="col-md-1 text-right" style="width:40px;padding:5px 0 0 0;">
+						 		<div class="col-md-1 text-right gongweiDizhilabe0">
 					                <span style="font-size:12px;">首地址:</span>
 					            </div>
 					            <div class="col-md-1" style="width:70px;padding: 4px 2px 2px 2px;">
-					            	<input id="DIZHI0_D" type="text" style="font-size:10px;width:70px;height:20px;" class="form-control"/>
+					            	<input id="DIZHI0_D" type="text" class="gongweiDizhiInput form-control"/>
 					            </div>
 						 		<div class="col-md-3 text-right" style="padding:5px 0 0 0;">
 					                <span style="font-size:12px;">选择PLC返回工位:</span>
@@ -1252,9 +1252,9 @@
 				            		<div>
 										<table class="table-bordered" style="height:25px;width:425px;">
 							               <tr>
-							                  <th class="text-center" style="width:100px;font-size:12px;" bgcolor="#EFEFEF">光大返回</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队1值</th>
-							                  <th class="text-center" style="width:50px;font-size:12px;" bgcolor="#EFEFEF">列队2值</th>
+							                  <th class="text-center gongweiXiangMu" bgcolor="#EFEFEF">光大返回</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队1值</th>
+							                  <th class="text-center gongweiDuiLie1" bgcolor="#EFEFEF">列队2值</th>
 							               </tr>
 										</table>
 									</div>
@@ -1270,11 +1270,19 @@
 				</div>
 			</form>
 		</div>
+		<!-- 错误处理 -->
+		<div id="dingDanUpdate" class="row showWindow" style="display:none;">
+			错误处理
+		</div>
 	</div>
 	<div class="col-md-3" style="width:400px;"></div>
 	<div class="col-md-2">
 		<a class="button button-glow button-rounded button-raised button-primary butRow"
-		   id="shuxin" style="width:170px;">刷新</a>
+		   onclick="readyShow.showThis(plc_id);" id="shuxin">PLC</a>
+	</div>
+	<div class="col-md-2">
+		<a class="button button-glow button-rounded button-raised button-primary butRow"
+		   onclick="readyShow.showThis(dingDanUpdate);">错误处理</a>
 	</div>
 	<script type="text/javascript" src="/smtcl_erp/html/js/plc.js"></script>
 </body>

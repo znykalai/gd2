@@ -7,80 +7,20 @@
 <body>
 	<div class="row margin-top-10 account-company-auth" id="xy" style="overflow-y:hidden;background-color:white;height:94%;width:98%;margin-left:2%;">
 		<!-- 物料 -->
-		<div id="wuliao" class="row">
+		<div id="wuliao" class="row showWindow">
 			<form id="wl_form">
-				<style>
-					.shusongxian{
-						margin-left:3px;
-						width:50px;
-						line-height:26px;
-						font-size:15px;
-						border:1px solid rgb( 234 , 234 , 234 );
-					}
-					.huancunku{
-						margin-left:3px;
-						width:50px;
-						line-height:54px;
-						font-size:15px;
-						border:1px solid rgb( 234 , 234 , 234 );
-					}
-					.head_hui{
-						text-align: center;
-						float:left;
-						margin-left:3px;
-						height:40px;
-						width:50px;
-						color:#000000;
-						font-size:15px;
-						border:1px solid rgb( 234 , 234 , 234 );
-					}
-					.head_lan{
-						text-align: center;
-						margin-left:3px;
-						height:40px;
-						width:50px;
-						float:left;
-						color:#ffffff;
-						font-size:15px;
-						background-color:rgb( 75 , 176 , 249 );
-					}
-					.hui{
-						text-align: center;
-						margin-left:3px;
-						line-height:40px;
-						height:40px;
-						width:50px;
-						float:left;
-						cursor:pointer;
-						color:#000000;
-						font-size:15px;
-						background-color:rgb( 234 , 234 , 234 );
-					}
-					.lan{
-						text-align: center;
-						margin-left:3px;
-						line-height:40px;
-						height:40px;
-						width:50px;
-						float:left;
-						cursor:pointer;
-						color:#ffffff;
-						font-size:15px;
-						background-color:rgb( 75 , 176 , 249 );
-					}
-				</style>
 				<div class="row">
 			        <div class="col-md-1"></div>
 					<div class="col-md-10 account-company-auth" style="height:60px;width:80%;margin-left:38px;min-height:150px; margin-top:-40px;">
 				        <div class="row" style="margin-top:-10px;">
 				        	<div class="col-md-1"></div>
-				            <div class="col-md-2 text-right" style="padding: 5px 0 0 0;">
+				            <div class="col-md-2 text-right" style="padding:5px 0 0 0;">
 				                <span><span style="color:red;">*</span>物料编号:</span>
 				            </div>
 				            <div class="col-md-3">
 				                <input id="wuliao_code" type="text" class="form-control"/>
 				            </div>
-				            <div class="col-md-1 text-right" style="padding: 5px 0 0 0;">
+				            <div class="col-md-1 text-right" style="padding:5px 0 0 0;">
 				                <span>时间:</span>
 				            </div>
 				            <div class="col-md-3">
@@ -89,7 +29,7 @@
 			            </div>
 			            <div class="row margin-top-10">
 				        	<div class="col-md-1"></div>
-				            <div class="col-md-2 text-right" style="padding: 5px 0 0 0;">
+				            <div class="col-md-2 text-right" style="padding:5px 0 0 0;">
 				                <span><span style="color:red;">*</span>物料描述:</span>
 				            </div>
 				            <div class="col-md-7">
@@ -116,13 +56,13 @@
 						<div class="col-md-10 account-company-auth" style="margin-left:38px;height:60px;width:80%;height:30px;min-height:60%;">
 							<div class="row" style="margin-top:-20px;">
 					        	<div class="col-md-2"></div>
-					            <div class="col-md-1 text-right" style="padding: 5px 0 0 0;">
+					            <div class="col-md-1 text-right" style="padding:5px 0 0 0;">
 					                <span>第二编码:</span>
 					            </div>
 					            <div class="col-md-3">
 					                <input id="dier_code" type="text" class="form-control"/>
 					            </div>
-					            <div class="col-md-1 text-right" style="padding: 5px 0 0 0;">
+					            <div class="col-md-1 text-right" style="padding:5px 0 0 0;">
 					                <span>PLC编码:</span>
 					            </div>
 					            <div class="col-md-3">
@@ -131,7 +71,7 @@
 				            </div>
 							<div class="row margin-top-10">
 					        	<div class="col-md-2"></div>
-					            <div class="col-md-1 text-right" style="padding: 5px 0 0 0;">
+					            <div class="col-md-1 text-right" style="padding:5px 0 0 0;">
 					                <span>单位:</span>
 					            </div>
 					            <div class="col-md-3">
@@ -146,7 +86,7 @@
 		                                </ul>
 		                            </div>
 					            </div>
-					            <div class="col-md-1 text-right" style="padding: 5px 0 0 0;">
+					            <div class="col-md-1 text-right" style="padding:5px 0 0 0;">
 					                <span>类别:</span>
 					            </div>
 					            <div class="col-md-3">
@@ -163,7 +103,7 @@
 				            </div>
 				            <div class="row margin-top-10">
 					        	<div class="col-md-2"></div>
-					            <div class="col-md-1 text-right" style="padding: 5px 0 0 0;">
+					            <div class="col-md-1 text-right" style="padding:5px 0 0 0;">
 					                <span>类型:</span>
 					            </div>
 					            <div class="col-md-3">
@@ -178,7 +118,7 @@
 		                                </ul>
 		                            </div>
 					            </div>
-					            <div class="col-md-1 text-right" style="padding: 5px 0 0 0;">
+					            <div class="col-md-1 text-right" style="padding:5px 0 0 0;">
 					                <span>回流阀值:</span>
 					            </div>
 					            <div class="col-md-3">
@@ -187,13 +127,13 @@
 					        </div>
 				            <div class="row margin-top-10">
 					        	<div class="col-md-2"></div>
-					            <div class="col-md-1 text-right" style="padding: 5px 0 0 0;">
+					            <div class="col-md-1 text-right" style="padding:5px 0 0 0;">
 					                <span>装载参数:</span>
 					            </div>
 					            <div class="col-md-3">
 					                <input id="zhuangzaicanshu_id" type="text" value="0" class="form-control"/>
 					            </div>
-					            <div class="col-md-1 text-right" style="padding: 5px 0 0 0;">
+					            <div class="col-md-1 text-right" style="padding:5px 0 0 0;">
 					                <span>托盘类别:</span>
 					            </div>
 					            <div class="col-md-3">
@@ -208,7 +148,7 @@
 					        </div>
 				            <div class="row margin-top-10">
 					        	<div class="col-md-2"></div>
-					            <div class="col-md-1 text-right" style="padding: 5px 0 0 0;">
+					            <div class="col-md-1 text-right" style="padding:5px 0 0 0;">
 					                <span>失效:</span>
 					            </div>
 					            <div class="col-md-3">
@@ -229,7 +169,7 @@
 						<div class="col-md-10 account-company-auth" style="margin-left:38px;height:60px;width:80%;height:30px;min-height:60%;">
 							<div class="row" style="margin-top:80px;">
 					        	<div class="col-md-1"></div>
-					            <div class="col-md-2 text-right" style="padding: 5px 0 0 0;">
+					            <div class="col-md-2 text-right" style="padding:5px 0 0 0;">
 					                <span>默认上货区:</span>
 					            </div>
 					            <div class="col-md-3">
@@ -240,7 +180,7 @@
 								   		</span>
 							   		</div>
 					            </div>
-					            <div class="col-md-2 text-right" style="padding: 5px 0 0 0;">
+					            <div class="col-md-2 text-right" style="padding:5px 0 0 0;">
 					                <span>默认下货区:</span>
 					            </div>
 					            <div class="col-md-3">
@@ -257,43 +197,31 @@
 			    </div>
 			    <div class="row margin-top-20">
 			    	<div class="col-md-1"></div>
-			    	<div class="col-md-10" style="margin-left: 10px;">
+			    	<div class="col-md-10" style="margin-left:10px;">
 				        <div class="col-md-2">
-					        <div class="button button-primary button-rounded button-small" id="wl_selectBtn" 
-					        	style="width:150px;font-size:15px;font-family:'微软雅黑';" onselectstart="return false">
-					        	查找
-				        	</div>
+					        <div class="button button-primary button-rounded button-small baseAnniu" id="wl_selectBtn">查找</div>
 				        </div>
 				        <div class="col-md-2">
-					        <div class="button button-primary button-rounded button-small" id="wl_newBtn" 
-					        	style="width:150px;font-size:15px;font-family:'微软雅黑';" onselectstart="return false">
-								 新建
-					        </div>
+					        <div class="button button-primary button-rounded button-small baseAnniu" id="wl_newBtn">新建</div>
 				        </div>
 				        <div class="col-md-2">
-					        <div class="button button-primary button-rounded button-small" id="wl_saveBtn" 
-					        	style="width:150px;font-size:15px;font-family:'微软雅黑';" onselectstart="return false">
-					        	保存
-					        </div>
+					        <div class="button button-primary button-rounded button-small baseAnniu" id="wl_saveBtn">保存</div>
 				        </div>
 				        <div class="col-md-2">
-					        <div class="button button-primary button-rounded button-small" id="wl_deleteBtn" 
-					        	style="width:150px;font-size:15px;font-family:'微软雅黑';" onselectstart="return false">
-					        	删除
-							</div>
+					        <div class="button button-primary button-rounded button-small baseAnniu" id="wl_deleteBtn">删除</div>
 				        </div>
 			    	</div>
 			    </div>
 		   	</form>
 		</div>
 		<!-- 模组 -->
-		<div id="mozu" class="row" style="display:none;">
+		<div id="mozu" class="row showWindow" style="display:none;">
 			<form id="mz_form">
 				<div class="row">
 			        <div class="col-md-1"></div>
 					<div class="col-md-10 account-company-auth" style="width:80%;height:170px;margin-left:37px;min-height:170px; margin-top:-40px;">
 				        <div class="row" style="margin-right:10px;margin-top:-30px;">
-				            <div class="col-md-2 text-right" style="padding: 5px 0 0 0;">
+				            <div class="col-md-2 text-right" style="padding:5px 0 0 0;">
 				           		<input type="hidden" id="mozu_id" value=""/>
 				                <span><span style="color:red;">*</span>模组编码:</span>
 				            </div>
@@ -305,28 +233,24 @@
 							   		</span>
 						   		</div>
 				            </div>
-				            <div class="col-md-2 text-right" style="padding: 5px 0 0 0;">
+				            <div class="col-md-2 text-right" style="padding:5px 0 0 0;">
 				                <span><span style="color:red;">*</span>模组类型:</span>
 				            </div>
 				            <div class="col-md-3">
 				                <input id="mozu_leixing" type="text" class="form-control"/>
 				            </div>
 				            <div class="col-md-2">
-						        <div class="button button-primary button-rounded button-small" id="mz_selectBtn" 
-						        	style="width:150px;font-size:15px;font-family:'微软雅黑';" 
-						        	onselectstart="return false">
-									查找
-					        	</div>
+						        <div class="button button-primary button-rounded button-small baseAnniu" id="mz_selectBtn">查找</div>
 				            </div>
 			            </div>
 			            <div class="row margin-top-10" style="margin-right:10px;">
-				            <div class="col-md-2 text-right" style="padding: 5px 0 0 0;">
+				            <div class="col-md-2 text-right" style="padding:5px 0 0 0;">
 				                <span><span style="color:red;">*</span>电芯类型:</span>
 				            </div>
 				            <div class="col-md-3">
 				                <input id="mozu_dianxinleixing" type="text" class="form-control"/>
 				            </div>
-				            <div class="col-md-2 text-right" style="padding: 5px 0 0 0;">
+				            <div class="col-md-2 text-right" style="padding:5px 0 0 0;">
 				                <span>工位类别:</span>
 				            </div>
 				            <div class="col-md-3">
@@ -341,32 +265,24 @@
 	                            </div>
 				            </div>
 							<div class="col-md-2">
-						        <div class="button button-primary button-rounded button-small" id="mz_newBtn" 
-						        	style="width:150px;font-size:15px;font-family:'微软雅黑';" 
-						        	onselectstart="return false">
-									新建模组
-						        </div>
+						        <div class="button button-primary button-rounded button-small baseAnniu" id="mz_newBtn">新建模组</div>
 					        </div>
 				        </div>
 			            <div class="row margin-top-10" style="margin-right:10px;">
-				            <div class="col-md-2 text-right" style="padding: 5px 0 0 0;">
+				            <div class="col-md-2 text-right" style="padding:5px 0 0 0;">
 				                <span>型腔数:</span>
 				            </div>
 				            <div class="col-md-3">
 				                <input id="mozu_xingqiangshu" type="number" min="0" value="0" class="form-control"/>
 				            </div>
-				            <div class="col-md-2 text-right" style="padding: 5px 0 0 0;">
+				            <div class="col-md-2 text-right" style="padding:5px 0 0 0;">
 				                <span>时间:</span>
 				            </div>
 				            <div class="col-md-3">
 				                <input id="mozu_newDate" type="text" readonly="readonly" class="form-control"/>
 				            </div>
 							<div class="col-md-2">
-						        <div class="button button-primary button-rounded button-small" id="mz_deleteBtn" 
-						        	style="width:150px;font-size:15px;font-family:'微软雅黑';" 
-						        	onselectstart="return false">
-									删除模组
-						        </div>
+						        <div class="button button-primary button-rounded button-small baseAnniu" id="mz_deleteBtn">删除模组</div>
 					        </div>
 			            </div>
 			        </div>
@@ -375,39 +291,21 @@
         	<!-- 按钮 -->
 			<div class="row" style="margin-top:-10px;">
 				<div class="col-md-1"></div>
-				<div class="col-md-10" style="margin-left: 9px;">
+				<div class="col-md-10" style="margin-left:9px;">
 				    <div class="col-md-2" style="width:215px;">
 				        <div class="button button-primary button-rounded button-small" id="mz_zj_up" 
-				        	style="font-size:15px;font-family:'微软雅黑';" 
-				        	onselectstart="return false">
-							上调
-				        </div>
+				        	style="font-size:15px;font-family:'微软雅黑';">上调</div>
 				        <div class="button button-primary button-rounded button-small" id="mz_zj_bottom" 
-				        	style="font-size:15px;font-family:'微软雅黑';" 
-				        	onselectstart="return false">
-							下调
-				        </div>
+				        	style="font-size:15px;font-family:'微软雅黑';">下调</div>
 				    </div>
 				    <div class="col-md-2">
-				        <div class="button button-primary button-rounded button-small" id="mz_zj_addTr" 
-				        	style="width:150px;font-size:15px;font-family:'微软雅黑';" 
-				        	onselectstart="return false">
-							添加载具
-				        </div>
+				        <div class="button button-primary button-rounded button-small baseAnniu" id="mz_zj_addTr">添加载具</div>
 				    </div>
 				    <div class="col-md-2">
-				        <div class="button button-primary button-rounded button-small" id="mz_zj_saveBtn" 
-				        	style="width:150px;font-size:15px;font-family:'微软雅黑';" 
-				        	onselectstart="return false">
-							保存载具
-				        </div>
+				        <div class="button button-primary button-rounded button-small baseAnniu" id="mz_zj_saveBtn">保存载具</div>
 				    </div>
 				    <div class="col-md-2">
-				        <div class="button button-primary button-rounded button-small" id="mz_zj_deleteBtn" 
-				        	style="width:150px;font-size:15px;font-family:'微软雅黑';" 
-				        	onselectstart="return false">
-							删除载具
-				        </div>
+				        <div class="button button-primary button-rounded button-small baseAnniu" id="mz_zj_deleteBtn">删除载具</div>
 				    </div>
 		        </div>
 			</div>
@@ -419,20 +317,18 @@
 						<table class="table table-bordered" style="width:99%;">
 				           <thead>
 				               <tr>
-				                  <th class="text-center" style="width:3%;" bgcolor="#EFEFEF">
-									 <!--  <input type="checkbox" id="checkAll_zj"/> -->
-				                  </th>
-				                  <th class="text-center" style="width: 6%;" bgcolor="#EFEFEF">序号</th>
-				                  <th class="text-center" style="width: 10%;" bgcolor="#EFEFEF">翻面否</th>
-				                  <th class="text-center" style="width: 10%;" bgcolor="#EFEFEF">叠装否 </th>
-				                  <th class="text-center" style="width: 10%;" bgcolor="#EFEFEF">电芯数</th>
-				                  <th class="text-center" style="width: 8%;" bgcolor="#EFEFEF">电芯1</th>
-				                  <th class="text-center" style="width: 8%;" bgcolor="#EFEFEF">电芯2</th>
-				                  <th class="text-center" style="width: 8%;" bgcolor="#EFEFEF">电芯3</th>
-				                  <th class="text-center" style="width: 8%;" bgcolor="#EFEFEF">电芯4</th>
-				                  <th class="text-center" style="width: 10%;" bgcolor="#EFEFEF">有效型腔</th>
-				                  <th class="text-center" style="width: 8%;" bgcolor="#EFEFEF">假电芯1</th>
-				                  <th class="text-center" style="width: 8%;" bgcolor="#EFEFEF">假电芯2</th>
+				                  <th class="text-center" style="width:3%;" bgcolor="#EFEFEF"></th>
+				                  <th class="text-center" style="width:6%;" bgcolor="#EFEFEF">序号</th>
+				                  <th class="text-center" style="width:10%;" bgcolor="#EFEFEF">翻面否</th>
+				                  <th class="text-center" style="width:10%;" bgcolor="#EFEFEF">叠装否 </th>
+				                  <th class="text-center" style="width:10%;" bgcolor="#EFEFEF">电芯数</th>
+				                  <th class="text-center" style="width:8%;" bgcolor="#EFEFEF">电芯1</th>
+				                  <th class="text-center" style="width:8%;" bgcolor="#EFEFEF">电芯2</th>
+				                  <th class="text-center" style="width:8%;" bgcolor="#EFEFEF">电芯3</th>
+				                  <th class="text-center" style="width:8%;" bgcolor="#EFEFEF">电芯4</th>
+				                  <th class="text-center" style="width:10%;" bgcolor="#EFEFEF">有效型腔</th>
+				                  <th class="text-center" style="width:8%;" bgcolor="#EFEFEF">假电芯1</th>
+				                  <th class="text-center" style="width:8%;" bgcolor="#EFEFEF">假电芯2</th>
 				               </tr>
 				           </thead>
 						</table>
@@ -447,39 +343,21 @@
 			</div>
 			<div class="row" style="margin-top:5px;">
 				<div class="col-md-1"></div>
-				<div class="col-md-10" style="margin-left: 9px;">
+				<div class="col-md-10" style="margin-left:9px;">
 				    <div class="col-md-2" style="width:215px;">
 				        <div class="button button-primary button-rounded button-small" id="mz_zlh_up" 
-				        	style="font-size:15px;font-family:'微软雅黑';" 
-				        	onselectstart="return false">
-							上调
-				        </div>
+				        	style="font-size:15px;font-family:'微软雅黑';">上调</div>
 				        <div class="button button-primary button-rounded button-small" id="mz_zlh_bottom" 
-				        	style="font-size:15px;font-family:'微软雅黑';" 
-				        	onselectstart="return false">
-							下调
-				        </div>
+				        	style="font-size:15px;font-family:'微软雅黑';">下调</div>
 				    </div>
 				    <div class="col-md-2">
-				        <div class="button button-primary button-rounded button-small" id="mz_zlh_addTr" 
-				        	style="width:150px;font-size:15px;font-family:'微软雅黑';" 
-				        	onselectstart="return false">
-							添加指令行
-				        </div>
+				        <div class="button button-primary button-rounded button-small baseAnniu" id="mz_zlh_addTr">添加指令行</div>
 				    </div>
 			        <div class="col-md-2">
-				        <div class="button button-primary button-rounded button-small" id="mz_zlh_saveBtn" 
-				        	style="width:150px;font-size:15px;font-family:'微软雅黑';" 
-				        	onselectstart="return false">
-							保存指令行
-			        	</div>
+				        <div class="button button-primary button-rounded button-small baseAnniu" id="mz_zlh_saveBtn">保存指令行</div>
 			        </div>
 			        <div class="col-md-2">
-				        <div class="button button-primary button-rounded button-small" id="mz_zlh_deleteBtn" 
-				        	style="width:150px;font-size:15px;font-family:'微软雅黑';" 
-				        	onselectstart="return false">
-							删除指令行
-			        	</div>
+				        <div class="button button-primary button-rounded button-small baseAnniu" id="mz_zlh_deleteBtn">删除指令行</div>
 			        </div>
 		        </div>
 			</div>
@@ -492,11 +370,11 @@
 				           <thead>
 				               <tr>
 				                  <th class="text-center" style="width:3%;" bgcolor="#EFEFEF"></th>
-				                  <th class="text-center" style="width: 5%;" bgcolor="#EFEFEF">序号</th>
-				                  <th class="text-center" style="width: 25%;" bgcolor="#EFEFEF">物料</th>
-				                  <th class="text-center" style="width: 35%;" bgcolor="#EFEFEF">物料描述 </th>
-				                  <th class="text-center" style="width: 10%;" bgcolor="#EFEFEF">数量</th>
-				                  <th class="text-center" style="width: 10%;" bgcolor="#EFEFEF">工位</th>
+				                  <th class="text-center" style="width:5%;" bgcolor="#EFEFEF">序号</th>
+				                  <th class="text-center" style="width:25%;" bgcolor="#EFEFEF">物料</th>
+				                  <th class="text-center" style="width:35%;" bgcolor="#EFEFEF">物料描述 </th>
+				                  <th class="text-center" style="width:10%;" bgcolor="#EFEFEF">数量</th>
+				                  <th class="text-center" style="width:10%;" bgcolor="#EFEFEF">工位</th>
 				               </tr>
 				           </thead>
 						</table>
@@ -511,12 +389,12 @@
 			</div>
 		</div>
 		<!-- pack -->
-		<div id="pack" class="row" style="display:none;">
+		<div id="pack" class="row showWindow" style="display:none;">
 			<form id="pack_form" class="row">
 		        <div class="col-md-1"></div>
 				<div class="col-md-10 account-company-auth" style="width:80%;height:170px;margin-left:38px;min-height:170px; margin-top:-40px;">
 			        <div class="row" style="margin-right:10px;margin-top:-30px;">
-			            <div class="col-md-2 text-right" style="padding: 5px 0 0 0;">
+			            <div class="col-md-2 text-right" style="padding:5px 0 0 0;">
 		           			<input type="hidden" id="pack_id" value=""/>
 			                <span><span style="color:red;">*</span>pack编码:</span>
 			            </div>
@@ -528,43 +406,35 @@
 						   		</span>
 					   		</div>
 			            </div>
-			            <div class="col-md-2 text-right" style="padding: 5px 0 0 0;">
+			            <div class="col-md-2 text-right" style="padding:5px 0 0 0;">
 			                <span><span style="color:red;">*</span>pack类型:</span>
 			            </div>
 			            <div class="col-md-3">
 			                <input id="pack_leixing" type="number" min="1" value="1" class="form-control"/>
 			            </div>
 						<div class="col-md-2">
-					        <div class="button button-primary button-rounded button-small" id="pack_selectBtn" 
-					        	style="width:150px;font-size:15px;font-family:'微软雅黑';" 
-					        	onselectstart="return false">
-								查找
-					        </div>
+					        <div class="button button-primary button-rounded button-small baseAnniu" id="pack_selectBtn">查找</div>
 				        </div>
 		            </div>
 		            <div class="row margin-top-10" style="margin-right:10px;">
-			            <div class="col-md-2 text-right" style="padding: 5px 0 0 0;">
+			            <div class="col-md-2 text-right" style="padding:5px 0 0 0;">
 			                <span><span style="color:red;">*</span>默认生产线:</span>
 			            </div>
 			            <div class="col-md-3">
 			                <input id="pack_morenshengchanxian" type="number" min="1" value="1" class="form-control"/>
 			            </div>
-			            <div class="col-md-2 text-right" style="padding: 5px 0 0 0;">
+			            <div class="col-md-2 text-right" style="padding:5px 0 0 0;">
 			                <span><span style="color:red;">*</span>电芯类型:</span>
 			            </div>
 			            <div class="col-md-3">
 			                <input id="pack_dianxinleixing" type="number" min="1" value="1" class="form-control"/>
 			            </div>
 						<div class="col-md-2">
-					        <div class="button button-primary button-rounded button-small" id="pack_newBtn" 
-					        	style="width:150px;font-size:15px;font-family:'微软雅黑';" 
-					        	onselectstart="return false">
-								新建pack
-					        </div>
+					        <div class="button button-primary button-rounded button-small baseAnniu" id="pack_newBtn">新建pack</div>
 				        </div>
 			        </div>
 		            <div class="row margin-top-10" style="margin-right:10px;">
-			            <div class="col-md-2 text-right" style="padding: 5px 0 0 0;">
+			            <div class="col-md-2 text-right" style="padding:5px 0 0 0;">
 			                <span>时间:</span>
 			            </div>
 			            <div class="col-md-3">
@@ -572,50 +442,28 @@
 			            </div>
 			            <div class="col-md-5"></div>
 						<div class="col-md-2">
-					        <div class="button button-primary button-rounded button-small" id="pack_deleteBtn" 
-					        	style="width:150px;font-size:15px;font-family:'微软雅黑';" 
-					        	onselectstart="return false">
-								删除pack
-					        </div>
+					        <div class="button button-primary button-rounded button-small baseAnniu" id="pack_deleteBtn">删除pack</div>
 				        </div>
 		            </div>
 				</div>
         	</form>
         	<div class="row" style="margin-top:20px;">
 				<div class="col-md-1"></div>
-				<div class="col-md-10" style="margin-left: 9px;">
+				<div class="col-md-10" style="margin-left:9px;">
 				    <div class="col-md-2" style="width:215px;">
 				        <div class="button button-primary button-rounded button-small" id="pack_up" 
-				        	style="font-size:15px;font-family:'微软雅黑';" 
-				        	onselectstart="return false">
-							上调
-				        </div>
+				        	style="font-size:15px;font-family:'微软雅黑';">上调</div>
 				        <div class="button button-primary button-rounded button-small" id="pack_bottom" 
-				        	style="font-size:15px;font-family:'微软雅黑';" 
-				        	onselectstart="return false">
-							下调
-				        </div>
+				        	style="font-size:15px;font-family:'微软雅黑';">下调</div>
 				    </div>
 				    <div class="col-md-2">
-				        <div class="button button-primary button-rounded button-small" id="pack_addTr" 
-				        	style="width:150px;font-size:15px;font-family:'微软雅黑';" 
-				        	onselectstart="return false">
-							添加pack行
-				        </div>
+				        <div class="button button-primary button-rounded button-small baseAnniu" id="pack_addTr">添加pack行</div>
 				    </div>
 			        <div class="col-md-2">
-				        <div class="button button-primary button-rounded button-small" id="pack_saveBtn" 
-				        	style="width:150px;font-size:15px;font-family:'微软雅黑';" 
-				        	onselectstart="return false">
-							保存pack
-			        	</div>
+				        <div class="button button-primary button-rounded button-small baseAnniu" id="pack_saveBtn">保存pack</div>
 			        </div>
 			        <div class="col-md-2">
-				        <div class="button button-primary button-rounded button-small" id="pack_row_deleteBtn" 
-				        	style="width:150px;font-size:15px;font-family:'微软雅黑';" 
-				        	onselectstart="return false">
-							删除pack行
-			        	</div>
+				        <div class="button button-primary button-rounded button-small baseAnniu" id="pack_row_deleteBtn">删除pack行</div>
 			        </div>
 		        </div>
 			</div>
@@ -626,11 +474,11 @@
 						<table class="table table-bordered" style="width:99%;">
 				           <thead>
 				               <tr>
-				                  <th class="text-center" style="width: 3%;" bgcolor="#EFEFEF"></th>
-				                  <th class="text-center" style="width: 5%;" bgcolor="#EFEFEF">序号</th>
-				                  <th class="text-center" style="width: 20%;" bgcolor="#EFEFEF">模组编码</th>
-				                  <th class="text-center" style="width: 20%;" bgcolor="#EFEFEF">模组类型</th>
-				                  <th class="text-center" style="width: 10%;" bgcolor="#EFEFEF">数量</th>
+				                  <th class="text-center" style="width:3%;" bgcolor="#EFEFEF"></th>
+				                  <th class="text-center" style="width:5%;" bgcolor="#EFEFEF">序号</th>
+				                  <th class="text-center" style="width:20%;" bgcolor="#EFEFEF">模组编码</th>
+				                  <th class="text-center" style="width:20%;" bgcolor="#EFEFEF">模组类型</th>
+				                  <th class="text-center" style="width:10%;" bgcolor="#EFEFEF">数量</th>
 				               </tr>
 				           </thead>
 						</table>
@@ -644,19 +492,365 @@
 			</div>
        	</div>
 		<!-- pack -->
+		<!-- 账户设置 -->
+		<div id="base" class="row showWindow" style="display:none;">
+			<form id="base_form" class="row">
+		        <div id="info_tab" class="col-md-11" style="margin-top:-49px;padding:0px;">
+		            <div class="row orders-search">
+		                <div class="col-md-10" id="infoStatusBar">
+                        	<input type="hidden" id="userInfoId" value=""/>
+		                    <div class="sesol-btn infoOrder select" data="1">角色管理</div>
+		                    <div class="sesol-btn infoOrder" data="2">用户管理</div>
+		                </div>
+		            </div>
+			    </div>
+	   			<div class="userInfo row">
+				    <div id="userInfo1" style="padding:0px 0px 0px 0px;">
+				        <div class="col-md-10">
+			            	<div class="col-md-2 text-right" style="padding:5px 0 0 0;">
+				                <span><span style="color:red;">*</span>角色名:</span>
+				            </div>
+				            <div class="col-md-3">
+					            <div class="input-group">
+					            	<input id="jueseId" type="hidden"/>
+				               		<input id="jueseName" type="text" class="form-control"/>
+					                <span class="input-group-btn">
+								        <button class="btn btn-default baseJuese" type="button">查找</button>
+							   		</span>
+						   		</div>
+				            </div>
+				            <div class="col-md-2" style="padding:3px 0 0 0;">
+						        <div class="button button-primary button-rounded button-small baseAnniu baseJuese">新建</div>
+					        </div>
+				            <div class="col-md-2" style="padding:3px 0 0 0;">
+						        <div class="button button-primary button-rounded button-small baseAnniu baseJuese">保存</div>
+					        </div>
+				            <div class="col-md-2" style="padding:3px 0 0 0;">
+						        <div class="button button-primary button-rounded button-small baseAnniu baseJuese">删除</div>
+					        </div>
+			            </div>
+			            <div class="col-md-11 margin-top-10"  style="padding:0 2 2 2;">
+			            	<div style="padding-right:17px;">
+								<table class="table-bordered" style="height:25px;width:100%;">
+						           <thead>
+						               <tr style="height:25px;">
+						                  <th class="text-center" style="width:3%;font-size:12px;" bgcolor="#EFEFEF">序号</th>
+						                  <th class="text-center" style="width:30%;font-size:12px;" bgcolor="#EFEFEF">角色功能</th>
+						                  <th class="text-center" style="width:20%;font-size:12px;" bgcolor="#EFEFEF">功能权限</th>
+						               </tr>
+						           </thead>
+								</table>
+							</div>
+					        <div class="table-body" style="width:100%;margin-top:-1px;" id="base_table_id">
+					           <table class="table-bordered text-center table-hover" style="width:100%;" id="base_table">
+					               <tbody>
+					               		<tr style="height:22px;">
+					               			<td style="width:3%;font-size:12px;">1</td>
+					               			<td style="width:30%;" class="wlColor">物料维护-新建</td>
+					               			<td style="width:20%;" class="wlColor jueSeQX">false</td>
+					               		</tr>
+					               		<tr style="height:22px;">
+					               			<td style="width:3%;font-size:12px;">2</td>
+					               			<td style="width:30%;" class="wlColor">物料维护-保存</td>
+					               			<td style="width:20%;" class="wlColor jueSeQX">false</td>
+					               		</tr>
+					               		<tr style="height:22px;">
+					               			<td style="width:3%;font-size:12px;">3</td>
+					               			<td style="width:30%;" class="wlColor">物料维护-删除</td>
+					               			<td style="width:20%;" class="wlColor jueSeQX">false</td>
+					               		</tr>
+					               		<tr style="height:22px;">
+					               			<td style="width:3%;font-size:12px;">4</td>
+					               			<td style="width:30%;" class="mzColor">模组维护-新建</td>
+					               			<td style="width:20%;" class="mzColor jueSeQX">false</td>
+					               		</tr>
+					               		<tr style="height:22px;">
+					               			<td style="width:3%;font-size:12px;">5</td>
+					               			<td style="width:30%;" class="mzColor">模组维护-删除</td>
+					               			<td style="width:20%;" class="mzColor jueSeQX">false</td>
+					               		</tr>
+					               		<tr style="height:22px;">
+					               			<td style="width:3%;font-size:12px;">6</td>
+					               			<td style="width:30%;" class="mzColor">模组载具-上调</td>
+					               			<td style="width:20%;" class="mzColor jueSeQX">false</td>
+					               		</tr>
+					               		<tr style="height:22px;">
+					               			<td style="width:3%;font-size:12px;">7</td>
+					               			<td style="width:30%;" class="mzColor">模组载具-下调</td>
+					               			<td style="width:20%;" class="mzColor jueSeQX">false</td>
+					               		</tr>
+					               		<tr style="height:22px;">
+					               			<td style="width:3%;font-size:12px;">8</td>
+					               			<td style="width:30%;" class="mzColor">模组载具-添加</td>
+					               			<td style="width:20%;" class="mzColor jueSeQX">false</td>
+					               		</tr>
+					               		<tr style="height:22px;">
+					               			<td style="width:3%;font-size:12px;">9</td>
+					               			<td style="width:30%;" class="mzColor">模组载具-保存</td>
+					               			<td style="width:20%;" class="mzColor jueSeQX">false</td>
+					               		</tr>
+					               		<tr style="height:22px;">
+					               			<td style="width:3%;font-size:12px;">10</td>
+					               			<td style="width:30%;" class="mzColor">模组载具-删除</td>
+					               			<td style="width:20%;" class="mzColor jueSeQX">false</td>
+					               		</tr>
+					               		<tr style="height:22px;">
+					               			<td style="width:3%;font-size:12px;">11</td>
+					               			<td style="width:30%;" class="mzColor">模组指令行-上调</td>
+					               			<td style="width:20%;" class="mzColor jueSeQX">false</td>
+					               		</tr>
+					               		<tr style="height:22px;">
+					               			<td style="width:3%;font-size:12px;">12</td>
+					               			<td style="width:30%;" class="mzColor">模组指令行-下调</td>
+					               			<td style="width:20%;" class="mzColor jueSeQX">false</td>
+					               		</tr>
+					               		<tr style="height:22px;">
+					               			<td style="width:3%;font-size:12px;">13</td>
+					               			<td style="width:30%;" class="mzColor">模组指令行-添加</td>
+					               			<td style="width:20%;" class="mzColor jueSeQX">false</td>
+					               		</tr>
+					               		<tr style="height:22px;">
+					               			<td style="width:3%;font-size:12px;">14</td>
+					               			<td style="width:30%;" class="mzColor">模组指令行-保存</td>
+					               			<td style="width:20%;" class="mzColor jueSeQX">false</td>
+					               		</tr>
+					               		<tr style="height:22px;">
+					               			<td style="width:3%;font-size:12px;">15</td>
+					               			<td style="width:30%;" class="mzColor">模组指令行-删除</td>
+					               			<td style="width:20%;" class="mzColor jueSeQX">false</td>
+					               		</tr>
+					               		<tr style="height:22px;">
+					               			<td style="width:3%;font-size:12px;">16</td>
+					               			<td style="width:30%;" class="packColor">pack-新建</td>
+					               			<td style="width:20%;" class="packColor jueSeQX">false</td>
+					               		</tr>
+					               		<tr style="height:22px;">
+					               			<td style="width:3%;font-size:12px;">17</td>
+					               			<td style="width:30%;" class="packColor">pack-删除</td>
+					               			<td style="width:20%;" class="packColor jueSeQX">false</td>
+					               		</tr>
+					               		<tr style="height:22px;">
+					               			<td style="width:3%;font-size:12px;">18</td>
+					               			<td style="width:30%;" class="packColor">pack-保存</td>
+					               			<td style="width:20%;" class="packColor jueSeQX">false</td>
+					               		</tr>
+					               		<tr style="height:22px;">
+					               			<td style="width:3%;font-size:12px;">19</td>
+					               			<td style="width:30%;" class="packColor">pack行-上调</td>
+					               			<td style="width:20%;" class="packColor jueSeQX">false</td>
+					               		</tr>
+					               		<tr style="height:22px;">
+					               			<td style="width:3%;font-size:12px;">20</td>
+					               			<td style="width:30%;" class="packColor">pack行-下调</td>
+					               			<td style="width:20%;" class="packColor jueSeQX">false</td>
+					               		</tr>
+					               		<tr style="height:22px;">
+					               			<td style="width:3%;font-size:12px;">21</td>
+					               			<td style="width:30%;" class="packColor">pack行-添加</td>
+					               			<td style="width:20%;" class="packColor jueSeQX">false</td>
+					               		</tr>
+					               		<tr style="height:22px;">
+					               			<td style="width:3%;font-size:12px;">22</td>
+					               			<td style="width:30%;" class="packColor">pack行-删除</td>
+					               			<td style="width:20%;" class="packColor jueSeQX">false</td>
+					               		</tr>
+					               		<tr style="height:22px;">
+					               			<td style="width:3%;font-size:12px;">23</td>
+					               			<td style="width:30%;" class="baseColor">账户设置-角色管理-新建</td>
+					               			<td style="width:20%;" class="baseColor jueSeQX">false</td>
+					               		</tr>
+					               		<tr style="height:22px;">
+					               			<td style="width:3%;font-size:12px;">24</td>
+					               			<td style="width:30%;" class="baseColor">账户设置-角色管理-保存</td>
+					               			<td style="width:20%;" class="baseColor jueSeQX">false</td>
+					               		</tr>
+					               		<tr style="height:22px;">
+					               			<td style="width:3%;font-size:12px;">25</td>
+					               			<td style="width:30%;" class="baseColor">账户设置-角色管理-删除</td>
+					               			<td style="width:20%;" class="baseColor jueSeQX">false</td>
+					               		</tr>
+					               		<tr style="height:22px;">
+					               			<td style="width:3%;font-size:12px;">26</td>
+					               			<td style="width:30%;" class="baseColor">账户设置-用户管理-新建</td>
+					               			<td style="width:20%;" class="baseColor jueSeQX">false</td>
+					               		</tr>
+					               		<tr style="height:22px;">
+					               			<td style="width:3%;font-size:12px;">27</td>
+					               			<td style="width:30%;" class="baseColor">账户设置-用户管理-保存</td>
+					               			<td style="width:20%;" class="baseColor jueSeQX">false</td>
+					               		</tr>
+					               		<tr style="height:22px;">
+					               			<td style="width:3%;font-size:12px;">28</td>
+					               			<td style="width:30%;" class="baseColor">账户设置-用户管理-删除</td>
+					               			<td style="width:20%;" class="baseColor jueSeQX">false</td>
+					               		</tr>
+					               		<tr style="height:22px;">
+					               			<td style="width:3%;font-size:12px;">29</td>
+					               			<td style="width:30%;" class="kufangColor">库房操作-发送命令</td>
+					               			<td style="width:20%;" class="kufangColor jueSeQX">false</td>
+					               		</tr>
+					               		<tr style="height:22px;">
+					               			<td style="width:3%;font-size:12px;">30</td>
+					               			<td style="width:30%;" class="plcColor">PLC-操作权限</td>
+					               			<td style="width:20%;" class="plcColor jueSeQX">false</td>
+					               		</tr>
+					               		<tr style="height:22px;">
+					               			<td style="width:3%;font-size:12px;">31</td>
+					               			<td style="width:30%;" class="dingdanColor">订单调度-下载</td>
+					               			<td style="width:20%;" class="dingdanColor jueSeQX">false</td>
+					               		</tr>
+					               		<tr style="height:22px;">
+					               			<td style="width:3%;font-size:12px;">32</td>
+					               			<td style="width:30%;" class="dingdanColor">订单调度-上调</td>
+					               			<td style="width:20%;" class="dingdanColor jueSeQX">false</td>
+					               		</tr>
+					               		<tr style="height:22px;">
+					               			<td style="width:3%;font-size:12px;">33</td>
+					               			<td style="width:30%;" class="dingdanColor">订单调度-下调</td>
+					               			<td style="width:20%;" class="dingdanColor jueSeQX">false</td>
+					               		</tr>
+					               		<tr style="height:22px;">
+					               			<td style="width:3%;font-size:12px;">34</td>
+					               			<td style="width:30%;" class="dingdanColor">订单调度-选择分解</td>
+					               			<td style="width:20%;" class="dingdanColor jueSeQX">false</td>
+					               		</tr>
+					               		<tr style="height:22px;">
+					               			<td style="width:3%;font-size:12px;">35</td>
+					               			<td style="width:30%;" class="dingdanColor">订单调度-全部分解</td>
+					               			<td style="width:20%;" class="dingdanColor jueSeQX">false</td>
+					               		</tr>
+					               		<tr style="height:22px;">
+					               			<td style="width:3%;font-size:12px;">36</td>
+					               			<td style="width:30%;" class="dingdanColor">订单调度-删除</td>
+					               			<td style="width:20%;" class="dingdanColor jueSeQX">false</td>
+					               		</tr>
+					               		<tr style="height:22px;">
+					               			<td style="width:3%;font-size:12px;">37</td>
+					               			<td style="width:30%;" class="anniuColor">启动调度</td>
+					               			<td style="width:20%;" class="anniuColor jueSeQX">false</td>
+					               		</tr>
+					               		<tr style="height:22px;">
+					               			<td style="width:3%;font-size:12px;">38</td>
+					               			<td style="width:30%;" class="anniuColor">复位</td>
+					               			<td style="width:20%;" class="anniuColor jueSeQX">false</td>
+					               		</tr>
+					               		<tr style="height:22px;">
+					               			<td style="width:3%;font-size:12px;">39</td>
+					               			<td style="width:30%;" class="anniuColor">归零启动</td>
+					               			<td style="width:20%;" class="anniuColor jueSeQX">false</td>
+					               		</tr>
+					               		<tr style="height:22px;">
+					               			<td style="width:3%;font-size:12px;">40</td>
+					               			<td style="width:30%;" class="anniuColor">断点启动</td>
+					               			<td style="width:20%;" class="anniuColor jueSeQX">false</td>
+					               		</tr>
+					               		<tr style="height:22px;">
+					               			<td style="width:3%;font-size:12px;">41</td>
+					               			<td style="width:30%;" class="anniuColor">不检测数量</td>
+					               			<td style="width:20%;" class="anniuColor jueSeQX">false</td>
+					               		</tr>
+					               		<tr style="height:22px;">
+					               			<td style="width:3%;font-size:12px;">42</td>
+					               			<td style="width:30%;" class="anniuColor">不检测动作</td>
+					               			<td style="width:20%;" class="anniuColor jueSeQX">false</td>
+					               		</tr>
+					               		<tr style="height:22px;">
+					               			<td style="width:3%;font-size:12px;">43</td>
+					               			<td style="width:30%;" class="anniuColor">RFD自动读取</td>
+					               			<td style="width:20%;" class="anniuColor jueSeQX">false</td>
+					               		</tr>
+					               		<tr style="height:22px;">
+					               			<td style="width:3%;font-size:12px;">44</td>
+					               			<td style="width:30%;" class="anniuColor">启动库指令</td>
+					               			<td style="width:20%;" class="anniuColor jueSeQX">false</td>
+					               		</tr>
+					               </tbody>
+					           </table>
+					        </div>
+			            </div>
+				    </div>
+				    <div id="userInfo2" style="display:none;">
+				    	<div class="col-md-1"></div>
+				    	<div class="col-md-10 account-company-auth" style="height:100%;width:92%;margin-left:45px;">
+					        <div class="row" style="margin-top:-10px;">
+					        	<div class="col-md-1"></div>
+					            <div class="col-md-2 text-right" style="padding:5px 0 0 0;">
+					                <span><span style="color:red;">*</span>用户名:</span>
+					            </div>
+					            <div class="col-md-7">
+					                <input id="userName" type="text" class="form-control"/>
+					            </div>
+				            </div>
+				            <div class="row margin-top-10">
+					        	<div class="col-md-1"></div>
+					            <div class="col-md-2 text-right" style="padding:5px 0 0 0;">
+					                <span><span style="color:red;">*</span>密码:</span>
+					            </div>
+					            <div class="col-md-7">
+					                <input id="password" type="password" class="form-control"/>
+					            </div>
+					        </div>
+				            <div class="row margin-top-10">
+					        	<div class="col-md-1"></div>
+					            <div class="col-md-2 text-right" style="padding:5px 0 0 0;">
+					                <span><span style="color:red;">*</span>确认密码:</span>
+					            </div>
+					            <div class="col-md-7">
+					                <input id="yesPassword" type="password" class="form-control"/>
+					            </div>
+					        </div>
+				            <div class="row margin-top-10">
+					        	<div class="col-md-1"></div>
+					            <div class="col-md-2 text-right" style="padding:5px 0 0 0;">
+					                <span><span style="color:red;">*</span>角色:</span>
+					            </div>
+					            <div class="col-md-7">
+					                 <div class="cus-select" id="juese_name">
+		                                <div class="cus-select-btn"></div>
+		                                <input id="juese_id" type="text" readonly/> 
+		                                <ul>
+		                                	<li></li>
+		                                </ul>
+		                            </div>
+					            </div>
+					        </div>
+				            <div class="row margin-top-20">
+					        	<div class="col-md-2"></div>
+				            	<div class="col-md-2">
+							        <div class="button button-primary button-rounded button-small baseAnniu" id="userInfoSelectBtn">查找</div>
+						        </div>
+				            	<div class="col-md-2">
+							        <div class="button button-primary button-rounded button-small baseAnniu" id="userInfoAddBtn">新建</div>
+						        </div>
+				            	<div class="col-md-2">
+							        <div class="button button-primary button-rounded button-small baseAnniu" id="userInfoSaveBtn">保存</div>
+						        </div>
+				            	<div class="col-md-2">
+							        <div class="button button-primary button-rounded button-small baseAnniu" id="userInfoDeleteBtn">删除</div>
+						        </div>
+				            </div>
+			            </div>
+				    </div>
+			    </div>
+	        </form>
+        </div>
 	</div>
 	<div class="col-md-3" style="width:400px;"></div>
 	<div class="col-md-2">
 		<a class="button button-glow button-rounded button-raised button-primary butRow"
-		   onclick="readyShow.show_wuliao();">物料维护</a>
+		   onclick="readyShow.showThis(wuliao);">物料维护</a>
 	</div>
 	<div class="col-md-2">
 		<a class="button button-glow button-rounded button-raised button-primary butRow"
-		   onclick="readyShow.show_mozu();">模组维护</a>
+		   onclick="readyShow.showThis(mozu);">模组维护</a>
 	</div>
 	<div class="col-md-2">
 		<a class="button button-glow button-rounded button-raised button-primary butRow"
-		   onclick="readyShow.show_pack();">PACK维护</a>
+		   onclick="readyShow.showThis(pack);">PACK维护</a>
+	</div>
+	<div class="col-md-2">
+		<a class="button button-glow button-rounded button-raised button-primary butRow"
+		   onclick="readyShow.showThis(base);">账户设置</a>
 	</div>
 	<script type="text/javascript" src="/smtcl_erp/html/js/jcsj.js"></script>
 </body>
