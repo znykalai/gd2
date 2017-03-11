@@ -1132,4 +1132,22 @@ public class PLC implements Serializable {
 	}
 
 	
+	public void reLoad(int machineID){
+		if(machineID==1){
+			for(int i=0;i<STC1.size();i++)
+			{
+				STC1.get(i).firstST.clear();
+				STC1.get(i).secondST.clear();
+			}
+		     }else{
+		    	 
+		    	 for(int i=0;i<STC2.size();i++)
+					{
+						STC2.get(i).firstST.clear();
+						STC2.get(i).secondST.clear();
+					}	 
+		     }
+		
+	      }
+	
 }

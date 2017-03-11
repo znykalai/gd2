@@ -462,6 +462,171 @@ public void startlineAGV(){
 	    
      }
   
-  
+    public void startDakuQingqiu(){
+    	 //	第一步读取大库请求表格里面的内容。放到一个hashtable里面。
+    	 //  第二步按着模组配套顺序请求大库的物料。
+    	 // 得到大库里面有多少空位
+    	//读取装载系数
+    	//读取货位空位
+    	 Hashtable<String,Integer>sumWL1=new Hashtable<String,Integer>();//装配区A的已有物料请求总和
+    	 Hashtable<String,Integer>sumWL2=new Hashtable<String,Integer>();//装配区B的已有物料请求总和
+    	String sql0="select  货位序号,托盘编号  from 货位表  where 托盘编号 IS NULL  OR  托盘编号 =''";
+    	 Vector v0=SqlTool.findInVector(sql0);
+    	 int kong=v0.size()-1;
+    	 if(kong>0){
+    		 Hashtable<String,Integer>h=new Hashtable<String,Integer>();
+    		 String sql4="select  物料,装载系数  from 通用物料  ";
+    		  Vector v4=SqlTool.findInVector(sql4);
+    		  for(int i=0;i<v4.size();i++){
+    			  Vector row=(Vector)v4.get(i);
+    			  String num= row.get(1)==null?"0":row.get(1).toString();
+    			  h.put(row.get(0).toString(),num.equals("0")?10:Integer.parseInt(num));
+    			  
+    		  }
+    		   
+    		  Hashtable<String,Integer>temp1=new Hashtable<String,Integer>();
+    		  Vector<Hashtable<String,Integer>> zl=new Vector<Hashtable<String,Integer>>();
+    	    	String sql="select  物料,数量-完成数量,装配区 from 配方指令队列 where IFNULL(数量,0)-IFNULL(完成数量,0)>0 and 装配区='1' ORDER BY 工单序号,模组序号,分解号,载具序号  LIMIT 10";
+    		    Vector v1=SqlTool.findInVector(sql);
+    		    for(int i=0;i<v1.size();i++){
+    		    	Vector row=(Vector)v1.get(i);
+    		    	String key=(String)row.get(0);
+    		    	int val=Integer.parseInt(row.get(1).toString());
+    		    	if(temp1.get(key)==null){
+    		    		temp1.put(key, val);
+    		    	}else{
+    		    		temp1.put(key, val+temp1.get(key));
+    		    	}
+    		    	
+    		    }
+    		    //按着顺序，保证模组按着物料的顺序配齐
+    		    for(int i=0;i<v1.size();i++){
+    		    	Vector row=(Vector)v1.get(i);
+    		    	String key=(String)row.get(0);
+    		    	int val=temp1.get(key);
+    		    	int tpshul=h.get(key);
+    		    	if(val>0){
+    		    		 Hashtable<String,Integer>t=new Hashtable<String,Integer>();
+    		    		 t.put(key,tpshul);
+    		    		 zl.addElement(t);
+    		    		 temp1.put(key, val-tpshul);
+    		    		
+    		    	}
+    		    	
+    		    	
+    		    }
+    	
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////   		    
+    		    Hashtable<String,Integer>temp2=new Hashtable<String,Integer>();
+      		    Vector<Hashtable<String,Integer>> zl2=new Vector<Hashtable<String,Integer>>(); 
+    		    String sql2="select  物料,数量-完成数量,装配区 from 配方指令队列 where IFNULL(数量,0)-IFNULL(完成数量,0)>0 and 装配区='2' ORDER BY 工单序号,模组序号,分解号,载具序号  LIMIT 10";
+    		    Vector v2=SqlTool.findInVector(sql2);
+    		    for(int i=0;i<v2.size();i++){
+    		    	Vector row=(Vector)v2.get(i);
+    		    	String key=(String)row.get(0);
+    		    	int val=Integer.parseInt(row.get(1).toString());
+    		    	if(temp2.get(key)==null){
+    		    		temp2.put(key, val);
+    		    	}else{
+    		    		temp2.put(key, val+temp2.get(key));
+    		    	}
+    		    	
+    		    }
+    		    //按着顺序，保证模组按着物料的顺序配齐
+    		    for(int i=0;i<v2.size();i++){
+    		    	Vector row=(Vector)v2.get(i);
+    		    	String key=(String)row.get(0);
+    		    	int val=temp2.get(key);
+    		    	int tpshul=h.get(key);
+    		    	if(val>0){
+    		    		 Hashtable<String,Integer>t=new Hashtable<String,Integer>();
+    		    		 t.put(key,tpshul);
+    		    		 zl2.addElement(t);
+    		    		 temp2.put(key, val-tpshul);
+    		    		
+    		    		
+    		    	}
+    		    	
+    		    	
+    		    }
+    	    
+     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		    
+    		  
+    		    //得到大库里面未处理的物料请求,并清除包含的物料请求
+    		    String sql3="select  物料,SUM(数量) from 大库请求 where  状态<>'1' and 方向=1 GROUP BY 物料  ORDER BY ID  LIMIT 10"; 
+    		    Vector v3=SqlTool.findInVector(sql3);
+    		    for(int i=0;i<v3.size();i++){
+    		    	Vector row=(Vector)v3.get(i);
+    		    	String key=(String)row.get(0);
+    		    	int val=Integer.parseInt(row.get(1).toString());
+    		    	sumWL1.put(key, val);
+    		    	
+    		    }
+    		    
+    		    for(int i=0;i<zl.size();i++){
+    		    	Hashtable<String,Integer> hh=zl.get(i);
+    		          String key= hh.keys().nextElement();
+    		          int val=hh.get(key);
+    		          if(sumWL1.get(key)!=null){
+    		          if(val<sumWL1.get(key)){
+    		        	  hh.put(key, 0);
+    		        	  sumWL1.put(key, sumWL1.get(key)-val);
+    		        	  
+    		          }
+    		          
+    		          }
+    		    	
+    		    }
+    		  ///////////////  
+    		    String sql5="select  物料,SUM(数量) from 大库请求 where  状态<>'1' and 方向=2 GROUP BY 物料  ORDER BY ID  LIMIT 10"; 
+    		    Vector v5=SqlTool.findInVector(sql5);
+    		    for(int i=0;i<v5.size();i++){
+    		    	Vector row=(Vector)v5.get(i);
+    		    	String key=(String)row.get(0);
+    		    	int val=Integer.parseInt(row.get(1).toString());
+    		    	sumWL2.put(key, val);
+    		    	
+    		    }
+    		    
+    		    for(int i=0;i<zl2.size();i++){
+    		    	Hashtable<String,Integer> hh=zl2.get(i);
+    		          String key= hh.keys().nextElement();
+    		          int val=hh.get(key);
+    		          if(sumWL2.get(key)!=null){
+    		          if(val<sumWL2.get(key)){
+    		        	  hh.put(key, 0);
+    		        	  sumWL2.put(key, sumWL1.get(key)-val);
+    		        	  
+    		          }
+    		          
+    		          }
+    		    	
+    		    }
+    		    removeNull(zl);
+    		    removeNull(zl2);
+    		///////////////////////////////////////////////////////////////////////////////
+    		  //根据货位里面的可以装载的托盘数量，把两个区的指令合并
+    		    for(int i=0;i<kong;i++){
+    		    	
+    		    	
+    		    }
+    	 }
+    	
+    }
+    
+    private void removeNull( Vector<Hashtable<String,Integer>> zl){
+    	   if(zl==null)return;
+    	   for(int i=0;i<zl.size();i++){
+    		   Hashtable<String,Integer> h=zl.get(i);
+    		   String key=h.keys().nextElement();
+    		   if(h.get(key)==0){
+    			   zl.remove(i);
+    			   removeNull(zl);
+    		   }
+    		   
+    		   
+    	   }
+    	
+    }
 	
 }

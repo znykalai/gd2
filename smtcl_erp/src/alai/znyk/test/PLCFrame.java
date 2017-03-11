@@ -61,6 +61,14 @@ public class PLCFrame extends JFrame {
 		JButton btnNewButton = new JButton("\u5237\u65B0");
 		panel_18.add(btnNewButton);
 		
+		JButton btnNewButton_1 = new JButton("\u6E05\u9664\u5DE5\u4F4D");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PLC.getIntance().reLoad(1);
+			}
+		});
+		panel_18.add(btnNewButton_1);
+		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setPreferredSize(new Dimension(1600,780));
 		

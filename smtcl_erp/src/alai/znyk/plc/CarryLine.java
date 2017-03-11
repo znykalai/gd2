@@ -34,7 +34,7 @@ public class CarryLine implements Serializable{
 	public void setBuffer(Carry carr){this.buffer=carr;}
 	
 	public Carry getCarry(int index){
-		
+		if(index==-1)return buffer;
 		return cont[index];
 	}
 	public boolean removeToNext(int fromSt){
@@ -58,7 +58,7 @@ public class CarryLine implements Serializable{
 		cont[index]=ca;
 	}
 	
-	
+	public void setCarryAt(int index,String 工单ID,String 模组ID,String 分解号,String 载具号){}
 	
 
 	public  static void main(String ss[]){

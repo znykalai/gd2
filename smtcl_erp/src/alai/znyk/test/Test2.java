@@ -1,6 +1,14 @@
 package alai.znyk.test;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Vector;
 
 import alai.znyk.common.ClientSer;
 import alai.znyk.plc.PLC;
@@ -39,6 +47,62 @@ public class Test2 {
 		  }
 	
 }
+	
+	public byte[] write(Object ob){
+		
+		ByteArrayOutputStream baos = new ByteArrayOutputStream(); 
+	    ObjectOutputStream out = null; 
+	    try { 
+	      out = new ObjectOutputStream(baos); 
+	      out.writeObject(ob);    
+	    } catch (IOException e) { 
+	    
+	    }finally{ 
+	      try { 
+	          out.close(); 
+	      } catch (IOException e) { 
+	    	  e.printStackTrace();
+	      } 
+	    } 
+	      
+	    return baos.toByteArray(); 
+
+	}
+	
+	public Object readFromByte(byte[] b) throws IOException, ClassNotFoundException{
+		
+		ByteArrayInputStream bais=null; 
+	    ObjectInputStream in = null; 
+	    try{ 
+	      bais = new ByteArrayInputStream(b); 
+	      in = new ObjectInputStream(bais); 
+	      return in.readObject(); 
+	    }finally{ 
+	      if(in != null){ 
+	        try { 
+	          in.close(); 
+	        } catch (IOException e) { 
+	           e.printStackTrace();
+	        } 
+	      } 
+	    } 
+
+	}
+	
+	 private static void removeNull( Vector<Hashtable<String,Integer>> zl){
+  	   if(zl==null)return;
+  	   for(int i=0;i<zl.size();i++){
+  		   Hashtable<String,Integer> h=zl.get(i);
+  		   String key=h.keys().nextElement();
+  		   if(h.get(key)==0){
+  			   zl.remove(i);
+  			   removeNull(zl);
+  		   }
+  		   
+  		   
+  	   }
+  	
+  }
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -83,8 +147,36 @@ public class Test2 {
 			
 		}catch(Exception ex){}*/
 			 
-			String s= ClientSer.getIntance().c_exeComment("11", 1, 1) ;
-			System.out.println(s);
+			//String s= ClientSer.getIntance().c_exeComment("11", 1, 1) ;
+			//System.out.println(s);
+		
+		 Vector<Hashtable<String,Integer>> zl=new Vector<Hashtable<String,Integer>>();
+		 Hashtable<String,Integer> h=new Hashtable<String,Integer>(); 
+		 h.put("1", 1);
+		 zl.addElement(h);
+		 
+		 Hashtable<String,Integer> h2=new Hashtable<String,Integer>(); 
+		 h2.put("1", 0);
+		 zl.addElement(h2);
+		 
+		 Hashtable<String,Integer> h3=new Hashtable<String,Integer>(); 
+		 h3.put("1", 0);
+		 zl.addElement(h3);
+		 
+		 Hashtable<String,Integer> h4=new Hashtable<String,Integer>(); 
+		 h4.put("1", 0);
+		 zl.addElement(h4);
+		 
+		 Hashtable<String,Integer> h5=new Hashtable<String,Integer>(); 
+		 h5.put("1", 0);
+		 zl.addElement(h5);
+		 
+		 Hashtable<String,Integer> h6=new Hashtable<String,Integer>(); 
+		 h6.put("1", 1);
+		 zl.addElement(h6);
+		 removeNull(zl);
+		 
+		 System.out.println(zl);
 		
 	}
 
