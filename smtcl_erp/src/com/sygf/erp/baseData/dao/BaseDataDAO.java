@@ -229,4 +229,49 @@ public class BaseDataDAO extends SqlMapClientDaoSupport {
 		}
 		return yesNo;
 	}
+	/**
+	 * 获取权限设置-角色的最大ID
+	 * @param map
+	 * @return
+	 */
+	public List getMaxId(){
+		try{
+			return getSqlMapClientTemplate().queryForList("BaseDataDAO.getMaxId",null);
+		}catch (Exception e) {
+			Log.error("BaseDataDAO.getMaxId方法出现异常！" + e.getMessage());
+			e.printStackTrace();
+		};
+		return null;
+	}
+	/**
+	 * 权限重置
+	 * @param map
+	 * @return
+	 */
+	public boolean removeAllJueSe(HashMap map){
+		boolean yesNo = false;
+		try {
+			getSqlMapClientTemplate().delete("BaseDataDAO.removeAllJueSe", map);
+			yesNo=true;
+		} catch (Exception e) {
+			Log.error("BaseDataDAO.removeAllJueSe方法出现异常！" + e.getMessage());
+			e.printStackTrace();
+		}
+		return yesNo;
+	}
+	/**
+	 * 新加角色权限
+	 * @param map
+	 */
+	public boolean insertJueSe(HashMap map) {
+		boolean yesNo = false;
+		try {
+			getSqlMapClientTemplate().insert("BaseDataDAO.insertJueSe", map);
+			yesNo=true;
+		} catch (Exception e) {
+			Log.error("BaseDataDAO.insertJueSe方法出现异常！" + e.getMessage());
+			e.printStackTrace();
+		}
+		return yesNo;
+	}
 }

@@ -63,8 +63,77 @@ public class BaseDataAction extends Action{
 				return pack_up(mapping, form, request, response);
 			}else if (operType.equals("pack_bottom")){
 				return pack_bottom(mapping, form, request, response);
+			}else if (operType.equals("jueSeQX")){
+				return jueSeQX(mapping, form, request, response);
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	/**
+	 * 删除权限
+	 * @param dao
+	 * @param map
+	 * @return
+	 */
+	public boolean removeAll(BaseDataDAO dao,HashMap map){
+		boolean yesNo = false;
+		try{
+			String olnId=map.get("id").toString();
+			//重置权限
+			if(!olnId.equals("")){
+				yesNo=dao.removeAllJueSe(map);
+			};olnId=null;
+			return yesNo;
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return yesNo;
+	}
+	/**
+	 * 角色权限
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	private ActionForward jueSeQX(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) {
+		try{
+			request.setCharacterEncoding("utf-8");
+			response.setCharacterEncoding("utf-8");
+			HashMap map = GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
+			ApplicationContext context = GetApplicationContext.getContext(request);
+			BaseDataDAO dao = (BaseDataDAO)context.getBean("baseDataDAO");
+			JSONObject result = new JSONObject();
+			removeAll(dao, map);//删除权限
+			//获取最大ID
+			List list=dao.getMaxId();
+			int id = list!=null&&list.size()>0?Integer.parseInt(((HashMap)list.get(0)).get("ID").toString())+1:2;
+			String name=map.get("name").toString();
+			JSONArray data=new JSONArray(map.get("data").toString());
+			String sql=null;
+			String xuhao=null;
+			String juseGongneng=null;
+			String gongnengQuanXian=null;
+			for(int i=0;i<data.length();i++){
+				xuhao=data.getJSONObject(i).get("xuhao").toString();
+				juseGongneng=data.getJSONObject(i).get("juseGongneng").toString();
+				gongnengQuanXian=data.getJSONObject(i).get("gongnengQuanXian").toString();
+				sql = "INSERT INTO `角色`(`ID`,`序号`,`角色名`,`角色功能`,`功能权限`)VALUES("+id+","+xuhao+",'"+name+"','"+juseGongneng+"','"+gongnengQuanXian+"')";
+				map.put("sql", sql);
+				xuhao=null;gongnengQuanXian=null;juseGongneng=null;sql=null;
+				dao.insertJueSe(map);
+			};
+			result.put("id", id);
+			result.put("success", true);
+			list=null;map=null;data=null;dao=null;context=null;name=null;
+			response.setContentType("text/html;charset=utf-8");
+			response.getWriter().print(result);
+			response.getWriter().close();
+		}catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
@@ -84,7 +153,6 @@ public class BaseDataAction extends Action{
 			request.setCharacterEncoding("utf-8");
 			response.setCharacterEncoding("utf-8");
 			HashMap map = GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
-			HttpSession session = request.getSession();
 			ApplicationContext context = GetApplicationContext.getContext(request);
 			BaseDataDAO dao = (BaseDataDAO)context.getBean("baseDataDAO");
 			String sql = "";
@@ -116,7 +184,6 @@ public class BaseDataAction extends Action{
 					result.add(mapPara);
 				}
 			}
-			//System.out.println(result.toString().replaceAll("'='", "':'"));
 			response.setContentType("text/html;charset=utf-8");
 			response.getWriter().print(result.toString().replaceAll("'='", "':'"));
 			response.getWriter().close();

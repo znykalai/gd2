@@ -431,4 +431,19 @@
 	<select id="KuFangActionDAO.getTpMachineID" parameterClass="java.util.HashMap" resultMap="KuFangActionDAO.getTpMachineIDMap">
 		SELECT a.`托盘编号`,a.`方向` FROM `库存托盘` AS a WHERE a.`货位号`=#fromID#
 	</select>
+	<!-- 权限设置-角色 获取角色最大ID -->
+	<resultMap id="BaseDataDAO.getMaxIdMap" class="java.util.HashMap">
+    	<result property="ID" column="ID" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    </resultMap>
+	<select id="BaseDataDAO.getMaxId" parameterClass="java.util.HashMap" resultMap="BaseDataDAO.getMaxIdMap">
+		SELECT MAX(a.ID) ID FROM `角色` AS a
+	</select>
+	<!--重置用户权限 -->
+	<delete id="BaseDataDAO.removeAllJueSe" parameterClass="java.util.HashMap">
+		DELETE FROM 角色 WHERE ID=#id#
+	</delete>
+	<!-- 新增角色权限 -->
+	<insert id="BaseDataDAO.insertJueSe" parameterClass="java.util.HashMap">
+		$sql$
+	</insert>
 </sqlMap>
