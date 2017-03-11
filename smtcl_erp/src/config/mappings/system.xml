@@ -317,6 +317,8 @@
     	<result property="电芯位置3" column="电芯位置3" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     	<result property="电芯位置4" column="电芯位置4" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     	<result property="工位" column="工位" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="ST读取标志" column="ST读取标志" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="前升读标志" column="前升读标志" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     </resultMap>
 	<select id="OrderOperactionDAO.getZlpfList" parameterClass="java.util.HashMap" resultMap="OrderOperactionDAO.getZlpfListMap">
 		$sql$

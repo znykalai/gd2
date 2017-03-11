@@ -21,6 +21,10 @@ import com.sygf.erp.baseData.dao.OrderOperactionDAO;
 import com.sygf.erp.util.GetApplicationContext;
 import com.sygf.erp.util.GetParam;
 
+import alai.znyk.plc.Carry;
+import alai.znyk.plc.CarryLine;
+import alai.znyk.plc.PLC;
+
 public class OrderOperAction extends Action{
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response){
@@ -196,33 +200,94 @@ public class OrderOperAction extends Action{
 			ApplicationContext context = GetApplicationContext.getContext(request);
 			OrderOperactionDAO dao = (OrderOperactionDAO)context.getBean("orderOperactionDAO");
 			ArrayList result = new ArrayList();
+			JSONObject obj = new JSONObject();
 			String sql = "SELECT a.* FROM `配方指令队列` a WHERE " +
 					"a.`工单ID`='"+map.get("dd_id")+"' AND a.`模组序ID`='"+map.get("mz_xuId")+"' ORDER BY a.`分解号`,a.`载具序号`";
-			map.put("sql", sql);
-			sql=null;
+			map.put("sql", sql);sql=null;
 			List list = dao.getZlpfList(map);
 			if(list!=null&&list.size()>0){
-				for(int i=0;i<list.size();i++){
-					HashMap mapPara = new HashMap();
-					mapPara.put("'dd_gdxuhao'", "'"+((HashMap)list.get(i)).get("工单序号")+"'");
-					mapPara.put("'dd_zaijuxuhao'", "'"+((HashMap)list.get(i)).get("载具序号")+"'");
-					mapPara.put("'dd_fenjiehao'", "'"+((HashMap)list.get(i)).get("分解号")+"'");
-					mapPara.put("'dd_wuliao'", "'"+((HashMap)list.get(i)).get("物料")+"'");
-					mapPara.put("'dd_wuliaomiaoshu'", "'"+((HashMap)list.get(i)).get("物料描述")+"'");
-					mapPara.put("'dd_xuqiushuliang'", "'"+((HashMap)list.get(i)).get("数量")+"'");
-					mapPara.put("'dd_wanchengshuliang'", "'"+((HashMap)list.get(i)).get("完成数量")+"'");
-					mapPara.put("'dd_dianxin1'", "'"+((HashMap)list.get(i)).get("电芯位置1")+"'");
-					mapPara.put("'dd_dianxin2'", "'"+((HashMap)list.get(i)).get("电芯位置2")+"'");
-					mapPara.put("'dd_dianxin3'", "'"+((HashMap)list.get(i)).get("电芯位置3")+"'");
-					mapPara.put("'dd_dianxin4'", "'"+((HashMap)list.get(i)).get("电芯位置4")+"'");
-					mapPara.put("'dd_gongwei'", "'"+((HashMap)list.get(i)).get("工位")+"'");
-					result.add(mapPara);
-					mapPara=null;
-				}
+				//故障恢复
+				if(map.get("type")!=null&&map.get("type").equals("GuzhangHuifu")){
+					ArrayList A = new ArrayList();
+					int row=24;//行高
+					for(int i=0;i<list.size();i++){
+						HashMap mapPara1 = new HashMap();
+						String dd_zaijuxuhao=((HashMap)list.get(i)).get("载具序号").toString();
+						//计算行高
+						if(i+1!=list.size()&&dd_zaijuxuhao.equals(((HashMap)list.get(i+1)).get("载具序号"))){
+							row=row+row;
+						}else{
+							CarryLine line;
+							if(map.get("line").equals("1")){
+								line=PLC.getIntance().line;
+							}else{
+								line=PLC.getIntance().line2;
+							};
+							String k="";
+							for(int j=-1;j<15;j++){
+								try{
+								Carry car=line.getCarry(j);
+								if(car!=null){
+									if(car.get工单ID()==Integer.parseInt(map.get("dd_id").toString())&&
+										car.get模组序ID()==Integer.parseInt(map.get("mz_xuId").toString())&&
+										car.get分解号()==Integer.parseInt(((HashMap)list.get(i)).get("分解号").toString())&&
+										car.get载具序号()==Integer.parseInt(dd_zaijuxuhao)){
+										k=j+"";
+										break;
+									};
+								};
+								}catch(Exception e){
+									e.printStackTrace();
+								}
+							};
+							mapPara1.put("dd_zaijuxuhao",dd_zaijuxuhao);
+							mapPara1.put("row", row);
+							mapPara1.put("dd_qianshengdubiaozhi", ((HashMap)list.get(i)).get("前升读标志").equals("1")?"已读":"未读");
+							mapPara1.put("shusongxian", k);
+							A.add(mapPara1);
+							row=24;
+						};
+						dd_zaijuxuhao=null;
+						mapPara1=null;
+						HashMap mapPara2 = new HashMap();
+						mapPara2.put("dd_gdId", map.get("dd_id"));
+						mapPara2.put("dd_mzxId", map.get("mz_xuId"));
+						mapPara2.put("dd_fenjiehao", ((HashMap)list.get(i)).get("分解号"));
+						mapPara2.put("dd_wuliao", ((HashMap)list.get(i)).get("物料"));
+						mapPara2.put("dd_xuqiushuliang", ((HashMap)list.get(i)).get("数量"));
+						mapPara2.put("dd_wanchengshuliang", ((HashMap)list.get(i)).get("完成数量"));
+						mapPara2.put("dd_gongwei", ((HashMap)list.get(i)).get("工位"));
+						mapPara2.put("dd_stduqubiaozhi", ((HashMap)list.get(i)).get("ST读取标志").equals("1")?"已读":"未读");
+						result.add(mapPara2);
+						mapPara2=null;
+					};
+					obj.put("A", A);A=null;
+					obj.put("B", result);
+				//配方显示
+				}else{
+					for(int i=0;i<list.size();i++){
+						HashMap mapPara = new HashMap();
+						mapPara.put("'dd_gdxuhao'", "'"+((HashMap)list.get(i)).get("工单序号")+"'");
+						mapPara.put("'dd_zaijuxuhao'", "'"+((HashMap)list.get(i)).get("载具序号")+"'");
+						mapPara.put("'dd_fenjiehao'", "'"+((HashMap)list.get(i)).get("分解号")+"'");
+						mapPara.put("'dd_wuliao'", "'"+((HashMap)list.get(i)).get("物料")+"'");
+						mapPara.put("'dd_wuliaomiaoshu'", "'"+((HashMap)list.get(i)).get("物料描述")+"'");
+						mapPara.put("'dd_xuqiushuliang'", "'"+((HashMap)list.get(i)).get("数量")+"'");
+						mapPara.put("'dd_wanchengshuliang'", "'"+((HashMap)list.get(i)).get("完成数量")+"'");
+						mapPara.put("'dd_dianxin1'", "'"+((HashMap)list.get(i)).get("电芯位置1")+"'");
+						mapPara.put("'dd_dianxin2'", "'"+((HashMap)list.get(i)).get("电芯位置2")+"'");
+						mapPara.put("'dd_dianxin3'", "'"+((HashMap)list.get(i)).get("电芯位置3")+"'");
+						mapPara.put("'dd_dianxin4'", "'"+((HashMap)list.get(i)).get("电芯位置4")+"'");
+						mapPara.put("'dd_gongwei'", "'"+((HashMap)list.get(i)).get("工位")+"'");
+						result.add(mapPara);
+						mapPara=null;
+					};
+				};
 			};
-			list=null;context=null;dao=null;map=null;
+			list=null;context=null;dao=null;
 			response.setContentType("text/html;charset=utf-8");
-			response.getWriter().print(result.toString().replaceAll("'='", "':'"));
+			response.getWriter().print(map.get("type")!=null?obj:result.toString().replaceAll("'='", "':'"));
+			map=null;obj=null;
 			response.getWriter().close();
 		}catch (Exception e) {
 			e.printStackTrace();

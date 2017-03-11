@@ -37,7 +37,9 @@ var readyShow={
 					}
 					$('#xy').css('height', (winHeight - (window.screen.height - winHeight))/0.98);
 					var dd_id,mz_xuhao,arrayGd=[],arrayMz=[],winHeight=null;
-					$('.table-body').css('height', document.body.clientHeight/5.88);
+					var a=$('#table-body1').css('height', document.body.clientHeight/9);a=null;
+					var b=$('#table-body2').css('height', document.body.clientHeight/9);b=null;
+					var c=$('#table-body3').css('height', document.body.clientHeight/3.5);c=null;
 					//工单模组-配方显示
 					function showGdMzPfList(dd_id,mz_xuId){
 						$('#pf_table tbody tr').remove();//配方table
@@ -48,31 +50,31 @@ var readyShow={
 							success:function (data) {
 				  				var obj=eval("("+data+")");
 								for(var i=0;i<obj.length;i++){
-									$('#pf_table tbody').append('<tr id="mz_row'+i+'" bgcolor="#ffffff" style="height:28px;">' +
+									$('#pf_table tbody').append('<tr id="mz_row'+i+'" bgcolor="#ffffff" style="height:28px;">'+
 										//工单序号
-										'<td style="width:8%;padding:2px;">'+obj[i].dd_gdxuhao +'</td>' +
+										'<td style="width:8%;padding:2px;">'+obj[i].dd_gdxuhao+'</td>'+
 										//模组号
-										'<td style="width:8%;padding:2px;">'+obj[i].dd_fenjiehao +'</td>' +
+										'<td style="width:8%;padding:2px;">'+obj[i].dd_fenjiehao+'</td>'+
 										//载具号
-										'<td style="width:8%;padding:2px;">'+obj[i].dd_zaijuxuhao +'</td>' +
+										'<td style="width:8%;padding:2px;">'+obj[i].dd_zaijuxuhao+'</td>'+
 										//物料编码
-										'<td style="width:8%;padding:2px;">'+obj[i].dd_wuliao+'</td>' +
+										'<td style="width:8%;padding:2px;">'+obj[i].dd_wuliao+'</td>'+
 										//物料描述
-										'<td style="width:8%;padding:2px;">'+obj[i].dd_wuliaomiaoshu+'</td>' +
+										'<td style="width:8%;padding:2px;">'+obj[i].dd_wuliaomiaoshu+'</td>'+
 										//需求数量
-										'<td style="width:8%;padding:2px;">'+obj[i].dd_xuqiushuliang+'</td>' +
+										'<td style="width:8%;padding:2px;">'+obj[i].dd_xuqiushuliang+'</td>'+
 										//完成数量
-										'<td style="width:8%;padding:2px;">'+obj[i].dd_wanchengshuliang+'</td>' +
+										'<td style="width:8%;padding:2px;">'+obj[i].dd_wanchengshuliang+'</td>'+
 										//电芯1
-										'<td style="width:8%;padding:2px;">'+obj[i].dd_dianxin1+'</td>' +
+										'<td style="width:8%;padding:2px;">'+obj[i].dd_dianxin1+'</td>'+
 										//电芯2
-										'<td style="width:8%;padding:2px;">'+obj[i].dd_dianxin2+'</td>' +
+										'<td style="width:8%;padding:2px;">'+obj[i].dd_dianxin2+'</td>'+
 										//电芯3
-										'<td style="width:8%;padding:2px;">'+obj[i].dd_dianxin3+'</td>' +
+										'<td style="width:8%;padding:2px;">'+obj[i].dd_dianxin3+'</td>'+
 										//电芯4
-										'<td style="width:8%;padding:2px;">'+obj[i].dd_dianxin4+'</td>' +
+										'<td style="width:8%;padding:2px;">'+obj[i].dd_dianxin4+'</td>'+
 										//工位
-										'<td style="width:8%;padding:2px;">'+obj[i].dd_gongwei+'</td>' +
+										'<td style="width:8%;padding:2px;">'+obj[i].dd_gongwei+'</td>'+
 									'</tr>');
 								}
 								obj=null;
@@ -86,25 +88,25 @@ var readyShow={
 						$('#mz_table tbody tr').remove();//模组table
 						$('#pf_table tbody tr').remove();//配方table
 						for(var i=0;i<obj.length;i++){
-							$('#mz_table tbody').append('<tr id="mz_row'+i+'" bgcolor="#ffffff" style="height:28px;">' +
+							$('#mz_table tbody').append('<tr id="mz_row'+i+'" bgcolor="#ffffff" style="height:28px;">'+
 							//单选
 							'<td style="width:2%;padding:2px;">'+
-								'<input type="radio" name="trMzRadio"/>' +
+								'<input type="radio" name="trMzRadio"/>'+
 								'<input type="hidden" id="mz_xuId'+i+'" value="'+obj[i].mz_xuId+'">'+
-							'</td>' +
+							'</td>'+
 							//模组类型
-							'<td style="width:8%;padding:2px;">'+obj[i].mz_leixing +
-							'<input type="hidden" id="dd_id'+i+'" value="'+obj[i].dd_id+'"></td>' +
+							'<td style="width:8%;padding:2px;">'+obj[i].mz_leixing+
+							'<input type="hidden" id="dd_id'+i+'" value="'+obj[i].dd_id+'"></td>'+
 							//模组编码
-							'<td style="width:7%;padding:2px;">'+obj[i].mz_code+'</td>' +
+							'<td style="width:7%;padding:2px;">'+obj[i].mz_code+'</td>'+
 							//数量
-							'<td style="width:10%;padding:2px;">'+obj[i].mz_shuliang+'</td>' +
+							'<td style="width:10%;padding:2px;">'+obj[i].mz_shuliang+'</td>'+
 							//完成进度
 							'<td style="width:3%;padding:3px;">'+
 								'<div class="progress progress-striped active" style="margin-bottom:0px;">'+
 									'<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:'+obj[i].mz_jindu+'%;"></div>'+
 								'</div>'+
-							'</td>' +
+							'</td>'+
 							'</tr>');
 							$('#mz_row'+i).click(function(){
 								$(this).children("td").eq(0).find("input:radio").prop("checked",true);
@@ -142,26 +144,26 @@ var readyShow={
 								var i=0;
 								var objLength=obj.length;
 								while(i<objLength){
-				  					$('#dd_table tbody').append('<tr id="gd_row'+i+'" bgcolor="#ffffff" style="height:28px;">' +
+				  					$('#dd_table tbody').append('<tr id="gd_row'+i+'" bgcolor="#ffffff" style="height:28px;">'+
 				  						//单选
 										'<td id="radio_id_'+i+'" style="width:3%;padding:2px;">'+
-											'<input type="radio" id="trRadio_dd'+obj[i].id+'" name="trGdRadio" value="'+obj[i].id+'"/>' +
-										'</td>' +
+											'<input type="radio" id="trRadio_dd'+obj[i].id+'" name="trGdRadio" value="'+obj[i].id+'"/>'+
+										'</td>'+
 										//工单序号
-										'<td style="width:8%;padding:2px;">'+obj[i].dd_xuhao +
-										'<input type="hidden" id="dd_code'+i+'" value="'+obj[i].dd_code+'"></td>' +
+										'<td style="width:8%;padding:2px;">'+obj[i].dd_xuhao+
+										'<input type="hidden" id="dd_code'+i+'" value="'+obj[i].dd_code+'"></td>'+
 										//状态
-										'<td style="width:7%;padding:2px;">'+obj[i].dd_zhuangtai+'</td>' +
+										'<td style="width:7%;padding:2px;">'+obj[i].dd_zhuangtai+'</td>'+
 										//分解日期
-										'<td style="width:10%;padding:2px;">'+obj[i].dd_fenjieriqi+'</td>' +
+										'<td style="width:10%;padding:2px;">'+obj[i].dd_fenjieriqi+'</td>'+
 										//PACK编码
-										'<td style="width:10%;padding:2px;">'+obj[i].pack_code+'</td>' +
+										'<td style="width:10%;padding:2px;">'+obj[i].pack_code+'</td>'+
 										//PACK类型
-										'<td style="width:8%;padding:2px;">'+obj[i].pack_leixing+'</td>' +
+										'<td style="width:8%;padding:2px;">'+obj[i].pack_leixing+'</td>'+
 										//装配区
-										'<td style="width:8%;padding:2px;">'+obj[i].dd_zhuangpeiqu+'</td>' +
+										'<td style="width:8%;padding:2px;">'+obj[i].dd_zhuangpeiqu+'</td>'+
 										//计划数量
-										'<td style="width:8%;padding:2px;">'+obj[i].dd_jihuashuliang+'</td>' +
+										'<td style="width:8%;padding:2px;">'+obj[i].dd_jihuashuliang+'</td>'+
 										//完成进度
 										'<td style="width:5%;padding:3px;">'+
 											'<div class="progress progress-striped active" style="margin-bottom:0px;">'+
