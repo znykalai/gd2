@@ -10,6 +10,8 @@ public class STContent implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	public static int checkNum_预装=0;
+	public static int checkNum_同步=0;
 	public ST_Father firstST;
     public ST_Father secondST;
     public int stNum;
@@ -545,7 +547,7 @@ public class STContent implements Serializable {
     		   //同时把异步输送线的队列也处理了
     		 int next=stNum-1;
     		 if(!firstST.isWrite()&&!secondST.isWrite()){
-    			 for(int i=stNum-1;i>=0;i--){//从9向前判断
+    			 for(int i=stNum-1;i>=checkNum_预装;i--){//从9向前判断
     			 Carry car=plc.line.getCarry(i);
     			 if(car==null){continue;}
     			 String ss1= car.get电芯位置1(); String ss2= car.get电芯位置2();
@@ -583,7 +585,7 @@ public class STContent implements Serializable {
     			 }
     		
     			 }//end for
-    	 for(int i=next-1;i>=0;i--){
+    	 for(int i=next-1;i>=checkNum_预装;i--){
         			 Carry car=plc.line.getCarry(i);
         			 if(car==null){continue;}
         			 String ss1= car.get电芯位置1(); String ss2= car.get电芯位置2();
@@ -626,7 +628,7 @@ public class STContent implements Serializable {
     		 }
     
    if(firstST.isWrite()&&!secondST.isWrite()){
-    			 for(int i=stNum-1;i>=0;i--){
+    			 for(int i=stNum-1;i>=checkNum_预装;i--){
         			 Carry car=plc.line.getCarry(i);
         			 if(car==null){continue;}
         			 String s=firstST.get工单ID()+""+firstST.get模组序ID()+""+firstST.get分解号()+""+firstST.get载具序号();
@@ -781,7 +783,7 @@ public class STContent implements Serializable {
     		//从叠装工位向前判断
     		 if(!firstST.isWrite()&&!secondST.isWrite()){
     			 Vector tem=new Vector();
-    			 for(int i=12;i>=0;i--){
+    			 for(int i=12;i>=checkNum_同步;i--){
     			 Carry car=plc.line.getCarry(i);
     			
     			 if(car==null){continue;}
@@ -876,7 +878,7 @@ public class STContent implements Serializable {
     		 }
     		 if(firstST.isWrite()&&!secondST.isWrite()){
     			 Vector tem=new Vector();
-    			 for(int i=12;i>=0;i--){
+    			 for(int i=12;i>=checkNum_同步;i--){
         			 Carry car=plc.line.getCarry(i);
         			
         			 if(car==null){continue;}
@@ -884,7 +886,7 @@ public class STContent implements Serializable {
         			 String ss3= car.get电芯位置3(); String ss4= car.get电芯位置4();
         			 if(ss1!=null){
         				 String sm[]=ss1.split("=");
-        				 if(sm.length==2){
+        				 if(sm.length==2){//要是等于3的话说明已经上传了
         					 Vector row=new Vector();
         					 row.addElement(car); row.addElement(sm[1].equals("A")?false:true);
         					 tem.add(row);

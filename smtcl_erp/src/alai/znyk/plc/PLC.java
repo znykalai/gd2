@@ -1150,4 +1150,18 @@ public class PLC implements Serializable {
 		
 	      }
 	
+	public String stop(){
+		 Vector v=SqlTool.findInVector("select idEvent,来源,任务类别,动作,托盘编号,来源货位号,放回货位号,请求区,状态,状态2 from 立库动作指令  where 状态<>'完成' and 状态<>'排队'  order by idEvent");
+		   if(v.size()>0){
+			   return "堆垛机还有未执行完的命令，请等待堆垛机执行完命令，在关闭系统";
+		   }
+		   else{
+			  SqlPro.is大库调度=false; 
+			  SqlPro.is指令调度=false;
+			  stop1=true;
+			  stop2=true;
+			   
+		   }
+		return "成功";
+	}
 }

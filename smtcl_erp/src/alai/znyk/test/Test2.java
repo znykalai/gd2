@@ -163,7 +163,7 @@ public class Test2 {
 		 h3.put("1", 0);
 		 zl.addElement(h3);
 		 
-		 Hashtable<String,Integer> h4=new Hashtable<String,Integer>(); 
+		/* Hashtable<String,Integer> h4=new Hashtable<String,Integer>(); 
 		 h4.put("1", 0);
 		 zl.addElement(h4);
 		 
@@ -173,8 +173,50 @@ public class Test2 {
 		 
 		 Hashtable<String,Integer> h6=new Hashtable<String,Integer>(); 
 		 h6.put("1", 1);
-		 zl.addElement(h6);
-		 removeNull(zl);
+		 zl.addElement(h6);*/
+		// removeNull(zl);
+		 
+		 Vector<Hashtable<String,Integer>> z2=new Vector<Hashtable<String,Integer>>();
+		 Hashtable<String,Integer> hh=new Hashtable<String,Integer>(); 
+		 hh.put("2", 1);
+		 z2.addElement(hh);
+		 
+		 Hashtable<String,Integer> hh2=new Hashtable<String,Integer>(); 
+		 hh2.put("2", 0);
+		 z2.addElement(hh2);
+		 
+		 Hashtable<String,Integer> hh3=new Hashtable<String,Integer>(); 
+		 hh3.put("2", 0);
+		 z2.addElement(hh3);
+		 
+		 Hashtable<String,Integer> hh4=new Hashtable<String,Integer>(); 
+		 hh4.put("2", 0);
+		 z2.addElement(hh4);
+		 
+		 Hashtable<String,Integer> hh5=new Hashtable<String,Integer>(); 
+		 hh5.put("2", 0);
+		 z2.addElement(hh5);
+		 
+		if(zl.size()>z2.size()){
+			for(int i=0;i<z2.size();i++){
+				
+				zl.insertElementAt(z2.get(i), i*2);
+			}
+			
+		}else{
+			if(zl.size()<z2.size()){
+				int tem=zl.size();
+	         for(int i=0;i<tem;i++){
+	        	 System.out.println(i);
+		        zl.insertElementAt(z2.get(i), i*2);
+		
+	                   } 
+	         
+	          for(int i=tem;i<z2.size();i++){
+		              zl.addElement(z2.get(i));
+	              }
+	          }
+	     }
 		 
 		 System.out.println(zl);
 		
