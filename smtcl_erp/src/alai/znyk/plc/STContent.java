@@ -11,7 +11,7 @@ public class STContent implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	public static int checkNum_预装=0;
-	public static int checkNum_同步=0;
+	
 	public ST_Father firstST;
     public ST_Father secondST;
     public int stNum;
@@ -41,7 +41,7 @@ public class STContent implements Serializable {
   
     public void initFromSql(){
     	
-    	if(plc.stop1){//不再重数据库里面读数了，单是不影响搬运机构的继续执行
+    	if(plc.getIntance().stop1){//不再重数据库里面读数了，单是不影响搬运机构的继续执行
     		if(装配区==1){
     		   //System.out.println("return----");
     			if(stNum==1){ 
@@ -54,7 +54,8 @@ public class STContent implements Serializable {
     			
     		}
     	}
-    	if(plc.stop2){
+    	
+    	if(plc.getIntance().stop2){
     		if(装配区==2){
     			if(stNum==1){
     				 firstST.writeifChangeToPLC();
@@ -67,7 +68,10 @@ public class STContent implements Serializable {
     		}
     	}
     	
-    	if(stNum==1){//动作容许标志默认TURE
+    	
+    	if(stNum==1){
+    		//System.out.println("--------------------"+plc.getIntance().stop1);
+    		//动作容许标志默认TURE
          //前升降台,按工单号+分解号+模组编码（模组号）来分类汇总载具，按载具序号排序
     	//从数据库读取成功后,"前升降机读取标志=1",系统不从启前是不会在从新读取，接受到载具放行后，把这个标志更新为2表示完成，以后再也不会从数据库中读取
     	if(!firstST.isWrite()&&!secondST.isWrite()){
@@ -607,7 +611,7 @@ public class STContent implements Serializable {
         				((_9ST)secondST).set载具序号(car.载具序号);
         				((_9ST)secondST).set允许工位动作标志(false);
         				((_9ST)secondST).setPACK号(car.get工单号());
-        				((_9ST)firstST).setPACK类型标志(car.getPack类型());
+        				((_9ST)secondST).setPACK类型标志(car.getPack类型());
         				((_9ST)secondST).set模组号(car.get分解号());
         				((_9ST)secondST).set模组类型标志(car.get模组类型());
         				((_9ST)secondST).set电芯类型标志(car.get电芯类型());
@@ -783,7 +787,7 @@ public class STContent implements Serializable {
     		//从叠装工位向前判断
     		 if(!firstST.isWrite()&&!secondST.isWrite()){
     			 Vector tem=new Vector();
-    			 for(int i=12;i>=checkNum_同步;i--){
+    			 for(int i=12;i>=plc.getIntance().checkNum_同步;i--){
     			 Carry car=plc.line.getCarry(i);
     			
     			 if(car==null){continue;}
@@ -878,7 +882,7 @@ public class STContent implements Serializable {
     		 }
     		 if(firstST.isWrite()&&!secondST.isWrite()){
     			 Vector tem=new Vector();
-    			 for(int i=12;i>=checkNum_同步;i--){
+    			 for(int i=12;i>=plc.getIntance().checkNum_同步;i--){
         			 Carry car=plc.line.getCarry(i);
         			
         			 if(car==null){continue;}

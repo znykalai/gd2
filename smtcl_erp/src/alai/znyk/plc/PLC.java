@@ -25,6 +25,7 @@ public class PLC implements Serializable {
 	private static final long serialVersionUID = 1L;
 	 
 	public boolean 不检测取料数量=true;
+	public  int checkNum_同步=0;
 	public boolean is不检测取料数量() {
 		return 不检测取料数量;
 	}
@@ -53,8 +54,8 @@ public class PLC implements Serializable {
 	
 	public Vector<STContent> STC1=new Vector<STContent>();
 	public Vector<STContent> STC2=new Vector<STContent>();
-	public CarryLine line=new CarryLine(this);
-	public CarryLine line2=new CarryLine(this);
+	public CarryLine line=new CarryLine(1);
+	public CarryLine line2=new CarryLine(2);
 	String STATE1="502=0|504=0|506=0|508=0|510=0|512=0|514=0";
 	
 
@@ -210,6 +211,11 @@ public class PLC implements Serializable {
 			  INSTANCE=pp;
 			// String ss= INSTANCE.STC1.get(3).firstST.get物料编码();
 			// System.out.println(ss);
+			  stop1=INSTANCE.stop1;
+			  stop2=INSTANCE.stop2;
+			  不检测取料数量=INSTANCE.不检测取料数量;
+			  不检测动作完成=INSTANCE.不检测动作完成;
+			  checkNum_同步=INSTANCE.checkNum_同步;
 		      STC1=INSTANCE.STC1;
 			  line=INSTANCE.line;
 			  STC2=INSTANCE.STC2;

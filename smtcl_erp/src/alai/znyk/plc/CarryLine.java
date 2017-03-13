@@ -21,11 +21,11 @@ public class CarryLine implements Serializable{
 
 
 	private  Carry[]cont=new Carry[15];
+	int machineID=0;
 	
-	PLC plc;
 	public Carry buffer;
-	public CarryLine(PLC plc){
-		 this.plc=plc;
+	public CarryLine(int machineID){
+		 this.machineID=machineID;
 	} 
 	public boolean addFist(Carry carr){
 		if(1==1){
@@ -62,16 +62,42 @@ public class CarryLine implements Serializable{
 	}
 	
 	public String setCarryAt(int index,String 工单ID,String 模组ID,String 分解号,String 载具号){
-		//从读一下托盘
+		//清空托盘
 		if(index==-2){
-			//从载具上清空托盘
+			//从载具上清空托盘,如果这个托盘在0号工位，还要做相应处理
 			for(int i=-1;i<15;i++){
 				Carry car=this.getCarry(i);
 				if(car!=null){
 					if(car.getName().equals(工单ID+"="+模组ID+"="+分解号+"="+载具号)){
-						if(i==-1){this.buffer=null;}
+						if(i==-1){
+							this.buffer=null;
+							System.out.println(i+":"+machineID);
+							if(machineID==1){
+								PLC.getIntance().ST0_1.secondST.write=false;
+								// String sql="update 配方指令队列  set 前升读标志=NULL where 工单ID="+"'"+工单ID+"' and 分解号="+分解号+" and 模组序ID="+模组ID+" and 载具序号="+载具号+" and 装配区="+machineID;
+						    	 // System.out.println(i+":"+sql);
+								// SqlTool.insert(new String[]{sql});						
+							   }else{
+								PLC.getIntance().ST0_2.secondST.write=false; 
+								// String sql="update 配方指令队列  set 前升读标志=NULL where 工单ID="+"'"+工单ID+"' and 分解号="+分解号+" and 模组序ID="+模组ID+" and 载具序号="+载具号+" and 装配区="+2;
+						    	// SqlTool.insert(new String[]{sql});	
+							   }
+						    }
 						else{
 							cont[i]=null;
+							if(i==0){
+								if(machineID==1){
+									PLC.getIntance().ST0_1.firstST.write=false;
+									// String sql="update 配方指令队列  set 前升读标志=NULL where 工单ID="+"'"+工单ID+"' and 分解号="+分解号+" and 模组序ID="+模组ID+" and 载具序号="+载具号+" and 装配区="+machineID;
+									// System.out.println(i+":"+SqlTool.insert(new String[]{sql}));
+									 
+								   }else{
+									PLC.getIntance().ST0_2.firstST.write=false;  
+									 //String sql="update 配方指令队列  set 前升读标志=NULL where 工单ID="+"'"+工单ID+"' and 分解号="+分解号+" and 模组序ID="+模组ID+" and 载具序号="+载具号+" and 装配区="+2;
+							    	 //SqlTool.insert(new String[]{sql});	
+								   }
+								
+							}
 						}
 						
 					}
@@ -89,7 +115,10 @@ public class CarryLine implements Serializable{
 				Carry car=this.getCarry(i);
 				if(car!=null){
 					if(car.getName().equals(工单ID+"="+模组ID+"="+分解号+"="+载具号)){
-						if(i==-1){this.buffer=null;}
+						if(i==-1){
+						  this.buffer=null;
+							
+						}
 						else{
 							cont[i]=null;
 						}
@@ -128,7 +157,7 @@ public class CarryLine implements Serializable{
 	     	if(index==-1) {
 	     		this.buffer=carr;
 	     	}else{
-	     		  cont[index]=carr;
+	     		 cont[index]=carr;
 	     	}
 	     	return "成功"; 
 	     }
@@ -142,7 +171,7 @@ public class CarryLine implements Serializable{
 	
 
 	public  static void main(String ss[]){
-		CarryLine l=new CarryLine(null);
+		CarryLine l=new CarryLine(1);
 		l.setBuffer( new Carry(1,1,1,1));
 		l.addFist(l.buffer);
 //		l.buffer=null;
