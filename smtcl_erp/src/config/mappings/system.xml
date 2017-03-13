@@ -448,4 +448,8 @@
 	<insert id="BaseDataDAO.insertJueSe" parameterClass="java.util.HashMap">
 		$sql$
 	</insert>
+	<!-- 故障恢复-->
+	<update id="PLCDAO.gwGzUpdate" parameterClass="java.util.HashMap">
+		$sql$
+	</update>
 </sqlMap>

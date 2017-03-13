@@ -8,7 +8,7 @@ var readyShow={
 			return null;
 		});a=null;
 		if(e.id=="dingDanUpdate"){
-			var b=$(".ddddAnniu").click();
+			var b=$(".anNiuSelect").click();
 			b=null;
 		};
 		return null;
@@ -419,6 +419,8 @@ var readyShow={
 				/**
 				 * 故障恢复
 				 */
+				GdId:null,//工单ID
+				MzId:null,//模组序ID
 				//工单显示
 				showGdList:function(GdId,PackeCode,Gdfenjieriqi){
 					var a=$.ajax({
@@ -521,6 +523,7 @@ var readyShow={
 				},
 				//模组配方显示
 				showGdMzPfList:function(GdId,MzId,line){
+					af.GdId=GdId;af.MzId=MzId;//赋值
 					var a=$('#pf_table1 tbody tr').remove();a=null;//配方table
 					var b=$('#pf_table2 tbody tr').remove();b=null;//配方table
 					$.ajax({
@@ -530,25 +533,78 @@ var readyShow={
 						success:function (data) {
 			  				var obj=eval("("+data+")");
 			  				for(var i=0;i<obj.A.length;i++){
-			  					$('#pf_table1 tbody').append('<tr id="mz_row'+i+'" bgcolor="#ffffff" style="height:'+obj.A[i].row+'px;">'+
-									'<td style="width:5%;">'+obj.A[i].dd_zaijuxuhao+'</td>'+//工单ID
-									'<td style="width:10%;">'+obj.A[i].dd_qianshengdubiaozhi+'</td>'+//前升读标志
-									'<td style="width:10%;border-right:0px;">'+obj.A[i].shusongxian+'</td>'+//异步输送线位置
-								'</tr>');
-			  				};
+			  					$('#pf_table1 tbody').append('<tr bgcolor="#ffffff" line='+line+' style="height:'+obj.A[i].row+'px;">'+
+									'<td style="width:5%;">'+obj.A[i].dd_zaijuxuhao+'</td>'+//载具号
+									'<td class="dbClick" style="width:10%;">'+obj.A[i].dd_qianshengdubiaozhi+'</td>'+//前升读标志
+									'<td class="ybShuSx" style="width:10%;border-right:0px;">'+obj.A[i].shusongxian+'</td>'+//异步输送线位置
+									'<td style="display:none;">'+obj.A[i].fenJh+'</td>'+
+			  					'</tr>');
+			  				};obj.A=null;
 			  				for(var i=0;i<obj.B.length;i++){
-								$('#pf_table2 tbody').append('<tr id="mz_row'+i+'" bgcolor="#ffffff" style="height:24px;">'+
+								$('#pf_table2 tbody').append('<tr bgcolor="#ffffff" line='+line+' style="height:24px;">'+
 									'<td style="width:5%;">'+obj.B[i].dd_gdId+'</td>'+//工单ID
 									'<td style="width:5%;">'+obj.B[i].dd_mzxId+'</td>'+//模组序ID
 									'<td style="width:5%;">'+obj.B[i].dd_fenjiehao+'</td>'+//模组序ID
 									'<td style="width:5%;">'+obj.B[i].dd_wuliao+'</td>'+//物料编码
 									'<td style="width:5%;">'+obj.B[i].dd_xuqiushuliang+'</td>'+//需求数量
-									'<td style="width:5%;">'+obj.B[i].dd_wanchengshuliang+'</td>'+//完成数量
+									'<td class="wanChengSL" style="width:5%;">'+obj.B[i].dd_wanchengshuliang+'</td>'+//完成数量
 									'<td style="width:5%;">'+obj.B[i].dd_gongwei+'</td>'+//工位
-									'<td style="width:10%;">'+obj.B[i].dd_stduqubiaozhi+'</td>'+//ST预读
+									'<td class="dbClick" style="width:10%;">'+obj.B[i].dd_stduqubiaozhi+'</td>'+//ST预读
+									'<td style="display:none;">'+obj.B[i].dd_zaijuxuhao+'</td>'+
 								'</tr>');
-							};
+							};obj.B=null;
+							//完成数量点击事件
+							$(".wanChengSL").click(function(){
+								var e=this;
+								if(this.ck==false||this.ck==undefined){
+									e.ck=true;
+									var c=$(e).html('<input id="wanChengSL" style="padding:0;font-size:10px;width:100%;height:23px;" type="number" min="0" class="form-control" value="'+ $(e).html()+ '">');
+									var a=$("#wanChengSL").focus();a=null;c=null;
+									var b=$("#wanChengSL").blur(function (){
+										if(this.value==""){this.value=0;};
+							            var a=$(e).html(this.value);a=null;
+							            e.ck?e.ck=false:null;e=null;
+							            return null;
+							        });b=null;
+							        $('#wanChengSL').change(function(){
+					                    var a=$(e).parent().attr("class","update");a=null;
+								        return null;
+						            });
+								};
+								return null;
+							});
+							$(".ybShuSx").click(function(){
+								var e=this;//selected
+								if(this.ck==false||this.ck==undefined){
+									e.ck=true;
+									var height=$(this).parent().height();
+									var c=$(e).html('<select class="selectpicker" id="ybShuSx" style="height:'+(height-1)+';font-size:14px;width:100%;"><option value=""></option><option value="-1" '+($(this).html()=="-1"?"selected":"")+'>-1</option><option value="0" '+($(this).html()=="0"?"selected":"")+'>0</option><option value="1" '+($(this).html()=="1"?"selected":"")+'>1</option><option value="2" '+($(this).html()=="2"?"selected":"")+'>2</option><option value="3" '+($(this).html()=="3"?"selected":"")+'>3</option><option value="4" '+($(this).html()=="4"?"selected":"")+'>4</option><option value="5" '+($(this).html()=="5"?"selected":"")+'>5</option><option value="6" '+($(this).html()=="6"?"selected":"")+'>6</option><option value="7" '+($(this).html()=="7"?"selected":"")+'>7</option><option value="8" '+($(this).html()=="8"?"selected":"")+'>8</option><option value="9" '+($(this).html()=="9"?"selected":"")+'>9</option><option value="10" '+($(this).html()=="10"?"selected":"")+'>10</option><option value="11" '+($(this).html()=="11"?"selected":"")+'>11</option><option value="12" '+($(this).html()=="12"?"selected":"")+'>12</option><option value="13" '+($(this).html()=="13"?"selected":"")+'>13</option><option value="14" '+($(this).html()=="14"?"selected":"")+'>14</option><option value="15" '+($(this).html()=="15"?"selected":"")+'>15</option></select>');
+									c=null;height=null;
+									var a=$("#ybShuSx").focus();a=null;
+									var b=$("#ybShuSx").blur(function (){
+							            var a=$(e).html(this.value);a=null;
+							            e.ck?e.ck=false:null;e=null;
+							            return null;
+							        });b=null;
+							        $('#ybShuSx').change(function(){
+					                    var a=$(e).parent().attr("class","update");a=null;
+								        return null;
+						            });
+								};
+								return null;
+							});
+							//前升预读&ST预读
+							$(".dbClick").dblclick(function(){
+								if($(this).html()=='已读'){
+									var a=$(this).html('');a=null;
+								}else{
+									var a=$(this).html('已读');a=null;
+								};
+			                    var a=$(this).parent().attr("class","update");a=null;
+								return null;
+							});
 							obj=null;
+							return obj;
 						}
 					});
 				},
@@ -580,15 +636,104 @@ var readyShow={
 						},af.showType,gw);gw=null;//默认渲染A区
 						return null;
 					});$("#PLC").click();
-					//错误处理查询按钮点击事件
-					$(".ddddAnniu").click(function(){
+					//故障恢复查询按钮点击事件
+					$(".anNiuSelect").click(function(){
 						var win=layer.open({type:3});
 						var GdId=$("#GdId").val();
 						var Gdfenjieriqi=$("#Gdfenjieriqi").val();
 						var PackeCode=$("#PackeCode").val();
 						af.showGdList(GdId,Gdfenjieriqi,PackeCode);
-						var b=layer.close(win);win=null;b=null;
 						GdId=null;Gdfenjieriqi=null;PackeCode=null;
+						var b=layer.close(win);win=null;b=null;
+						return null;
+					});
+					//故障恢复保存按钮
+					$(".anNiuSave").click(function(){
+						var update1=new Array;
+						var pf_table1=$('#pf_table1 tbody tr');
+						var line=$('#pf_table1 tbody tr').attr("line");
+						for(var i=0;i<pf_table1.length;i++){
+				            if($(pf_table1).parent().children("tr").eq(i).attr("class")=="update"){
+				            	var zaiJh=pf_table1.eq(i).children("td").eq(0).html();
+				            	var zaiJydbz=pf_table1.eq(i).children("td").eq(1).html();
+				            	var yiBssx=pf_table1.eq(i).children("td").eq(2).html();
+				            	var fenJh=pf_table1.eq(i).children("td").eq(3).html();
+								var map={
+									GdId:af.GdId,
+									MzId:af.MzId,
+									zaiJh:zaiJh,
+									zaiJydbz:zaiJydbz=='已读'?'1':'',
+									yiBssx:yiBssx==''?'-2':yiBssx,
+									fenJh:fenJh
+								};zaiJh=null;zaiJydbz=null;yiBssx=null;fenJh=null;
+				                update1.push(map);//修改数据
+				                map=null;
+				            };
+						};pf_table1=null;
+						var update2=new Array;
+						var pf_table2=$('#pf_table2 tbody tr');
+						for(var i=0;i<pf_table2.length;i++){
+				            if($(pf_table2).parent().children("tr").eq(i).attr("class")=="update"){
+				            	var fenJh=pf_table2.eq(i).children("td").eq(2).html();
+				            	var zaiJh=pf_table2.eq(i).children("td").eq(8).html();
+				            	var wanCsl=pf_table2.eq(i).children("td").eq(5).html();
+				            	var stGwydbz=pf_table2.eq(i).children("td").eq(7).html();
+				            	var gw=pf_table2.eq(i).children("td").eq(6).html();
+								var map={
+									gw:gw,
+									GdId:af.GdId,
+									MzId:af.MzId,
+									zaiJh:zaiJh,
+									fenJh:fenJh,
+									wanCsl:wanCsl,
+									stGwydbz:stGwydbz=='已读'?'1':''
+								};fenJh=null;zaiJh=null;wanCsl=null;stGwydbz=null;
+								update2.push(map);//修改数据
+				                map=null;
+				            };
+						};pf_table2=null;
+						if(update1.length==0&&update2.length==0){
+							layer.msg("没有可恢复的数据！");
+							return null;
+						};
+						var a=$.ajax({
+							url:getRootPath()+'/PLCAction.do?operType=gwGzUpdate',
+							type:'post',cache:false,
+							data:'update1='+JSON.stringify(update1)+'&update2='+JSON.stringify(update2)+"&line="+line,
+							success:function(data){
+				  				var obj=eval("("+data+")");
+				  				if(!obj.plcDd){
+									layer.msg("请先停止调度！");
+									var a=$(".anNiuSelect").click();a=null;
+				  				}else if(obj.result&&obj.setCarryAt=='成功'){
+									layer.msg("数据已恢复！");
+									var a=$(".anNiuSelect").click();a=null;
+				  				}else{
+									layer.msg("数据恢复失败或者异步输送线位置恢复失败！");
+				  				};
+				  				obj=null;
+				  				return null;
+							}
+						});a=null;update1=null;update2=null;line=null;
+						return null;
+					});
+					//清除PLC指令
+					$(".anNiuDelete").click(function(){
+						var line=$('#pf_table1 tbody tr').attr("line");
+						var a=$.ajax({
+							url:getRootPath()+'/PLCAction.do?operType=gwGzDelete',
+							type:'post',cache:false,
+							data:"line="+line,
+							success:function(data){
+				  				var obj=eval("("+data+")");
+				  				if(!obj.plcDd){
+									layer.msg("请先停止调度！");
+				  				}else{
+									layer.msg("清除PLC指令成功！");
+				  				};obj=null;
+				  				return null;
+							}
+						});a=null;
 						return null;
 					});
 					return fun();

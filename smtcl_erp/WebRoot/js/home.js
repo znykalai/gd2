@@ -110,8 +110,8 @@ var af_Home={
 				$("#home_div").html(home_html);
 				$("#btn_id").html(home_btn);
 				readyShow.load(function(){
-					spl=null,body=null,
-					home_html=null,home_btn=null;
+					spl=null;body=null;
+					home_html=null;home_btn=null;
 					return null;
 				});
 				return null;
@@ -171,44 +171,39 @@ var af_Home={
 		});
 		//用户设置
 		$('#yhsz').mousedown(function(){
-			var a=$('#yhsz_id_').show(0);
-				a=$('#yhsz').hide(0);a=null;
+			var a=$('#yhsz_id_').show(0);a=null;
+			var b=$('#yhsz').hide(0);b=null;
 			return null;
 		});
 		//系统设置
 		$('#xtsz').mousedown(function(){
-			var a=$('#xtsz_id_').show(0);
-				a=$('#xtsz').hide(0);a=null;
+			var a=$('#xtsz_id_').show(0);a=null;
+			var b=$('#xtsz').hide(0);b=null;
 			return null;
 		});
 		//按钮-显示菜单
 		$('#anniuHome').click(function(){
-			var a=$("#homeRight").slideToggle(333);a=null;
+			var a=$("#homeRight").slideToggle(333),a=null;
 			return null;
 		});
 		$('#anniu1').click(function(){
-			var a=af_Home.click(getRootPath()+'/html/dddd.html');a=null;
-			return null;
+			return af_Home.click(getRootPath()+'/html/dddd.html');
 		});
 		//按钮-主页显示
 		$('#anniu2').click(function(){
-			var a=af_Home.click(getRootPath()+'/html/h_home.html');a=null;
-			return null;
+			return af_Home.click(getRootPath()+'/html/h_home.html');
 		});
 		//按钮-plc
 		$('#anniu3').click(function(){
-			var a=af_Home.click(getRootPath()+'/html/plc.html');a=null;
-			return null;
+			return af_Home.click(getRootPath()+'/html/plc.html');
 		});
 		//按钮-库房操作
 		$('#anniu4').click(function(){
-			var a=af_Home.click(getRootPath()+'/html/kfcz.html');a=null;
-			return null;
+			return af_Home.click(getRootPath()+'/html/kfcz.html');
 		});
 		//按钮-基础设置
 		$('#anniu5').click(function(){
-			var a=af_Home.click(getRootPath()+'/html/jcsz.html');a=null;
-			return null;
+			return af_Home.click(getRootPath()+'/html/jcsz.html');
 		});
 		$(document).keydown(function (event) {
 	        if (event.keyCode == 122) {
