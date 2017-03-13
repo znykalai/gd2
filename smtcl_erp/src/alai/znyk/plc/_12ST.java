@@ -59,6 +59,7 @@ public class _12ST extends ST_Father implements STInterface {
 		     允许工位动作标志=false;
    		     立库RDY=false;
    		     数据更新完成=false;
+   		    write=false; 
 		   
 	    	
 	    }

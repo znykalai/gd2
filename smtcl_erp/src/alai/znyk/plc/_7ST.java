@@ -137,6 +137,7 @@ public class _7ST extends ST_Father implements STInterface {
  		     第2个假电芯位置=0;
  		    完成数量=0;
  		    物料编码="";
+ 		   write=false; 
  		     
 	    	
 	    }

@@ -96,6 +96,7 @@ public class _DST extends ST_Father implements STInterface {
 	     立库RDY=false;
 		 数据更新完=false;
     	电芯类型标志=0;
+    	 write=false; 
     	
     }
    

@@ -96,7 +96,7 @@ public class CarryLine implements Serializable{
 						
 					}
 					
-				   }
+				   } }
 				
 			
 			//然后把这个工位设成本载具
@@ -128,11 +128,11 @@ public class CarryLine implements Serializable{
 	     	if(index==-1) {
 	     		this.buffer=carr;
 	     	}else{
-	     		cont[i]=carr;
+	     		  cont[index]=carr;
 	     	}
 	     	return "成功"; 
 	     }
-	 }
+	
 			
 		}//end else
 		

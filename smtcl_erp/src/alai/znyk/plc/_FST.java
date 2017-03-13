@@ -85,6 +85,7 @@ public class _FST extends ST_Father implements STInterface {
 	     翻B面=false;
 	     立库RDY=false;
 		 数据更新完=false;
+		 write=false; 
 		
     }
       

@@ -173,6 +173,7 @@ public class _9ST extends ST_Father implements STInterface {
  		     第2个电芯位置=0;
  		     第3个电芯位置=0;
 		     第4个电芯位置=0;
+		     write=false; 
 	    	
 	    }
 	@Override

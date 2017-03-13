@@ -128,6 +128,7 @@ public class _13ST extends ST_Father implements STInterface {
 	   		  PACK类型标志=0;
 	   		  PACK号=0;
 	   		  模组号=0;
+	   		 write=false; 
 	    	
 	    }
 	@Override

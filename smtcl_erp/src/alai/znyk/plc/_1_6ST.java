@@ -93,6 +93,7 @@ public class _1_6ST extends ST_Father implements STInterface {
  		     数据更新完成=false;
  		     完成数量=0;
  		     物料编码="";
+ 		     write=false; 
 	    	
 	    }
 	 
