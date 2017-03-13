@@ -1270,19 +1270,122 @@
 				</div>
 			</form>
 		</div>
-		<!-- 错误处理 -->
-		<div id="dingDanUpdate" class="row showWindow" style="display:none;">
-			错误处理
+		<!-- 故障恢复 -->
+		<div id="dingDanUpdate" class="row showWindow" style="padding:0;margin:0;display:none;">
+			<div class="row" style="margin-top:-45px;margin-left:-10px;">
+	            <div class="col-md-1" style="width:220px;">
+					<input id="GdId" type="text" placeholder="--请输入工单号 --" class="form-control"/>
+				</div>
+	            <div class="col-md-1" style="width:215px;">
+					<input id="Gdfenjieriqi" type="text" placeholder="--请输入分解日期 --" class="form-control"/>
+				</div>
+	            <div class="col-md-2" style="width:220px;">
+					<input id="PackeCode" type="text" placeholder="--请输入pack编码 --" class="form-control"/>
+				</div>
+	            <div class="col-md-1" style="width:125px;">
+			        <div class="button button-primary button-rounded button-small ddddAnniu" style="margin-left:5px;">查找</div>
+		        </div>
+			</div>
+			<!-- 工单 -->
+			<div class="row" style="margin-top:5px;margin-left:4px;">
+	        	<div style="padding-right:17px;">
+					<table class="table-bordered" style="width:100%;font-size:13px;">
+			           <thead>
+			               <tr style="height:25px;">
+			                  <th class="text-center" style="width:3%;border-bottom:0px;" bgcolor="#EFEFEF"></th>
+			                  <th class="text-center" style="width:8%;border-bottom:0px;" bgcolor="#EFEFEF">工单序号</th>
+			                  <th class="text-center" style="width:7%;border-bottom:0px;" bgcolor="#EFEFEF">状态</th>
+			                  <th class="text-center" style="width:10%;border-bottom:0px;" bgcolor="#EFEFEF">分解日期</th>
+			                  <th class="text-center" style="width:10%;border-bottom:0px;" bgcolor="#EFEFEF">PACK编码</th>
+			                  <th class="text-center" style="width:8%;border-bottom:0px;" bgcolor="#EFEFEF">PACK类型</th>
+			                  <th class="text-center" style="width:8%;border-bottom:0px;" bgcolor="#EFEFEF">装配区</th>
+			                  <th class="text-center" style="width:8%;border-bottom:0px;" bgcolor="#EFEFEF">计划数量</th>
+			                  <th class="text-center" style="width:5%;border-bottom:0px;" bgcolor="#EFEFEF">完成进度</th>
+			               </tr>
+			           </thead>
+					</table>
+				</div>
+		        <div class="table-body" style="width:100%;margin-top:-1px;padding:0 0 2 0;" id="table-body1">
+		           <table class="table-bordered text-center table-hover" style="width:100%;font-size:13px;" id="dd_table">
+		               <tbody></tbody>
+		           </table>
+		        </div>
+	        </div>
+	        <!-- 模组 -->
+	        <div class="row" style="margin-top:8px;margin-left:4px;">
+	        	<div style="padding-right:17px;">
+					<table class="table-bordered" style="width:100%;font-size:13px;">
+			           <thead>
+			               <tr style="height:25px;">
+			                  <th class="text-center" style="width:2%;border-bottom:0px;" bgcolor="#EFEFEF"></th>
+			                  <th class="text-center" style="width:8%;border-bottom:0px;" bgcolor="#EFEFEF">模组类型</th>
+			                  <th class="text-center" style="width:7%;border-bottom:0px;" bgcolor="#EFEFEF">模组编码</th>
+			                  <th class="text-center" style="width:10%;border-bottom:0px;" bgcolor="#EFEFEF">数量</th>
+			                  <th class="text-center" style="width:3%;border-bottom:0px;" bgcolor="#EFEFEF">进度</th>
+			               </tr>
+			           </thead>
+					</table>
+				</div>
+		        <div class="table-body" style="width:100%;margin-top:-1px;padding:0 0 2 0;" id="table-body2">
+		           <table class="table-bordered text-center table-hover" style="width:100%;font-size:13px;" id="mz_table">
+		               <tbody></tbody>
+		           </table>
+		        </div>
+	        </div>
+	        <!-- 配方 -->
+	        <div class="row" style="margin-top:8px;margin-left:4px;">
+	        	<div style="padding-right:17px;">
+	        		<div class="col-md-4" style="padding:0px;margin:0px;">
+		        		<table class="table-bordered" style="width:100%;font-size:13px;border-right:0px;">
+		        			<thead>
+			               		<tr style="height:25px;">
+				                  <th class="text-center" style="width:5%;border-bottom:0px;" bgcolor="#EFEFEF">载具</th>
+				                  <th class="text-center" style="width:10%;border-bottom:0px;" bgcolor="#EFEFEF">载具预读标志</th>
+				                  <th class="text-center" style="width:10%;border-bottom:0px;border-right:0px;" bgcolor="#EFEFEF">异步输送线位置</th>
+				               </tr>
+				           </thead>
+		        		</table>
+	        		</div>
+	        		<div class="col-md-8" style="padding:0px;margin:0px;">
+		        		<table class="table-bordered" style="width:100%;font-size:13px;">
+				           <thead>
+			               		<tr style="height:25px;">
+				                  <th class="text-center" style="width:5%;border-bottom:0px;" bgcolor="#EFEFEF">工单ID</th>
+				                  <th class="text-center" style="width:5%;border-bottom:0px;" bgcolor="#EFEFEF">模组序ID</th>
+				                  <th class="text-center" style="width:5%;border-bottom:0px;" bgcolor="#EFEFEF">分解号</th>
+				                  <th class="text-center" style="width:5%;border-bottom:0px;" bgcolor="#EFEFEF">物料</th>
+				                  <th class="text-center" style="width:5%;border-bottom:0px;" bgcolor="#EFEFEF">数量</th>
+				                  <th class="text-center" style="width:5%;border-bottom:0px;" bgcolor="#EFEFEF">完成数量</th>
+				                  <th class="text-center" style="width:5%;border-bottom:0px;" bgcolor="#EFEFEF">工位</th>
+				                  <th class="text-center" style="width:10%;border-bottom:0px;" bgcolor="#EFEFEF">工位预读标志</th>
+				               </tr>
+				           </thead>
+						</table>
+	        		</div>
+				</div>
+		        <div class="table-body" style="width:100%;padding:0 0 2 0;" id="table-body3">
+	        		<div class="col-md-4" style="padding:0px;margin:-1px 0 0 0;">
+		        		<table class="table-bordered text-center table-hover" style="border-right:0px;width:100%;font-size:13px;" id="pf_table1">
+			               <tbody></tbody>
+			           </table>
+	        		</div>
+		        	<div class="col-md-8" style="padding:0px;margin:-1px 0 0 0;">
+		        		<table class="table-bordered text-center table-hover" style="width:100%;font-size:13px;" id="pf_table2">
+			               <tbody></tbody>
+			           </table>
+		        	</div>
+		        </div>
+	        </div>
 		</div>
 	</div>
 	<div class="col-md-3" style="width:400px;"></div>
 	<div class="col-md-2">
 		<a class="button button-glow button-rounded button-raised button-primary butRow"
-		   onclick="readyShow.showThis(plc_id);" id="shuxin">PLC</a>
+		   onclick="readyShow.showThis(plc_id);" id="PLC">PLC</a>
 	</div>
 	<div class="col-md-2">
 		<a class="button button-glow button-rounded button-raised button-primary butRow"
-		   onclick="readyShow.showThis(dingDanUpdate);">错误处理</a>
+		   onclick="readyShow.showThis(dingDanUpdate);">故障恢复</a>
 	</div>
 	<script type="text/javascript" src="/smtcl_erp/html/js/plc.js"></script>
 </body>

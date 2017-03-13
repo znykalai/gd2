@@ -7,6 +7,10 @@ var readyShow={
 			var a=$(e).fadeIn(0);a=null;
 			return null;
 		});a=null;
+		if(e.id=="dingDanUpdate"){
+			var b=$(".ddddAnniu").click();
+			b=null;
+		};
 		return null;
 	},
 	load:function(hdFun){
@@ -14,15 +18,28 @@ var readyShow={
 			var winHeight=document.body.clientHeight;
 			if(winHeight==window.screen.height){
 				winHeight=document.body.clientHeight-50;
-			}
+			};
 			$('#xy').css('height',(winHeight-(window.screen.height-winHeight))/0.98);
+			var a=$('#table-body1').css('height', document.body.clientHeight/8);a=null;
+			var b=$('#table-body2').css('height', document.body.clientHeight/8);b=null;
+			var c=$('#table-body3').css('height', document.body.clientHeight/2.8);c=null;
 			winHeight=null;
-			$('.mainOrder').click(function (e) {
+			/*绑定日历选择器*/
+			$('#getGdfenjieriqi').datetimepicker({
+			    format:'yyyy-mm-dd',
+			    autoclose:true,
+			    pickerPosition:'bottom-left',
+			    todayBtn:1,
+			    linkFormat:'yyyy-mm-dd',
+			    minView:'month'
+			});
+			//PLC区域点击事件
+			$('.mainOrder').click(function(e){
 			    var item=$(e.target);
 			    $('#mainStatusBar').find('div').removeClass('select');
 			    item.addClass('select');
 			    $(".plc_show").children().css("display","none");
-			    $("#plc_show" + $(item).attr('data')).css("display","block");
+			    $("#plc_show"+ $(item).attr('data')).css("display","block");
 			    var gw=null;
 			    //如果当前是装配区A 不需要重复调用刷新事件
 			    if($(item).attr('data')==1&&af.showType=="A"){
@@ -82,12 +99,12 @@ var readyShow={
 								for(var i=0;i<obj.length;i++){
 					                $('#searchTable').append('<tr class="commonTr" style="cursor:pointer;"></tr>');
 					                $('#searchTable tbody tr:last').
-					                append('<td class="wuliao_code" style="width:50%;">' + obj[i].wuliao_code + '</td>');
+					                append('<td class="wuliao_code" style="width:50%;">'+ obj[i].wuliao_code+ '</td>');
 					                $('#searchTable tbody tr:last').
-					                append('<td class="wuliao_miaoshu" style="width:50%;">' + obj[i].wuliao_miaoshu + '</td>');
+					                append('<td class="wuliao_miaoshu" style="width:50%;">'+ obj[i].wuliao_miaoshu+ '</td>');
 								}
 								/*绑定双击事件*/
-				            	$('.commonTr').bind('dblclick',function (e) {
+				            	$('.commonTr').bind('dblclick',function(e){
 									var tr=$(e.target).parent();
 									fun(tr.find('.wuliao_code').text());
 				            		layer.close(win);
@@ -96,7 +113,7 @@ var readyShow={
 							}
 						});a=null;
 						return null;
-					}catch (e) {
+					}catch(e){
 						return e;
 					}
 					return null;
@@ -149,10 +166,10 @@ var readyShow={
 					};
 					var type=map.gwType;
 					var b=af.updateAction(data,function(){
-						var a=$("#shuxin").click();
+						var a=$("#PLC").click();
 						if(type=="C"||type=="D"){
 							var timename=setTimeout(function(){
-								var a=$("#shuxin").click();a=null;//刷新数据
+								var a=$("#PLC").click();a=null;//刷新数据
 								clearTimeout(timename);timename=null;
 							},1000);
 						};a=null;type=null;
@@ -188,7 +205,7 @@ var readyShow={
 								if($('#'+map.name).attr('title')=="machineID"){
 									return null;
 								};
-								$(e).html('<input id="td_input" style="padding:0;font-size:10px;width:100%;height:19px;" type="number" min="0" class="form-control" value="' + $(e).attr('title') + '">');
+								$(e).html('<input id="td_input" style="padding:0;font-size:10px;width:100%;height:19px;" type="number" min="0" class="form-control" value="'+ $(e).attr('title')+ '">');
 								$("#td_input").focus();
 								$("#td_input").blur(function (){
 									if(this.value==""){
@@ -231,7 +248,7 @@ var readyShow={
 								}else{
 									$("#ssx"+j).html("");
 								}
-							}catch (e) {
+							}catch(e){
 								alert(e);
 							}
 							j++;
@@ -252,19 +269,19 @@ var readyShow={
 							var map=obj.data[j];
 							while(i<map.A_LIST.length){
 								if(map.A_LIST[i].A.indexOf('-')==-1&&map.A_LIST[i].A!="boolContent"){
-									$('#'+mm.tableId+''+j+' tbody').append('<tr name="'+mm.trId+'" GW="'+j+'" bgcolor="#ffffff" style="height:20px;">' +
+									$('#'+mm.tableId+''+j+' tbody').append('<tr name="'+mm.trId+'" GW="'+j+'" bgcolor="#ffffff" style="height:20px;">'+
 										//项目
-										'<td id="'+mm.tdId1+''+j+'_'+i+'" title="'+map.A_LIST[i].A+'" style="width:100px;font-size:12px;">' +
-											(map.A_LIST[i].A.length>6?map.A_LIST[i].A.substring(0,7)+'..':map.A_LIST[i].A) +
-										'</td>' +
+										'<td id="'+mm.tdId1+''+j+'_'+i+'" title="'+map.A_LIST[i].A+'" style="width:100px;font-size:12px;">'+
+											(map.A_LIST[i].A.length>6?map.A_LIST[i].A.substring(0,7)+'..':map.A_LIST[i].A)+
+										'</td>'+
 										//列队1
-										'<td id="'+mm.tdId2+''+j+'_'+i+'" title="'+map.A_LIST[i].B+'" oldValue="'+map.A_LIST[i].B+'" style="width:50px;font-size:12px;">' +
-											(map.A_LIST[i].B.toString().length>6?map.A_LIST[i].B.toString().substring(0,6)+'..':map.A_LIST[i].B) +
-										'</td>' +
+										'<td id="'+mm.tdId2+''+j+'_'+i+'" title="'+map.A_LIST[i].B+'" oldValue="'+map.A_LIST[i].B+'" style="width:50px;font-size:12px;">'+
+											(map.A_LIST[i].B.toString().length>6?map.A_LIST[i].B.toString().substring(0,6)+'..':map.A_LIST[i].B)+
+										'</td>'+
 										//列队2
-										'<td id="'+mm.tdId3+''+j+'_'+i+'" title="'+map.A_LIST[i].C+'" oldValue="'+map.A_LIST[i].C+'"  style="width:50px;font-size:12px;">' +
-											(map.A_LIST[i].C.toString().length>6?map.A_LIST[i].C.toString().substring(0,6)+'..':map.A_LIST[i].C) +
-										'</td>' +
+										'<td id="'+mm.tdId3+''+j+'_'+i+'" title="'+map.A_LIST[i].C+'" oldValue="'+map.A_LIST[i].C+'"  style="width:50px;font-size:12px;">'+
+											(map.A_LIST[i].C.toString().length>6?map.A_LIST[i].C.toString().substring(0,6)+'..':map.A_LIST[i].C)+
+										'</td>'+
 									'</tr>');
 									//队列1
 									$('#'+mm.tdId2+''+j+'_'+i).dblclick(function(){
@@ -306,19 +323,19 @@ var readyShow={
 						var map=obj.data[0];
 						var i=0;
 						while(i<map.A_LIST.length){
-							$('#'+mm.tableId+' tbody').append('<tr name="'+mm.trId+'" GW="'+mm.gw+'" bgcolor="#ffffff" style="height:20px;">' +
+							$('#'+mm.tableId+' tbody').append('<tr name="'+mm.trId+'" GW="'+mm.gw+'" bgcolor="#ffffff" style="height:20px;">'+
 								//项目
-								'<td id="'+mm.tdId1+'_'+i+'" title="'+map.A_LIST[i].A+'" style="width:100px;font-size:12px;">' +
-									(map.A_LIST[i].A.length>15?map.A_LIST[i].A.substring(0,14)+'..':map.A_LIST[i].A) +
-								'</td>' +
+								'<td id="'+mm.tdId1+'_'+i+'" title="'+map.A_LIST[i].A+'" style="width:100px;font-size:12px;">'+
+									(map.A_LIST[i].A.length>15?map.A_LIST[i].A.substring(0,14)+'..':map.A_LIST[i].A)+
+								'</td>'+
 								//列队1
-								'<td id="'+mm.tdId2+'_'+i+'" title="'+map.A_LIST[i].B+'" oldValue="'+map.A_LIST[i].B+'" style="width:50px;font-size:12px;">' +
-									(map.A_LIST[i].B.toString().length>8?map.A_LIST[i].B.substring(0,8)+'..':map.A_LIST[i].B) +
-								'</td>' +
+								'<td id="'+mm.tdId2+'_'+i+'" title="'+map.A_LIST[i].B+'" oldValue="'+map.A_LIST[i].B+'" style="width:50px;font-size:12px;">'+
+									(map.A_LIST[i].B.toString().length>8?map.A_LIST[i].B.substring(0,8)+'..':map.A_LIST[i].B)+
+								'</td>'+
 								//列队2
-								'<td id="'+mm.tdId3+'_'+i+'" title="'+map.A_LIST[i].C+'" oldValue="'+map.A_LIST[i].C+'"  style="width:50px;font-size:12px;">' +
-									(map.A_LIST[i].C.toString().length>8?map.A_LIST[i].C.substring(0,8)+'..':map.A_LIST[i].C) +
-								'</td>' +
+								'<td id="'+mm.tdId3+'_'+i+'" title="'+map.A_LIST[i].C+'" oldValue="'+map.A_LIST[i].C+'"  style="width:50px;font-size:12px;">'+
+									(map.A_LIST[i].C.toString().length>8?map.A_LIST[i].C.substring(0,8)+'..':map.A_LIST[i].C)+
+								'</td>'+
 							'</tr>');
 							//队列1
 							$('#'+mm.tdId2+'_'+i).dblclick(function(){
@@ -399,26 +416,146 @@ var readyShow={
 					},type,gw),a=null;
 					return fun();
 				},
-				//渲染界面函数
-				load:function(fun){
-					//刷新按钮事件绑定
-					$("#shuxin").click(function(){
-						var win=layer.open({type:3});
-						var gw=null;
-						if(af.showType=='C'){
-							//光大返回A
-							gw=$("#returnPlcA").val();
-						}else if(af.showType=='D'){
-							//光大返回B
-							gw=$("#returnPlcB").val();
-						};
-						var a=af.getTableGW(function(){
-							layer.close(win);win=null;
-							return null;
-						},af.showType,gw),gw=null;//默认渲染A区
-						return null;
+				/**
+				 * 故障恢复
+				 */
+				//工单显示
+				showGdList:function(GdId,PackeCode,Gdfenjieriqi){
+					var a=$.ajax({
+						url:getRootPath()+'/OrderOperAction.do?operType=getDdList',
+						type:'post',cache:false, 
+						data:"getGdId="+GdId+"&getGdfenjieriqi="+PackeCode+"&getPackeCode="+Gdfenjieriqi,
+						success:function (data) {
+							var a=$('#dd_table tbody tr').remove();a=null;//工单table
+			  				var obj=eval("("+data+")"),i=0;
+							while(i<obj.length){
+			  					$('#dd_table tbody').append('<tr id="gd_row'+i+'" bgcolor="#ffffff" style="height:20px;">'+
+			  						//单选
+									'<td id="radio_id_'+i+'" style="width:3%;">'+
+										'<input type="radio" id="trRadio_dd'+obj[i].id+'" name="trGdRadio" value="'+obj[i].id+'"/>'+
+									'</td>'+
+									//工单序号
+									'<td style="width:8%;">'+obj[i].dd_xuhao+
+									'<input type="hidden" id="dd_code'+i+'" value="'+obj[i].dd_code+'"></td>'+
+									//状态
+									'<td style="width:7%;">'+obj[i].dd_zhuangtai+'</td>'+
+									//分解日期
+									'<td style="width:10%;">'+obj[i].dd_fenjieriqi+'</td>'+
+									//PACK编码
+									'<td style="width:10%;">'+obj[i].pack_code+'</td>'+
+									//PACK类型
+									'<td style="width:8%;">'+obj[i].pack_leixing+'</td>'+
+									//装配区
+									'<td style="width:8%;">'+obj[i].dd_zhuangpeiqu+'</td>'+
+									//计划数量
+									'<td style="width:8%;">'+obj[i].dd_jihuashuliang+'</td>'+
+									//完成进度
+									'<td style="width:5%;padding:1px;">'+
+										'<div class="progress progress-striped active" style="margin-bottom:0px;">'+
+											'<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:'+obj[i].dd_jindu+'%;"></div>'+
+										'</div>'+
+									'</td>'+
+								'</tr>');
+								$("#gd_row"+i).click(function(){
+									var rowIndex=this.id.split("row")[1];
+									var b=$(this).children("td").eq(0).find("input:radio").prop("checked",true);
+									var gd_id=$(this).children("td").eq(0).find("input:radio").val();
+									var pack_code=$(this).children("td").eq(4).html();
+									var line=$(this).children("td").eq(6).html();
+									var a=$.ajax({
+										url:getRootPath()+'/OrderOperAction.do?operType=getZlmzList',
+										type:'post',
+										cache:false, 
+										data:"dd_id="+gd_id+"&pack_code="+pack_code,
+										success:function (data) {
+							  				return af.showGdMzList(eval("("+data+")"),line);
+										}
+									});a=null;gd_id=null;pack_code=null;rowIndex=null;b=null;
+									return null;
+								});
+								i++;
+							};
+			  				if(obj.length>0){
+								$('#dd_table tbody tr').eq(0).click();
+			  				};obj=null;
+			  				return null;
+						}
+					});a=null;
+					return null;
+				},
+				//模组显示
+				showGdMzList:function(obj,line){
+					var a=$('#mz_table tbody tr').remove();a=null;//模组table
+					for(var i=0;i<obj.length;i++){
+						$('#mz_table tbody').append('<tr id="mz_row'+i+'" bgcolor="#ffffff" style="height:20px;">'+
+						//单选
+						'<td style="width:2%;">'+
+							'<input type="radio" name="trMzRadio"/>'+
+							'<input type="hidden" id="mz_xuId'+i+'" value="'+obj[i].mz_xuId+'">'+
+						'</td>'+
+						//模组类型
+						'<td style="width:8%;">'+obj[i].mz_leixing+
+						'<input type="hidden" id="dd_id'+i+'" value="'+obj[i].dd_id+'"></td>'+
+						//模组编码
+						'<td style="width:7%;">'+obj[i].mz_code+'</td>'+
+						//数量
+						'<td style="width:10%;">'+obj[i].mz_shuliang+'</td>'+
+						//完成进度
+						'<td style="width:3%;padding:1px;">'+
+							'<div class="progress progress-striped active" style="margin-bottom:0px;">'+
+								'<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:'+obj[i].mz_jindu+'%;"></div>'+
+							'</div>'+
+						'</td>'+
+						'</tr>');
+						$('#mz_row'+i).click(function(){
+							var a=$(this).children("td").eq(0).find("input:radio").prop("checked",true);
+							var dd_id=$(this).children("td").eq(1).find("input:hidden").val();
+							var mz_xuId=$(this).children("td").eq(0).find("input:hidden").val();
+							return af.showGdMzPfList(dd_id,mz_xuId,line),dd_id=null,mz_xuId=null,a=null;
+						});
+					};
+					if(obj.length>0){
+						$('#mz_row0').click();
+					};obj=null;
+					return null;
+				},
+				//模组配方显示
+				showGdMzPfList:function(GdId,MzId,line){
+					var a=$('#pf_table1 tbody tr').remove();a=null;//配方table
+					var b=$('#pf_table2 tbody tr').remove();b=null;//配方table
+					$.ajax({
+						url:getRootPath()+'/OrderOperAction.do?operType=getZlpfList',
+						type:'post',cache:false, 
+						data:"dd_id="+GdId+"&mz_xuId="+MzId+"&type=GuzhangHuifu&line="+line,
+						success:function (data) {
+			  				var obj=eval("("+data+")");
+			  				for(var i=0;i<obj.A.length;i++){
+			  					$('#pf_table1 tbody').append('<tr id="mz_row'+i+'" bgcolor="#ffffff" style="height:'+obj.A[i].row+'px;">'+
+									'<td style="width:5%;">'+obj.A[i].dd_zaijuxuhao+'</td>'+//工单ID
+									'<td style="width:10%;">'+obj.A[i].dd_qianshengdubiaozhi+'</td>'+//前升读标志
+									'<td style="width:10%;border-right:0px;">'+obj.A[i].shusongxian+'</td>'+//异步输送线位置
+								'</tr>');
+			  				};
+			  				for(var i=0;i<obj.B.length;i++){
+								$('#pf_table2 tbody').append('<tr id="mz_row'+i+'" bgcolor="#ffffff" style="height:24px;">'+
+									'<td style="width:5%;">'+obj.B[i].dd_gdId+'</td>'+//工单ID
+									'<td style="width:5%;">'+obj.B[i].dd_mzxId+'</td>'+//模组序ID
+									'<td style="width:5%;">'+obj.B[i].dd_fenjiehao+'</td>'+//模组序ID
+									'<td style="width:5%;">'+obj.B[i].dd_wuliao+'</td>'+//物料编码
+									'<td style="width:5%;">'+obj.B[i].dd_xuqiushuliang+'</td>'+//需求数量
+									'<td style="width:5%;">'+obj.B[i].dd_wanchengshuliang+'</td>'+//完成数量
+									'<td style="width:5%;">'+obj.B[i].dd_gongwei+'</td>'+//工位
+									'<td style="width:10%;">'+obj.B[i].dd_stduqubiaozhi+'</td>'+//ST预读
+								'</tr>');
+							};
+							obj=null;
+						}
 					});
-					$("#shuxin").click();
+				},
+				/***
+				 * 渲染界面函数
+				 */
+				load:function(fun){
 					//选择PLC返回工位
 					$(".selectpicker").change(function(){
 						var win=layer.open({type:3});
@@ -428,11 +565,37 @@ var readyShow={
 						},af.showType,gw),gw=null;
 						return null;
 					});
+					//刷新按钮事件绑定
+					$("#PLC").click(function(){
+						var win=layer.open({type:3}),gw;
+						if(af.showType=='C'){
+							gw=$("#returnPlcA").val();//光大返回A
+						}else if(af.showType=='D'){
+							gw=$("#returnPlcB").val();//光大返回B
+						};
+						var a=af.getTableGW(function(){
+							var b=layer.close(win);
+							win=null;b=null;
+							return null;
+						},af.showType,gw);gw=null;//默认渲染A区
+						return null;
+					});$("#PLC").click();
+					//错误处理查询按钮点击事件
+					$(".ddddAnniu").click(function(){
+						var win=layer.open({type:3});
+						var GdId=$("#GdId").val();
+						var Gdfenjieriqi=$("#Gdfenjieriqi").val();
+						var PackeCode=$("#PackeCode").val();
+						af.showGdList(GdId,Gdfenjieriqi,PackeCode);
+						var b=layer.close(win);win=null;b=null;
+						GdId=null;Gdfenjieriqi=null;PackeCode=null;
+						return null;
+					});
 					return fun();
 				}
 			};
 			return af.load(function(){hdFun();});
-		}catch (e) {
+		}catch(e){
 			return e;
 		}
 		return null;
