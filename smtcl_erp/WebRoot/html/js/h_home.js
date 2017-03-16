@@ -6,7 +6,7 @@ var readyShow={
 				/**
 				 * 渲染主界面
 				 */	
-				load:function(returnFunction,dsState){
+				load:function(fun,dsState){
 					var win=layer.open({type:3});
 					var winHeight=document.body.clientHeight;
 					if(winHeight==window.screen.height){
@@ -24,7 +24,7 @@ var readyShow={
 						},dsState.tim),af_Home.dlInterval=true;
 					}
 					var ly=layer.close(win),win=null,ly=null,winHeight=null;
-					return returnFunction();
+					return fun();
 				},
 				//数组初始化
 				arrayInitialization:function(){
@@ -64,7 +64,7 @@ var readyShow={
 						url:getRootPath()+'/HomeAction.do?operType=getHckState',
 						type:'get',
 						cache:false,
-						success:function (data) {
+						success:function(data){
 							var obj=eval("("+data+")");
 							/**
 							 * 异步输送线-上层
@@ -81,7 +81,7 @@ var readyShow={
 											af.removeTop[i]='‘'+obj.hckTop[i][i]+'’';
 											k++;
 										}
-									}catch (e) {
+									}catch(e){
 										if(af.removeTop.toString().indexOf(af.topHome[j])==-1){
 											var upId=af.topHome[j].split("’")[0].split('‘')[1];
 											if(upId=="TOP-0ST"||upId=="TOP-14ST"){
@@ -96,7 +96,7 @@ var readyShow={
 							}else{
 								$("div[name='HEAD_TOP-ST']").attr("class","head_hui no");
 								$("div[name='TOP-ST']").attr("class","hui no");
-							}
+							};
 							/**
 							 * 缓存库中间层
 							 */
@@ -108,7 +108,7 @@ var readyShow={
 											af.removeArry[i]='‘'+obj.hckTb[i][i]+'’';
 											k++;
 										}
-									}catch (e) {
+									}catch(e){
 										if(af.removeArry.toString().indexOf(af.arrayHome[j])==-1){
 											var upId=af.arrayHome[j].split("’")[0].split('‘')[1];
 											$("#"+upId).attr("class","hui no");
@@ -118,7 +118,7 @@ var readyShow={
 								}
 							}else{
 								$("div[name='HCK-NAME']").attr("class","hui no");
-							}
+							};
 							/**
 							 * 缓存库下层
 							 */
@@ -134,7 +134,7 @@ var readyShow={
 											af.removeBottom[i]='‘'+obj.hckBottom[i][i]+'’';
 											k++;
 										}
-									}catch (e) {
+									}catch(e){
 										if(af.removeBottom.toString().indexOf(af.bottomHome[j])==-1){
 											var upId=af.bottomHome[j].split("’")[0].split('‘')[1];
 											if(upId=="BOTTOM-0ST"||upId=="BOTTOM-14ST"){
@@ -144,12 +144,12 @@ var readyShow={
 											}
 										}
 										j++;
-									}
-								}
+									};
+								};
 							}else{
 								$("div[name='HEAD_BOTTOM-ST']").attr("class","head_hui no");
 								$("div[name='BOTTOM-ST']").attr("class","hui no");
-							}
+							};
 							/**
 							 * 货物使用率,订单完成率；必须是int类型
 							 */
@@ -174,7 +174,7 @@ var readyShow={
 					   startAngle:-90,
 					   endAngle:90,
 					   background:{
-					      backgroundColor:(Highcharts.theme && Highcharts.theme.background2) || '#EEE',
+					      backgroundColor:(Highcharts.theme && Highcharts.theme.background2)|| '#EEE',
 					      innerRadius:'60%',
 					      outerRadius:'100%',
 					      shape:'arc'
@@ -258,16 +258,16 @@ var readyShow={
 				      var point;
 				      var newVal;
 				      var inc;
-				      if (chart) {
+				      if(chart){
 				         point=chart.series[0].points[0];
 				         point.update(newVal1);
-				      }
+				      };
 				      //订单完成率
 				      chart=$('#container-rpm').highcharts();
-				      if (chart) {
+				      if(chart){
 				         point=chart.series[0].points[0];
 				         point.update(newVal2);
-				      }
+				      };
 				      return chart=null,point=null,newVal=null,inc=null;
 				},
 				/**
@@ -344,27 +344,24 @@ var readyShow={
 								if($(e).attr("class")=="qfgd"){
 									$(e).attr("class","qfgdStart");
 									return null;
-								}
+								};
 								return null;
 							}else{
 								if($(e).attr("class")=="qfgdStart"){
 									$(e).attr("class","qfgd");
 									return null;
-								}
+								};
 								return null;
-							}
+							};
 							return null;
 						},
 						action:function(e,type,fun){
-							//ajax处理
-							var a=$.ajax({
+							var a=$.ajax({//ajax处理
 								url:getRootPath()+'/HomeAction.do?operType=getHckButton',
 								type:'get',
-								data:"type="+type+"&" +
-										"A="+but.qidongdiaodu_top_type+"&" +
-										"B="+but.qidongdiaodu_bottom_type,
+								data:"type="+type+"&A="+but.qidongdiaodu_top_type+"&B="+but.qidongdiaodu_bottom_type,
 								cache:false,
-								success:function (data) {
+								success:function(data){
 									var obj=eval("("+data+")");
 									if(type=="get"){
 										but.qidongdiaodu_top_type=obj.A;
@@ -444,11 +441,14 @@ var readyShow={
 					};
 					return but.loadEvn();
 				}
-			}
+			};
 			af.load(function(){
-				return null;
+				if(af_Home.administrator.启动调度==false){var a=af_Home.cleanQX("qidongdiaodu_top");a=null;var b=af_Home.cleanQX("qidongdiaodu_bottom");b=null;};
+				if(af_Home.administrator.复位==false){var a=af_Home.cleanQX("fuwei_top");a=null;var b=af_Home.cleanQX("fuwei_bottom");b=null;};
+				if(af_Home.administrator.归零启动==false){var a=af_Home.cleanQX("guilingqidong_top");a=null;var b=af_Home.cleanQX("guilingqidong_bottom");b=null;};
+				if(af_Home.administrator.断点启动==false){var a=af_Home.cleanQX("duandianqidong_top");a=null;var b=af_Home.cleanQX("duandianqidong_bottom");b=null;};
 			},{state:true,tim:1000});//渲染主页面,function(){}--第一个返回参数,{ds:true--是否为定时刷新、tim:刷新时间毫秒为单位};
-		}catch (e) {
+		}catch(e){
 			return e;
 		}
 		return hdFun();

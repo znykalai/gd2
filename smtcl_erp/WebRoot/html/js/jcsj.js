@@ -14,9 +14,7 @@ var readyShow={
 	load:function(hdFun){
 		try{
 			var af={
-				/**
-				 * 物料处理
-				 */
+				/***物料处理***/
 				wuliaoLoad:function(){
 					//设置默认时间
 				    $('#wl_newDate').val(current());
@@ -241,9 +239,7 @@ var readyShow={
 				    });
 				    return null;
 				},
-				/**
-				 * 模组处理
-				 */
+				/*** 模组处理 ***/
 				mozuLoad:function(){
 					//设置默认时间
 				    $('#mozu_newDate').val(current());
@@ -1327,9 +1323,7 @@ var readyShow={
 					});
 			        return null;
 				},
-				/**
-				 * pack处理
-				 */
+				/***pack处理***/
 				packLoad:function(){
 					//设置默认时间
 				    $('#pack_newDate').val(current());
@@ -1773,7 +1767,7 @@ var readyShow={
 								if(pack_xuhao==row){
 									layer.msg("此pack已经是最后一行，无需向下调整！");
 								}else{
-									$.ajax({
+									var a=$.ajax({
 										url:getRootPath()+'/BaseDataAction.do?operType=pack_bottom',
 										type:'post',cache:false,
 										data:'pack_id='+pack_id+'&pack_code='+pack_code+'&pack_xuhao='+pack_xuhao,
@@ -1784,11 +1778,13 @@ var readyShow={
 							  					packShowAction(pack_id,pack_code);//显示pack行
 								  			}else{
 								  				layer.msg("下调失败！");
-							                }
+							                };
+							                obj=null;
 							            }
 									});
-								}
-							}
+									a=null;
+								};
+							};
 						}else{
 							layer.msg("请选择需要下调的pack行！");
 						}
@@ -1796,9 +1792,7 @@ var readyShow={
 					});
 			        return null;
 				},
-				/**
-				 * 选择模组 pack
-				 */
+				/***选择模组 pack***/
 				selectMzPack:function(setLeiBie,setLeiXing,clean,fun,leibie){
 					var openWindow='<div style="width:100%;margin-right:0;"><div class="margin-top-10"><div class="col-md-11" style="margin-left:20px;"><!-- 标题 --><div style="padding-right:17px;"><table class="table table-bordered text-center" id="commonSearchTableHead_MzPack"><thead><tr><td style="width:50%;">编码</td><td style="width:50%;">类型</td></tr></thead></table></div><!-- 标题 end--><!-- 内容 --><div class="table-body" id="commonSearchTableBody_MzPack"><table class="table table-bordered text-center table-hover" id="searchTable_MzPack"></table></div><!-- 内容 end--></div></div></div>';
 					var win=layer.open({
@@ -1841,7 +1835,7 @@ var readyShow={
 					});openWindow=null;
 			        return null;
 				},
-				//物料上货区域回车事件
+				/***物料上货区域回车事件***/
 				clickCcqy:function(e){
 					var openWindow='<div style="width:90%;margin:0px;overflow-x:hidden;"><div class="row" style="margin-top:10px;margin-left:40px;width:480px;float:left;"><div class="col-md-1 shusongxian_base">输送线</div><div class="col-md-5" style="width:400px;"><div class="row"><div class="hui_base no" id="502" name="HCK-NAME">502</div><div class="hui_base no" id="504" name="HCK-NAME">504</div><div class="hui_base no" id="506" name="HCK-NAME">506</div><div class="hui_base no" id="508" name="HCK-NAME">508</div><div class="hui_base no" id="510" name="HCK-NAME">510</div><div class="hui_base no" id="512" name="HCK-NAME">512</div><div class="hui_base no" id="514" name="HCK-NAME">514</div></div><div class="row" style="margin-top:2px;"><div class="hui_base no" id="501" name="HCK-NAME">501</div><div class="hui_base no" id="503" name="HCK-NAME">503</div><div class="hui_base no" id="505" name="HCK-NAME">505</div><div class="hui_base no" id="507" name="HCK-NAME">507</div><div class="hui_base no" id="509" name="HCK-NAME">509</div><div class="hui_base no" id="511" name="HCK-NAME">511</div><div class="hui_base no" id="513" name="HCK-NAME">513</div></div></div></div><div class="row" style="margin-top:10px;margin-left:40px;width:550px;float:left;"><div class="col-md-1 huancunku_base">缓存库</div><div class="col-md-5" style="width:450px;"><div class="row"><div class="hui_base no" id="22" name="HCK-NAME">22</div><div class="hui_base no" id="23" name="HCK-NAME">23</div><div class="hui_base no" id="24" name="HCK-NAME">24</div><div class="hui_base no" id="25" name="HCK-NAME">25</div><div class="hui_base no" id="26" name="HCK-NAME">26</div><div class="hui_base no" id="27" name="HCK-NAME">27</div><div class="hui_base no" id="28" name="HCK-NAME">28</div><div class="head_hui_base no" style="float:left;line-height:40px;">第四层</div></div><div class="row" style="margin-top:2px;"><div class="hui_base no" id="15" name="HCK-NAME">15</div><div class="hui_base no" id="16" name="HCK-NAME">16</div><div class="hui_base no" id="17" name="HCK-NAME">17</div><div class="hui_base no" id="18" name="HCK-NAME">18</div><div class="hui_base no" id="19" name="HCK-NAME">19</div><div class="hui_base no" id="20" name="HCK-NAME">20</div><div class="hui_base no" id="21" name="HCK-NAME">21</div><div class="head_hui_base no" style="float:left;line-height:40px;">第三层</div></div><div class="row" style="margin-top:2px;"><div class="hui_base no" id="8" name="HCK-NAME">8</div><div class="hui_base no" id="9" name="HCK-NAME">9</div><div class="hui_base no" id="10" name="HCK-NAME">10</div><div class="hui_base no" id="11" name="HCK-NAME">11</div><div class="hui_base no" id="12" name="HCK-NAME">12</div><div class="hui_base no" id="13" name="HCK-NAME">13</div><div class="hui_base no" id="14" name="HCK-NAME">14</div><div class="head_hui_base no" style="float:left;line-height:40px;">第二层</div></div><div class="row" style="margin-top:2px;"><div class="hui_base no" id="1" name="HCK-NAME">1</div><div class="hui_base no" id="2" name="HCK-NAME">2</div><div class="hui_base no" id="3" name="HCK-NAME">3</div><div class="hui_base no" id="4" name="HCK-NAME">4</div><div class="hui_base no" id="5" name="HCK-NAME">5</div><div class="hui_base no" id="6" name="HCK-NAME">6</div><div class="hui_base no" id="7" name="HCK-NAME">7</div><div class="head_hui_base no" style="float:left;line-height:40px;">第一层</div></div></div></div><div class="row" style="margin-top:10px;margin-left:40px;width:850px;float:left;"><div class="col-md-1 shusongxian_base">输送线</div><div class="col-md-5" style="width:400px;"><div class="row"><div class="hui_base no" id="601" name="HCK-NAME">601</div><div class="hui_base no" id="603" name="HCK-NAME">603</div><div class="hui_base no" id="605" name="HCK-NAME">605</div><div class="hui_base no" id="607" name="HCK-NAME">607</div><div class="hui_base no" id="609" name="HCK-NAME">609</div><div class="hui_base no" id="611" name="HCK-NAME">611</div><div class="hui_base no" id="613" name="HCK-NAME">613</div></div><div class="row" style="margin-top:2px;"><div class="hui_base no" id="602" name="HCK-NAME">602</div><div class="hui_base no" id="604" name="HCK-NAME">604</div><div class="hui_base no" id="606" name="HCK-NAME">606</div><div class="hui_base no" id="608" name="HCK-NAME">608</div><div class="hui_base no" id="610" name="HCK-NAME">610</div><div class="hui_base no" id="612" name="HCK-NAME">612</div><div class="hui_base no" id="614" name="HCK-NAME">614</div></div></div></div></div>';
 					var win=layer.open({
@@ -1885,9 +1879,148 @@ var readyShow={
 					openWindow=null;
 			        return null;
 				},
-				/**
-				 * 创建用户以及角色维护
-				 * **/
+				/***角色&&用户查找***/
+				selectJuesYh:function(map,fun){
+					var openWindow='<div style="width:100%;margin-right:0;"><div class="margin-top-10"><div class="col-md-11" style="margin-left:20px;"><!-- 标题 --><div style="padding-right:17px;"><table class="table table-bordered text-center" id="commonSearchTableHead_selectJuesYh"><thead><tr><td style="width:50%;">'+map.title+'</td></tr></thead></table></div><!-- 标题 end--><!-- 内容 --><div class="table-body" id="commonSearchTableBody_selectJuesYh"><table class="table table-bordered text-center table-hover" id="searchTable_selectJuesYh"></table></div><!-- 内容 end--></div></div></div>';
+					var win=layer.open({
+					    type:1,
+					    anim:5,
+					    move:false,
+					    title:'查找',
+					    shadeClose:false,
+					    scrollbar:false,
+					    shade:[0.5,'#393D49'],
+					    area:['30%','50%'],
+					    content:openWindow
+					});openWindow=null;
+					/*设置table高度*/
+					var d=$('#commonSearchTableBody_selectJuesYh').css('height',document.body.clientHeight/3);d=null;
+					var a=$.ajax({
+						url:getRootPath()+'/BaseDataAction.do?operType='+map.type,
+						type:'get',cache:false,
+						success:function(data){
+					    	var obj=eval("("+data+")");
+							for(var i=0;i<obj.length;i++){
+				                $('#searchTable_selectJuesYh').append('<tr class="commonTr" style="cursor:pointer;"></tr>');
+				               	var lastTr=$('#searchTable_selectJuesYh tbody tr:last');
+			                    lastTr.append('<td class="selectJuesYh_id" style="display:none;">'+obj[i].ID+'</td>');
+			                    lastTr.append('<td class="selectJuesYh_name" style="width:50%;">'+obj[i].NAME+'</td>');
+			                    lastTr.append('<td class="selectJuesYh_jueSe" style="display:none;">'+obj[i].JUESE+'</td>');
+			                    lastTr.append('<td class="selectJuesYh_jueSeName" style="display:none;">'+obj[i].JUESENAME+'</td>');
+			                    lastTr=null;
+							};obj=null;
+							/*绑定双击事件*/
+			            	$('.commonTr').bind('dblclick',function(e){
+								var tr=$(e.target).parent();
+								var obj={
+									idValue:tr.find('.selectJuesYh_id').text(),
+									nameValue:tr.find('.selectJuesYh_name').text(),
+									jueSeValue:tr.find('.selectJuesYh_jueSe').text(),
+									jueSeNameValue:tr.find('.selectJuesYh_jueSeName').text()
+								};tr=null;
+			            		var b=layer.close(win);
+			            		b=null;win=null;map=null;
+								return fun(obj),obj=null;
+			            	});
+						}
+					});a=null;
+			        return null;
+				},
+				/*** 角色&用户 保存 */
+				saveJuesYh:function(map,fun){
+					var where;
+					if(map.type=='jueSeQX'){//角色
+						if($("#"+map.name).val()==''){
+				    	 	var b=$("#"+map.name).focus();b=null;
+				    		var a=layer.tips('请填写角色名！','#'+map.name);a=null;
+				    		map=null;return null;
+						};
+						var base_table=$('#base_table tbody tr');//权限行
+						var data=new Array;//数据
+						var id=$("#"+map.id).val();
+						for(var i=0;i<base_table.length;i++){
+							data.push({
+								xuhao:base_table.eq(i).children("td").eq(0).html(),
+								juseGongneng:base_table.eq(i).children("td").eq(1).html(),
+								gongnengQuanXian:base_table.eq(i).children("td").eq(2).html()
+							});
+						};base_table=null;
+						data=JSON.stringify(data);
+						where='id='+id+'&name='+$("#"+map.name).val()+'&data='+data;
+						id=null;data=null;
+					}else{//用户
+						if($("#"+map.id).val()==''){
+				    	 	var b=$("#"+map.id).focus();b=null;
+				    		var a=layer.tips('请填写用户名！','#'+map.id);a=null;
+				    		map=null;return null;
+						}else if($("#"+map.name).val()==''){
+				    	 	var b=$("#"+map.name).focus();b=null;
+				    		var a=layer.tips('请填写密码！','#'+map.name);a=null;
+				    		map=null;return null;
+						}else if($("#"+map.name).val()!=$("#"+map.name1).val()){
+				    	 	var b=$("#"+map.name1).focus();b=null;
+				    		var a=layer.tips('密码不一致，请重新填写！','#'+map.name1);a=null;
+				    		map=null;return null;
+						}else if($("#"+map.jueSe).val()==''){
+				    		var a=layer.tips('请选择角色！','.'+map.jueSeName);a=null;
+				    		map=null;return null;
+						};
+						where='id='+$("#"+map.id).val()+"&name="+$("#"+map.name).val()+"&jueSe="+$("#"+map.jueSe).val();
+					};
+					var lay=layer.open({type:3});
+					var a=$.ajax({
+						url:getRootPath()+'/BaseDataAction.do?operType='+map.type,
+						type:'get',
+						cache:false,
+						data:where,
+						success:function(data){
+				  			var obj=eval("("+data+")");
+							var a=layer.close(lay);a=null;
+				  			if(obj.success){
+				  				var f=fun(obj);f=null;
+			                };
+							var c=layer.msg(obj.body);c=null;
+				  			obj=null;lay=null;map=null;
+				  			return null;
+			            }
+					});a=null;where=null;
+					return null;
+				},
+				/***角色&用户删除***/
+				removeJuesYh:function(map,fun){
+					var lay=layer.open({type:3});
+					var a=$.ajax({
+						url:getRootPath()+'/BaseDataAction.do?operType='+map.type,
+						type:'get',cache:false,
+						data:'id='+map.id,
+						success:function(data){
+							var a=layer.close(lay);a=null;lay=null;
+							var d=layer.msg(data);d=null;
+							if(data=="删除成功！"){
+								var c=fun();c=null;
+							};data=null;
+			                return null;
+			            }
+					});a=null;
+					return null;
+				},
+				/***清除角色信息***/
+				clerJueSe:function(){
+					var a=$("#jueseId").val('');a=null;
+					var b=$("#jueseName").val('');b=null;
+		    	 	var c=$("#jueseName").focus();c=null;
+					var d=$('#jueseName').attr("readOnly",false);d=null;
+					var e=$(".jueSeQX").html('false');e=null;
+					return null;
+				},
+				/****清除用户信息****/
+				clerYongHu:function(){
+			    	$('#yonghu_form')[0].reset();
+					var b=$("#juese_id").val('');b=null;
+					var a=$('#userName').attr("readOnly",false);a=null;
+					return null;
+				},
+				/***创建用户以及角色维护***/
 				baseLoad:function(){
 					//tab切换
 					$('.infoOrder').click(function(e){
@@ -1898,80 +2031,100 @@ var readyShow={
 					    $("#userInfo"+$(item).attr('data')).css("display","block");
 				        return item=null;
 					});
-					//用户新建
-					$("#userInfoAddBtn").click(function(){
-				    	$('#base_form')[0].reset();
-					});
 					//设置表格高度
 					$('#base_table_id').css('height',document.body.clientHeight/1.8);
 					//表格列事件
 					$(".jueSeQX").dblclick(function(){
 						var val=$(this).html();
-						if(val=="false"){
-							$(this).html("true");
-						}else{
-							$(this).html("false");
-						};val=null;
+						if(val=="false"){$(this).html("true");
+						}else{$(this).html("false");};val=null;
 						return null;
 					});
-					//按钮事件
+					//角色-按钮事件
 					$(".baseJuese").click(function(e){
-						var title = $(e.target).html();
+						var title=$(e.target).html();
 						if(title=="新建"){
-							var a=$("#jueseId").val('');a=null;
-							var b=$("#jueseName").val('');b=null;
-				    	 	var c=$("#jueseName").focus();c=null;
-							var d=$('#jueseName').attr("readOnly",false);d=null;
-							var e=$(".jueSeQX").html('false');e=null;
+							var a=af.clerJueSe();a=null;
+							title=null;return null;
 						}else if(title=="保存"){
-							if($("#jueseName").val()==''){
-					    	 	var b=$("#jueseName").focus();b=null;
-					    		var a=layer.tips('请填写角色名！','#jueseName');a=null;
-					    		return null;
-							};
-							var lay=layer.open({type:3});
-							var base_table=$('#base_table tbody tr');//权限行
-							var data=new Array;//数据
-							var id=$("#jueseId").val();
-							for(var i=0;i<base_table.length;i++){
-								data.push({
-									xuhao:base_table.eq(i).children("td").eq(0).html(),
-									juseGongneng:base_table.eq(i).children("td").eq(1).html(),
-									gongnengQuanXian:base_table.eq(i).children("td").eq(2).html()
-								});
-							};base_table=null;
-							data=JSON.stringify(data);
-							var a=$.ajax({
-								url:getRootPath()+'/BaseDataAction.do?operType=jueSeQX',
-								type:'get',
-								cache:false,
-								data:'id='+id+'&name='+$("#jueseName").val()+'&data='+data,
-								success:function(data){
-						  			var obj=eval("("+data+")");
-									layer.close(lay);
-						  			if(obj.success){
-						  				$("#jueseId").val(obj.id);
-										$('#jueseName').attr("readOnly",true);
-										layer.msg("保存成功！");
-						  			}else{
-										layer.msg("保存失败！");
-					                };
-						  			obj=null;
-					            }
-							});a=null;id=null;data=null;
+							var map={type:'jueSeQX',id:'jueseId',name:'jueseName',jueSe:null};
+							var a=af.saveJuesYh(map,function(obj){
+				  				var a=$("#jueseId").val(obj.id);a=null;
+								var b=$('#jueseName').attr("readOnly",true);b=null;
+								var c=af_Home.getQX(function(){return null;});c=null;//重新获取权限
+								obj=null;return null;
+							});map=null;a=null;
+							title=null;return null;
 						}else if(title=="删除"){
-							alert("删除");
-						}else{
-							alert("查找");
+							var map={id:$("#jueseId").val(),type:'removeJueSe'};
+							var a=af.removeJuesYh(map,af.clerJueSe);a=null;map=null;
+							title=null;return null;
+						}else{//查找
+							var map={type:'selectJues',title:'角色'};
+							var a=af.selectJuesYh(map,function(map){
+								var a=$("#jueseId").val(map.idValue);a=null;
+								var b=$("#jueseName").val(map.nameValue);b=null;
+								var c=$('#jueseName').attr("readOnly",true);c=null;
+								var d=$.ajax({
+									url:getRootPath()+'/BaseDataAction.do?operType=selectJuesRow',
+									type:'get',cache:false,data:'id='+map.idValue,
+									success:function(data){
+								    	var obj=eval("("+data+")");
+										for(var i=0;i<obj.length;i++){
+											var a=$(".jueSeQX"+obj[i].XH).html(obj[i].GNQX);a=null;
+										};
+										obj=null;data=null;
+										return null;
+									}
+								});d=null;map=null;
+								return null;
+							});map=null;a=null;
+							title=null;return null;
 						};
-						title=null;
+					});
+					//用户按钮-事件
+					$(".baseYonghu").click(function(e){
+						var title=$(e.target).html();
+						if(title=="选择"){
+							var map={type:'selectJues',title:'角色'};
+							var a=af.selectJuesYh(map,function(map){
+								var a=$("#juese_id").val(map.idValue);a=null;
+								var b=$("#juese_name").val(map.nameValue);b=null;
+								map=null;return null;
+							});map=null;a=null;
+							title=null;return null;
+						}else if(title=="新建"){
+							var a=af.clerYongHu();a=null;
+							title=null;return null;
+						}else if(title=="保存"){
+							var map={type:'userInfo',id:'userName',name:'password',name1:'yesPassword',jueSe:'juese_id',jueSeName:'selectYh'};
+							var a=af.saveJuesYh(map,function(obj){
+								var a=$('#userName').attr("readOnly",true);a=null;
+								var b=af_Home.getQX(function(){return null;});b=null;//重新获取权限
+								obj=null;return null;
+							});map=null;a=null;
+							title=null;return null;
+						}else if(title=="删除"){
+							var map={id:$("#userName").val(),type:'removeYongHu'};
+							var a=af.removeJuesYh(map,af.clerYongHu);a=null;map=null;
+							title=null;return null;
+						}else{//查找
+							var map={type:'getUserInfo',title:'账户'};
+							var a=af.selectJuesYh(map,function(map){
+								var a=$("#userName").val(map.nameValue);a=null;
+								var b=$("#password").val(map.idValue);b=null;
+								var c=$("#yesPassword").val(map.idValue);c=null;
+								var d=$("#juese_id").val(map.jueSeValue);d=null;
+								var e=$("#juese_name").val(map.jueSeNameValue);e=null;
+								map=null;return null;
+							});map=null;a=null;
+							title=null;return null;
+						};
 					});
 					return null;
 				},
-				/**
-				 * 渲染所有事件
-				 */
-				load:function(){
+				/***渲染所有事件***/
+				load:function(fun){
 					try{
 						layer.config({
 						    path:'../../js/lib/layer/'
@@ -1986,13 +2139,42 @@ var readyShow={
 						var b=this.mozuLoad();b=null;
 						var c=this.packLoad();c=null;
 						var d=this.baseLoad();d=null;
-				    	return null;
+				    	return fun();
 					}catch(e){
 						return null;
 					};
 				}
 			};
-			var a=af.load();a=null;
+			var a=af.load(function(){
+				if(af_Home.administrator.物料.新建==false){var a=af_Home.cleanQX("wl_newBtn");a=null;};
+				if(af_Home.administrator.物料.保存==false){var a=af_Home.cleanQX("wl_saveBtn");a=null;};
+				if(af_Home.administrator.物料.删除==false){var a=af_Home.cleanQX("wl_deleteBtn");a=null;};
+				if(af_Home.administrator.模组.新建==false){var a=af_Home.cleanQX("mz_newBtn");a=null;};
+				if(af_Home.administrator.模组.删除==false){var a=af_Home.cleanQX("mz_deleteBtn");a=null;};
+				if(af_Home.administrator.模组.载具上调==false){var a=af_Home.cleanQX("mz_zj_up");a=null;};
+				if(af_Home.administrator.模组.载具下调==false){var a=af_Home.cleanQX("mz_zj_bottom");a=null;};
+				if(af_Home.administrator.模组.载具添加==false){var a=af_Home.cleanQX("mz_zj_addTr");a=null;};
+				if(af_Home.administrator.模组.载具保存==false){var a=af_Home.cleanQX("mz_zj_saveBtn");a=null;};
+				if(af_Home.administrator.模组.载具删除==false){var a=af_Home.cleanQX("mz_zj_deleteBtn");a=null;};
+				if(af_Home.administrator.模组.指令上调==false){var a=af_Home.cleanQX("mz_zlh_up");a=null;};
+				if(af_Home.administrator.模组.指令下调==false){var a=af_Home.cleanQX("mz_zlh_bottom");a=null;};
+				if(af_Home.administrator.模组.指令添加==false){var a=af_Home.cleanQX("mz_zlh_addTr");a=null;};
+				if(af_Home.administrator.模组.指令保存==false){var a=af_Home.cleanQX("mz_zlh_saveBtn");a=null;};
+				if(af_Home.administrator.模组.指令删除==false){var a=af_Home.cleanQX("mz_zlh_deleteBtn");a=null;};
+				if(af_Home.administrator.pack.新建==false){var a=af_Home.cleanQX("pack_newBtn");a=null;};
+				if(af_Home.administrator.pack.删除==false){var a=af_Home.cleanQX("pack_deleteBtn");a=null;};
+				if(af_Home.administrator.pack.保存==false){var a=af_Home.cleanQX("pack_saveBtn");a=null;};
+				if(af_Home.administrator.pack.pack行上调==false){var a=af_Home.cleanQX("pack_up");a=null;};
+				if(af_Home.administrator.pack.pack行下调==false){var a=af_Home.cleanQX("pack_bottom");a=null;};
+				if(af_Home.administrator.pack.pack行添加==false){var a=af_Home.cleanQX("pack_addTr");a=null;};
+				if(af_Home.administrator.pack.pack行删除==false){var a=af_Home.cleanQX("pack_row_deleteBtn");a=null;};
+				if(af_Home.administrator.账户设置.角色新建==false){var a=af_Home.cleanQX("JueSeNew");a=null;};
+				if(af_Home.administrator.账户设置.角色保存==false){var a=af_Home.cleanQX("JueSeSave");a=null;};
+				if(af_Home.administrator.账户设置.角色删除==false){var a=af_Home.cleanQX("JueSeDel");a=null;};
+				if(af_Home.administrator.账户设置.用户新建==false){var a=af_Home.cleanQX("YongHuNew");a=null;};
+				if(af_Home.administrator.账户设置.用户保存==false){var a=af_Home.cleanQX("YongHuSave");a=null;};
+				if(af_Home.administrator.账户设置.用户删除==false){var a=af_Home.cleanQX("YongHuDel");a=null;};
+			});a=null;
 			return null;
 		}catch(e){
 			return e;

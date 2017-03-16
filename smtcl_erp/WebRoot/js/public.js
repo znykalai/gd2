@@ -83,5 +83,6 @@ function drop(event,a){
 			return null;
 		} 
 	});
-	return data=null,html=null,y=null,x=null,win=null;
+	data=null,html=null,y=null,x=null,win=null;
+	return null;
 }

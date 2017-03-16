@@ -3,9 +3,9 @@ var readyShow={
 	load:function (hdFun){
 		try{
 			var af={
-				load:function(returnFunction,dsState){
-					var a=this.show(dsState);
-					return returnFunction(a);
+				load:function(fun,dsState){
+					var a=this.show(dsState);a=null;
+					return fun();
 				},
 				show:function(dsState){
 					layer.config({
@@ -81,7 +81,7 @@ var readyShow={
 							}
 						});
 						return null;
-					}
+					};
 					//工单模组显示
 					function showGdMzList(obj,win){
 						dd_id="",mz_xuId="";//清空条件
@@ -131,7 +131,7 @@ var readyShow={
 							}
 						}
 						return obj=null;
-					}
+					};
 					//工单
 					function showGdList(getGdId,getPackeCode,getGdfenjieriqi,deleteType,win){
 						$.ajax({
@@ -208,7 +208,7 @@ var readyShow={
 							}
 						});
 						return true;
-					}
+					};
 					//查询
 					$("#dd_selectBtn").click(function(){
 						var getGdId=$("#getGdId").val();
@@ -339,12 +339,12 @@ var readyShow={
 						  						obj=null;
 											}
 										});
-									}
-								}
+									};
+								};
 							}else{
 				  				layer.msg("分解后的工单，不允许调序！");
-							}
-						}
+							};
+						};
 						return null;
 					});
 					//工单下调
@@ -384,29 +384,30 @@ var readyShow={
 						  						obj=null;
 											}
 										});
-									}
-								}
+									};
+								};
 							}else{
 				  				layer.msg("分解后的工单，不允许调序！");
 								return null;
-							}
-						}
+							};
+						};
 						return null;
 					});
 					if(showGdList('','',$('#getGdfenjieriqi').val(),false,winLayer.open({type:3}))&&dsState.state){
-						(function(){
-							//定时刷新
-							readyShow.deleteSetInterval=setInterval(function(){
-								showGdList('','','',false);
-							},dsState.tim),af_Home.dlInterval=true;
-						})();
+						readyShow.deleteSetInterval=setInterval(function(){//定时刷新
+							showGdList('','','',false);
+						},dsState.tim),af_Home.dlInterval=true;
 					};
-					//工单显示
 					return null;
 				}
-			}
-			af.load(function(e){
-				return e=null;
+			};
+			af.load(function(){
+				if(af_Home.administrator.订单调度.下载==false){var a=af_Home.cleanQX("dd_dowBtn");a=null;};
+				if(af_Home.administrator.订单调度.上调==false){var a=af_Home.cleanQX("dd_upBtn");a=null;};
+				if(af_Home.administrator.订单调度.下调==false){var a=af_Home.cleanQX("dd_bomBtn");a=null;};
+				if(af_Home.administrator.订单调度.选择分解==false){var a=af_Home.cleanQX("dd_fenjieRadioBtn");a=null;};
+				if(af_Home.administrator.订单调度.分解全部==false){var a=af_Home.cleanQX("dd_fenjieAllBtn");a=null;};
+				if(af_Home.administrator.订单调度.删除==false){var a=af_Home.cleanQX("dd_delBtn");a=null;};
 			},{state:true,tim:5000});//渲染主页面,function(){}--第一个返回参数,{ds:true--是否为定时刷新、tim:刷新时间毫秒为单位};
 			return null;
 		}catch(e){

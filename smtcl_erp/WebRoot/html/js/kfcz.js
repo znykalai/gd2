@@ -3,27 +3,27 @@ var readyShow={
 	load:function(hdFun){
 		try{
 			var af={
-				load:function(dsState){
+				load:function(dsState,fun){
 					var win=layer.open({type:3});
 					var winHeight=document.body.clientHeight;
 					if(winHeight == window.screen.height){
 						winHeight=document.body.clientHeight-50;
-					}
+					};
 					$('#xy').css('height',(winHeight -(window.screen.height-winHeight))/0.98);
 					$('.table-body').css('height',document.body.clientHeight / 3.5);
 					//显示GDFrame
 					$("#showGDFrame").click(function(){
-						af.getGDFrame();
-						return null;
+						var a=af.getGDFrame();
+						a=null;return null;
 					});
-					this.readyEvent();
+					var a=this.readyEvent();a=null;
 					if(af.hwLoad()&&af.table.load()&&dsState.state){//是否启动定时
 						readyShow.deleteSetInterval=setInterval(function(){
 							if(af.table.load()&&af.hwLoad());
 						},dsState.tim),af_Home.dlInterval=true;
 					};
 					var ly=layer.close(win),winHeight=null,win=null,ly=null;
-					return null;
+					return fun();
 				},
 				/**
 				 * 显示GDFrame
@@ -643,6 +643,8 @@ var readyShow={
 								'<td title="'+e[i].fasongshijian +'" style="width:55px;padding:0px;font-size:10px;">'+(e[i].fasongshijian!=""?e[i].fasongshijian.substring(0,10)+"...":"")+'</td>' +
 								//完成时间
 								'<td title="'+e[i].wanchengshijian +'" style="width:55px;padding:0px;font-size:10px;">'+(e[i].wanchengshijian!=""?e[i].wanchengshijian.substring(0,10)+"...":"")+'</td>' +
+								//完成时间
+								'<td style="width:20px;padding:0px;font-size:10px;">x</td>' +
 							'</tr>');
 							i++;
 						}
@@ -727,7 +729,10 @@ var readyShow={
 					return true;
 				}
 			};
-			return af.load({state:true,tim:1000});
+			var a=af.load({state:true,tim:1000},function(){
+				if(af_Home.administrator.发送命令==false){var a=af_Home.cleanQX("kcfsBtn");a=null;};
+			});a=null;
+			return null;
 		}catch(e){
 			return e;
 		}

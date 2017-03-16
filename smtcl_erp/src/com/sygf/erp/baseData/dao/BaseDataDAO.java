@@ -266,10 +266,53 @@ public class BaseDataDAO extends SqlMapClientDaoSupport {
 	public boolean insertJueSe(HashMap map) {
 		boolean yesNo = false;
 		try {
-			getSqlMapClientTemplate().insert("BaseDataDAO.insertJueSe", map);
+			getSqlMapClientTemplate().update("BaseDataDAO.insertJueSe", map);
 			yesNo=true;
 		} catch (Exception e) {
 			Log.error("BaseDataDAO.insertJueSe方法出现异常！" + e.getMessage());
+			e.printStackTrace();
+		}
+		return yesNo;
+	}
+	/**
+	 * 获取角色
+	 * @param map
+	 * @return
+	 */
+	public List selectJues(HashMap map) {
+		try{
+			return getSqlMapClientTemplate().queryForList("BaseDataDAO.selectJues",map);
+		}catch (Exception e) {
+			Log.error("BaseDataDAO.selectJues方法出现异常！" + e.getMessage());
+			e.printStackTrace();
+		};
+		return null;
+	}
+	/**
+	 * 获取当前角色是否被使用
+	 * @param map
+	 * @return
+	 */
+	public List selectYongHJues(HashMap map) {
+		try{
+			return getSqlMapClientTemplate().queryForList("BaseDataDAO.selectYongHJues",map);
+		}catch (Exception e) {
+			Log.error("BaseDataDAO.selectYongHJues方法出现异常！" + e.getMessage());
+			e.printStackTrace();
+		};
+		return null;
+	}
+	/**
+	 * 删除角色
+	 * @param map
+	 */
+	public boolean removeJueSe(HashMap map) {
+		boolean yesNo = false;
+		try {
+			getSqlMapClientTemplate().delete("BaseDataDAO.removeJueSe", map);
+			yesNo=true;
+		} catch (Exception e) {
+			Log.error("BaseDataDAO.removeJueSe方法出现异常！" + e.getMessage());
 			e.printStackTrace();
 		}
 		return yesNo;

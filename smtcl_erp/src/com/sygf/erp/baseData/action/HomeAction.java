@@ -18,6 +18,7 @@ import org.springframework.context.ApplicationEvent;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.sygf.erp.baseData.dao.BaseDataDAO;
 import com.sygf.erp.baseData.dao.HomeActionDAO;
 import com.sygf.erp.util.GDFrame;
 import com.sygf.erp.util.GetApplicationContext;
@@ -42,12 +43,86 @@ public class HomeAction extends Action{
 				return getCKButton(mapping, form, request, response);
 			}else if(operType.equals("getState")){
 				return getState(mapping, form, request, response);
+			}else if(operType.equals("getQX")){
+				return getQX(mapping, form, request, response);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
+	/**
+	 * 获取权限
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	private ActionForward getQX(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) {
+		try{
+			request.setCharacterEncoding("utf-8");
+			response.setCharacterEncoding("utf-8");
+			HttpSession session = request.getSession();
+			ApplicationContext context = GetApplicationContext.getContext(request);
+			BaseDataDAO dao = (BaseDataDAO)context.getBean("baseDataDAO");
+			HashMap map=new HashMap();
+			String ID=session.getAttribute("juese").toString();
+			map.put("sql", "SELECT a.角色名,a.角色功能,a.ID,a.序号,a.功能权限  FROM `角色` AS a WHERE a.ID='"+ID+"' ORDER BY a.`序号`");
+			List list=dao.selectJues(map);
+			String json="{物料:{新建:"+((HashMap)list.get(0)).get("功能权限")+","
+						+ "保存:"+((HashMap)list.get(1)).get("功能权限")+","
+						+ "删除:"+((HashMap)list.get(2)).get("功能权限")+"},"
+						+"模组:{新建:"+((HashMap)list.get(3)).get("功能权限")+","
+							+ "删除:"+((HashMap)list.get(4)).get("功能权限")+","
+							+ "载具上调:"+((HashMap)list.get(5)).get("功能权限")+","
+							+ "载具下调:"+((HashMap)list.get(6)).get("功能权限")+","
+							+ "载具添加:"+((HashMap)list.get(7)).get("功能权限")+","
+							+ "载具保存:"+((HashMap)list.get(8)).get("功能权限")+","
+							+ "载具删除:"+((HashMap)list.get(9)).get("功能权限")+","
+							+ "指令上调:"+((HashMap)list.get(10)).get("功能权限")+","
+							+ "指令下调:"+((HashMap)list.get(11)).get("功能权限")+","
+							+ "指令添加:"+((HashMap)list.get(12)).get("功能权限")+","
+							+ "指令保存:"+((HashMap)list.get(13)).get("功能权限")+","
+							+ "指令删除:"+((HashMap)list.get(14)).get("功能权限")+"},"
+						+"pack:{新建:"+((HashMap)list.get(15)).get("功能权限")+","
+							+ "删除:"+((HashMap)list.get(16)).get("功能权限")+","
+							+ "保存:"+((HashMap)list.get(17)).get("功能权限")+","
+							+ "pack行上调:"+((HashMap)list.get(18)).get("功能权限")+","
+							+ "pack行下调:"+((HashMap)list.get(19)).get("功能权限")+","
+							+ "pack行添加:"+((HashMap)list.get(20)).get("功能权限")+","
+							+ "pack行删除:"+((HashMap)list.get(21)).get("功能权限")+"},"
+						+"账户设置:{角色新建:"+((HashMap)list.get(22)).get("功能权限")+","
+							+ "角色保存:"+((HashMap)list.get(23)).get("功能权限")+","
+							+ "角色删除:"+((HashMap)list.get(24)).get("功能权限")+","
+							+ "用户新建:"+((HashMap)list.get(25)).get("功能权限")+","
+							+ "用户保存:"+((HashMap)list.get(26)).get("功能权限")+","
+							+ "用户删除:"+((HashMap)list.get(27)).get("功能权限")+"},"
+						+"发送命令:"+((HashMap)list.get(28)).get("功能权限")+","
+						+"PLC:"+((HashMap)list.get(29)).get("功能权限")+","
+						+"订单调度:{下载:"+((HashMap)list.get(30)).get("功能权限")+","
+							+ "上调:"+((HashMap)list.get(31)).get("功能权限")+","
+							+ "下调:"+((HashMap)list.get(32)).get("功能权限")+","
+							+ "选择分解:"+((HashMap)list.get(33)).get("功能权限")+","
+							+ "分解全部:"+((HashMap)list.get(34)).get("功能权限")+","
+							+ "删除:"+((HashMap)list.get(35)).get("功能权限")+"},"
+						+"启动调度:"+((HashMap)list.get(36)).get("功能权限")+","
+						+"复位:"+((HashMap)list.get(37)).get("功能权限")+","
+						+"归零启动:"+((HashMap)list.get(38)).get("功能权限")+","
+						+"断点启动:"+((HashMap)list.get(39)).get("功能权限")+","
+						+"不检测数量:"+((HashMap)list.get(40)).get("功能权限")+","
+						+"不检测动作:"+((HashMap)list.get(41)).get("功能权限")+","
+						+"RFD自动读取:"+((HashMap)list.get(42)).get("功能权限")+","
+						+"启动库指令:"+((HashMap)list.get(43)).get("功能权限")+"}";
+			response.setContentType("text/html;charset=utf-8");
+			response.getWriter().print(json);
+			response.getWriter().close();
+		}catch (Exception e) {
+			e.printStackTrace();
+		};
+		return null;
+	};
 
 	/**
 	 * 显示GDFrame 
@@ -83,8 +158,6 @@ public class HomeAction extends Action{
 		try {
 			request.setCharacterEncoding("utf-8");
 			response.setCharacterEncoding("utf-8");
-			//HashMap map = GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
-			HttpSession session = request.getSession();
 			ApplicationContext context = GetApplicationContext.getContext(request);
 			HomeActionDAO dao = (HomeActionDAO)context.getBean("homeActionDAO");
 			JSONObject result = new JSONObject();
@@ -135,6 +208,8 @@ public class HomeAction extends Action{
 			result.put("hckBottom", bottomArratList);
 			result.put("gdWcl",gdWcl);
 			result.put("hwSyl",hwSyl);
+			dao=null;context=null;list=null;topArratList=null;
+			resultList=null;bottomArratList=null;gdWcl=null;hwSyl=null;
 //			System.err.println("home---定时刷新");
 			response.setContentType("text/html;charset=utf-8");
 			response.getWriter().print(result);
@@ -205,7 +280,7 @@ public class HomeAction extends Action{
 			//B区,断点启动
 			}else if(map.get("type").equals("duandianqidong_bottom")){
 				result.put("type", ClientSer.getIntance().c_exeComment("",4,2));
-			}
+			};map=null;
 			response.setContentType("text/html;charset=utf-8");
 			response.getWriter().print(result);
 			response.getWriter().close();
@@ -257,7 +332,7 @@ public class HomeAction extends Action{
 				result.put("type", SqlPro.autoRFIDup);
 			}else{
 				result.put("type", true);
-			}
+			};map=null;
 			response.setContentType("text/html;charset=utf-8");
 			response.getWriter().print(result);
 			response.getWriter().close();
@@ -289,7 +364,7 @@ public class HomeAction extends Action{
 				System.out.println("放行");
 				ClientSer.getIntance().c_exeComment("", 6,1);
 			};
-			result=ClientSer.getIntance().getState(2);
+			result=ClientSer.getIntance().getState(2);map=null;
 			response.setContentType("text/html;charset=utf-8");
 			response.getWriter().print(result);
 			response.getWriter().close();
