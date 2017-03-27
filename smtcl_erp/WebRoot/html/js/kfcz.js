@@ -3,27 +3,27 @@ var readyShow={
 	load:function(hdFun){
 		try{
 			var af={
-				load:function(dsState){
+				load:function(dsState,fun){
 					var win=layer.open({type:3});
 					var winHeight=document.body.clientHeight;
 					if(winHeight == window.screen.height){
 						winHeight=document.body.clientHeight-50;
-					}
+					};
 					$('#xy').css('height',(winHeight -(window.screen.height-winHeight))/0.98);
 					$('.table-body').css('height',document.body.clientHeight / 3.5);
 					//显示GDFrame
 					$("#showGDFrame").click(function(){
-						af.getGDFrame();
-						return null;
+						var a=af.getGDFrame();
+						a=null;return null;
 					});
-					this.readyEvent();
+					var a=this.readyEvent();a=null;
 					if(af.hwLoad()&&af.table.load()&&dsState.state){//是否启动定时
 						readyShow.deleteSetInterval=setInterval(function(){
 							if(af.table.load()&&af.hwLoad());
 						},dsState.tim),af_Home.dlInterval=true;
 					};
 					var ly=layer.close(win),winHeight=null,win=null,ly=null;
-					return null;
+					return fun();
 				},
 				/**
 				 * 显示GDFrame
@@ -213,29 +213,29 @@ var readyShow={
 							//物料查询窗体
 							getWuliao:function(fun){
 								try{
-									var openWindow='<div style="width:100%;margin-right:0;">' +
-										'<div class="margin-top-10">' +
-											'<div class="col-md-11" style="margin-left:20px;">' +
-											'<!-- 标题 -->' +
-											'<div style="padding-right:17px;">' +
-											'<table class="table table-bordered text-center" id="commonSearchTableHead">' +
-											'<thead>' +
-											'<tr>' +
-											'<td style="width:50%;">编号</td>' +
-											'<td style="width:50%;">描述</td>' +
-											'</tr>' +
-											'</thead>' +
-											'</table>' +
-											'</div>' +
-											'<!-- 标题 end-->' +
-											'<!-- 内容 -->' +
-											'<div class="table-body" id="commonSearchTableBody">' +
-											'<table class="table table-bordered text-center table-hover" id="searchTable">' +
-											'</table>' +
-											'</div>' +
-											'<!-- 内容 end-->' +
-											'</div>' +
-										'</div>' +
+									var openWindow='<div style="width:100%;margin-right:0;">'+
+										'<div class="margin-top-10">'+
+											'<div class="col-md-11" style="margin-left:20px;">'+
+											'<!-- 标题 -->'+
+											'<div style="padding-right:17px;">'+
+											'<table class="table table-bordered text-center" id="commonSearchTableHead">'+
+											'<thead>'+
+											'<tr>'+
+											'<td style="width:50%;">编号</td>'+
+											'<td style="width:50%;">描述</td>'+
+											'</tr>'+
+											'</thead>'+
+											'</table>'+
+											'</div>'+
+											'<!-- 标题 end-->'+
+											'<!-- 内容 -->'+
+											'<div class="table-body" id="commonSearchTableBody">'+
+											'<table class="table table-bordered text-center table-hover" id="searchTable">'+
+											'</table>'+
+											'</div>'+
+											'<!-- 内容 end-->'+
+											'</div>'+
+										'</div>'+
 									'</div>';
 									var win=layer.open({
 									    type:1,
@@ -260,9 +260,9 @@ var readyShow={
 											for(var i=0;i<obj.length;i++){
 								                $('#searchTable').append('<tr class="commonTr" style="cursor:pointer;"></tr>');
 								                $('#searchTable tbody tr:last').
-								                append('<td class="wuliao_code" style="width:50%;">' + obj[i].wuliao_code + '</td>');
+								                append('<td class="wuliao_code" style="width:50%;">'+ obj[i].wuliao_code+ '</td>');
 								                $('#searchTable tbody tr:last').
-								                append('<td class="wuliao_miaoshu" style="width:50%;">' + obj[i].wuliao_miaoshu + '</td>');
+								                append('<td class="wuliao_miaoshu" style="width:50%;">'+ obj[i].wuliao_miaoshu+ '</td>');
 											}
 											/*绑定双击事件*/
 							            	$('.commonTr').bind('dblclick',function(e){
@@ -624,25 +624,27 @@ var readyShow={
 						$("#hc_table tbody tr").remove();
 						var i=0;
 						while(i<e.length){
-							$('#hc_table tbody').append('<tr bgcolor="#ffffff" style="height:22px;">' +
+							$('#hc_table tbody').append('<tr bgcolor="#ffffff" style="height:22px;">'+
 								//事件ID
-								'<td title="'+e[i].idEvent +'" style="width:35px;padding:0px;font-size:10px;">'+e[i].idEvent +'</td>' +
+								'<td title="'+e[i].idEvent+'" style="width:35px;padding:0px;font-size:10px;">'+e[i].idEvent+'</td>'+
 								//动作
-								'<td title="'+e[i].dongzuo +'" style="width:40px;padding:0px;font-size:10px;">'+(e[i].dongzuo.length>4?e[i].dongzuo.substring(0,4)+"...":e[i].dongzuo)+'</td>' +
+								'<td title="'+e[i].dongzuo+'" style="width:40px;padding:0px;font-size:10px;">'+(e[i].dongzuo.length>4?e[i].dongzuo.substring(0,4)+"...":e[i].dongzuo)+'</td>'+
 								//托盘
-								'<td title="'+e[i].tp_code +'" style="width:40px;padding:0px;font-size:10px;">'+e[i].tp_code+'</td>' +
+								'<td title="'+e[i].tp_code+'" style="width:40px;padding:0px;font-size:10px;">'+e[i].tp_code+'</td>'+
 								//来源货位
-								'<td title="'+e[i].laiyuanhuoweihao+'" style="width:40px;padding:0px;font-size:10px;">'+e[i].laiyuanhuoweihao+'</td>' +
+								'<td title="'+e[i].laiyuanhuoweihao+'" style="width:40px;padding:0px;font-size:10px;">'+e[i].laiyuanhuoweihao+'</td>'+
 								//去往货位
-								'<td title="'+e[i].fanghuihuoweihao+'" style="width:40px;padding:0px;font-size:10px;">'+e[i].fanghuihuoweihao+'</td>' +
+								'<td title="'+e[i].fanghuihuoweihao+'" style="width:40px;padding:0px;font-size:10px;">'+e[i].fanghuihuoweihao+'</td>'+
 								//状态
-								'<td title="'+e[i].zhuangtai +'" style="width:40px;padding:0px;font-size:10px;">'+(e[i].zhuangtai.length>3?e[i].zhuangtai.substring(0,3)+"...":e[i].zhuangtai)+'</td>' +
+								'<td title="'+e[i].zhuangtai+'" style="width:40px;padding:0px;font-size:10px;">'+(e[i].zhuangtai.length>3?e[i].zhuangtai.substring(0,3)+"...":e[i].zhuangtai)+'</td>'+
 								//回大库
-								'<td title="'+e[i].shifouhuidaku+'" style="width:40px;padding:0px;font-size:10px;">'+e[i].shifouhuidaku+'</td>' +
+								'<td title="'+e[i].shifouhuidaku+'" style="width:40px;padding:0px;font-size:10px;">'+e[i].shifouhuidaku+'</td>'+
 								//开始时间
-								'<td title="'+e[i].fasongshijian +'" style="width:55px;padding:0px;font-size:10px;">'+(e[i].fasongshijian!=""?e[i].fasongshijian.substring(0,10)+"...":"")+'</td>' +
+								'<td title="'+e[i].fasongshijian+'" style="width:55px;padding:0px;font-size:10px;">'+(e[i].fasongshijian!=""?e[i].fasongshijian.substring(0,10)+"...":"")+'</td>'+
 								//完成时间
-								'<td title="'+e[i].wanchengshijian +'" style="width:55px;padding:0px;font-size:10px;">'+(e[i].wanchengshijian!=""?e[i].wanchengshijian.substring(0,10)+"...":"")+'</td>' +
+								'<td title="'+e[i].wanchengshijian+'" style="width:55px;padding:0px;font-size:10px;">'+(e[i].wanchengshijian!=""?e[i].wanchengshijian.substring(0,10)+"...":"")+'</td>'+
+								//完成时间
+								'<td style="width:20px;padding:0px;font-size:10px;">'+(e[i].zhuangtai=="排队"?"<span style='cursor:pointer;' aria-hidden='true'>&times;</span>":"")+'</td>'+
 							'</tr>');
 							i++;
 						}
@@ -656,17 +658,17 @@ var readyShow={
 						var i=0;
                     	var li="<li></li>";
 						while(i<e.length){
-							$('#kc_table tbody').append('<tr bgcolor="#ffffff" style="height:22px;">' +
+							$('#kc_table tbody').append('<tr bgcolor="#ffffff" style="height:22px;">'+
 								//托盘
-								'<td title="'+e[i].tp_code +'" style="width:40px;padding:0px;font-size:10px;">'+e[i].tp_code +'</td>' +
+								'<td title="'+e[i].tp_code+'" style="width:40px;padding:0px;font-size:10px;">'+e[i].tp_code+'</td>'+
 								//物料
-								'<td title="'+e[i].wl_code +'" style="width:50px;padding:0px;font-size:10px;">'+(e[i].wl_code.length>10?e[i].wl_code.substring(0,10)+"...":e[i].wl_code)+'</td>' +
+								'<td title="'+e[i].wl_code+'" style="width:50px;padding:0px;font-size:10px;">'+(e[i].wl_code.length>10?e[i].wl_code.substring(0,10)+"...":e[i].wl_code)+'</td>'+
 								//数量
-								'<td title="'+e[i].number +'" style="width:40px;padding:0px;font-size:10px;">'+e[i].number+'</td>' +
+								'<td title="'+e[i].number+'" style="width:40px;padding:0px;font-size:10px;">'+e[i].number+'</td>'+
 								//货位号
-								'<td title="'+e[i].huoweihao+'" style="width:40px;padding:0px;font-size:10px;">'+e[i].huoweihao+'</td>' +
+								'<td title="'+e[i].huoweihao+'" style="width:40px;padding:0px;font-size:10px;">'+e[i].huoweihao+'</td>'+
 								//方向
-								'<td title="'+e[i].fangxiang+'" style="width:40px;padding:0px;font-size:10px;">'+e[i].fangxiang+'</td>' +
+								'<td title="'+e[i].fangxiang+'" style="width:40px;padding:0px;font-size:10px;">'+e[i].fangxiang+'</td>'+
 							'</tr>');
 							//获取当前库存中的所有物料
 							if(li.indexOf(e[i].wl_code)==-1){
@@ -727,7 +729,10 @@ var readyShow={
 					return true;
 				}
 			};
-			return af.load({state:true,tim:1000});
+			var a=af.load({state:true,tim:1000},function(){
+				if(af_Home.administrator.发送命令==false){var a=af_Home.cleanQX("kcfsBtn");a=null;};
+			});a=null;
+			return null;
 		}catch(e){
 			return e;
 		}

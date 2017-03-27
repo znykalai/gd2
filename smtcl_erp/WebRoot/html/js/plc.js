@@ -285,6 +285,7 @@ var readyShow={
 									'</tr>');
 									//队列1
 									$('#'+mm.tdId2+''+j+'_'+i).dblclick(function(){
+										if(af_Home.administrator.PLC==false){return null;};
 										var row=$(this).attr("id").split("_");
 										var map={
 											cm:"firstST",
@@ -296,6 +297,7 @@ var readyShow={
 									});
 									//队列2
 									$('#'+mm.tdId3+''+j+'_'+i).dblclick(function(){
+										if(af_Home.administrator.PLC==false){return null;};
 										var row=$(this).attr("id").split("_");
 										var map={
 											cm:"secondST",
@@ -339,6 +341,7 @@ var readyShow={
 							'</tr>');
 							//队列1
 							$('#'+mm.tdId2+'_'+i).dblclick(function(){
+								if(af_Home.administrator.PLC==false){return null;};
 								var row=$(this).attr("id").split("_");
 								var map={
 									cm:'',
@@ -350,6 +353,7 @@ var readyShow={
 							});
 							//队列2
 							$('#'+mm.tdId3+'_'+i).dblclick(function(){
+								if(af_Home.administrator.PLC==false){return null;};
 								var row=$(this).attr("id").split("_");
 								var map={
 									cm:'',
@@ -422,7 +426,7 @@ var readyShow={
 				GdId:null,//工单ID
 				MzId:null,//模组序ID
 				//工单显示
-				showGdList:function(GdId,PackeCode,Gdfenjieriqi){
+				showGdList:function(GdId,PackeCode,Gdfenjieriqi,fun){
 					var a=$.ajax({
 						url:getRootPath()+'/OrderOperAction.do?operType=getDdList',
 						type:'post',cache:false, 
@@ -470,7 +474,8 @@ var readyShow={
 										cache:false, 
 										data:"dd_id="+gd_id+"&pack_code="+pack_code,
 										success:function (data) {
-							  				return af.showGdMzList(eval("("+data+")"),line);
+											var a=af.showGdMzList(eval("("+data+")"),line,fun);
+											a=null;return null;
 										}
 									});a=null;gd_id=null;pack_code=null;rowIndex=null;b=null;
 									return null;
@@ -479,6 +484,8 @@ var readyShow={
 							};
 			  				if(obj.length>0){
 								$('#dd_table tbody tr').eq(0).click();
+			  				}else{
+			  					var a=fun();a=null;fun=null;
 			  				};obj=null;
 			  				return null;
 						}
@@ -486,7 +493,7 @@ var readyShow={
 					return null;
 				},
 				//模组显示
-				showGdMzList:function(obj,line){
+				showGdMzList:function(obj,line,fun){
 					var a=$('#mz_table tbody tr').remove();a=null;//模组table
 					for(var i=0;i<obj.length;i++){
 						$('#mz_table tbody').append('<tr id="mz_row'+i+'" bgcolor="#ffffff" style="height:20px;">'+
@@ -513,20 +520,23 @@ var readyShow={
 							var a=$(this).children("td").eq(0).find("input:radio").prop("checked",true);
 							var dd_id=$(this).children("td").eq(1).find("input:hidden").val();
 							var mz_xuId=$(this).children("td").eq(0).find("input:hidden").val();
-							return af.showGdMzPfList(dd_id,mz_xuId,line),dd_id=null,mz_xuId=null,a=null;
+							var b=af.showGdMzPfList(dd_id,mz_xuId,line,fun),dd_id=null,mz_xuId=null,a=null;b=null;
+							return null;
 						});
 					};
 					if(obj.length>0){
 						$('#mz_row0').click();
+					}else{
+						var a=fun();a=null;fun=null;
 					};obj=null;
 					return null;
 				},
 				//模组配方显示
-				showGdMzPfList:function(GdId,MzId,line){
+				showGdMzPfList:function(GdId,MzId,line,fun){
 					af.GdId=GdId;af.MzId=MzId;//赋值
 					var a=$('#pf_table1 tbody tr').remove();a=null;//配方table
 					var b=$('#pf_table2 tbody tr').remove();b=null;//配方table
-					$.ajax({
+					var a=$.ajax({
 						url:getRootPath()+'/OrderOperAction.do?operType=getZlpfList',
 						type:'post',cache:false, 
 						data:"dd_id="+GdId+"&mz_xuId="+MzId+"&type=GuzhangHuifu&line="+line,
@@ -555,6 +565,7 @@ var readyShow={
 							};obj.B=null;
 							//完成数量点击事件
 							$(".wanChengSL").click(function(){
+								if(af_Home.administrator.PLC==false){return null;};
 								var e=this;
 								if(this.ck==false||this.ck==undefined){
 									e.ck=true;
@@ -574,6 +585,7 @@ var readyShow={
 								return null;
 							});
 							$(".ybShuSx").click(function(){
+								if(af_Home.administrator.PLC==false){return null;};
 								var e=this;//selected
 								if(this.ck==false||this.ck==undefined){
 									e.ck=true;
@@ -595,6 +607,7 @@ var readyShow={
 							});
 							//前升预读&ST预读
 							$(".dbClick").dblclick(function(){
+								if(af_Home.administrator.PLC==false){return null;};
 								if($(this).html()=='已读'){
 									var a=$(this).html('');a=null;
 								}else{
@@ -606,7 +619,8 @@ var readyShow={
 							obj=null;
 							return obj;
 						}
-					});
+					});a=null;
+					return fun();
 				},
 				/***
 				 * 渲染界面函数
@@ -642,9 +656,11 @@ var readyShow={
 						var GdId=$("#GdId").val();
 						var Gdfenjieriqi=$("#Gdfenjieriqi").val();
 						var PackeCode=$("#PackeCode").val();
-						af.showGdList(GdId,Gdfenjieriqi,PackeCode);
+						var a=af.showGdList(GdId,Gdfenjieriqi,PackeCode,function(){
+							var b=layer.close(win);win=null;b=null;
+							return null;
+						});a=null;
 						GdId=null;Gdfenjieriqi=null;PackeCode=null;
-						var b=layer.close(win);win=null;b=null;
 						return null;
 					});
 					//故障恢复保存按钮
@@ -704,10 +720,9 @@ var readyShow={
 				  				var obj=eval("("+data+")");
 				  				if(!obj.plcDd){
 									layer.msg("请先停止调度！");
-									var a=$(".anNiuSelect").click();a=null;
 				  				}else if(obj.result&&obj.setCarryAt=='成功'){
-									layer.msg("数据已恢复！");
 									var a=$(".anNiuSelect").click();a=null;
+									layer.msg("故障已初始化！");
 				  				}else{
 									layer.msg("数据恢复失败或者异步输送线位置恢复失败！");
 				  				};
@@ -739,10 +754,17 @@ var readyShow={
 					return fun();
 				}
 			};
-			return af.load(function(){hdFun();});
+			var a=af.load(function(){
+				if(af_Home.administrator.PLC==false){
+					var c=af_Home.cleanQX("anNiuSave");c=null;
+					var e=af_Home.cleanQX("anNiuDelete");e=null;
+				};
+				return null;
+			});a=null;
+			return null;
 		}catch(e){
 			return e;
 		}
-		return null;
+		return hdFun();
 	}
 };

@@ -65,10 +65,243 @@ public class BaseDataAction extends Action{
 				return pack_bottom(mapping, form, request, response);
 			}else if (operType.equals("jueSeQX")){
 				return jueSeQX(mapping, form, request, response);
-			}
+			}else if (operType.equals("selectJues")){
+				return selectJues(mapping, form, request, response);
+			}else if (operType.equals("selectJuesRow")){
+				return selectJuesRow(mapping, form, request, response);
+			}else if (operType.equals("removeJueSe")){
+				return removeJueSe(mapping, form, request, response);
+			}else if (operType.equals("userInfo")){
+				return userInfo(mapping, form, request, response);
+			}else if (operType.equals("getUserInfo")){
+				return getUserInfo(mapping, form, request, response);
+			}else if (operType.equals("removeYongHu")){
+				return removeYongHu(mapping, form, request, response);
+			};
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return null;
+	}
+	/**
+	 * 删除用户
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	private ActionForward removeYongHu(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) {
+		try{
+			request.setCharacterEncoding("utf-8");
+			response.setCharacterEncoding("utf-8");
+			HashMap map = GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
+			ApplicationContext context = GetApplicationContext.getContext(request);
+			BaseDataDAO dao = (BaseDataDAO)context.getBean("baseDataDAO");
+			map.put("sql", "delete from 账户 where 账户='"+map.get("id")+"'");
+			String result="";
+			if(map.get("id").toString().toLowerCase().equals("admin")){
+				result="不允许删除系统管理员！";
+			}else{
+				result=dao.removeJueSe(map)?"删除成功！":"删除失败！";
+			};
+			dao=null;context=null;map=null;
+			response.setContentType("text/html;charset=utf-8");
+			response.getWriter().print(result);
+			response.getWriter().close();
+		}catch (Exception e) {
+			e.printStackTrace();
+		};
+		return null;
+	}
+	/**
+	 * 查找用户
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	private ActionForward getUserInfo(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) {
+		try{
+			request.setCharacterEncoding("utf-8");
+			response.setCharacterEncoding("utf-8");
+			HashMap map = GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
+			ApplicationContext context = GetApplicationContext.getContext(request);
+			BaseDataDAO dao = (BaseDataDAO)context.getBean("baseDataDAO");
+			ArrayList result = new ArrayList();
+			map.put("sql", "SELECT DISTINCT(a.`账户`) AS `账户`,a.`密码`,a.`角色`,b.`角色名` FROM `账户` AS a LEFT JOIN `角色` AS b ON a.`角色`=b.ID WHERE a.`账户`<>'admin' ORDER BY a.`角色`");
+			List list=dao.selectYongHJues(map);
+			for(int i=0;i<list.size();i++){
+				HashMap mapPara = new HashMap();
+				mapPara.put("'ID'", "'"+((HashMap)list.get(i)).get("密码")+"'");
+				mapPara.put("'NAME'", "'"+((HashMap)list.get(i)).get("账户")+"'");
+				mapPara.put("'JUESE'", "'"+((HashMap)list.get(i)).get("角色")+"'");
+				mapPara.put("'JUESENAME'", "'"+((HashMap)list.get(i)).get("角色名")+"'");
+				result.add(mapPara);mapPara=null;
+			};list=null;map=null;dao=null;context=null;
+			response.setContentType("text/html;charset=utf-8");
+			response.getWriter().print(result.toString().replaceAll("'='", "':'"));
+			response.getWriter().close();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	/**
+	 * 创建用户
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	private ActionForward userInfo(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) {
+		try{
+			request.setCharacterEncoding("utf-8");
+			response.setCharacterEncoding("utf-8");
+			HashMap map = GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
+			ApplicationContext context = GetApplicationContext.getContext(request);
+			BaseDataDAO dao = (BaseDataDAO)context.getBean("baseDataDAO");
+			JSONObject result = new JSONObject();
+			String userName = map.get("id").toString().toLowerCase();
+			if(userName.equals("admin")){
+				result.put("success", false);
+				result.put("body", "不允许更改管理员账号信息！");
+			}else{
+				map.put("sql", "SELECT a.*,'' AS 角色名 FROM `账户` AS a WHERE a.`账户`='"+userName+"'");
+				List yesId=dao.selectYongHJues(map);
+				if(yesId!=null&&yesId.size()>0){
+					HttpSession session = request.getSession();
+					session.setAttribute("juese",map.get("jueSe"));
+					map.put("sql", "update `账户` set `密码`='"+map.get("name")+"',`角色`='"+map.get("jueSe")+"' where `账户`='"+userName+"'");
+				}else{
+					map.put("sql", "INSERT INTO `账户`(`账户`,`密码`,`角色`)VALUES('"+userName+"','"+map.get("name")+"','"+map.get("jueSe")+"')");
+				};
+				boolean yesNo=dao.insertJueSe(map);map=null;userName=null;
+				result.put("success", yesNo);
+				result.put("body", yesNo?"保存成功！":"保存失败！");
+			};
+			dao=null;context=null;
+			response.setContentType("text/html;charset=utf-8");
+			response.getWriter().print(result);
+			response.getWriter().close();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	/**
+	 * 删除角色
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	private ActionForward removeJueSe(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) {
+		try{
+			request.setCharacterEncoding("utf-8");
+			response.setCharacterEncoding("utf-8");
+			HashMap map = GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
+			ApplicationContext context = GetApplicationContext.getContext(request);
+			BaseDataDAO dao = (BaseDataDAO)context.getBean("baseDataDAO");
+			String result="删除成功！";
+			map.put("sql", "SELECT a.*,'' AS 角色名  FROM `账户` AS a WHERE a.`角色`='"+map.get("id")+"'");
+			//查询当前角色是否被使用
+			List list=dao.selectYongHJues(map);
+			if(list!=null&&list.size()>0){
+				result="当前角色已经被使用，无法删除！";
+			}else{
+				map.put("sql", "delete from 角色 where ID='"+map.get("id")+"'");
+				if(!dao.removeJueSe(map)){//删除角色
+					result="删除失败！";
+				};
+			};
+			response.setContentType("text/html;charset=utf-8");
+			response.getWriter().print(result);
+			response.getWriter().close();
+		}catch (Exception e) {
+			e.printStackTrace();
+		};
+		return null;
+	}
+	/**
+	 * 获取角色权限行
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	private ActionForward selectJuesRow(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) {
+		try{
+			request.setCharacterEncoding("utf-8");
+			response.setCharacterEncoding("utf-8");
+			HashMap map = GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
+			ApplicationContext context = GetApplicationContext.getContext(request);
+			BaseDataDAO dao = (BaseDataDAO)context.getBean("baseDataDAO");
+			ArrayList result = new ArrayList();
+			String sql="SELECT '' AS 角色名,'' AS 角色功能,a.ID,a.序号,a.功能权限  FROM `角色` AS a WHERE a.ID='"+map.get("id")+"' ORDER BY a.`序号`";
+			map.put("sql", sql);sql=null;
+			List list=dao.selectJues(map);
+			for(int i=0;i<list.size();i++){
+				HashMap mapPara = new HashMap();
+				mapPara.put("'XH'", "'"+((HashMap)list.get(i)).get("序号")+"'");
+				mapPara.put("'GNQX'", "'"+((HashMap)list.get(i)).get("功能权限")+"'");
+				result.add(mapPara);mapPara=null;
+			};list=null;map=null;dao=null;context=null;
+			response.setContentType("text/html;charset=utf-8");
+			response.getWriter().print(result.toString().replaceAll("'='", "':'"));
+			response.getWriter().close();
+		}catch (Exception e) {
+			e.printStackTrace();
+		};
+		return null;
+	}
+	/**
+	 * 角色查询
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	private ActionForward selectJues(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) {
+		try{
+			request.setCharacterEncoding("utf-8");
+			response.setCharacterEncoding("utf-8");
+			HashMap map = GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
+			ApplicationContext context = GetApplicationContext.getContext(request);
+			BaseDataDAO dao = (BaseDataDAO)context.getBean("baseDataDAO");
+			ArrayList result = new ArrayList();
+			String sql="SELECT DISTINCT(a.`角色名`) AS 角色名,a.ID,'' AS 序号,'' AS 角色功能,'' AS 功能权限  FROM `角色` AS a WHERE a.ID<>'1'";
+//			if(!map.get("value").equals("")){
+//				sql+=" AND a.`角色名` LIKE '%"+map.get("value")+"%'";
+//			};
+			sql+=" ORDER BY a.`ID`";
+			map.put("sql", sql);sql=null;
+			List list=dao.selectJues(map);
+			for(int i=0;i<list.size();i++){
+				HashMap mapPara = new HashMap();
+				mapPara.put("'ID'", "'"+((HashMap)list.get(i)).get("ID")+"'");
+				mapPara.put("'NAME'", "'"+((HashMap)list.get(i)).get("角色名")+"'");
+				mapPara.put("'JUESE'", "'"+((HashMap)list.get(i)).get("ID")+"'");
+				mapPara.put("'JUESENAME'", "''");
+				result.add(mapPara);mapPara=null;
+			};list=null;map=null;dao=null;context=null;
+			response.setContentType("text/html;charset=utf-8");
+			response.getWriter().print(result.toString().replaceAll("'='", "':'"));
+			response.getWriter().close();
+		}catch (Exception e) {
+			e.printStackTrace();
+		};
 		return null;
 	}
 	/**
@@ -109,27 +342,29 @@ public class BaseDataAction extends Action{
 			BaseDataDAO dao = (BaseDataDAO)context.getBean("baseDataDAO");
 			JSONObject result = new JSONObject();
 			removeAll(dao, map);//删除权限
-			//获取最大ID
-			List list=dao.getMaxId();
-			int id = list!=null&&list.size()>0?Integer.parseInt(((HashMap)list.get(0)).get("ID").toString())+1:2;
+			int id=0;boolean yesNo=false;
 			String name=map.get("name").toString();
-			JSONArray data=new JSONArray(map.get("data").toString());
-			String sql=null;
-			String xuhao=null;
-			String juseGongneng=null;
-			String gongnengQuanXian=null;
+			if(map.get("id").equals("")){
+				List list=dao.getMaxId();//获取最大ID
+				id=list!=null&&list.size()>0?Integer.parseInt(((HashMap)list.get(0)).get("ID").toString())+1:2;
+				list=null;
+			}else{
+				id=Integer.parseInt(map.get("id").toString());
+			};
+			JSONArray data=new JSONArray(map.get("data").toString());map=null;
 			for(int i=0;i<data.length();i++){
-				xuhao=data.getJSONObject(i).get("xuhao").toString();
-				juseGongneng=data.getJSONObject(i).get("juseGongneng").toString();
-				gongnengQuanXian=data.getJSONObject(i).get("gongnengQuanXian").toString();
-				sql = "INSERT INTO `角色`(`ID`,`序号`,`角色名`,`角色功能`,`功能权限`)VALUES("+id+","+xuhao+",'"+name+"','"+juseGongneng+"','"+gongnengQuanXian+"')";
-				map.put("sql", sql);
-				xuhao=null;gongnengQuanXian=null;juseGongneng=null;sql=null;
-				dao.insertJueSe(map);
+				String xuhao=data.getJSONObject(i).getString("xuhao");
+				String juseGongneng=data.getJSONObject(i).getString("juseGongneng");
+				String gongnengQuanXian=data.getJSONObject(i).getString("gongnengQuanXian");
+				HashMap sql=new HashMap();
+				sql.put("sql", "INSERT INTO `角色`(`ID`,`序号`,`角色名`,`角色功能`,`功能权限`)VALUES("+id+","+xuhao+",'"+name+"','"+juseGongneng+"','"+gongnengQuanXian+"')");
+				xuhao=null;gongnengQuanXian=null;juseGongneng=null;
+				yesNo=dao.insertJueSe(sql);sql=null;
 			};
 			result.put("id", id);
-			result.put("success", true);
-			list=null;map=null;data=null;dao=null;context=null;name=null;
+			result.put("success", yesNo);
+			result.put("body", yesNo?"保存成功！":"保存失败！");
+			data=null;dao=null;context=null;name=null;
 			response.setContentType("text/html;charset=utf-8");
 			response.getWriter().print(result);
 			response.getWriter().close();

@@ -494,18 +494,20 @@
 		<!-- pack -->
 		<!-- 账户设置 -->
 		<div id="base" class="row showWindow" style="display:none;">
-			<form id="base_form" class="row">
+			<div class="row">
 		        <div id="info_tab" class="col-md-11" style="margin-top:-49px;padding:0px;">
 		            <div class="row orders-search">
 		                <div class="col-md-10" id="infoStatusBar">
-                        	<input type="hidden" id="userInfoId" value=""/>
+	                       	<input type="hidden" id="userInfoId" value=""/>
 		                    <div class="sesol-btn infoOrder select" data="1">角色管理</div>
 		                    <div class="sesol-btn infoOrder" data="2">用户管理</div>
 		                </div>
 		            </div>
 			    </div>
-	   			<div class="userInfo row">
-				    <div id="userInfo1" style="padding:0px 0px 0px 0px;">
+		    </div>
+   			<div class="userInfo row">
+			    <div id="userInfo1" style="padding:0px 0px 0px 0px;">
+		    		<form id="base_form" class="row">
 				        <div class="col-md-10">
 			            	<div class="col-md-2 text-right" style="padding:5px 0 0 0;">
 				                <span><span style="color:red;">*</span>角色名:</span>
@@ -520,13 +522,13 @@
 						   		</div>
 				            </div>
 				            <div class="col-md-2" style="padding:3px 0 0 0;">
-						        <div class="button button-primary button-rounded button-small baseAnniu baseJuese">新建</div>
+						        <div class="button button-primary button-rounded button-small baseAnniu baseJuese" id="JueSeNew">新建</div>
 					        </div>
 				            <div class="col-md-2" style="padding:3px 0 0 0;">
-						        <div class="button button-primary button-rounded button-small baseAnniu baseJuese">保存</div>
+						        <div class="button button-primary button-rounded button-small baseAnniu baseJuese" id="JueSeSave">保存</div>
 					        </div>
 				            <div class="col-md-2" style="padding:3px 0 0 0;">
-						        <div class="button button-primary button-rounded button-small baseAnniu baseJuese">删除</div>
+						        <div class="button button-primary button-rounded button-small baseAnniu baseJuese" id="JueSeDel">删除</div>
 					        </div>
 			            </div>
 			            <div class="col-md-11 margin-top-10"  style="padding:0 2 2 2;">
@@ -534,9 +536,9 @@
 								<table class="table-bordered" style="height:25px;width:100%;">
 						           <thead>
 						               <tr style="height:25px;">
-						                  <th class="text-center" style="width:3%;font-size:12px;" bgcolor="#EFEFEF">序号</th>
-						                  <th class="text-center" style="width:30%;font-size:12px;" bgcolor="#EFEFEF">角色功能</th>
-						                  <th class="text-center" style="width:20%;font-size:12px;" bgcolor="#EFEFEF">功能权限</th>
+						                  <th class="text-center" style="width:3%;font-size:12px;border-bottom:0px;" bgcolor="#EFEFEF">序号</th>
+						                  <th class="text-center" style="width:30%;font-size:12px;border-bottom:0px;" bgcolor="#EFEFEF">角色功能</th>
+						                  <th class="text-center" style="width:20%;font-size:12px;border-bottom:0px;" bgcolor="#EFEFEF">功能权限</th>
 						               </tr>
 						           </thead>
 								</table>
@@ -547,229 +549,231 @@
 					               		<tr style="height:22px;">
 					               			<td style="width:3%;font-size:12px;">1</td>
 					               			<td style="width:30%;" class="wlColor">物料维护-新建</td>
-					               			<td style="width:20%;" class="wlColor jueSeQX">false</td>
+					               			<td style="width:20%;" class="wlColor jueSeQX jueSeQX1">false</td>
 					               		</tr>
 					               		<tr style="height:22px;">
 					               			<td style="width:3%;font-size:12px;">2</td>
 					               			<td style="width:30%;" class="wlColor">物料维护-保存</td>
-					               			<td style="width:20%;" class="wlColor jueSeQX">false</td>
+					               			<td style="width:20%;" class="wlColor jueSeQX jueSeQX2">false</td>
 					               		</tr>
 					               		<tr style="height:22px;">
 					               			<td style="width:3%;font-size:12px;">3</td>
 					               			<td style="width:30%;" class="wlColor">物料维护-删除</td>
-					               			<td style="width:20%;" class="wlColor jueSeQX">false</td>
+					               			<td style="width:20%;" class="wlColor jueSeQX jueSeQX3">false</td>
 					               		</tr>
 					               		<tr style="height:22px;">
 					               			<td style="width:3%;font-size:12px;">4</td>
 					               			<td style="width:30%;" class="mzColor">模组维护-新建</td>
-					               			<td style="width:20%;" class="mzColor jueSeQX">false</td>
+					               			<td style="width:20%;" class="mzColor jueSeQX jueSeQX4">false</td>
 					               		</tr>
 					               		<tr style="height:22px;">
 					               			<td style="width:3%;font-size:12px;">5</td>
 					               			<td style="width:30%;" class="mzColor">模组维护-删除</td>
-					               			<td style="width:20%;" class="mzColor jueSeQX">false</td>
+					               			<td style="width:20%;" class="mzColor jueSeQX jueSeQX5">false</td>
 					               		</tr>
 					               		<tr style="height:22px;">
 					               			<td style="width:3%;font-size:12px;">6</td>
 					               			<td style="width:30%;" class="mzColor">模组载具-上调</td>
-					               			<td style="width:20%;" class="mzColor jueSeQX">false</td>
+					               			<td style="width:20%;" class="mzColor jueSeQX jueSeQX6">false</td>
 					               		</tr>
 					               		<tr style="height:22px;">
 					               			<td style="width:3%;font-size:12px;">7</td>
 					               			<td style="width:30%;" class="mzColor">模组载具-下调</td>
-					               			<td style="width:20%;" class="mzColor jueSeQX">false</td>
+					               			<td style="width:20%;" class="mzColor jueSeQX jueSeQX7">false</td>
 					               		</tr>
 					               		<tr style="height:22px;">
 					               			<td style="width:3%;font-size:12px;">8</td>
 					               			<td style="width:30%;" class="mzColor">模组载具-添加</td>
-					               			<td style="width:20%;" class="mzColor jueSeQX">false</td>
+					               			<td style="width:20%;" class="mzColor jueSeQX jueSeQX8">false</td>
 					               		</tr>
 					               		<tr style="height:22px;">
 					               			<td style="width:3%;font-size:12px;">9</td>
 					               			<td style="width:30%;" class="mzColor">模组载具-保存</td>
-					               			<td style="width:20%;" class="mzColor jueSeQX">false</td>
+					               			<td style="width:20%;" class="mzColor jueSeQX jueSeQX9">false</td>
 					               		</tr>
 					               		<tr style="height:22px;">
 					               			<td style="width:3%;font-size:12px;">10</td>
 					               			<td style="width:30%;" class="mzColor">模组载具-删除</td>
-					               			<td style="width:20%;" class="mzColor jueSeQX">false</td>
+					               			<td style="width:20%;" class="mzColor jueSeQX jueSeQX10">false</td>
 					               		</tr>
 					               		<tr style="height:22px;">
 					               			<td style="width:3%;font-size:12px;">11</td>
 					               			<td style="width:30%;" class="mzColor">模组指令行-上调</td>
-					               			<td style="width:20%;" class="mzColor jueSeQX">false</td>
+					               			<td style="width:20%;" class="mzColor jueSeQX jueSeQX11">false</td>
 					               		</tr>
 					               		<tr style="height:22px;">
 					               			<td style="width:3%;font-size:12px;">12</td>
 					               			<td style="width:30%;" class="mzColor">模组指令行-下调</td>
-					               			<td style="width:20%;" class="mzColor jueSeQX">false</td>
+					               			<td style="width:20%;" class="mzColor jueSeQX jueSeQX12">false</td>
 					               		</tr>
 					               		<tr style="height:22px;">
 					               			<td style="width:3%;font-size:12px;">13</td>
 					               			<td style="width:30%;" class="mzColor">模组指令行-添加</td>
-					               			<td style="width:20%;" class="mzColor jueSeQX">false</td>
+					               			<td style="width:20%;" class="mzColor jueSeQX jueSeQX13">false</td>
 					               		</tr>
 					               		<tr style="height:22px;">
 					               			<td style="width:3%;font-size:12px;">14</td>
 					               			<td style="width:30%;" class="mzColor">模组指令行-保存</td>
-					               			<td style="width:20%;" class="mzColor jueSeQX">false</td>
+					               			<td style="width:20%;" class="mzColor jueSeQX jueSeQX14">false</td>
 					               		</tr>
 					               		<tr style="height:22px;">
 					               			<td style="width:3%;font-size:12px;">15</td>
 					               			<td style="width:30%;" class="mzColor">模组指令行-删除</td>
-					               			<td style="width:20%;" class="mzColor jueSeQX">false</td>
+					               			<td style="width:20%;" class="mzColor jueSeQX jueSeQX15">false</td>
 					               		</tr>
 					               		<tr style="height:22px;">
 					               			<td style="width:3%;font-size:12px;">16</td>
 					               			<td style="width:30%;" class="packColor">pack-新建</td>
-					               			<td style="width:20%;" class="packColor jueSeQX">false</td>
+					               			<td style="width:20%;" class="packColor jueSeQX jueSeQX16">false</td>
 					               		</tr>
 					               		<tr style="height:22px;">
 					               			<td style="width:3%;font-size:12px;">17</td>
 					               			<td style="width:30%;" class="packColor">pack-删除</td>
-					               			<td style="width:20%;" class="packColor jueSeQX">false</td>
+					               			<td style="width:20%;" class="packColor jueSeQX jueSeQX17">false</td>
 					               		</tr>
 					               		<tr style="height:22px;">
 					               			<td style="width:3%;font-size:12px;">18</td>
 					               			<td style="width:30%;" class="packColor">pack-保存</td>
-					               			<td style="width:20%;" class="packColor jueSeQX">false</td>
+					               			<td style="width:20%;" class="packColor jueSeQX jueSeQX18">false</td>
 					               		</tr>
 					               		<tr style="height:22px;">
 					               			<td style="width:3%;font-size:12px;">19</td>
 					               			<td style="width:30%;" class="packColor">pack行-上调</td>
-					               			<td style="width:20%;" class="packColor jueSeQX">false</td>
+					               			<td style="width:20%;" class="packColor jueSeQX jueSeQX19">false</td>
 					               		</tr>
 					               		<tr style="height:22px;">
 					               			<td style="width:3%;font-size:12px;">20</td>
 					               			<td style="width:30%;" class="packColor">pack行-下调</td>
-					               			<td style="width:20%;" class="packColor jueSeQX">false</td>
+					               			<td style="width:20%;" class="packColor jueSeQX jueSeQX20">false</td>
 					               		</tr>
 					               		<tr style="height:22px;">
 					               			<td style="width:3%;font-size:12px;">21</td>
 					               			<td style="width:30%;" class="packColor">pack行-添加</td>
-					               			<td style="width:20%;" class="packColor jueSeQX">false</td>
+					               			<td style="width:20%;" class="packColor jueSeQX jueSeQX21">false</td>
 					               		</tr>
 					               		<tr style="height:22px;">
 					               			<td style="width:3%;font-size:12px;">22</td>
 					               			<td style="width:30%;" class="packColor">pack行-删除</td>
-					               			<td style="width:20%;" class="packColor jueSeQX">false</td>
+					               			<td style="width:20%;" class="packColor jueSeQX jueSeQX22">false</td>
 					               		</tr>
 					               		<tr style="height:22px;">
 					               			<td style="width:3%;font-size:12px;">23</td>
 					               			<td style="width:30%;" class="baseColor">账户设置-角色管理-新建</td>
-					               			<td style="width:20%;" class="baseColor jueSeQX">false</td>
+					               			<td style="width:20%;" class="baseColor jueSeQX jueSeQX23">false</td>
 					               		</tr>
 					               		<tr style="height:22px;">
 					               			<td style="width:3%;font-size:12px;">24</td>
 					               			<td style="width:30%;" class="baseColor">账户设置-角色管理-保存</td>
-					               			<td style="width:20%;" class="baseColor jueSeQX">false</td>
+					               			<td style="width:20%;" class="baseColor jueSeQX jueSeQX24">false</td>
 					               		</tr>
 					               		<tr style="height:22px;">
 					               			<td style="width:3%;font-size:12px;">25</td>
 					               			<td style="width:30%;" class="baseColor">账户设置-角色管理-删除</td>
-					               			<td style="width:20%;" class="baseColor jueSeQX">false</td>
+					               			<td style="width:20%;" class="baseColor jueSeQX jueSeQX25">false</td>
 					               		</tr>
 					               		<tr style="height:22px;">
 					               			<td style="width:3%;font-size:12px;">26</td>
 					               			<td style="width:30%;" class="baseColor">账户设置-用户管理-新建</td>
-					               			<td style="width:20%;" class="baseColor jueSeQX">false</td>
+					               			<td style="width:20%;" class="baseColor jueSeQX jueSeQX26">false</td>
 					               		</tr>
 					               		<tr style="height:22px;">
 					               			<td style="width:3%;font-size:12px;">27</td>
 					               			<td style="width:30%;" class="baseColor">账户设置-用户管理-保存</td>
-					               			<td style="width:20%;" class="baseColor jueSeQX">false</td>
+					               			<td style="width:20%;" class="baseColor jueSeQX jueSeQX27">false</td>
 					               		</tr>
 					               		<tr style="height:22px;">
 					               			<td style="width:3%;font-size:12px;">28</td>
 					               			<td style="width:30%;" class="baseColor">账户设置-用户管理-删除</td>
-					               			<td style="width:20%;" class="baseColor jueSeQX">false</td>
+					               			<td style="width:20%;" class="baseColor jueSeQX jueSeQX28">false</td>
 					               		</tr>
 					               		<tr style="height:22px;">
 					               			<td style="width:3%;font-size:12px;">29</td>
 					               			<td style="width:30%;" class="kufangColor">库房操作-发送命令</td>
-					               			<td style="width:20%;" class="kufangColor jueSeQX">false</td>
+					               			<td style="width:20%;" class="kufangColor jueSeQX jueSeQX29">false</td>
 					               		</tr>
 					               		<tr style="height:22px;">
 					               			<td style="width:3%;font-size:12px;">30</td>
 					               			<td style="width:30%;" class="plcColor">PLC-操作权限</td>
-					               			<td style="width:20%;" class="plcColor jueSeQX">false</td>
+					               			<td style="width:20%;" class="plcColor jueSeQX jueSeQX30">false</td>
 					               		</tr>
 					               		<tr style="height:22px;">
 					               			<td style="width:3%;font-size:12px;">31</td>
 					               			<td style="width:30%;" class="dingdanColor">订单调度-下载</td>
-					               			<td style="width:20%;" class="dingdanColor jueSeQX">false</td>
+					               			<td style="width:20%;" class="dingdanColor jueSeQX jueSeQX31">false</td>
 					               		</tr>
 					               		<tr style="height:22px;">
 					               			<td style="width:3%;font-size:12px;">32</td>
 					               			<td style="width:30%;" class="dingdanColor">订单调度-上调</td>
-					               			<td style="width:20%;" class="dingdanColor jueSeQX">false</td>
+					               			<td style="width:20%;" class="dingdanColor jueSeQX jueSeQX32">false</td>
 					               		</tr>
 					               		<tr style="height:22px;">
 					               			<td style="width:3%;font-size:12px;">33</td>
 					               			<td style="width:30%;" class="dingdanColor">订单调度-下调</td>
-					               			<td style="width:20%;" class="dingdanColor jueSeQX">false</td>
+					               			<td style="width:20%;" class="dingdanColor jueSeQX jueSeQX33">false</td>
 					               		</tr>
 					               		<tr style="height:22px;">
 					               			<td style="width:3%;font-size:12px;">34</td>
 					               			<td style="width:30%;" class="dingdanColor">订单调度-选择分解</td>
-					               			<td style="width:20%;" class="dingdanColor jueSeQX">false</td>
+					               			<td style="width:20%;" class="dingdanColor jueSeQX jueSeQX34">false</td>
 					               		</tr>
 					               		<tr style="height:22px;">
 					               			<td style="width:3%;font-size:12px;">35</td>
 					               			<td style="width:30%;" class="dingdanColor">订单调度-全部分解</td>
-					               			<td style="width:20%;" class="dingdanColor jueSeQX">false</td>
+					               			<td style="width:20%;" class="dingdanColor jueSeQX jueSeQX35">false</td>
 					               		</tr>
 					               		<tr style="height:22px;">
 					               			<td style="width:3%;font-size:12px;">36</td>
 					               			<td style="width:30%;" class="dingdanColor">订单调度-删除</td>
-					               			<td style="width:20%;" class="dingdanColor jueSeQX">false</td>
+					               			<td style="width:20%;" class="dingdanColor jueSeQX jueSeQX36">false</td>
 					               		</tr>
 					               		<tr style="height:22px;">
 					               			<td style="width:3%;font-size:12px;">37</td>
 					               			<td style="width:30%;" class="anniuColor">启动调度</td>
-					               			<td style="width:20%;" class="anniuColor jueSeQX">false</td>
+					               			<td style="width:20%;" class="anniuColor jueSeQX jueSeQX37">false</td>
 					               		</tr>
 					               		<tr style="height:22px;">
 					               			<td style="width:3%;font-size:12px;">38</td>
 					               			<td style="width:30%;" class="anniuColor">复位</td>
-					               			<td style="width:20%;" class="anniuColor jueSeQX">false</td>
+					               			<td style="width:20%;" class="anniuColor jueSeQX jueSeQX38">false</td>
 					               		</tr>
 					               		<tr style="height:22px;">
 					               			<td style="width:3%;font-size:12px;">39</td>
 					               			<td style="width:30%;" class="anniuColor">归零启动</td>
-					               			<td style="width:20%;" class="anniuColor jueSeQX">false</td>
+					               			<td style="width:20%;" class="anniuColor jueSeQX jueSeQX39">false</td>
 					               		</tr>
 					               		<tr style="height:22px;">
 					               			<td style="width:3%;font-size:12px;">40</td>
 					               			<td style="width:30%;" class="anniuColor">断点启动</td>
-					               			<td style="width:20%;" class="anniuColor jueSeQX">false</td>
+					               			<td style="width:20%;" class="anniuColor jueSeQX jueSeQX40">false</td>
 					               		</tr>
 					               		<tr style="height:22px;">
 					               			<td style="width:3%;font-size:12px;">41</td>
 					               			<td style="width:30%;" class="anniuColor">不检测数量</td>
-					               			<td style="width:20%;" class="anniuColor jueSeQX">false</td>
+					               			<td style="width:20%;" class="anniuColor jueSeQX jueSeQX41">false</td>
 					               		</tr>
 					               		<tr style="height:22px;">
 					               			<td style="width:3%;font-size:12px;">42</td>
 					               			<td style="width:30%;" class="anniuColor">不检测动作</td>
-					               			<td style="width:20%;" class="anniuColor jueSeQX">false</td>
+					               			<td style="width:20%;" class="anniuColor jueSeQX jueSeQX42">false</td>
 					               		</tr>
 					               		<tr style="height:22px;">
 					               			<td style="width:3%;font-size:12px;">43</td>
 					               			<td style="width:30%;" class="anniuColor">RFD自动读取</td>
-					               			<td style="width:20%;" class="anniuColor jueSeQX">false</td>
+					               			<td style="width:20%;" class="anniuColor jueSeQX jueSeQX43">false</td>
 					               		</tr>
 					               		<tr style="height:22px;">
 					               			<td style="width:3%;font-size:12px;">44</td>
 					               			<td style="width:30%;" class="anniuColor">启动库指令</td>
-					               			<td style="width:20%;" class="anniuColor jueSeQX">false</td>
+					               			<td style="width:20%;" class="anniuColor jueSeQX jueSeQX44">false</td>
 					               		</tr>
 					               </tbody>
 					           </table>
 					        </div>
 			            </div>
-				    </div>
-				    <div id="userInfo2" style="display:none;">
+	        		</form>
+			    </div>
+	        	<div id="userInfo2" style="display:none;">
+	        		<form id="yonghu_form" class="row">
 				    	<div class="col-md-1"></div>
 				    	<div class="col-md-10 account-company-auth" style="height:100%;width:92%;margin-left:45px;">
 					        <div class="row" style="margin-top:-10px;">
@@ -805,34 +809,34 @@
 					                <span><span style="color:red;">*</span>角色:</span>
 					            </div>
 					            <div class="col-md-7">
-					                 <div class="cus-select" id="juese_name">
-		                                <div class="cus-select-btn"></div>
-		                                <input id="juese_id" type="text" readonly/> 
-		                                <ul>
-		                                	<li></li>
-		                                </ul>
-		                            </div>
+						            <div class="input-group">
+						            	<input id="juese_id" type="hidden"/>
+					               		<input id="juese_name" readonly="readonly" type="text" class="form-control"/>
+						                <span class="input-group-btn">
+									        <button class="btn btn-default baseYonghu selectYh" type="button">选择</button>
+								   		</span>
+							   		</div>
 					            </div>
 					        </div>
 				            <div class="row margin-top-20">
 					        	<div class="col-md-2"></div>
 				            	<div class="col-md-2">
-							        <div class="button button-primary button-rounded button-small baseAnniu" id="userInfoSelectBtn">查找</div>
+							        <div class="button button-primary button-rounded button-small baseAnniu baseYonghu">查找</div>
 						        </div>
 				            	<div class="col-md-2">
-							        <div class="button button-primary button-rounded button-small baseAnniu" id="userInfoAddBtn">新建</div>
+							        <div class="button button-primary button-rounded button-small baseAnniu baseYonghu" id="YongHuNew">新建</div>
 						        </div>
 				            	<div class="col-md-2">
-							        <div class="button button-primary button-rounded button-small baseAnniu" id="userInfoSaveBtn">保存</div>
+							        <div class="button button-primary button-rounded button-small baseAnniu baseYonghu" id="YongHuSave">保存</div>
 						        </div>
 				            	<div class="col-md-2">
-							        <div class="button button-primary button-rounded button-small baseAnniu" id="userInfoDeleteBtn">删除</div>
+							        <div class="button button-primary button-rounded button-small baseAnniu baseYonghu" id="YongHuDel">删除</div>
 						        </div>
 				            </div>
 			            </div>
-				    </div>
+	        		</form>
 			    </div>
-	        </form>
+		    </div>
         </div>
 	</div>
 	<div class="col-md-3" style="width:400px;"></div>
@@ -846,7 +850,7 @@
 	</div>
 	<div class="col-md-2">
 		<a class="button button-glow button-rounded button-raised button-primary butRow"
-		   onclick="readyShow.showThis(pack);">PACK维护</a>
+		   onclick="readyShow.showThis(pack);">pack维护</a>
 	</div>
 	<div class="col-md-2">
 		<a class="button button-glow button-rounded button-raised button-primary butRow"

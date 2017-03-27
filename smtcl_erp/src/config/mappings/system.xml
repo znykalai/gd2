@@ -452,4 +452,29 @@
 	<update id="PLCDAO.gwGzUpdate" parameterClass="java.util.HashMap">
 		$sql$
 	</update>
+	<!-- 获取角色-->
+	<resultMap id="BaseDataDAO.selectJuesMap" class="java.util.HashMap">
+    	<result property="ID" column="ID" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="序号" column="序号" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="角色名" column="角色名" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="角色功能" column="角色功能" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="功能权限" column="功能权限" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    </resultMap>
+	<select id="BaseDataDAO.selectJues" parameterClass="java.util.HashMap" resultMap="BaseDataDAO.selectJuesMap">
+		$sql$
+	</select>
+	<!-- 获取用户-->
+	<resultMap id="BaseDataDAO.selectYongHJuesMap" class="java.util.HashMap">
+    	<result property="账户" column="账户" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="密码" column="密码" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="角色" column="角色" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="角色名" column="角色名" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    </resultMap>
+	<select id="BaseDataDAO.selectYongHJues" parameterClass="java.util.HashMap" resultMap="BaseDataDAO.selectYongHJuesMap">
+		$sql$
+	</select>
+	<!--重置用户权限 -->
+	<delete id="BaseDataDAO.removeJueSe" parameterClass="java.util.HashMap">
+		$sql$
+	</delete>
 </sqlMap>

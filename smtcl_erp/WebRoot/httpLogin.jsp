@@ -1,71 +1,68 @@
 <%@ page language="java" contentType="text/html;charset=utf-8"%> 
-<%
-	String path = request.getContextPath();
-	String msg = (String)request.getAttribute("msg");
-%>
+<% String path = request.getContextPath();String msg = (String)request.getAttribute("msg");%>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-<title>缓存库系统</title>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>缓存库系</title>
+<link rel="stylesheet" href="<%=path%>/css/font-awesome.min.css">
+<link rel="stylesheet" href="<%=path%>/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="<%=path%>/css/htmleaf-demo.css">
 <script src="<%=path%>/js/jquery.min.js"></script>
 <script src="<%=path%>/js/layer/layer.js"></script>
-<script language="JavaScript">
-function checkMsg(){
-	document.getElementById("UserName").focus();
-}
-(function(){
-	var msg = "<%=msg%>";
-	if(msg!=""&&msg!='null'){
-		layer.alert(msg);
+<script>
+var af={
+	checkMsg:function(){
+		var msg = "<%=msg%>";
+		if(msg!=""&&msg!='null'){
+			var a=layer.msg(msg);a=null;
+		};
+		var a=$("#UserName").focus();a=null;
+		return null;
+	},
+	onSubmit:function(){
+		if($("#UserName").val()==""){
+		 	var b=$("#UserName").focus();b=null;
+			var c=layer.tips('请填写用户名！', '#UserName');c=null;
+			return false;
+		}else if($("#Password").val()==""){
+		 	var b=$("#Password").focus();b=null;lay=null;
+			var c=layer.tips('请填写密码！', '#Password');c=null;
+			return false;
+		};
+		af=null;
+		return null;
 	}
-})();
-function onSubmit(){
-	if($("#UserName").val()==""){
-	 	$("#UserName").focus();
-		layer.tips('请填写用户名！', '#UserName');
-		return false;
-	}else if($("#Password").val()==""){
-	 	$("#Password").focus();
-		layer.tips('请填写密码！', '#Password');
-		return false;
-	}
-}
+};
 </script>
 </head>
-<body style="overflow-y:hidden;" onload="checkMsg();" background="<%=path%>/images/bg_01.gif">
-<form name="login" id="login" method="post" action="<%=path%>/LoginAction.do?operationType=login" onsubmit="return onSubmit();">
-  <center>
-  <table width='700' height='100%' border='0' cellspacing='0' cellpadding='2'>
-    <tr align="center" valign="middle">
-      <td align="center" valign="middle" scope="row">
-		<table width='566' height='335' border='0' cellspacing='0' cellpadding='2' background="<%=path%>/images/login_bg.gif">
-	      <tr align="center" valign="middle">
-            <td width='100%' align='center' valign='middle'>
- 		      <table border='0'>
-				<tr align="center" valign="middle">
-				  <td class="hstd5" nowrap style="font-family:微软雅黑;">用户名：</td>
-				  <td align="left" nowrap >
-					<input type="text" id="UserName" name="UserName" size="20" maxlength="32" />
-				  </td>
-				</tr>
-				<tr align="center" valign="middle">
-				  <td class="hstd5" nowrap style="font-family:微软雅黑;">密&nbsp;&nbsp;&nbsp;码：</td>
-				  <td align="left" nowrap >
-					<input type="password" id="Password" name="Password" size="20" maxlength="32"  onfocus="this.select();";/>
-				  </td>
-				</tr>
-				<tr align="center" valign="middle">
-				  <td align="center" nowrap style="font-size:13px;font-family:微软雅黑;" colspan="2">
-					<input type="submit" class="subbtn" name="subBtn" value="登录" onclick="this.disabled=false;"/>
-				  </td>
-				</tr>
-		      </table>
-	        </td>
-	      </tr>
-      </td>
-    </tr>
-  </table>
-  </center>
-</form>
+<body style="overflow-y:hidden;" class="form-bg" onload="af.checkMsg();">
+	<div class="htmleaf-container">
+		<header class="htmleaf-header"></header>
+		<div class="demo form-bg" style="padding: 50px 0;">
+	        <div class="container">
+	            <div class="row">
+	                <div class="col-md-offset-3 col-md-6">
+	                    <form class="form-horizontal" method="post" action="<%=path%>/LoginAction.do?operationType=login" onsubmit="return af.onSubmit();">
+	                        <span class="heading">用户登录</span>
+	                        <div class="form-group">
+	                            <input type="text" class="form-control" id="UserName" name="UserName" placeholder="用户名">
+	                            <i class="fa fa-user"></i>
+	                        </div>
+	                        <div class="form-group help">
+	                            <input type="password" class="form-control" id="Password" name="Password" placeholder="密　码">
+	                            <i class="fa fa-lock"></i>
+	                            <a href="#" class="fa fa-question-circle"></a>
+	                        </div>
+	                        <div class="form-group">
+	                            <button type="submit" class="btn btn-default">登录</button>
+	                        </div>
+	                    </form>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
 </body>
 </html>

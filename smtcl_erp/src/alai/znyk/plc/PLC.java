@@ -834,10 +834,10 @@ public class PLC implements Serializable {
 				        cot.secondST.set立库RDY(false);
 				        if(tpshul>2){//回货架
 				    	     SqlTool.add动作指令(sm[0], sm[3], "60002", "输送线回流", 0, line+"");
-				    	     System.out.println("2因为托盘物料不是本工位要的物料------而回到货架"+sm[1]+"=="+tem.split("!_!")[0]);
+				    	     //System.out.println("2因为托盘物料不是本工位要的物料------而回到货架"+sm[1]+"=="+tem.split("!_!")[0]);
 				    	     }else{//回大库
 				    	     SqlTool.add动作指令(sm[0], sm[3], "60002", "输送线回流", 1, line+"");	 
-				    	     System.out.println("2因为托盘数量<3且不是本工位要的物料------而回到大库"+sm[1]+"=="+tem.split("!_!")[0]);
+				    	     //System.out.println("2因为托盘数量<3且不是本工位要的物料------而回到大库"+sm[1]+"=="+tem.split("!_!")[0]);
 				    	     }
 				    	 return false;  
 				       }
