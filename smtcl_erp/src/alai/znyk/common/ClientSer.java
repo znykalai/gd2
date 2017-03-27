@@ -11,22 +11,30 @@ import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.frontend.ClientProxy;
 import org.apache.cxf.transport.http.HTTPConduit;
 import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
+import org.apache.log4j.Appender;
+import org.apache.log4j.Layout;
+import org.apache.log4j.Logger;
+import org.apache.log4j.spi.ErrorHandler;
+import org.apache.log4j.spi.Filter;
+import org.apache.log4j.spi.LoggingEvent;
 
 import alai.GDT.Resint;
 import alai.localhost.GD_wsdl.GDLocator;
 import alai.localhost.GD_wsdl.GDPortType;
 import alai.znyk.kufang.KuFang;
-import alai.znyk.plc.ReST;
+
 import alai.znyk.server.SqlTool;
 
 
 
 public class ClientSer {
-	
+
 	public GDLocator gd =new GDLocator();
 	private static ClientSer INSTANCE;
 	private boolean isOpenPlc=false;
 	private ClientSer(){
+		
+		
 		//gd.setGDEndpointAddress("http://192.168.1.222:9005/GD?cgi");
 	//	 ((BindingProvider)gd).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,"serviceUrl");
 		try{//启动时先预热一下，避免首例处罚。

@@ -1,11 +1,20 @@
 package alai.znyk.server;
 
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.sql.Blob;
 import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Time;
 import java.util.Vector;
 
 import alai.znyk.common.SqlPro;
@@ -885,5 +894,135 @@ try{  boolean isEvent=false;
   
 	   
    }
+   
+   
+   public static byte[] write(Object ob){
+		
+		ByteArrayOutputStream baos = new ByteArrayOutputStream(); 
+	    ObjectOutputStream out = null; 
+	    try { 
+	      out = new ObjectOutputStream(baos); 
+	      out.writeObject(ob);    
+	    } catch (IOException e) { 
+	    
+	    }finally{ 
+	      try { 
+	          out.close(); 
+	      } catch (IOException e) { 
+	    	  e.printStackTrace();
+	      } 
+	    } 
+	      
+	    return baos.toByteArray(); 
+
+	}
+	
+	public static Object readFromByte(byte[] b) throws IOException, ClassNotFoundException{
+		
+		ByteArrayInputStream bais=null; 
+	    ObjectInputStream in = null; 
+	    try{ 
+	      bais = new ByteArrayInputStream(b); 
+	      in = new ObjectInputStream(bais); 
+	      return in.readObject(); 
+	    }finally{ 
+	      if(in != null){ 
+	        try { 
+	          in.close(); 
+	        } catch (IOException e) { 
+	           e.printStackTrace();
+	        } 
+	      } 
+	    } 
+
+	}
+	
+	 public static String writePLC(Object plc)  {
+	       ConnactionPool p=ConnactionPool.getPool();
+           Conn conn=p.getCon2("");
+
+           PreparedStatement st=null;
+          Connection con=conn.getCon();
+   try{   
+	      String sql = "UPDATE plc SET PLC=?,更新时间="+SqlPro.getDate()[1]+" where ID='1'";
+          st=con.prepareStatement(sql);
+          con.setAutoCommit(false);
+          st.setBytes(1, write(plc));
+         // st.setDate(2,new Date(System.currentTimeMillis()));
+        //   st.setTime(2, new Time(System.currentTimeMillis()));
+          st.executeUpdate();
+
+         con.commit();
+         con.setAutoCommit(true);
+         st.close();
+         conn.realseCon();
+    }catch(Exception ex){ ex.printStackTrace();
+       try {
+           con.rollback();
+           con.setAutoCommit(true);
+           st.close();
+           conn.realseCon();
+            return ex.getMessage();
+         } catch (SQLException ex1) {
+             ex1.printStackTrace() ;
+             conn.realseCon();
+            return ex1.getMessage();
+         }
+
+      }
+         conn.realseCon();
+
+
+         return "记录更新成功！";
+
+}  
+	 
+	 public static Object readPLC()  {
+	       ConnactionPool p=ConnactionPool.getPool();
+         Conn conn=p.getCon2("");
+         ResultSet set=null;
+         Statement st=null;
+        
+        Connection con=conn.getCon();
+ try{   
+	      String sql = "select plc from PLC where ID=1";
+          st=con.createStatement();
+          set=st.executeQuery(sql);
+          if(set.next()){
+        	  Blob blob = set.getBlob("plc");
+        	  byte[] datas = blob.getBytes(1, (int)blob.length());
+        	  System.out.println("S:"+blob.length());
+        	  return readFromByte(datas);
+          }
+       
+      
+       st.close();
+       conn.realseCon();
+  }catch(Exception ex){ ex.printStackTrace();
+     try {
+         
+         st.close();
+         conn.realseCon();
+          return null;
+       } catch (SQLException ex1) {
+           ex1.printStackTrace() ;
+           conn.realseCon();
+          return null;
+       }
+
+    }
+       conn.realseCon();
+
+
+       return null;
+
+}  
+	 
+public static void main(String ss[]){
+	String s="11111112";
+	System.out.println( writePLC(s));
+	System.out.println( readPLC());
+	
+}	 
     
 }

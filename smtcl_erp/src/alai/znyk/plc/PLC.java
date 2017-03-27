@@ -354,27 +354,22 @@ public class PLC implements Serializable {
 	
 	public void writeO(){
 		try{
-			long time1=System.currentTimeMillis();
-		    ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("D:\\PLC.obj"));
-			out.writeObject(this);
-			out.flush();
-			//System.out.println(System.currentTimeMillis()-time1);
-			out.close();
+			
+			SqlTool.writePLC(this);
+			
 		  }catch(Exception ex){ex.printStackTrace();}
 		
 	}
 	
 	public PLC readO() {
-		ObjectInputStream in=null;
+		
          try{
-		 in = new ObjectInputStream(new FileInputStream("D:\\PLC.obj"));
-		  PLC plc=  (PLC)in.readObject();
-		  in.close();
-		  return plc;
+        	 Object ob=SqlTool.readPLC();
+        	 if(ob!=null)
+             return (PLC)ob;
+        	 else return null;
 	     }catch(Exception e){
-	    	 try{
-	    	 if(in!=null)in.close();}catch(Exception exx){}
-	    	 e.printStackTrace();
+	    	
 	    	 return null;}
 	}
 	Object LOCK1="";
