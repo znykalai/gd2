@@ -118,6 +118,7 @@ var af_Home={
 		$(document).keydown(function(event){if(event.keyCode==122){var a=window.location.reload();a=null;return null;};});//F11
 		var b=this.getQX(function(){//获取权限
 			var a=$('#anniu2').click();a=null;//显示主页;
+			if(af_Home.administrator.急停==false){var a=af_Home.cleanQX("div_mo_img_strat");a=null;};
 		});b=null;
 //		setInterval(function(){//定时更新急停按钮状态
 //			var a=af_Home.getState('get',$('#div_mo_img_strat'),function(r,e){

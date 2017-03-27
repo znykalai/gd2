@@ -114,7 +114,8 @@ public class HomeAction extends Action{
 						+"不检测数量:"+((HashMap)list.get(40)).get("功能权限")+","
 						+"不检测动作:"+((HashMap)list.get(41)).get("功能权限")+","
 						+"RFD自动读取:"+((HashMap)list.get(42)).get("功能权限")+","
-						+"启动库指令:"+((HashMap)list.get(43)).get("功能权限")+"}";
+						+"启动库指令:"+((HashMap)list.get(43)).get("功能权限")+","
+						+"急停:"+((HashMap)list.get(44)).get("功能权限")+"}";
 			response.setContentType("text/html;charset=utf-8");
 			response.getWriter().print(json);
 			response.getWriter().close();

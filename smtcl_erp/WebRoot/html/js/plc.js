@@ -722,9 +722,9 @@ var readyShow={
 									layer.msg("请先停止调度！");
 				  				}else if(obj.result&&obj.setCarryAt=='成功'){
 									var a=$(".anNiuSelect").click();a=null;
-									layer.msg("故障已初始化！");
+									layer.msg("故障已恢复！");
 				  				}else{
-									layer.msg("数据恢复失败或者异步输送线位置恢复失败！");
+									layer.msg("故障恢复失败或者异步输送线位置恢复失败！");
 				  				};
 				  				obj=null;
 				  				return null;
