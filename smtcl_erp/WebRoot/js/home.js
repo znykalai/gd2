@@ -102,8 +102,7 @@ var af_Home={
 		//关机
 		$('#div_mo_img_close').mouseover(function(){var url=getRootPath()+"/images/guanjianniu_mo.png";$(this).attr("src",url);url=null;return null;});
 		$('#div_mo_img_close').mouseout(function(){var url=getRootPath()+"/images/guanjianniu.png";$(this).attr("src",url);url=null;return null;});
-		//急停按钮
-		$('#div_mo_img_strat').click(function(){
+		$('#div_mo_img_strat').click(function(){//急停事件
 			var type;if(af_Home.div_mo_img_strat){type=false;}else{type=true;};//如果当前是停止状态则改为允许状态
 			var a=af_Home.getState(type,this,function(r,e){var url=getRootPath()+"/images/fanhuianniu_hong.png";if(!r){url=getRootPath()+"/images/fanhuianniu_lv.png";};$(e).attr("src",url);url=null;return null;});a=null;type=null;return null;
 		});
@@ -118,7 +117,6 @@ var af_Home={
 		$(document).keydown(function(event){if(event.keyCode==122){var a=window.location.reload();a=null;return null;};});//F11
 		var b=this.getQX(function(){//获取权限
 			var a=$('#anniu2').click();a=null;//显示主页;
-			if(af_Home.administrator.急停==false){var a=af_Home.cleanQX("div_mo_img_strat");a=null;};
 		});b=null;
 //		setInterval(function(){//定时更新急停按钮状态
 //			var a=af_Home.getState('get',$('#div_mo_img_strat'),function(r,e){
