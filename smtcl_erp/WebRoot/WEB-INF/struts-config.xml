@@ -7,8 +7,6 @@
 			<forward name="index" path="/indexg.jsp" redirect="true" />
 			<forward name="failureHttp" path="/httpLogin.jsp" />
 		</action>
-		<!-- 获取html -->
-		<action path="/GetHtmlAction" type="com.sygf.erp.baseData.action.GetHtmlAction"></action>
 		<!-- 基础数据 -->
 		<action path="/BaseDataAction" type="com.sygf.erp.baseData.action.BaseDataAction"></action>
 		<!-- 订单操作 -->

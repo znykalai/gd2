@@ -50,4 +50,20 @@ public class KuFangActionDAO extends SqlMapClientDaoSupport {
 		}
 		return null;
 	}
+	/**
+	 * 删除事件
+	 * @param map
+	 * @return
+	 */
+	public String removeAll(HashMap map){
+		String result="删除失败！";
+		try{
+			getSqlMapClientTemplate().delete("KuFangActionDAO.removeAll",map);
+			return result="删除成功！";
+		}catch (Exception e) {
+			Log.error("KuFangActionDAO.removeAll方法出现异常！" + e.getMessage());
+			e.printStackTrace();
+		}
+		return result;
+	}
 }

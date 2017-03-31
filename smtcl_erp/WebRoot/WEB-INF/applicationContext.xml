@@ -53,9 +53,6 @@
     <bean id="loginDAO" class="com.sygf.erp.systemSecurity.dao.LoginDAO">
         <property name="sqlMapClient" ref="sqlMapClient" /> 
     </bean>
-    <bean id="materialSchedulingDAO" class="com.sygf.erp.util.MaterialSchedulingDAO">
-        <property name="sqlMapClient" ref="sqlMapClient" /> 
-    </bean>
     <bean id="baseDataDAO" class="com.sygf.erp.baseData.dao.BaseDataDAO">
         <property name="sqlMapClient" ref="sqlMapClient" /> 
     </bean>
