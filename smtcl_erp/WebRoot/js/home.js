@@ -102,8 +102,7 @@ var af_Home={
 		//关机
 		$('#div_mo_img_close').mouseover(function(){var url=getRootPath()+"/images/guanjianniu_mo.png";$(this).attr("src",url);url=null;return null;});
 		$('#div_mo_img_close').mouseout(function(){var url=getRootPath()+"/images/guanjianniu.png";$(this).attr("src",url);url=null;return null;});
-		//急停按钮
-		$('#div_mo_img_strat').click(function(){
+		$('#div_mo_img_strat').click(function(){//急停事件
 			var type;if(af_Home.div_mo_img_strat){type=false;}else{type=true;};//如果当前是停止状态则改为允许状态
 			var a=af_Home.getState(type,this,function(r,e){var url=getRootPath()+"/images/fanhuianniu_hong.png";if(!r){url=getRootPath()+"/images/fanhuianniu_lv.png";};$(e).attr("src",url);url=null;return null;});a=null;type=null;return null;
 		});

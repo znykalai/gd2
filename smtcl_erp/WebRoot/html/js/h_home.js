@@ -443,6 +443,7 @@ var readyShow={
 				}
 			};
 			af.load(function(){
+				if(af_Home.administrator.急停){var a=$('#div_mo_img_strat').show();a=null;}else{var a=$('#div_mo_img_strat').hide();a=null;};
 				if(af_Home.administrator.启动调度==false){var a=af_Home.cleanQX("qidongdiaodu_top");a=null;var b=af_Home.cleanQX("qidongdiaodu_bottom");b=null;};
 				if(af_Home.administrator.复位==false){var a=af_Home.cleanQX("fuwei_top");a=null;var b=af_Home.cleanQX("fuwei_bottom");b=null;};
 				if(af_Home.administrator.归零启动==false){var a=af_Home.cleanQX("guilingqidong_top");a=null;var b=af_Home.cleanQX("guilingqidong_bottom");b=null;};

@@ -37,7 +37,7 @@ var af={
 };
 </script>
 </head>
-<body style="overflow-y:hidden;" class="form-bg" onload="af.checkMsg();">
+<body style="overflow-y:hidden;" onload="af.checkMsg();">
 	<div class="htmleaf-container">
 		<header class="htmleaf-header"></header>
 		<div class="demo form-bg" style="padding: 50px 0;">
@@ -56,7 +56,7 @@ var af={
 	                            <a href="#" class="fa fa-question-circle"></a>
 	                        </div>
 	                        <div class="form-group">
-	                            <button type="submit" class="btn btn-default">登录</button>
+	                        	<button type="submit" class="btn btn-default">登录</button> 
 	                        </div>
 	                    </form>
 	                </div>
