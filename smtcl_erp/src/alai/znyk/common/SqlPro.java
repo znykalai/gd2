@@ -8,6 +8,12 @@ import java.io.OutputStreamWriter;
 import java.io.FileOutputStream;
 import java.io.BufferedWriter;
 import javax.swing.JTable;
+
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+
+
+
 import java.awt.Desktop;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -18,7 +24,7 @@ import java.net.Socket;
 import java.io.DataInputStream;
 
 public class SqlPro {
-	
+	  private static  Logger logger;
     public static String tp=null;
       public static boolean 演示=false;
      public static float 默认数量=5;//当物料没设定装载系数时的值
@@ -373,5 +379,20 @@ public class SqlPro {
 
   }
 
+  public static Logger getLog(){
+	      if(logger==null){
+	     String name= SqlPro.class.getResource("lo4j.pro").getFile();
+		 PropertyConfigurator.configure(name);
+		
+		  logger = Logger.getLogger( SqlPro.class); 
+		 return logger;
+	        }else{
+	    	  
+	    	  return logger;  
+	      }
+		
+		  // logger.debug( " debug " );
+	     //  logger.error( " errorALAI " );
+  }
  
 }

@@ -31,7 +31,7 @@ public class ClientSer {
 
 	public GDLocator gd =new GDLocator();
 	private static ClientSer INSTANCE;
-	private boolean isOpenPlc=false;
+	private boolean isOpenPlc=true;
 	private ClientSer(){
 		
 		
@@ -140,21 +140,28 @@ public class ClientSer {
 	public int upPallet(int idEvent,int fromID,int toLocID,int machineID){
 		try{
 		if(isOpenPlc) return gd.getGD().upPallet(idEvent, fromID, toLocID, machineID);}
-		catch(Exception ex){ex.printStackTrace();}
+		catch(Exception ex){
+			SqlPro.getLog().error(ex.getMessage());
+			 ex.printStackTrace();}
 		System.out.println("上货");
 		return -1;
 	}
 	public int getPallet(int idEvent,String fromLocID,int toLocID,int machineID){
 		try{
 			if(isOpenPlc) return gd.getGD().getPallet(idEvent, fromLocID, toLocID, machineID);}
-			catch(Exception ex){ex.printStackTrace();}
+			catch(Exception ex){
+				SqlPro.getLog().error(ex.getMessage());
+				ex.printStackTrace();}
 		System.out.println("下货");
 		return -1;}
+	
 	public int toBackBuffer(int idEvent, int fromLocID,int toLocID){ 
 		 try{
 			if(isOpenPlc) return gd.getGD().toBackBuffer(idEvent, fromLocID, toLocID);
 			}
-			catch(Exception ex){ex.printStackTrace();}
+			catch(Exception ex){
+				SqlPro.getLog().error(ex.getMessage());
+				ex.printStackTrace();}
 		System.out.println("回货");
 		return -1;}
 	
@@ -192,7 +199,9 @@ public class ClientSer {
 					RST1=gd.getGD().getSirIntValuesFromCTR(startAddress, nums, valueLen, machineID);
 				return RST1;}
 				
-			}catch(Exception ex){ex.printStackTrace();}
+			}catch(Exception ex){
+				SqlPro.getLog().error(ex.getMessage());
+				ex.printStackTrace();}
 			return RST1;
 		
 		}
@@ -205,7 +214,7 @@ public class ClientSer {
 				return gd.getGD().getSirIntValuesFromCTR(startAddress, nums, valueLen, machineID);
 			
 			
-		}catch(Exception ex){}
+		}catch(Exception ex){SqlPro.getLog().error(ex.getMessage());}
 		return RST1;
 	
 	}
@@ -216,7 +225,9 @@ public class ClientSer {
 			 
 				return gd.getGD().writeSirIntToCTR(strAddress, valuseLeng, tem, machineID);
 				
-			}catch(Exception ex){ex.printStackTrace();}
+			}catch(Exception ex){
+				SqlPro.getLog().error(ex.getMessage());
+				ex.printStackTrace();}
 		 }
 		 
 		 return 1;
@@ -226,7 +237,7 @@ public class ClientSer {
 		 try{
 				return gd.getGD().writeValueToCTR(type1, address, value);
 				
-			}catch(Exception ex){}
+			}catch(Exception ex){SqlPro.getLog().error(ex.getMessage());}
 		 
 		 return -1; 
 		 
@@ -236,7 +247,7 @@ public class ClientSer {
 		 try{
 				return gd.getGD().writeValuesToCTR(type1, inaddress, inValues,machineID);
 				
-			}catch(Exception ex){}
+			}catch(Exception ex){SqlPro.getLog().error(ex.getMessage());}
 		 
 		 return -1;  
 		 
@@ -246,7 +257,7 @@ public class ClientSer {
 		 try{
 				return gd.getGD().getValueFromCTR(type1, address, machineID);
 				
-			}catch(Exception ex){}
+			}catch(Exception ex){SqlPro.getLog().error(ex.getMessage());}
 		 
 		 return -1; 
 	 }
@@ -258,7 +269,7 @@ public class ClientSer {
 	    	 try{
 					return gd.getGD().getValuesFromCTR(type1, inaddress, machineID);
 					
-				}catch(Exception ex){}
+				}catch(Exception ex){SqlPro.getLog().error(ex.getMessage());}
 			 
 			 return null; 
 	    	
@@ -270,7 +281,9 @@ public class ClientSer {
 				   try{
 				   return gd.getGD().wexeComment(comment, type);
 					     
-				   }catch(Exception ex){ex.printStackTrace();}
+				   }catch(Exception ex){
+					   SqlPro.getLog().error(ex.getMessage());
+					   ex.printStackTrace();}
 			   }
 			   
 		   }
@@ -280,7 +293,7 @@ public class ClientSer {
 				   try{
 				   return gd.getGD().wexeComment(comment, type);
 					     
-				   }catch(Exception ex){}
+				   }catch(Exception ex){SqlPro.getLog().error(ex.getMessage());}
 			   }   
 		   }
           if(type==2){//A堆垛机复位
@@ -289,7 +302,7 @@ public class ClientSer {
 				   try{
 				   return gd.getGD().wexeComment(comment, type);
 					     
-				   }catch(Exception ex){}
+				   }catch(Exception ex){SqlPro.getLog().error(ex.getMessage());}
 			   }
 			   
 		   }
@@ -299,7 +312,7 @@ public class ClientSer {
 				   try{
 				   return gd.getGD().wexeComment(comment, type);
 					     
-				   }catch(Exception ex){}
+				   }catch(Exception ex){SqlPro.getLog().error(ex.getMessage());}
 			   }
 			   
 		   }
@@ -315,6 +328,7 @@ public class ClientSer {
   						return gd.getGD().wexeComment(back, type);
   					 }
   					}catch(Exception e){
+  						SqlPro.getLog().error(e.getMessage());
   						e.printStackTrace();
   						return "-1";
   					}
@@ -323,6 +337,7 @@ public class ClientSer {
   						 try{
    						return gd.getGD().wexeComment("-1", type);
    						}catch(Exception ex){
+   							SqlPro.getLog().error(ex.getMessage());
    							ex.printStackTrace();
    						}
    					 }	

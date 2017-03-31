@@ -382,7 +382,9 @@ public class PLC implements Serializable {
 	public  void setSTATE1() {
 		synchronized(LOCK1){
 			try{
-			STATE1=ClientSer.getIntance().getState(10);}catch(Exception ex){ex.printStackTrace();}
+			STATE1=ClientSer.getIntance().getState(10);}catch(Exception ex){
+				SqlPro.getLog().error(ex.getMessage());
+				ex.printStackTrace();}
 		}
 	}
 	public  String getSTATE2() {
@@ -392,7 +394,9 @@ public class PLC implements Serializable {
 	public synchronized void setSTATE2() {
 		synchronized(LOCK2){
 			try{
-			STATE2=ClientSer.getIntance().getState(11);}catch(Exception ex){ex.printStackTrace();}
+			STATE2=ClientSer.getIntance().getState(11);}catch(Exception ex){
+				SqlPro.getLog().error(ex.getMessage());
+				ex.printStackTrace();}
 		}
 	}
 	
@@ -611,7 +615,9 @@ public class PLC implements Serializable {
     		}
     	
     	
-    	}catch(Exception ex){ex.printStackTrace();}
+    	}catch(Exception ex){
+    		SqlPro.getLog().error(ex.getMessage());
+    		ex.printStackTrace();}
     	return null;
     }
     
@@ -989,7 +995,9 @@ public class PLC implements Serializable {
 	   
 	      return true;
 	   
-	   }catch(Exception ex){ex.printStackTrace();}
+	   }catch(Exception ex){
+		   SqlPro.getLog().error(ex.getMessage());
+		   ex.printStackTrace();}
 	   
 	 
 	   
