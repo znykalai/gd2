@@ -251,6 +251,7 @@
     	<result property="工单ID" column="工单ID" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     	<result property="工单序号" column="工单序号" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     	<result property="pack编码" column="pack编码" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="pack类型" column="pack类型" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     	<result property="模组序ID" column="模组序ID" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     	<result property="模组序号" column="模组序号" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     	<result property="模组编码" column="模组编码" javaType="String" jdbcType="VARCHAR" nullValue=""/>
@@ -316,14 +317,16 @@
     	<result property="电芯位置3" column="电芯位置3" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     	<result property="电芯位置4" column="电芯位置4" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     	<result property="工位" column="工位" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="ST读取标志" column="ST读取标志" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="前升读标志" column="前升读标志" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     </resultMap>
 	<select id="OrderOperactionDAO.getZlpfList" parameterClass="java.util.HashMap" resultMap="OrderOperactionDAO.getZlpfListMap">
 		$sql$
 	</select>
 	<!-- 配方指令队列 保存 -->
 	<insert id="OrderOperactionDAO.savePfzldl" parameterClass="java.util.HashMap">
-		insert into `配方指令队列`(`工单ID`,`工单序号`,`pack编码`,`装配区`,`模组序ID`,`模组序号`,`模组编码`,`载具序号`,`模组类型`,`电芯类型`,`物料`,`物料描述`,`数量`,`工位`,`电芯数量`,`翻面否`,`电芯位置1`,`电芯位置2`,`电芯位置3`,`电芯位置4`,`假电芯1`,`假电芯2`,`叠装否`,`有效型腔`,`完成数量`,`分解号`)
-		values(#工单ID#,#工单序号#,#pack编码#,#装配区#,#模组序ID#,#模组序号#,#模组编码#,#载具序号#,#模组类型#,#电芯类型#,#物料#,#物料描述#,#数量#,#工位#,#电芯数量#,#翻面否#,#电芯位置1#,#电芯位置2#,#电芯位置3#,#电芯位置4#,#假电芯1#,#假电芯2#,#叠装否#,#有效型腔#,#完成数量#,#分解号#)
+		insert into `配方指令队列`(`工单ID`,`工单序号`,`pack编码`,`pack类型`,`装配区`,`模组序ID`,`模组序号`,`模组编码`,`载具序号`,`模组类型`,`电芯类型`,`物料`,`物料描述`,`数量`,`工位`,`电芯数量`,`翻面否`,`电芯位置1`,`电芯位置2`,`电芯位置3`,`电芯位置4`,`假电芯1`,`假电芯2`,`叠装否`,`有效型腔`,`完成数量`,`分解号`)
+		values(#工单ID#,#工单序号#,#pack编码#,#pack类型#,#装配区#,#模组序ID#,#模组序号#,#模组编码#,#载具序号#,#模组类型#,#电芯类型#,#物料#,#物料描述#,#数量#,#工位#,#电芯数量#,#翻面否#,#电芯位置1#,#电芯位置2#,#电芯位置3#,#电芯位置4#,#假电芯1#,#假电芯2#,#叠装否#,#有效型腔#,#完成数量#,#分解号#)
 	</insert>
 	<!-- 修改工单分解日期 -->
 	<update id="OrderOperactionDAO.updateGdState" parameterClass="java.util.HashMap">
@@ -371,7 +374,7 @@
     	<result property="货位序号" column="货位序号" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     </resultMap>
 	<select id="HomeActionDAO.getHckState" parameterClass="java.util.HashMap" resultMap="HomeActionDAO.getHckStateMap">
-		SELECT a.`货位ID`,a.`货位序号` FROM `货位表` AS a WHERE a.`托盘编号`&lt;&gt;''
+		SELECT a.`货位ID`,a.`货位序号` FROM `货位表` AS a WHERE a.`托盘编号`&lt;&gt;'' and a.`货位序号`&lt;&gt;'60001' and a.`货位序号`&lt;&gt;'60002'
 	</select>
 	<!-- 所以工单完成率 -->
 	<resultMap id="HomeActionDAO.getGdWanChengLvMap" class="java.util.HashMap">
@@ -422,4 +425,60 @@
 			   a.`货位号`,a.`库房号`
 		FROM `库存托盘` AS a
 	</select>
+	<!-- 获取托盘号，方向 -->
+	<resultMap id="KuFangActionDAO.getTpMachineIDMap" class="java.util.HashMap">
+    	<result property="托盘编号" column="托盘编号" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="方向" column="方向" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    </resultMap>
+	<select id="KuFangActionDAO.getTpMachineID" parameterClass="java.util.HashMap" resultMap="KuFangActionDAO.getTpMachineIDMap">
+		SELECT a.`托盘编号`,a.`方向` FROM `库存托盘` AS a WHERE a.`货位号`=#fromID#
+	</select>
+	<!-- 权限设置-角色 获取角色最大ID -->
+	<resultMap id="BaseDataDAO.getMaxIdMap" class="java.util.HashMap">
+    	<result property="ID" column="ID" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    </resultMap>
+	<select id="BaseDataDAO.getMaxId" parameterClass="java.util.HashMap" resultMap="BaseDataDAO.getMaxIdMap">
+		SELECT MAX(a.ID) ID FROM `角色` AS a
+	</select>
+	<!--重置用户权限 -->
+	<delete id="BaseDataDAO.removeAllJueSe" parameterClass="java.util.HashMap">
+		DELETE FROM 角色 WHERE ID=#id#
+	</delete>
+	<!-- 新增角色权限 -->
+	<insert id="BaseDataDAO.insertJueSe" parameterClass="java.util.HashMap">
+		$sql$
+	</insert>
+	<!-- 故障恢复-->
+	<update id="PLCDAO.gwGzUpdate" parameterClass="java.util.HashMap">
+		$sql$
+	</update>
+	<!-- 获取角色-->
+	<resultMap id="BaseDataDAO.selectJuesMap" class="java.util.HashMap">
+    	<result property="ID" column="ID" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="序号" column="序号" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="角色名" column="角色名" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="角色功能" column="角色功能" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="功能权限" column="功能权限" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    </resultMap>
+	<select id="BaseDataDAO.selectJues" parameterClass="java.util.HashMap" resultMap="BaseDataDAO.selectJuesMap">
+		$sql$
+	</select>
+	<!-- 获取用户-->
+	<resultMap id="BaseDataDAO.selectYongHJuesMap" class="java.util.HashMap">
+    	<result property="账户" column="账户" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="密码" column="密码" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="角色" column="角色" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="角色名" column="角色名" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    </resultMap>
+	<select id="BaseDataDAO.selectYongHJues" parameterClass="java.util.HashMap" resultMap="BaseDataDAO.selectYongHJuesMap">
+		$sql$
+	</select>
+	<!--重置用户权限 -->
+	<delete id="BaseDataDAO.removeJueSe" parameterClass="java.util.HashMap">
+		$sql$
+	</delete>
+	<!-- 删除  立体库动作指令-->
+	<delete id="KuFangActionDAO.removeAll" parameterClass="java.util.HashMap">
+		$sql$
+	</delete>
 </sqlMap>

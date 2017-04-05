@@ -45,10 +45,32 @@ public class HomeAction extends Action{
 				return getState(mapping, form, request, response);
 			}else if(operType.equals("getQX")){
 				return getQX(mapping, form, request, response);
+			}else if(operType.equals("stop")){
+				return stop(mapping, form, request, response);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return null;
+	}
+	/**
+	 * 关机按钮操作
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	private ActionForward stop(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) {
+		try{
+			String result=PLC.getIntance().stop();
+			response.setContentType("text/html;charset=utf-8");
+			response.getWriter().print(result);
+			response.getWriter().close();
+		}catch (Exception e) {
+			e.printStackTrace();
+		};
 		return null;
 	}
 	/**
