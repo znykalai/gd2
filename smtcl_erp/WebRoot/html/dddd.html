@@ -7,7 +7,7 @@
 <body>
 	<div class="row margin-top-10 account-company-auth" id="xy" style="overflow-y:hidden;background-color:white;height:94%;width:98%;margin-left:2%;">
 		<!-- 配方指令队列 overflow-y:scroll -->
-		<div id="dd_id" class="row">
+		<div id="dd_id" class="row ddShow">
 			<form id="dd_form" class="row">
 				<div class="col-md-12">
 					<div class="row" style="margin-top:-45px;margin-left:-10px;">
@@ -118,10 +118,146 @@
 	            </div>
 			</form>
 		</div>
+		<!-- 订单维护 -->	
+		<div id="ddUpdata_id" class="row ddShow" style="display:none;">	
+			<form id="dingdanform" class="row">
+	        	<div class="col-md-1">
+	        		<input type="hidden" id="order_id">
+	        	</div>
+				<div class="col-md-10 account-company-auth" style="margin-left:38px;height:60px;width:80%;height:30px;min-height:60%;">
+					<div class="row" style="margin-top:-20px;">
+			        	<div class="col-md-2"></div>
+			            <div class="col-md-1 text-right" style="padding: 5px 0 0 0;">
+			                <span><span style="color:red;">*</span>工单序号:</span>
+			            </div>
+			            <div class="col-md-3">
+			                <input id="order_sequence" type="number" class="form-control"/>
+			            </div>
+			            <div class="col-md-1 text-right" style="padding: 5px 0 0 0;">
+			                <span><span style="color:red;">*</span>工单号:</span>
+			            </div>
+			            <div class="col-md-3">
+			                <input id="order_code" type="text" class="form-control"/>
+			            </div>
+		            </div> 
+					<div class="row margin-top-10">
+			        	<div class="col-md-2"></div>
+			            <div class="col-md-1 text-right" style="padding: 5px 0 0 0;">
+			                <span><span style="color:red;">*</span>pack编码:</span>
+			            </div>
+			             <div class="col-md-3">
+			             <div class="input-group">
+			                <input id="pack_code" type="text" readonly class="form-control"/>
+			                 <span class="input-group-btn">
+								  <button class="btn btn-default" id="pack_code_button" type="button">编码</button>
+							 </span>
+							 </div>
+			            </div>
+			            <div class="col-md-1 text-right" style="padding: 5px 0 0 0;">
+			                <span><span style="color:red;">*</span>工单数量:</span>
+			            </div>
+		           		<div class="col-md-3">
+		           		<!-- 
+			                <input id="order_number" type="text" onkeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" class="form-control"/>
+			             -->
+			                <input id="order_number" type="number" min="0" class="form-control"/>
+			            </div>    
+			        </div>       				 
+		            <div class="row margin-top-10">
+			        	<div class="col-md-2"></div>
+			            <div class="col-md-1 text-right" style="padding: 5px 0 0 0;">
+			                <span>装配区:</span>
+			            </div>					           
+			           <div class="col-md-3">
+			                <div class="cus-select" id="assemble_area">
+                                <div class="cus-select-btn"></div>
+                                <input id="assemble_area_id" type="text" placeholder="--请选择--" readonly/>
+                                <ul>  
+                                    <li></li>                        
+                                	<li>1</li>
+                                	<li>2</li>	
+                                </ul>
+                            </div>
+			            </div>	   			            					           
+			            <div class="col-md-1 text-right" style="padding: 5px 0 0 0;">
+			                <span>传送否:</span>
+			            </div>
+			            
+			            <div class="col-md-3">
+			                <div class="cus-select" id="chuansong">
+                                <div class="cus-select-btn"></div>
+                                <input id="chuansong_id" type="text" placeholder="--请选择--" readonly/>
+                                <ul>
+                                	<li></li>	                               
+                                	<li>是</li>
+                                	<li>否</li>	
+                                </ul>
+                            </div>
+			            </div>	
+			        </div>
+		            <div class="row margin-top-10">
+			        	<div class="col-md-2"></div>
+			            <div class="col-md-1 text-right" style="padding: 5px 0 0 0;">
+			                <span>释放否:</span>
+			            </div>
+			            
+			            <div class="col-md-3">
+			                <div class="cus-select" id="shifang">
+                                <div class="cus-select-btn"></div>
+                                <input id="shifang_id" type="text" placeholder="--请选择--" readonly/>
+                                <ul>
+                                	<li></li>		                                	             
+                                	<li>是</li>
+                                	<li>否</li>	                                	
+                                </ul>
+                            </div>
+			            </div>				            
+			            <div class="col-md-1 text-right" style="padding: 5px 0 0 0;">
+			                <span>完成数量:</span>
+			            </div>			            
+			            <div class="col-md-3">
+			                <input id="complete_number" type="number" readonly class="form-control"/>
+         					</div>	
+		        	</div>
+		        </div>
+		    </form>
+		    <div class="row margin-top-10">
+		    	<div class="col-md-1"></div>
+		    	<div class="col-md-10" style="margin-left:10px;">
+			        <div class="col-md-2" >
+				        <div class="button button-primary button-rounded button-small" id="gd_selectBtn" 
+				        	style="width:150px;font-size:15px;font-family:'微软雅黑';" onselectstart="return false">
+				        	查找
+			        	</div>
+			        </div>
+			        <div class="col-md-2">
+				        <div class="button button-primary button-rounded button-small" id="gd_newBtn" 
+				        	style="width:150px;font-size:15px;font-family:'微软雅黑';" onselectstart="return false">
+							 新建
+				        </div>
+			        </div>
+			        <div class="col-md-2">
+				        <div class="button button-primary button-rounded button-small" id="gd_saveBtn" 
+				        	style="width:150px;font-size:15px;font-family:'微软雅黑';" onselectstart="return false">
+				        	保存
+				        </div>
+			        </div>
+			        <div class="col-md-2">
+				        <div class="button button-primary button-rounded button-small" id="gd_deleteBtn" 
+				        	style="width:150px;font-size:15px;font-family:'微软雅黑';" onselectstart="return false">
+				        	删除
+						</div>
+			        </div>   
+		    	</div>
+		    </div>
+	    </div> 			
 	</div>
 	<div class="col-md-3" style="width:400px;"></div>
 	<div class="col-md-2">
-		<a class="button button-glow button-rounded button-raised button-primary butRow">订单调度</a>
+		<a class="button button-glow button-rounded button-raised button-primary butRow" onclick="readyShow.showThis(dd_id);">订单调度</a>
+	</div>
+	<div class="col-md-2">
+		<a class="button button-glow button-rounded button-raised button-primary butRow" onclick="readyShow.showThis(ddUpdata_id);">订单维护</a>
 	</div>
 	<script type="text/javascript" src="/smtcl_erp/html/js/dddd.js"></script>
 </body>

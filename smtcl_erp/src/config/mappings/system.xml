@@ -336,6 +336,7 @@
 	<resultMap id="OrderOperactionDAO.getGdDownloadMap" class="java.util.HashMap">
     	<result property="ID" column="ID" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     	<result property="pack编码" column="pack编码" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="工单序号" column="工单序号" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     	<result property="工单号" column="工单号" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     	<result property="工单数量" column="工单数量" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     	<result property="装配区" column="装配区" javaType="String" jdbcType="VARCHAR" nullValue=""/>
@@ -481,4 +482,11 @@
 	<delete id="KuFangActionDAO.removeAll" parameterClass="java.util.HashMap">
 		$sql$
 	</delete>
+	<!-- 获取工单下载表中的ID -->
+	<resultMap id="OrderOperactionDAO.getGdxzIdMap" class="java.util.HashMap">
+		<result nullValue="" jdbcType="VARCHAR" javaType="String" column="ID" property="ID"/>
+	</resultMap>
+	<select parameterClass="java.util.HashMap" id="OrderOperactionDAO.getGdxzId" resultMap="OrderOperactionDAO.getGdxzIdMap">
+		$sql$
+	</select>
 </sqlMap>

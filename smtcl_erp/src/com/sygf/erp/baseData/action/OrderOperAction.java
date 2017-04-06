@@ -48,10 +48,179 @@ public class OrderOperAction extends Action{
 				return upGdBtn(mapping, form, request, response);
 			}else if (operType.equals("bomGdBtn")){
 				return bomGdBtn(mapping, form, request, response);
-			}
+			}else if(operType.equals("getPacklist")){
+				return getPacklist(mapping, form, request, response);
+			}else if(operType.equals("orderSave")){
+				return orderSave(mapping, form, request, response);
+			}else if(operType.equals("getGdDownload")){
+				return getGdDownload(mapping, form, request, response);
+			}else if(operType.equals("orderdelete")){
+				return orderdelete(mapping, form, request, response);
+			};
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return null;
+	}
+	/**
+	 * 订单维护-新增&修改
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	private ActionForward orderSave(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response) {
+		try{
+			request.setCharacterEncoding("utf-8");
+			response.setCharacterEncoding("utf-8");
+			HashMap map = GetParam.GetParamValue(request, "utf-8", "utf-8");
+			ApplicationContext context = GetApplicationContext.getContext(request);
+			OrderOperactionDAO dao = (OrderOperactionDAO)context.getBean("orderOperactionDAO");
+			JSONObject head = new JSONObject(map.get("head").toString());
+			JSONObject result = new JSONObject();
+			if(head.get("id").equals("")){//新增
+				String sql = "insert into `工单下载`(`工单序号`,`工单号`,`pack编码`,`工单数量`,`装配区`,`传送否`,`释放否`)" +
+						"values(" +
+						"'"+head.get("订单序号").toString()+"'," +
+						"'"+head.get("订单号").toString()+"'," +
+						"'"+head.get("pack编码").toString()+"'," +
+						"'"+head.get("订单数量").toString()+"'," +
+						"'"+head.get("装配区").toString()+"'," +
+						"'"+head.get("传送否").toString()+"'," +
+						"'"+head.get("释放否").toString()+"')";
+				map.put("sql", sql);sql=null;
+				result.put("result", dao.saveAll(map));//保存	
+				map.put("sql","SELECT MAX(a.ID)AS ID FROM `工单下载` a");//获取工单ID的 SQL
+				result.put("id", ((HashMap)dao.getGdxzId(map).get(0)).get("ID"));//获取工单下载表ID
+			}else{//修改
+				String sql="update 工单下载 set "
+						+ "工单序号='"+head.get("订单序号").toString()+"',"
+						+ "工单号='"+head.get("订单号").toString()+"',"
+						+ "pack编码='"+head.get("pack编码").toString()+"',"
+						+ "工单数量='"+head.get("订单数量").toString()+"',"
+						+ "装配区='"+head.get("装配区").toString()+"',"
+						+ "传送否='"+head.get("传送否").toString()+"',"
+						+ "释放否='"+head.get("释放否").toString()+"' where ID="+head.get("id");
+				map.put("sql", sql);sql=null;
+				result.put("result", dao.saveAll(map));//保存
+				result.put("id", head.get("id"));
+			};
+			head=null;context=null;dao=null;map=null;
+			response.setContentType("text/html;charset=utf-8");
+			response.getWriter().print(result);
+			response.getWriter().close();
+		}catch (Exception e) {
+			e.printStackTrace();
+        };
+		return null;
+	};
+	/**
+	 * 订单维护-删除
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	private ActionForward orderdelete(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response) {
+		try{
+			request.setCharacterEncoding("utf-8");
+			response.setCharacterEncoding("utf-8");
+			HashMap map = GetParam.GetParamValue(request, "utf-8", "utf-8");
+			ApplicationContext context = GetApplicationContext.getContext(request);
+			OrderOperactionDAO dao = (OrderOperactionDAO)context.getBean("orderOperactionDAO");
+			JSONObject result = new JSONObject();
+			if(!map.get("id").equals("")){
+				String sql = "delete from `工单下载` where ID=" +map.get("id");
+				map.put("sql", sql);sql=null;
+				result.put("result", dao.saveAll(map));//删除
+			};
+			map=null;context=null;dao=null;
+			response.setContentType("text/html;charset=utf-8");
+			response.getWriter().print(result);
+			response.getWriter().close();
+		}catch (Exception e) {
+			e.printStackTrace();
+        };
+		return null;
+	};
+						
+	/**
+	 * pack列表获取
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	private ActionForward getPacklist(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) {
+		try{
+			request.setCharacterEncoding("utf-8");
+			response.setCharacterEncoding("utf-8");
+			HashMap map = GetParam.GetParamValue(request, "utf-8", "utf-8");
+			ApplicationContext context = GetApplicationContext.getContext(request);
+			BaseDataDAO dao = (BaseDataDAO)context.getBean("baseDataDAO");
+			ArrayList result = new ArrayList();
+			String sql = "select * from `pack题头`";
+			map.put("sql", sql);sql=null;
+			List list = dao.getHeadList(map);
+			for(int i=0;i<list.size();i++){
+				HashMap mapPara = new HashMap();
+				mapPara.put("'pack_bianma'", "'"+((HashMap)list.get(i)).get("pack编码")+"'");
+				mapPara.put("'pack_leixing'", "'"+((HashMap)list.get(i)).get("pack类型")+"'");
+				result.add(mapPara);mapPara=null;
+			};list=null;map=null;context=null;dao=null;
+			response.setContentType("text/html;charset=utf-8");
+			response.getWriter().print(result.toString().replaceAll("'='", "':'"));
+			response.getWriter().close();
+		}catch (Exception e) {
+			e.printStackTrace();
+		};
+		return null;
+	}
+	/**
+	 * 工单下载表获取
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	private ActionForward getGdDownload(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) {
+		try{
+			request.setCharacterEncoding("utf-8");
+			response.setCharacterEncoding("utf-8");
+			HashMap map = GetParam.GetParamValue(request, "utf-8", "utf-8");
+			ApplicationContext context = GetApplicationContext.getContext(request);
+			OrderOperactionDAO dao = (OrderOperactionDAO)context.getBean("orderOperactionDAO");
+			ArrayList result = new ArrayList();
+			String sql = "select * from `工单下载`";
+			map.put("sql", sql);sql=null;
+			List list = dao.getGdDownload(map);
+			for(int i=0;i<list.size();i++){
+				HashMap mapPara = new HashMap();
+				mapPara.put("'pack_code'", "'"+((HashMap)list.get(i)).get("pack编码")+"'");
+				mapPara.put("'order_sequence'", "'"+((HashMap)list.get(i)).get("工单序号")+"'");
+				mapPara.put("'order_code'", "'"+((HashMap)list.get(i)).get("工单号")+"'");
+				mapPara.put("'order_number'", "'"+((HashMap)list.get(i)).get("工单数量")+"'");
+				mapPara.put("'assemble_area_id'", "'"+((HashMap)list.get(i)).get("装配区")+"'");
+				mapPara.put("'chuansong_id'", "'"+((HashMap)list.get(i)).get("传送否")+"'");
+			    mapPara.put("'shifang_id'", "'"+((HashMap)list.get(i)).get("释放否")+"'");
+			    mapPara.put("'complete_number'", "'"+((HashMap)list.get(i)).get("完成数量")+"'");
+			    mapPara.put("'order_id'", "'"+((HashMap)list.get(i)).get("ID")+"'");
+				result.add(mapPara);mapPara=null;
+			};list=null;map=null;context=null;dao=null;
+			response.setContentType("text/html;charset=utf-8");
+			response.getWriter().print(result.toString().replaceAll("'='", "':'"));
+			response.getWriter().close();
+		}catch (Exception e) {
+			e.printStackTrace();
+		};
 		return null;
 	}
 	/**
@@ -86,8 +255,7 @@ public class OrderOperAction extends Action{
 			}else if(sql.endsWith("AND ")){
 				sql = sql.substring(0,sql.length()-4);
 			}
-			map.put("sql", sql);
-			sql=null;
+			map.put("sql", sql);sql=null;
 			List list = dao.getDdList(map);
 			if(list!=null&&list.size()>0){
 				for(int i=0;i<list.size();i++){
@@ -99,8 +267,7 @@ public class OrderOperAction extends Action{
 						sql = "SELECT `配方指令队列`.ID FROM `配方指令队列` WHERE `配方指令队列`.`工单ID` = '"+((HashMap)list.get(i)).get("ID")+"' AND " +
 								"((`配方指令队列`.`前升读标志` IS NOT NULL OR `配方指令队列`.`前升读标志`<>'') OR " +
 								"`配方指令队列`.`ST读取标志` IS NOT NULL OR `配方指令队列`.`ST读取标志`<>'')";
-						map.put("sql", sql);
-						sql=null;
+						map.put("sql", sql);sql=null;
 						List zlList = dao.getGdtype(map);
 						if(zlList!=null&&zlList.size()>0){
 							start_type = "正在处理";
@@ -108,15 +275,14 @@ public class OrderOperAction extends Action{
 							sql = "SELECT `配方指令队列`.ID FROM `配方指令队列` WHERE `配方指令队列`.`工单ID` = '"+((HashMap)list.get(i)).get("ID")+"' AND " +
 							"((`配方指令队列`.`前升读标志` IS NULL OR `配方指令队列`.`前升读标志`='') OR " +
 							"`配方指令队列`.`ST读取标志` IS NULL OR `配方指令队列`.`ST读取标志`='')";
-							map.put("sql", sql);
-							sql=null;
+							map.put("sql", sql);sql=null;
 							zlList = dao.getGdtype(map);
 							if(zlList!=null&&zlList.size()>0){
 								start_type = "已分解";
 							}
-						}
+						};
 						zlList=null;
-					}
+					};
 					mapPara.put("'id'", "'"+((HashMap)list.get(i)).get("ID")+"'");
 					mapPara.put("'dd_zhuangtai'", "'"+start_type+"'");
 					mapPara.put("'dd_code'", "'"+((HashMap)list.get(i)).get("工单号")+"'");
@@ -579,7 +745,7 @@ public class OrderOperAction extends Action{
 			HashMap map = GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
 			ApplicationContext context = GetApplicationContext.getContext(request);
 			OrderOperactionDAO dao = (OrderOperactionDAO)context.getBean("orderOperactionDAO");
-			String sql = "SELECT a.`ID`,a.`工单号`,a.`pack编码`,a.`工单数量`,a.`装配区`,a.`传送否`,a.`释放否` FROM `工单下载` a";
+			String sql = "SELECT a.`ID`,a.`工单号`,a.`工单序号`,a.`pack编码`,a.`工单数量`,a.`装配区`,a.`传送否`,a.`释放否` FROM `工单下载` a";
 			map.put("sql", sql);
 			List list = dao.getGdDownload(map);
 			if(list!=null&&list.size()>0){
