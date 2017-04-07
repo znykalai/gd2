@@ -38,8 +38,36 @@ public class KuFangAction extends Action{
 				return getTp(mapping, form, request, response);
 			}else if (operType.equals("fsMingLing")){
 				return fsMingLing(mapping, form, request, response);
+			}else if (operType.equals("delEvent")){
+				return delEvent(mapping, form, request, response);
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	/**
+	 * 删除事件
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	private ActionForward delEvent(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) {
+		try{
+			request.setCharacterEncoding("utf-8");
+			response.setCharacterEncoding("utf-8");
+			HashMap map = GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
+			ApplicationContext context = GetApplicationContext.getContext(request);
+			KuFangActionDAO dao = (KuFangActionDAO)context.getBean("kuFangActionDAO");
+			map.put("sql", "DELETE FROM `立库动作指令` WHERE idEvent="+map.get("id"));
+			String result=dao.removeAll(map);
+			response.setContentType("text/html;charset=utf-8");
+			response.getWriter().print(result);
+			response.getWriter().close();
+		}catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
@@ -57,7 +85,6 @@ public class KuFangAction extends Action{
 		try {
 			request.setCharacterEncoding("utf-8");
 			response.setCharacterEncoding("utf-8");
-			HttpSession session = request.getSession();
 			ApplicationContext context = GetApplicationContext.getContext(request);
 			KuFangActionDAO dao = (KuFangActionDAO)context.getBean("kuFangActionDAO");
 			JSONObject result = new JSONObject();
@@ -106,7 +133,6 @@ public class KuFangAction extends Action{
 		try{
 			request.setCharacterEncoding("utf-8");
 			response.setCharacterEncoding("utf-8");
-			HttpSession session = request.getSession();
 			ApplicationContext context = GetApplicationContext.getContext(request);
 			KuFangActionDAO dao = (KuFangActionDAO)context.getBean("kuFangActionDAO");
 			JSONObject result = new JSONObject();

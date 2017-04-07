@@ -1,10 +1,21 @@
 var readyShow={
 	deleteSetInterval:null,
-	load:function (hdFun){
+	showThis:function(e){
+		if($(e).css("display")=="block"){
+			return null;
+		};
+		var a=$(".ddShow").fadeOut(0,function(){
+			var a=$(e).fadeIn(0);a=null;
+			return null;
+		});a=null;
+		return null;
+	},
+	load:function(hdFun){
 		try{
 			var af={
 				load:function(fun,dsState){
 					var a=this.show(dsState);a=null;
+					var b=this.loadDingDanWeiHu();b=null;
 					return fun();
 				},
 				show:function(dsState){
@@ -35,7 +46,7 @@ var readyShow={
 					if(winHeight == window.screen.height){
 						winHeight=document.body.clientHeight - 50;
 					}
-					$('#xy').css('height', (winHeight - (window.screen.height - winHeight))/0.98);
+					$('#xy').css('height',(winHeight -(window.screen.height - winHeight))/0.98);
 					var dd_id,mz_xuhao,arrayGd=[],arrayMz=[],winHeight=null;
 					var a=$('#table-body1').css('height', document.body.clientHeight/9);a=null;
 					var b=$('#table-body2').css('height', document.body.clientHeight/9);b=null;
@@ -47,7 +58,7 @@ var readyShow={
 							url:getRootPath()+'/OrderOperAction.do?operType=getZlpfList',
 							type:'post',cache:false, 
 							data:"dd_id="+dd_id+"&mz_xuId="+mz_xuId,
-							success:function (data) {
+							success:function(data){
 				  				var obj=eval("("+data+")");
 								for(var i=0;i<obj.length;i++){
 									$('#pf_table tbody').append('<tr id="mz_row'+i+'" bgcolor="#ffffff" style="height:28px;">'+
@@ -138,7 +149,7 @@ var readyShow={
 							url:getRootPath()+'/OrderOperAction.do?operType=getDdList',
 							type:'post',cache:false, 
 							data:"getGdId="+getGdId+"&getGdfenjieriqi="+getGdfenjieriqi+"&getPackeCode="+getPackeCode,
-							success:function (data) {
+							success:function(data){
 				  				var obj=eval("("+data+")");
 								$('#dd_table tbody tr').remove();
 								var i=0;
@@ -180,7 +191,7 @@ var readyShow={
 											url:getRootPath()+'/OrderOperAction.do?operType=getZlmzList',
 											type:'post',cache:false, 
 											data:"dd_id="+gd_id+"&pack_code="+pack_code,
-											success:function (data) {
+											success:function(data){
 								  				arrayGd[0]=rowIndex;
 								  				return showGdMzList(eval("("+data+")"),win);
 											}
@@ -219,7 +230,7 @@ var readyShow={
 					//选择分解
 					$("#dd_fenjieRadioBtn").click(function(){
 						var cheBoolean=$("input[name='trGdRadio']").is(':checked');
-						if (cheBoolean) {
+						if(cheBoolean){
 							var DdType=$("input[name='trGdRadio']:checked").parent().parent().children("td").eq(2).html();
 							if(DdType=="初始化"){
 								var dd_table=$('#dd_table tbody tr');//工单行
@@ -241,7 +252,7 @@ var readyShow={
 									url:getRootPath()+'/OrderOperAction.do?operType=fenjieRadioBtn',
 									type:'post',cache:false, 
 									data:"dd_id="+gd_id+"&pack_code="+pack_code,
-									success:function (data) {
+									success:function(data){
 										showGdList('','',$('#getGdfenjieriqi').val(),false,winLayer.open({type:3}));
 				  						layer.msg("分解成功！");
 									}
@@ -258,7 +269,7 @@ var readyShow={
 						$.ajax({
 							url:getRootPath()+'/OrderOperAction.do?operType=fenjieAllBtn',
 							type:'post',cache:false, 
-							success:function (data) {
+							success:function(data){
 								showGdList('','',$('#getGdfenjieriqi').val(),false,winLayer.open({type:3}));
 								layer.msg("分解成功！");
 							}
@@ -270,7 +281,7 @@ var readyShow={
 						$.ajax({
 							url:getRootPath()+'/OrderOperAction.do?operType=downloadBtn',
 							type:'post',cache:false, 
-							success:function (data) {
+							success:function(data){
 								showGdList('','',$('#getGdfenjieriqi').val(),false,winLayer.open({type:3}));
 								layer.msg("下载成功！");
 							}
@@ -280,7 +291,7 @@ var readyShow={
 					//删除
 					$("#dd_delBtn").click(function(){
 						var cheBoolean=$("input[name='trGdRadio']").is(':checked');
-						if (cheBoolean) {
+						if(cheBoolean){
 							var DdType=$("input[name='trGdRadio']:checked").parent().parent().children("td").eq(2).html();
 							if(DdType=="初始化"||DdType=="已分解"){
 								var gd_id=$("input[name='trGdRadio']:checked").val();
@@ -288,7 +299,7 @@ var readyShow={
 									url:getRootPath()+'/OrderOperAction.do?operType=delBtn',
 									type:'post',cache:false,
 									data:'gd_id='+gd_id,
-									success:function (data) {
+									success:function(data){
 										var obj=eval("("+data+")");
 										showGdList('','',$('#getGdfenjieriqi').val(),true,winLayer.open({type:3}));
 				  						layer.msg(obj.body);
@@ -305,7 +316,7 @@ var readyShow={
 					//上调序
 					$("#dd_upBtn").click(function(){
 						var cheBoolean=$("input[name='trGdRadio']").is(':checked');
-						if (cheBoolean) {
+						if(cheBoolean){
 							var DdType=$("input[name='trGdRadio']:checked").parent().parent().children("td").eq(2).html();
 							if(DdType=="初始化"){
 								var gd_xuhao=$("input[name='trGdRadio']:checked").parent().parent().children("td").eq(1).text();
@@ -332,7 +343,7 @@ var readyShow={
 											url:getRootPath()+'/OrderOperAction.do?operType=upGdBtn',
 											type:'post',cache:false,
 											data:'gd_id='+gd_id+'&up_gd_id='+up_gd_id+'&gd_xuhao='+gd_xuhao+'&up_gd_xuhao='+up_gd_xuhao,
-											success:function (data) {
+											success:function(data){
 												var obj=eval("("+data+")");
 												showGdList('','',$('#getGdfenjieriqi').val(),false,winLayer.open({type:3}));
 						  						layer.msg(obj.body);
@@ -350,7 +361,7 @@ var readyShow={
 					//工单下调
 					$("#dd_bomBtn").click(function(){
 						var cheBoolean=$("input[name='trGdRadio']").is(':checked');
-						if (cheBoolean) {
+						if(cheBoolean){
 							var DdType=$("input[name='trGdRadio']:checked").parent().parent().children("td").eq(2).html();
 							if(DdType=="初始化"){
 								var gd_xuhao=$("input[name='trGdRadio']:checked").parent().parent().children("td").eq(1).text();
@@ -377,7 +388,7 @@ var readyShow={
 											url:getRootPath()+'/OrderOperAction.do?operType=bomGdBtn',
 											type:'post',cache:false,
 											data:'gd_id='+gd_id+'&up_gd_id='+up_gd_id+'&gd_xuhao='+gd_xuhao+'&up_gd_xuhao='+up_gd_xuhao,
-											success:function (data) {
+											success:function(data){
 												var obj=eval("("+data+")");
 												showGdList('','',$('#getGdfenjieriqi').val(),false,winLayer.open({type:3}));
 						  						layer.msg(obj.body);
@@ -399,6 +410,243 @@ var readyShow={
 						},dsState.tim),af_Home.dlInterval=true;
 					};
 					return null;
+				},
+				/**
+				 * 订单维护界面JS
+				 */
+				loadDingDanWeiHu:function(){
+					$("#pack_code_button").click(function(){//pack编码显示
+						var openWindow = '<div style="width: 100%;margin-right: 0;">' +
+							    '<div class="margin-top-10">' +
+								'<div class="col-md-11" style="margin-left: 20px;">' +
+								'<!-- 标题 -->' +
+								'<div style="padding-right:17px;">' +
+								'<table class="table table-bordered text-center" id="commonSearchTableHead_pack">' +
+								'<thead>' +
+								'<tr>' +
+								'<td style="width: 50%;">pack编码</td>' +
+								'<td style="width: 50%;">pack类型</td>' +
+								'</tr>' +
+								'</thead>' +
+								'</table>' +
+								'</div>' +
+								'<!-- 标题 end-->' +
+								'<!-- 内容 -->' +
+								'<div class="table-body" id="commonSearchTableBody_pack">' +
+								'<table class="table table-bordered text-center table-hover" id="searchTable_pack"></table>' +
+								'</div>' +
+								'<!-- 内容 end-->' +
+								'</div>' +
+							'</div>' +
+						'</div>';
+						var win = layer.open({
+						    type: 1,
+						    title: 'pack编码',
+						    shadeClose: false,
+						    scrollbar:false,
+						    anim:5,
+						    move: false,
+						    shade: [0.5, '#393D49'],
+						    area: ['45%', '50%'],
+						    content: openWindow
+						});openWindow=null;
+						/*设置table高度*/
+						$('#commonSearchTableBody_pack').css('height', document.body.clientHeight / 3);
+						var a=$.ajax({
+							url:getRootPath()+'/OrderOperAction.do?operType=getPacklist',
+							type:'get',cache:false,
+							success:function(data){
+						    	var obj = eval("("+data+")");data=null;	    	
+						    	for(var i=0;i<obj.length;i++){
+					                $('#searchTable_pack').append('<tr class="commonTr" style="cursor: pointer;"></tr>');
+					                var lastTr = $('#searchTable_pack tbody tr:last');
+				                    lastTr.append('<td class="pack_bianma" style="width: 50%;">' + obj[i].pack_bianma + '</td>');
+				                    lastTr.append('<td class="pack_leixing" style="width: 50%;">' + obj[i].pack_leixing + '</td>');         
+						    	};obj=null;
+								$('.commonTr').bind('dblclick',function(a){
+									var tr = $(a.target).parent();
+				            		$('#pack_code').val(tr.find('.pack_bianma').text());
+				            		layer.close(win);win=null;
+				            	});
+							}
+						});a=null;
+						return null;
+					});
+					//装配区复选框加载
+					$('#assemble_area').click(function(){
+				        var a=$('#assemble_area ul').toggle();a=null;
+				        return null;
+				    });
+				    $('#assemble_area ul').click(function(event){
+				        var t2 = $(event.target).text();
+				        var a = $('#assemble_area_id').val(t2);
+				        t2=null;a=null;
+			        	return null;
+				    });
+					//释放否复选框加载
+					$('#shifang').click(function(){
+				        var a=$('#shifang ul').toggle();a=null;
+				        return null;
+				    });
+				    $('#shifang ul').click(function(event){
+				        var t2 = $(event.target).text();
+				        var a = $('#shifang_id').val(t2);
+				        t2=null;a=null;
+			        	return null;
+				    });
+				    //传送否复选框加载
+				    $('#chuansong').click(function(){
+				        var a = $('#chuansong ul').toggle();a=null;
+			        	return null;
+				    });
+				    $('#chuansong ul').click(function(event){
+				        var t2 = $(event.target).text();
+				        var a = $('#chuansong_id').val(t2);
+				        t2 = null;a = null;
+				        return null;
+				    });
+				    //工单查找
+				    $('#gd_selectBtn').click(function(){
+				    	var openWindow = '<div style="width: 100%;margin-right: 0;">' +
+							    '<div class="margin-top-10">' +
+								'<div class="col-md-11" style="margin-left: 20px;">' +
+								'<!-- 标题 -->' +
+								'<div style="padding-right:17px;">' +
+								'<table class="table table-bordered text-center" id="commonSearchTableHead_pack">' +
+								'<thead>' +
+								'<tr>' +
+								'<td style="width: 50%;">工单序号</td>' +
+								'<td style="width: 50%;">pack编码</td>' +
+								'</tr>' +
+								'</thead>' +
+								'</table>' +
+								'</div>' +
+								'<!-- 标题 end-->' +
+								'<!-- 内容 -->' +
+								'<div class="table-body" id="commonSearchTableBody_pack">' +
+								'<table class="table table-bordered text-center table-hover" id="searchTable_pack"></table>' +
+								'</div>' +
+								'<!-- 内容 end-->' +
+								'</div>' +
+							'</div>' +
+						'</div>';
+				    	var win = layer.open({
+						    type: 1,
+						    title: '查询',
+						    shadeClose: false,
+						    scrollbar:false,
+						    anim:5,
+						    move: false,
+						    shade: [0.5,'#393D49'],
+						    area: ['45%', '50%'],
+						    content: openWindow
+						});openWindow=null;
+						/*设置table高度*/
+						$('#commonSearchTableBody_pack').css('height', document.body.clientHeight / 3);
+						var a=$.ajax({
+							url:getRootPath()+'/OrderOperAction.do?operType=getGdDownload',
+							type:'get',cache:false,
+							success:function(data){
+						    	var obj = eval("("+data+")");data=null;
+						    	for(var i=0;i<obj.length;i++){
+					                $('#searchTable_pack').append('<tr class="commonTr" style="cursor: pointer;"></tr>');
+					                var lastTr = $('#searchTable_pack tbody tr:last');
+					                lastTr.append('<td class="order_sequence" style="width: 50%;">' + obj[i].order_sequence + '</td>');
+				                    lastTr.append('<td class="pack_code" style="width: 50%;">' + obj[i].pack_code + '</td>');
+				                    lastTr.append('<td  hidden class="order_code" style="width: 50%;">' + obj[i].order_code + '</td>');
+				                    lastTr.append('<td  hidden class="order_number" style="width: 50%;">' + obj[i].order_number + '</td>');
+				                    lastTr.append('<td  hidden class="assemble_area_id" style="width: 50%;">' + obj[i].assemble_area_id + '</td>');
+				                    lastTr.append('<td  hidden class="chuansong_id" style="width: 50%;">' + obj[i].chuansong_id + '</td>');
+				                    lastTr.append('<td  hidden class="shifang_id" style="width: 50%;">' + obj[i].shifang_id + '</td>');
+				                    lastTr.append('<td  hidden class="complete_number" style="width: 50%;">' + obj[i].complete_number + '</td>');
+				                    lastTr.append('<td  hidden class="order_id" style="width: 50%;">' + obj[i].order_id + '</td>');
+						    	};obj=null;
+								$('.commonTr').bind('dblclick',function(a){
+									var tr = $(a.target).parent();
+				            		$('#order_sequence').val(tr.find('.order_sequence').text());
+				            		$('#pack_code').val(tr.find('.pack_code').text());
+				            		$('#order_code').val(tr.find('.order_code').text());
+				            		$('#order_number').val(tr.find('.order_number').text());
+				            		$('#assemble_area_id').val(tr.find('.assemble_area_id').text());
+				            		$('#chuansong_id').val(tr.find('.chuansong_id').text());
+				            		$('#shifang_id').val(tr.find('.shifang_id').text());
+				            		$('#complete_number').val(tr.find('.complete_number').text());
+				            		$('#order_id').val(tr.find('.order_id').text());
+				            		layer.close(win);win=null;
+				            	});
+							}
+						});a=null;		
+				    });
+				    //工单新建
+				    $('#gd_newBtn').click(function(){
+				    	var a=$("#order_id").val('');a=null;
+				    	$('#dingdanform')[0].reset();
+				    	return null;
+				    });
+				    //工单保存
+				    $('#gd_saveBtn').click(function(){				    	
+				    	if($('#order_sequence').val()==""){				    		
+					    	$("#order_sequence").focus();
+				    		layer.tips('请填写订单序号！', '#order_sequence');				    	
+				    		return null;
+				    	}else if($('#order_code').val()==""){				    		
+					    	$("#order_code").focus();
+				    		layer.tips('请填写订单号！', '#order_code');				    	
+				    		return null;
+				    	}else if($('#pack_code').val()==""){
+				    		$("#pack_code").focus();
+				    		layer.tips('请填写pack编码！', '#pack_code_button');			    		
+				    		return null;
+			    		}else if($('#order_number').val()==""){
+				    		$("#order_number").focus();
+				    		layer.tips('请填写订单数量！', '#order_number');			    		
+				    		return null;
+			    		};
+					    var head={
+					    	'id':$('#order_id').val(),
+					    	'订单序号':$('#order_sequence').val(),
+					    	'订单号':$('#order_code').val(),					    	
+					    	'pack编码':$('#pack_code').val(),
+					    	'订单数量':$('#order_number').val(),
+					    	'装配区':$('#assemble_area_id').val(),
+					    	'传送否':$('#chuansong_id').val(),
+					    	'释放否':$('#shifang_id').val(),
+					    	'完成数量':$('#complete_number').val()
+					    };
+				    	var a=$.ajax({
+							url:getRootPath()+'/OrderOperAction.do?operType=orderSave',
+							type:'post',cache:false,
+							data:'head='+JSON.stringify(head),
+							success:function(data){
+						    	var obj = eval("("+data+")");data=null;
+						    	if(obj.result){
+						    		$('#order_id').val(obj.id)
+					  				layer.msg("保存成功！");
+						    	}else{
+					  				layer.msg("保存失败！");
+						    	};obj=null;
+							}
+						});a=null;head=null;
+			    	    return null;				    	
+				    });
+				    //工单删除
+				    $('#gd_deleteBtn').click(function(){
+			    		var a=$.ajax({
+							url:getRootPath()+'/OrderOperAction.do?operType=orderdelete',
+							type:'post',cache:false,
+							data:'id='+$('#order_id').val(),
+							success:function(data){
+						    	var obj = eval("("+data+")");data=null;
+						    	if(obj.result){
+					  				layer.msg("删除成功！");
+					  				$("#gd_newBtn").click();
+						    	}else{
+					  				layer.msg("删除失败!");
+						    	};obj=null;							    	
+							}				    	        
+						});a=null;
+				    	return null;
+				    });
 				}
 			};
 			af.load(function(){

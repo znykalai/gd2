@@ -614,15 +614,29 @@ var readyShow={
 								var obj=eval("("+data+")");
 								return fun(obj.data);
 							}
-						});
-						return a=null;
+						});a=null
+						return null;
 					},
 					/**
 					 * 缓存库指定队列
 					 */
+					delEvent:function(id){
+						layer.confirm('是否删除此事件？', {
+							btn: ['yes', 'no']
+						},function(index, layero){
+							var a=$.ajax({
+								url:getRootPath()+'/KuFangAction.do?operType=delEvent',
+								type:'get',data:'id='+id,cache:false,
+								success:function(data){
+									var a=layer.msg(data);a=null;
+									return null;
+								}
+							});
+						});
+						return null;
+					},
 					hckzdd:function(e){
-						$("#hc_table tbody tr").remove();
-						var i=0;
+						$("#hc_table tbody tr").remove();var i=0;
 						while(i<e.length){
 							$('#hc_table tbody').append('<tr bgcolor="#ffffff" style="height:22px;">'+
 								//事件ID
@@ -630,7 +644,7 @@ var readyShow={
 								//动作
 								'<td title="'+e[i].dongzuo+'" style="width:40px;padding:0px;font-size:10px;">'+(e[i].dongzuo.length>4?e[i].dongzuo.substring(0,4)+"...":e[i].dongzuo)+'</td>'+
 								//托盘
-								'<td title="'+e[i].tp_code+'" style="width:40px;padding:0px;font-size:10px;">'+e[i].tp_code+'</td>'+
+								'<td title="'+e[i].tp_code+'" style="width:40px;padding:0px;font-size:10px;">'+(e[i].tp_code.length>7?e[i].tp_code.substring(0,7)+"...":e[i].tp_code)+'</td>'+
 								//来源货位
 								'<td title="'+e[i].laiyuanhuoweihao+'" style="width:40px;padding:0px;font-size:10px;">'+e[i].laiyuanhuoweihao+'</td>'+
 								//去往货位
@@ -644,11 +658,19 @@ var readyShow={
 								//完成时间
 								'<td title="'+e[i].wanchengshijian+'" style="width:55px;padding:0px;font-size:10px;">'+(e[i].wanchengshijian!=""?e[i].wanchengshijian.substring(0,10)+"...":"")+'</td>'+
 								//完成时间
-								'<td style="width:20px;padding:0px;font-size:10px;">'+(e[i].zhuangtai=="排队"?"<span style='cursor:pointer;' aria-hidden='true'>&times;</span>":"")+'</td>'+
+								'<td style="width:20px;padding:0px;">'+(e[i].zhuangtai=="排队"&&af_Home.administrator.发送命令?"<span class='del' title="+e[i].idEvent+" style='cursor:pointer;' aria-hidden='true'>&times;</span>":"")+'</td>'+
 							'</tr>');
 							i++;
-						}
-						return i=null;
+						};i=null;
+						if(af_Home.administrator.发送命令){
+							var a=$('.del').unbind("click");a=null;
+							$('.del').click(function(){
+								var id=$(this).attr("title");
+								var a=af.table.delEvent(id);id=null;a=null;
+								return null;
+							});
+						};
+						return null;
 					},
 					/**
 					 * 库存
@@ -660,7 +682,7 @@ var readyShow={
 						while(i<e.length){
 							$('#kc_table tbody').append('<tr bgcolor="#ffffff" style="height:22px;">'+
 								//托盘
-								'<td title="'+e[i].tp_code+'" style="width:40px;padding:0px;font-size:10px;">'+e[i].tp_code+'</td>'+
+								'<td title="'+e[i].tp_code+'" style="width:40px;padding:0px;font-size:10px;">'+(e[i].tp_code.length>12?e[i].tp_code.substring(0,12)+"...":e[i].tp_code)+'</td>'+
 								//物料
 								'<td title="'+e[i].wl_code+'" style="width:50px;padding:0px;font-size:10px;">'+(e[i].wl_code.length>10?e[i].wl_code.substring(0,10)+"...":e[i].wl_code)+'</td>'+
 								//数量

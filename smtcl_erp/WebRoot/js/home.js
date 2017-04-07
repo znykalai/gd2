@@ -98,9 +98,27 @@ var af_Home={
 		var b=$('#'+id).unbind("click");b=null;
 		return null;
 	},
+	/**是否可以安全关机？**/
+	stop:function(){
+		var a=$.ajax({
+			url:getRootPath()+'/HomeAction.do?operType=stop',
+			type:'get',cache:false,success:function(data){
+				if(data=="成功"){
+					layer.msg("可以安全关机！");
+				}else{
+					layer.msg(data);	
+				};data=null;
+			}
+		});a=null;
+		return null;
+	},
+	/***页面渲染***/
 	load:function(fun){
-		//关机
 		$('#div_mo_img_close').mouseover(function(){var url=getRootPath()+"/images/guanjianniu_mo.png";$(this).attr("src",url);url=null;return null;});
+		$('#div_mo_img_close').click(function(){//关机事件
+			var a=af_Home.stop();a=null;
+			return null;
+		});
 		$('#div_mo_img_close').mouseout(function(){var url=getRootPath()+"/images/guanjianniu.png";$(this).attr("src",url);url=null;return null;});
 		$('#div_mo_img_strat').click(function(){//急停事件
 			var type;if(af_Home.div_mo_img_strat){type=false;}else{type=true;};//如果当前是停止状态则改为允许状态
