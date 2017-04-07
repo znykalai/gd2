@@ -1,6 +1,6 @@
 [配置文件]
  ### set log levels ###
-log4j.rootLogger =  stdout,  D 
+log4j.rootLogger = debug ,  stdout,  D 
 
 ### 输出到控制台 ###
 log4j.appender.stdout = org.apache.log4j.ConsoleAppender
@@ -25,4 +25,4 @@ log4j.appender.D.Append = true
 log4j.appender.D.Threshold= ERROR 
 ## 只输出ERROR级别以上的日志!!!
 log4j.appender.D.layout = org.apache.log4j.PatternLayout
-log4j.appender.D.layout.ConversionPattern =%-d{yyyy-MM-dd HH:mm:ss}  [ %t:%r-%l ] - [ %p ]  %m%n
+log4j.appender.D.layout.ConversionPattern =%-d{yyyy-MM-dd HH:mm:ss}  [ %t:%r%l ] - [ %p ]  %m%n
