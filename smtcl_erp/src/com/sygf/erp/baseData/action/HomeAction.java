@@ -331,7 +331,7 @@ public class HomeAction extends Action{
 				result.put("A", PLC.getIntance().is不检测取料数量());
 				result.put("B", PLC.getIntance().is不检测动作完成());
 				result.put("C", SqlPro.autoRFIDup);
-				result.put("D", false);
+				result.put("D", SqlPro.is大库调度);
 			}else if(map.get("type").equals("A")){
 				if(map.get("buttonA").equals("true")){
 					PLC.getIntance().set不检测取料数量(false);
@@ -354,7 +354,12 @@ public class HomeAction extends Action{
 				};
 				result.put("type", SqlPro.autoRFIDup);
 			}else{
-				result.put("type", true);
+				if(map.get("buttonD").equals("true")){
+					SqlPro.is大库调度=false;
+				}else{
+					SqlPro.is大库调度=true;
+				};
+				result.put("type", SqlPro.is大库调度);
 			};map=null;
 			response.setContentType("text/html;charset=utf-8");
 			response.getWriter().print(result);

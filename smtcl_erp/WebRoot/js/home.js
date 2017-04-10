@@ -11,7 +11,7 @@ var af_Home={
 	butClick:function(e,type){
 		if(type==true){if($(e).attr("class")=="qfgd"){$(e).attr("class","qfgdStart");return null;};return null;}else{if($(e).attr("class")=="qfgdStart"){$(e).attr("class","qfgd");return null;};return null;};
 	},
-	buttonA:true,buttonB:true,buttonC:true,buttonD:true,
+	buttonA:null,buttonB:null,buttonC:null,buttonD:null,
 	//获取当前操控按钮状态
 	action:function(e,type,fun){
 		var a=$.ajax({//ajax处理
