@@ -1,6 +1,6 @@
 [配置文件]
  ### set log levels ###
-log4j.rootLogger = debug ,  stdout,  D 
+log4j.rootLogger = stdout,  D 
 
 ### 输出到控制台 ###
 log4j.appender.stdout = org.apache.log4j.ConsoleAppender

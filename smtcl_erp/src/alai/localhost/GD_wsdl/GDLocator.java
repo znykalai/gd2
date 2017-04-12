@@ -7,13 +7,21 @@
 
 package alai.localhost.GD_wsdl;
 
+import java.util.Properties;
+
+import alai.znyk.common.SqlPro;
+
 public class GDLocator extends org.apache.axis.client.Service implements alai.localhost.GD_wsdl.GD {
 
 /**
  * gSOAP 2.8.39 generated service definition
  */
-
+	
+	private java.lang.String GD_address = "http://10.24.251.110:9005/GD?wsdl";
     public GDLocator() {
+		
+    	Properties pro=SqlPro.loadProperties(SqlPro.class.getResource("conf.pro").getFile());
+		GD_address=pro.getProperty("clinetIP")+":9005/GD?wsdl";
     }
 
 
@@ -26,7 +34,7 @@ public class GDLocator extends org.apache.axis.client.Service implements alai.lo
     }
 
     // Use to get a proxy class for GD
-    private java.lang.String GD_address = "http://10.24.251.110:9005/GD?wsdl";
+  
 
     public java.lang.String getGDAddress() {
         return GD_address;
@@ -109,7 +117,7 @@ public class GDLocator extends org.apache.axis.client.Service implements alai.lo
     }
 
     public javax.xml.namespace.QName getServiceName() {
-        return new javax.xml.namespace.QName("http://10.24.251.110:9005/GD?wsdl", "GD");
+        return new javax.xml.namespace.QName(GD_address, "GD");
     }
   
     private java.util.HashSet ports = null;
@@ -117,7 +125,7 @@ public class GDLocator extends org.apache.axis.client.Service implements alai.lo
     public java.util.Iterator getPorts() {
         if (ports == null) {
             ports = new java.util.HashSet();
-            ports.add(new javax.xml.namespace.QName("http://10.24.251.110:9005/GD?wsdl", "GD"));
+            ports.add(new javax.xml.namespace.QName(GD_address, "GD"));
         }
         return ports.iterator();
     }

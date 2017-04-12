@@ -485,7 +485,7 @@ public class CommentPanel extends JPanel {
 		button_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String tp=textField_12.getText();
-				String huowei=SqlTool.findOneRecord("select ªıŒª∫≈ from ø‚¥ÊÕ–≈Ã  where Õ–≈Ã±‡∫≈='"+tp+"'");
+				String huowei=SqlTool.findOneRecord("select Õ–≈Ã±‡∫≈ from ø‚¥ÊÕ–≈Ã  where Õ–≈Ã±‡∫≈='"+tp+"'");
 				if(!huowei.equals("0")){
 					String sql1="DELETE FROM ø‚¥ÊÕ–≈Ã  where Õ–≈Ã±‡∫≈='"+tp+"'";
 					String sql2="UPDATE ªıŒª±Ì  SET Õ–≈Ã±‡∫≈=NULL   where Õ–≈Ã±‡∫≈='"+tp+"'";

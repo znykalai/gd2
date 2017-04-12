@@ -160,7 +160,7 @@ public void startLine(){
    try{
 	
 	 String ss2= ClientSer.getIntance().getState(SqlPro.B区输送线);
-	 System.out.println(ss2);
+	// System.out.println(ss2);
 	 String sm2[]=ss2.split("\\|");
 	 String sql2= "select  货位序号,托盘编号   from 货位表  where  货位序号  between 601 and 614 order by 货位序号";
 	Vector<Vector> tem2=SqlTool.findInVector(sql2);

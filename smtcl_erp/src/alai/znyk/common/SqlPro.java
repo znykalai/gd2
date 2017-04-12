@@ -1,11 +1,14 @@
 package alai.znyk.common;
 import java.util.Hashtable;
+import java.util.Properties;
 import java.net.URL;
 import javax.swing.ImageIcon;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.OutputStreamWriter;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.BufferedWriter;
 import javax.swing.JTable;
 
@@ -48,7 +51,7 @@ public class SqlPro {
     public static int 执行中=2;
     public static int 完成=3;
     public static boolean autoRFIDup=false;//确定是否要自动发送上货取
-    public static boolean is指令调度=true;//确定是否要自动发送上货取
+    public static boolean is指令调度=true;//确定是否要自动处理动作指令，就是向堆垛机发送命令
     public static boolean is大库调度=true;//确定是否启动大库调度
 
 
@@ -394,5 +397,20 @@ public class SqlPro {
 		  // logger.debug( " debug " );
 	     //  logger.error( " errorALAI " );
   }
+  
+  public static Properties loadProperties(String propertyFilePath){
+		try {
+			FileInputStream in = new FileInputStream(propertyFilePath);
+			Properties props = new Properties();
+			props.load(in);
+			System.out.println("loadClientIP");
+			in.close();
+			return props;
+		} catch (IOException e) {
+			getLog().error("属性文件读取错误");
+			e.printStackTrace();
+			return null;
+		}
+	}
  
 }

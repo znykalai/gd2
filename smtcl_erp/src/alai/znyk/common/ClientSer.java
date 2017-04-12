@@ -2,6 +2,7 @@ package alai.znyk.common;
 
 
 import java.rmi.RemoteException;
+import java.util.Properties;
 import java.util.Vector;
 
 import javax.xml.rpc.ServiceException;
@@ -31,8 +32,23 @@ public class ClientSer {
 
 	public GDLocator gd =new GDLocator();
 	private static ClientSer INSTANCE;
-	private boolean isOpenPlc=true;
+	private boolean isOpenPlc=false;
 	private ClientSer(){
+        try{
+        	Properties pro=SqlPro.loadProperties(SqlPro.class.getResource("conf.pro").getFile());
+    		String OpenPlc =pro.getProperty("isOpenPlc");	
+    		//System.out.println(OpenPlc+"/====");
+    		if(OpenPlc==null){
+    			isOpenPlc=false;	
+    		}else{
+    			if(OpenPlc.equals("1")){
+    				System.out.println("Á¬½ÓPLC");
+    				isOpenPlc=true;}
+    			else{isOpenPlc=false;}
+    			
+    		}
+			
+		}catch(Exception ex){ex.printStackTrace();}
 		
 		
 		//gd.setGDEndpointAddress("http://192.168.1.222:9005/GD?cgi");
