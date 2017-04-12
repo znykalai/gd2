@@ -345,7 +345,7 @@ var readyShow={
 								$("#shanghuo").click(function(){
 									$(this).find("input:radio").prop("checked",true);
 									//开启文本
-									var arryStart=['up_number','go_huowei','fangxiang'];
+									var arryStart=['tp_code','up_number','go_huowei','fangxiang'];
 									map.startEnd(0,arryStart,false,'inline',function(){
 										return arryStart=null;
 									});
