@@ -527,6 +527,8 @@ var readyShow={
 					if(obj.length>0){
 						$('#mz_row0').click();
 					}else{
+						var c=$('#pf_table1 tbody tr').remove();c=null;//配方table
+						var d=$('#pf_table2 tbody tr').remove();d=null;//配方table
 						var a=fun();a=null;fun=null;
 					};obj=null;
 					return null;

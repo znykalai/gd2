@@ -131,6 +131,9 @@ public void startLine(){
 		
    try{
 	  String ss= ClientSer.getIntance().getState(SqlPro.A区输送线);
+	  if(ss==null||ss.equals("-2")){
+	  System.out.println(ss);
+	  return;}
 	  String sm[]=ss.split("\\|");
 	String sql1= "select  货位序号,托盘编号   from 货位表  where  货位序号  between 501 and 514 order by 货位序号";
 	
@@ -156,7 +159,7 @@ public void startLine(){
 		 SqlPro.getLog().error("A区输送线是否有托盘："+ex.getMessage());
 		 ex.printStackTrace();}
    
-   
+   /*
    try{
 	
 	 String ss2= ClientSer.getIntance().getState(SqlPro.B区输送线);
@@ -180,7 +183,7 @@ public void startLine(){
 		
 	 } }catch(Exception ex){
 		 SqlPro.getLog().error("B区输送线是否有托盘："+ex.getMessage());
-		 ex.printStackTrace();}
+		 ex.printStackTrace();}*/
 	
 	if(line==0)
      System.out.println("缓存货位与上料位自动更新启动完成");
