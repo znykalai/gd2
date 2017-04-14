@@ -167,7 +167,7 @@ public class ST_Father implements STInterface, Serializable{
 		
 		}
 		
-		return "成功但沒變化!";
+		return "沒變化!";
 	}
 	public int get剩余数量(){
 		return 0;

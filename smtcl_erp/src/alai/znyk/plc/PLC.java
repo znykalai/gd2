@@ -563,16 +563,46 @@ public class PLC implements Serializable {
     						 if( getWrPLC(装配区).get(i).firstST.get剩余数量()==0||不检测取料数量){
     							 if(取料完成1==1||不检测动作完成){
     							 System.out.println("载具放行1");
-    							 System.out.println(getWrPLC(装配区).get(i).firstST);
-    						   getWrPLC(装配区).get(i).firstST.set数据更新完成(true);
-    						   String back=getWrPLC(装配区).get(i).firstST.writeifChangeToPLC();
-    						   System.out.println("载具放行1"+back);
+    							 getWrPLC(装配区).get(i).firstST.set数据更新完成(true);
+    						     String back=getWrPLC(装配区).get(i).firstST.writeifChangeToPLC();
+    						     System.out.println("第"+i+"工位载具放行1"+back);
     						  if(back.contains("成功")){
-    							  Thread.sleep(1000);
-    							  System.out.println("载具放行移動托盤完成");
-    							  //写入PLC成功后
-    	    				 if( getCarryLine(装配区).removeToNext(i))
-    	    					 getWrPLC(装配区).get(i).firstST.setWrite(false);
+    							  //写入PLC成功后,在这儿再次检测载具放行变为OFF
+    							  System.out.println("第"+i+"工位载具放行移動托盤完成");
+    							  final int curr=i;
+    							
+    							  new Thread(){
+    								  public void run(){
+    									  System.out.println(Thread.currentThread()+"启动1");
+    									  while(true){
+    						    Resint r2[]=	ClientSer.getIntance().getReturnPlc("D11001", 63, 16, 装配区);	  
+    						    Resint bint2=r2[curr*2];
+    			    			int tem1=bint2.getResInt();
+    			    			int tem2=getRePLC(装配区)[curr].boolCont.getResInt();
+    			    			
+    			    			int 载具放行=(tem1&0b100)==4?1:0;
+    			    			int 载具放行old=(tem2&0b100)==4?1:0;
+    			    			if(载具放行!=载具放行old){
+    			    				if(载具放行==0){
+    			    					 getWrPLC(装配区).get(curr).firstST.set数据更新完成(false);
+    			    				 if( getCarryLine(装配区).removeToNext(curr))
+    	    	    					 getWrPLC(装配区).get(curr).firstST.setWrite(false);	
+    			    				 
+    			    				 break;
+    			    				 }
+    			    				
+    			    			}
+    			    			try{Thread.sleep(200);}catch(Exception ee){}
+    			    			
+    			    			}//end while
+    						 System.out.println(Thread.currentThread()+"结束1");
+    								  }
+    							  }.start();
+    							  
+    	    				
+    	    				 
+    	    				 
+    	    				 
     	    				  }
     							  } //end 判断取料完成
     						 }
@@ -581,13 +611,38 @@ public class PLC implements Serializable {
     						
     					   getWrPLC(装配区).get(i).firstST.set数据更新完成(true);
    						   String back=getWrPLC(装配区).get(i).firstST.writeifChangeToPLC();
-   						   System.out.println("载具放行2——2"+back);
-   						  if(back.contains("成功")){
-   							  Thread.sleep(1000);
-   							  System.out.println("载具開始發行");
-   							  //写入PLC成功后
-   	    				 if( getCarryLine(装配区).removeToNext(i))
-   	    					 System.out.println("载具放行移動托盤完成");
+   						    if(back.contains("成功")){
+   							  //写入PLC成功后,在这儿再次检测载具放行变为OFF
+							  System.out.println("2第"+i+"工位载具放行移動托盤完成");
+							  final int curr=i;
+							
+							  new Thread(){
+								  public void run(){
+									  System.out.println(Thread.currentThread()+"启动2");
+									  while(true){
+						    Resint r2[]=	ClientSer.getIntance().getReturnPlc("D11001", 63, 16, 装配区);	  
+						    Resint bint2=r2[curr*2];
+			    			int tem1=bint2.getResInt();
+			    			int tem2=getRePLC(装配区)[curr].boolCont.getResInt();
+			    			
+			    			int 载具放行=(tem1&0b100)==4?1:0; 
+			    			int 载具放行old=(tem2&0b100)==4?1:0;
+			    			if(载具放行!=载具放行old){
+			    				if(载具放行==0){
+			    					 getWrPLC(装配区).get(curr).firstST.set数据更新完成(false);
+			    				 if( getCarryLine(装配区).removeToNext(curr))
+	    	    					 getWrPLC(装配区).get(curr).firstST.setWrite(false);	
+			    				 
+			    				 break;
+			    				 }
+			    				
+			    			}
+			    			try{Thread.sleep(200);}catch(Exception ee){}
+			    			 
+			    			}//end while
+							System.out.println(Thread.currentThread()+"结束2");
+								  }
+							  }.start();
    	    				  }
     						
     	    				  
@@ -602,11 +657,7 @@ public class PLC implements Serializable {
     				
     				}
     				
-    				if(载具放行1==0){
-        				getWrPLC(装配区).get(i).firstST.set数据更新完成(false);
-    					String back=getWrPLC(装配区).get(i).firstST.writeifChangeToPLC();	
-        				
-        			}
+    				
     			}
     			
     		}
