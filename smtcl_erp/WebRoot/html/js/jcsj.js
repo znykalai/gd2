@@ -1000,10 +1000,9 @@ var readyShow={
 								            $(node).html("");
 					            			ck.ck?ck.ck=false:null;
 								    		layer.tips(e.id+'物料不存在！','#zlhNewTd3_'+row);
-										}
+										}node=null,e=null;
 									}
-								});
-					        	node=null,e=null,a=null;
+								});a=null;
 					        	return null;
 					        });
 				            //判断当前行 修改还是新增

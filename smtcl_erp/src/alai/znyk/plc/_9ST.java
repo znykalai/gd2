@@ -45,6 +45,7 @@ public class _9ST extends ST_Father implements STInterface {
 	public boolean is数据更新完成() {
 		return 数据更新完成;
 	}
+	@Override
 	public void set数据更新完成(boolean 数据更新完成) {
 		this.数据更新完成 = 数据更新完成;
 		if(数据更新完成)

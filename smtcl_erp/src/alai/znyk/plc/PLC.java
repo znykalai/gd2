@@ -531,6 +531,7 @@ public class PLC implements Serializable {
     			getRePLC(装配区)[i].set人工组装线模式((tem1&0b1000)==8?true:false);
     			getRePLC(装配区)[i].set载具放行((tem1&0b100)==4?true:false);
     			getRePLC(装配区)[i].set动作完成((tem1&0b10)==2?true:false);
+    			
     			if(取料完成1!=取料完成2){//模拟一个信号改变
     				//更新托盘的物料数量
     				if(取料完成1==1){//模拟一个上升沿
@@ -546,8 +547,11 @@ public class PLC implements Serializable {
     				
     			}
     			
+    			
+    			
     			if(载具放行1!=载具放行2){
     				
+    			
     				
     				//更新托盘位置，同时把write置成false,
     				if(载具放行1==1){
@@ -559,10 +563,13 @@ public class PLC implements Serializable {
     						 if( getWrPLC(装配区).get(i).firstST.get剩余数量()==0||不检测取料数量){
     							 if(取料完成1==1||不检测动作完成){
     							 System.out.println("载具放行1");
+    							 System.out.println(getWrPLC(装配区).get(i).firstST);
     						   getWrPLC(装配区).get(i).firstST.set数据更新完成(true);
-    						   String back=STC1.get(i).firstST.writeifChangeToPLC();
+    						   String back=getWrPLC(装配区).get(i).firstST.writeifChangeToPLC();
     						   System.out.println("载具放行1"+back);
     						  if(back.contains("成功")){
+    							  Thread.sleep(1000);
+    							  System.out.println("载具放行移動托盤完成");
     							  //写入PLC成功后
     	    				 if( getCarryLine(装配区).removeToNext(i))
     	    					 getWrPLC(装配区).get(i).firstST.setWrite(false);
@@ -571,7 +578,18 @@ public class PLC implements Serializable {
     						 }
     					}
     					else{//如托盘在本工位没有任何需要的动作，不判断动作完成标志
-    						 getCarryLine(装配区).removeToNext(i);
+    						
+    					   getWrPLC(装配区).get(i).firstST.set数据更新完成(true);
+   						   String back=getWrPLC(装配区).get(i).firstST.writeifChangeToPLC();
+   						   System.out.println("载具放行2——2"+back);
+   						  if(back.contains("成功")){
+   							  Thread.sleep(1000);
+   							  System.out.println("载具開始發行");
+   							  //写入PLC成功后
+   	    				 if( getCarryLine(装配区).removeToNext(i))
+   	    					 System.out.println("载具放行移動托盤完成");
+   	    				  }
+    						
     	    				  
     					}
     					
@@ -583,6 +601,12 @@ public class PLC implements Serializable {
     				
     				
     				}
+    				
+    				if(载具放行1==0){
+        				getWrPLC(装配区).get(i).firstST.set数据更新完成(false);
+    					String back=getWrPLC(装配区).get(i).firstST.writeifChangeToPLC();	
+        				
+        			}
     			}
     			
     		}

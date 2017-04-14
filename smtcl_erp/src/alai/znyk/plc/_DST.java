@@ -6,7 +6,7 @@ public class _DST extends ST_Father implements STInterface {
     private boolean 允许工位动作标志;//D10001.1
 	private boolean 翻B面;//D10001.2
 	private boolean 立库RDY;//D10001.3
-	private boolean 数据更新完;//D10001.4
+	private boolean 数据更新完成;//D10001.4
 	private int 电芯类型标志;//D10001.4
 	
 
@@ -39,13 +39,13 @@ public class _DST extends ST_Father implements STInterface {
 		if(立库rdy)
 		boolContent=boolContent|0b100;else boolContent=boolContent&0b1111111111111011;
 	}
-	public boolean is数据更新完() {
-		return 数据更新完;
+	public boolean is数据更新完成() {
+		return 数据更新完成;
 	}
-	
-	public void set数据更新完(boolean 数据更新完) {
-		this.数据更新完 = 数据更新完;
-		if(数据更新完)
+	@Override
+	public void set数据更新完成(boolean 数据更新完成) {
+		this.数据更新完成 = 数据更新完成;
+		if(数据更新完成)
 		boolContent=boolContent|0b1000;else boolContent=boolContent&0b1111111111110111;
 	}
 	
@@ -73,7 +73,7 @@ public class _DST extends ST_Father implements STInterface {
 	     允许工位动作标志=((_DST)st).is允许工位动作标志();
 		 立库RDY=((_DST)st).is立库RDY();
 		 翻B面=((_DST)st).is翻B面();
-		 数据更新完=((_DST)st).is数据更新完();
+		 数据更新完成=((_DST)st).is数据更新完成();
 		 电芯类型标志=((_DST)st).get电芯类型标志();
 	 
 }
@@ -94,7 +94,7 @@ public class _DST extends ST_Father implements STInterface {
     	允许工位动作标志=false;
 	     翻B面=false;
 	     立库RDY=false;
-		 数据更新完=false;
+		 数据更新完成=false;
     	电芯类型标志=0;
     	 write=false; 
     	
@@ -108,7 +108,7 @@ public class _DST extends ST_Father implements STInterface {
     		     允许工位动作标志=((tem&0b01)==1);
     		     翻B面=((tem&0b10)==1);
     		     立库RDY=((tem&0b100)==1);
-    			 数据更新完=((tem&0b1000)==1);
+    			 数据更新完成=((tem&0b1000)==1);
     			 电芯类型标志=back[1];
     	 
     	   return "FST 读取成功";
