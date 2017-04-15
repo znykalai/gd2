@@ -21,7 +21,7 @@ public class _FST extends ST_Father implements STInterface {
 		this.允许工位动作标志 = 允许工位动作标志;
 		if(允许工位动作标志){
 	    boolContent=boolContent|0b1;}else {boolContent=boolContent&0b1111111111111110;}
-		System.out.println("============"+ boolContent);
+		//System.out.println("============"+ boolContent);
 	   
 	}
 	public boolean is翻B面() {
@@ -40,12 +40,14 @@ public class _FST extends ST_Father implements STInterface {
 		if(立库rdy)
 		boolContent=boolContent|0b100;else boolContent=boolContent&0b1111111111111011;
 	}
+	@Override
 	public boolean is数据更新完成() {
 		return 数据更新完成;
 	}
 	@Override
    public void set数据更新完成(boolean 数据更新完成) {
-		System.out.println("boolContent1="+boolContent);
+		super.set数据更新完成(数据更新完成);
+		//System.out.println("boolContent1="+boolContent);
 		this.数据更新完成 = 数据更新完成;
 		if(数据更新完成)
 		boolContent=boolContent|0b1000;else boolContent=boolContent&0b1111111111110111;

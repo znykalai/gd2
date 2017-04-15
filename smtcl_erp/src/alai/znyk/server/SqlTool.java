@@ -645,8 +645,9 @@ public class SqlTool {
    static String  lock="";
    public static String setStateForEventID(int idEvent, int state, String ext) {
 		// TODO Auto-generated method stub
+	   System.out.println("µ˜”√"+idEvent+"/"+state);
 	   synchronized(lock){
-		   
+		   System.out.println("ﬂM»ÎLOCL"+idEvent+"/"+state);
 	  String back="";
 	  ConnactionPool p=ConnactionPool.getPool();
       Conn conn=p.getCon2("");

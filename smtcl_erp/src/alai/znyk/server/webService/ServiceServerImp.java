@@ -14,6 +14,7 @@ public class ServiceServerImp implements ServiceServer {
 	@Override
 	public int setStateForEventID(int idEvent, int state, String ext) {
 		// TODO Auto-generated method stub
+		System.out.println("---------------");
 		String back=SqlTool.setStateForEventID(idEvent, state, ext);
 		System.out.println(back);
 		if(back.contains("³É¹¦")){return 1;}else return -1;

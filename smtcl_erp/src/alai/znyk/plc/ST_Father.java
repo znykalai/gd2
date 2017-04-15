@@ -107,6 +107,7 @@ public class ST_Father implements STInterface, Serializable{
 		 
 	 };
 	 public boolean is允许工位动作标志() {
+		
 			return false;
 		}
 	 
@@ -124,8 +125,13 @@ public class ST_Father implements STInterface, Serializable{
 	 }
 	 
 	 public void set数据更新完成(boolean 数据更新完成){//子类覆盖
-		 
+		 System.out.println("startAddress="+数据更新完成);
 	 }
+	 //子類必須覆蓋
+	 public boolean is数据更新完成() {
+		 System.out.println("父類=is数据更新完成");
+			return false;
+		}
 	 public boolean isChange(){
 		 //子类覆盖
 		 return false;}

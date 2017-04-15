@@ -39,11 +39,13 @@ public class _DST extends ST_Father implements STInterface {
 		if(立库rdy)
 		boolContent=boolContent|0b100;else boolContent=boolContent&0b1111111111111011;
 	}
+	@Override
 	public boolean is数据更新完成() {
 		return 数据更新完成;
 	}
 	@Override
 	public void set数据更新完成(boolean 数据更新完成) {
+		super.set数据更新完成(数据更新完成);
 		this.数据更新完成 = 数据更新完成;
 		if(数据更新完成)
 		boolContent=boolContent|0b1000;else boolContent=boolContent&0b1111111111110111;

@@ -18,7 +18,7 @@ public class ServiceClient {
          
     	 JaxWsProxyFactoryBean svr = new JaxWsProxyFactoryBean();
          svr.setServiceClass(ServiceServer.class);
-         svr.setAddress("http://127.0.0.1:8080/smtcl_erp/ServiceServer/gd");
+         svr.setAddress("http://192.168.3.10:8080/smtcl_erp/ServiceServer/gd");
  
         final ServiceServer hw = (ServiceServer) svr.create();
     	/* Client client = ClientProxy.getClient(hw);
@@ -37,7 +37,7 @@ public class ServiceClient {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					 long statTime=System.currentTimeMillis();
-                	  hw.setStateForEventID(1, 1, "1");
+                	  hw.setStateForEventID(72, 3, "1");
                 	  
                 	  System.out.println(System.currentTimeMillis()-statTime);	
 					

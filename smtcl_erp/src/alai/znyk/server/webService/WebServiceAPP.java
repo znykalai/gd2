@@ -24,9 +24,10 @@ public class WebServiceAPP {
    	   read.close();in.close();*/
 		Properties pro=SqlPro.loadProperties(SqlPro.class.getResource("conf.pro").getFile());
    	   String address=pro.getProperty("serviceIP");
+   	  System.out.println(address);
                 System.out.println("web service start");
                 ServiceServerImp implementor= new ServiceServerImp();
-             // String address="http://192.168.3.10:8080/helloWorld";
+                //address="http://192.168.3.10:8080/helloWorld";
                 Endpoint.publish(address, implementor);
                 
                 System.out.println("web service started");

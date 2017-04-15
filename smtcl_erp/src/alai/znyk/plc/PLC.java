@@ -569,21 +569,24 @@ public class PLC implements Serializable {
     						  if(back.contains("成功")){
     							  //写入PLC成功后,在这儿再次检测载具放行变为OFF
     							  System.out.println("第"+i+"工位载具放行移動托盤完成");
-    							  final int curr=i;
-    							
+    							  final int curr2=i;
+    							  getWrPLC(装配区).get(i).firstST.updataFromPLC();
+    							  System.out.println(i+"工位，数据更新完成="+getWrPLC(装配区).get(i).firstST.is数据更新完成());
+    							  try{Thread.sleep(500);}catch(Exception ee){}
     							  new Thread(){
     								  public void run(){
+    									  final int curr=curr2;
     									  System.out.println(Thread.currentThread()+"启动1");
     									  while(true){
     						    Resint r2[]=	ClientSer.getIntance().getReturnPlc("D11001", 63, 16, 装配区);	  
     						    Resint bint2=r2[curr*2];
-    			    			int tem1=bint2.getResInt();
-    			    			int tem2=getRePLC(装配区)[curr].boolCont.getResInt();
+    			    			int tem11=bint2.getResInt();
+    			    			int tem22=getRePLC(装配区)[curr].boolCont.getResInt();
     			    			
-    			    			int 载具放行=(tem1&0b100)==4?1:0;
-    			    			int 载具放行old=(tem2&0b100)==4?1:0;
-    			    			if(载具放行!=载具放行old){
-    			    				if(载具放行==0){
+    			    			int 载具放行new=(tem11&0b100)==4?1:0;
+    			    			int 载具放行old=(tem22&0b100)==4?1:0;
+    			    			//if(载具放行!=载具放行old){
+    			    				if(载具放行new==0){
     			    					 getWrPLC(装配区).get(curr).firstST.set数据更新完成(false);
     			    				 if( getCarryLine(装配区).removeToNext(curr))
     	    	    					 getWrPLC(装配区).get(curr).firstST.setWrite(false);	
@@ -591,7 +594,7 @@ public class PLC implements Serializable {
     			    				 break;
     			    				 }
     			    				
-    			    			}
+    			    			//}
     			    			try{Thread.sleep(200);}catch(Exception ee){}
     			    			
     			    			}//end while
@@ -614,29 +617,38 @@ public class PLC implements Serializable {
    						    if(back.contains("成功")){
    							  //写入PLC成功后,在这儿再次检测载具放行变为OFF
 							  System.out.println("2第"+i+"工位载具放行移動托盤完成");
-							  final int curr=i;
-							
+							  final int curr2=i;
+							  getWrPLC(装配区).get(i).firstST.updataFromPLC();
+							  System.out.println(i+"工位，数据更新完成="+getWrPLC(装配区).get(i).firstST.is数据更新完成());
+							  try{Thread.sleep(500);}catch(Exception ee){}
 							  new Thread(){
 								  public void run(){
+									  final int curr=curr2;
 									  System.out.println(Thread.currentThread()+"启动2");
 									  while(true){
+										  
 						    Resint r2[]=	ClientSer.getIntance().getReturnPlc("D11001", 63, 16, 装配区);	  
 						    Resint bint2=r2[curr*2];
-			    			int tem1=bint2.getResInt();
-			    			int tem2=getRePLC(装配区)[curr].boolCont.getResInt();
+			    			int tem11=bint2.getResInt();
+			    			int tem22=getRePLC(装配区)[curr].boolCont.getResInt();
 			    			
-			    			int 载具放行=(tem1&0b100)==4?1:0; 
-			    			int 载具放行old=(tem2&0b100)==4?1:0;
-			    			if(载具放行!=载具放行old){
-			    				if(载具放行==0){
+			    			int 载具放行new=(tem11&0b100)==4?1:0; 
+			    			int 载具放行old=(tem22&0b100)==4?1:0;
+			    			//if(载具放行!=载具放行old){
+			    				if(载具放行new==0){
+			    					 
+			    				 if( getCarryLine(装配区).removeToNext(curr)){
+			    					  //不更新命令
 			    					 getWrPLC(装配区).get(curr).firstST.set数据更新完成(false);
-			    				 if( getCarryLine(装配区).removeToNext(curr))
-	    	    					 getWrPLC(装配区).get(curr).firstST.setWrite(false);	
+			    					 getWrPLC(装配区).get(curr).firstST.writeifChangeToPLC();
+			    					 
+			    				 }
+	    	    					 //getWrPLC(装配区).get(curr).firstST.setWrite(false);	
 			    				 
 			    				 break;
 			    				 }
 			    				
-			    			}
+			    			//}
 			    			try{Thread.sleep(200);}catch(Exception ee){}
 			    			 
 			    			}//end while
@@ -711,8 +723,8 @@ public class PLC implements Serializable {
 	
    public String writeBlockToBLC(String startAddress,int len,int[]val, int machineID){
        int i= ClientSer.getIntance().writeSirIntToCTR(startAddress, len, val, machineID);
-	   if(i!=-1){
-	   return "成功";
+	   if(i>-1){
+	     return "成功";
 	   }else{
 		 return "失败";
 	   }

@@ -260,8 +260,26 @@ public class STContent implements Serializable {
     		 }
     		 
     	 }
-    	
+    	 ////////
+    	 if(装配区==1) {
+    		 if(PLC.getIntance().line.getCarry(0)==null){
+    			 ((_FST)firstST).set允许工位动作标志(false); 
+    			 
+    		 }
+    		
+    		 
+    	 }
+    		 else{
+    			 
+    			 if(PLC.getIntance().line2.getCarry(0)==null){
+        			 ((_FST)firstST).set允许工位动作标志(false); 
+        			 
+        		 }
+    		 }
+    	 
     	}
+    	
+    	
     	///////////////////////////////////////////////////////
     	
     	if(stNum>=2&&stNum<=7){//动作容许标志默认false，需要判断

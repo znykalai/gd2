@@ -56,11 +56,13 @@ public class _1_6ST extends ST_Father implements STInterface {
 		if(立库rdy)
 			boolContent=boolContent|0b100;else boolContent=boolContent&0b1111111111111011;
 	}
+	@Override
 	public boolean is数据更新完成() {
 		return 数据更新完成;
 	}
 	@Override
 	public void set数据更新完成(boolean 数据更新完成) {
+		super.set数据更新完成(数据更新完成);
 		this.数据更新完成 = 数据更新完成;
 		if(数据更新完成)
 			boolContent=boolContent|0b1000;else boolContent=boolContent&0b1111111111110111;
@@ -157,7 +159,7 @@ public class _1_6ST extends ST_Father implements STInterface {
    		     投放型腔标志=((tem&0b10)==1);
    		     立库RDY=((tem&0b100)==1);
    		     数据更新完成=((tem&0b1000)==1);
-   		     
+   		     System.out.println("数据更新完成=((tem&0b1000)==1)="+ 数据更新完成);
    		     电芯类型标志=back[1];//D10007
    		     模组类型标志=back[2];//D10008
    		     需求数量=back[3];//D10009
