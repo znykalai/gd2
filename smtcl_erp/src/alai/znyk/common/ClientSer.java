@@ -32,7 +32,7 @@ public class ClientSer {
 
 	public GDLocator gd =new GDLocator();
 	private static ClientSer INSTANCE;
-	private boolean isOpenPlc=false;
+	public static boolean isOpenPlc=false;
 	private ClientSer(){
         try{
         	Properties pro=SqlPro.loadProperties(SqlPro.class.getResource("conf.pro").getFile());
@@ -244,9 +244,14 @@ public class ClientSer {
 			}catch(Exception ex){
 				SqlPro.getLog().error(ex.getMessage());
 				ex.printStackTrace();}
+		 }else{
+			 
+			 //alai.GDT.Inint tem []=new alai.GDT.Inint[invalues.length];
+	        //  for(int i=0;i<tem.length;i++){tem[i]=new alai.GDT.Inint(invalues[i]);}
+			
 		 }
-		 
-		 return 1;
+	     return 1;  
+		
 	 }
 	 
 	 public int writeValueToCTR(int type1, java.lang.String address, int value){

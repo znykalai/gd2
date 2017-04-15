@@ -1,5 +1,7 @@
 package alai.znyk.plc;
 
+import alai.znyk.common.ClientSer;
+
 public class _1_6ST extends ST_Father implements STInterface {
 //1到6的工位，要求每个数字的地址必须连续
 	private int boolContent;//保存几个布尔值
@@ -147,23 +149,31 @@ public class _1_6ST extends ST_Father implements STInterface {
 	}
 	@Override
 	public String writeToPLC() {
+		 System.out.println("writeToPLC()->数据更新完成="+ 数据更新完成+"/boolContent="+boolContent);
 		return plc.writeBlockToBLC(startAddress, length, new int[]{boolContent,电芯类型标志,模组类型标志,需求数量,完成数量},machineID);
 	}
 	@Override
 	public String updataFromPLC() {
 		int back[]= plc.readBlockFromBLC(startAddress, length, machineID);
+		
    	 if(back!=null){
+   		//if(ClientSer.isOpenPlc){
    		 boolContent=back[0]; 
+   	     电芯类型标志=back[1];//D10007
+	     模组类型标志=back[2];//D10008
+	     需求数量=back[3];//D10009
+	     完成数量=back[4]; 
+	     
+   	//	}
    		 int tem= boolContent;
+   		 System.out.println("updataFromPLC()->boolContent="+boolContent);
    		     允许工位动作标志=((tem&0b01)==1);
-   		     投放型腔标志=((tem&0b10)==1);
-   		     立库RDY=((tem&0b100)==1);
-   		     数据更新完成=((tem&0b1000)==1);
+   		     投放型腔标志=((tem&0b10)==2);
+   		     立库RDY=((tem&0b100)==4);
+   		     数据更新完成=((tem&0b1000)==8);
    		     System.out.println("数据更新完成=((tem&0b1000)==1)="+ 数据更新完成);
-   		     电芯类型标志=back[1];//D10007
-   		     模组类型标志=back[2];//D10008
-   		     需求数量=back[3];//D10009
-   		     完成数量=back[4];
+   		     
+   		   
    	 
    	   return "ST 读取成功";
    	 }

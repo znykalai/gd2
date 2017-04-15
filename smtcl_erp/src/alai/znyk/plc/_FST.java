@@ -100,9 +100,9 @@ public class _FST extends ST_Father implements STInterface {
     		 boolContent=back[0]; 
     		 int tem= boolContent;
     		     允许工位动作标志=((tem&0b01)==1);
-    		     翻B面=((tem&0b10)==1);
-    		     立库RDY=((tem&0b100)==1);
-    			 数据更新完成=((tem&0b1000)==1);
+    		     翻B面=((tem&0b10)==2);
+    		     立库RDY=((tem&0b100)==4);
+    			 数据更新完成=((tem&0b1000)==8);
     		    
     	 
     	   return "FST 读取成功";

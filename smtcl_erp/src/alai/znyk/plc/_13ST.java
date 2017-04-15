@@ -159,8 +159,8 @@ public class _13ST extends ST_Father implements STInterface {
    		 int tem= boolContent;
    		     允许工位动作标志=((tem&0b01)==1);
    		    
-   		     立库RDY=((tem&0b10)==1);
-   		     数据更新完成=((tem&0b100)==1);
+   		     立库RDY=((tem&0b10)==2);
+   		     数据更新完成=((tem&0b100)==4);
    		     
    		     电芯类型标志=back[1];//D10007
    		     模组类型标志=back[2];//D10008
