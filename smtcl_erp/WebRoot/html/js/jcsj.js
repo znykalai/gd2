@@ -970,7 +970,7 @@ var readyShow={
 						$('#zlhNewTd3_'+obj.num).click(function(){
 							var row=this.id.split("_")[1],ck=this;
 							var a=af.selectMzPack(null,null,null,false,function(e,id){
-								if(e==false){$(ck).html($('#zlhNewTd3_'+row+'').val());return null;};
+								if(e==false){$(ck).html($('#zlhNewTd3_'+row).html());return null;};
 								var a=$.ajax({
 									url:getRootPath()+'/BaseDataAction.do?operType=selectWlList',
 									type:'get',cache:false,
