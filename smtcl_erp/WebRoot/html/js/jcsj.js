@@ -256,8 +256,8 @@ var readyShow={
 				    });
 					//选择模组
 					$("#mozu_button").click(function(){
-						af.selectMzPack($("#mozu_code"),$('#mozu_leixing'),$('#mz_newBtn'),function(){
-							var a=$.ajax({
+						var a=af.selectMzPack($("#mozu_code"),$('#mozu_leixing'),$('#mz_newBtn'),true,function(e){
+							if(e){var a=$.ajax({
 								url:getRootPath()+'/BaseDataAction.do?operType=getMzList',
 								type:'get',cache:false,
 								data:'type=head&where= where a.模组编码=\''+$("#mozu_code").val()+'\'',
@@ -275,9 +275,8 @@ var readyShow={
 						           		obj=null;
 									}
 								}
-							});
-							a=null;
-						},"模组");
+							});a=null;};
+						},"模组");a=null;
 						return null;
 					});
 					//添加载具行
@@ -969,50 +968,26 @@ var readyShow={
 						});
 						//物料编码
 						$('#zlhNewTd3_'+obj.num).click(function(){
-							var row=this.id.split("_")[1];
-							var ck=this;
-							if(this.ck){
-								return null;
-							}else{
-								this.ck=true;
-							}
-							$(this).html('<input id="zlhNewTd3_text_'+row+'" type="text" class="form-control" value="'+$(this).html()+'">');
-							$('#zlhNewTd3_text_'+row).focus();
-					        $('#zlhNewTd3_text_'+row).blur(function(){
-					            var node=this.parentNode;
-					            var e={id:this.value};
-					            if(e.id==""){
-					            	$(node).html("");
-					            	ck.ck?ck.ck=false:null;
-					            	return null;
-					            };
-					        	var a=$.ajax({
+							var row=this.id.split("_")[1],ck=this;
+							var a=af.selectMzPack(null,null,null,false,function(e,id){
+								if(e==false){$(ck).html($('#zlhNewTd3_'+row+'').val());return null;};
+								var a=$.ajax({
 									url:getRootPath()+'/BaseDataAction.do?operType=selectWlList',
 									type:'get',cache:false,
-									data:e,
+									data:'id='+id,
 									success:function(data){
-						    			var obj=eval("("+data+")");
-										if(obj.length>0){
-								            $(node).html(e.id);
+										if(data!="[]"){
+									    	var obj=eval("("+data+")");
+								            $(ck).html(obj[0].wuliao_code);
 								            $('#zlhNewTd4_'+row).html(obj[0].wuliao_miaoshu);
-								            ck.ck?ck.ck=false:null;
-										}else{
-								            $(node).html("");
-					            			ck.ck?ck.ck=false:null;
-								    		layer.tips(e.id+'物料不存在！','#zlhNewTd3_'+row);
-										}node=null,e=null;
+								            if($(ck).parent().attr("class")==""){
+							                    $(ck).parent().attr("class","update");
+							                };
+										};
 									}
 								});a=null;
-					        	return null;
-					        });
-				            //判断当前行 修改还是新增
-				            $('#zlhNewTd3_text_'+row+'').change(function(){
-				                if($(ck).parent().attr("class")==""){
-				                    $(ck).parent().attr("class","update");
-				                }
-						        return null;
-				            });
-					        return null;
+							},"配方");a=null;
+							return null;
 						});
 						//数量
 						$('#zlhNewTd5_'+obj.num).click(function(){
@@ -1317,7 +1292,7 @@ var readyShow={
 							}
 						}else{
 							layer.msg("请选择需要下调的指令行！");
-						}
+						};
 				        return null;
 					});
 			        return null;
@@ -1340,8 +1315,8 @@ var readyShow={
 					});
 					//选择pack
 					$("#pack_button").click(function(){
-						var a=af.selectMzPack($("#pack_code"),$('#pack_leixing'),$('#pack_newBtn'),function(){
-							$.ajax({
+						var a=af.selectMzPack($("#pack_code"),$('#pack_leixing'),$('#pack_newBtn'),true,function(e){
+							if(e){var a=$.ajax({
 								url:getRootPath()+'/BaseDataAction.do?operType=getPackHead',
 								type:'get',cache:false,
 								data:"pack_code="+$("#pack_code").val(),
@@ -1358,7 +1333,7 @@ var readyShow={
 										obj=null;
 									}
 								}
-							});
+							});a=null;};
 						},"PACK");a=null;
 						return null;
 					});
@@ -1389,59 +1364,38 @@ var readyShow={
 						});
 						//模组编码
 						$('#packNewTd3_'+obj.num).click(function(){
-							var row=this.id.split("_")[1];
-							var ck=this;
-							if(this.ck){
-								return null;
-							}else{
-								this.ck=true;
-							}
-							$(this).html('<input id="packNewTd3_text_'+row+'" type="text" class="form-control" value="'+$(this).html()+'">');
-							$('#packNewTd3_text_'+row).focus();
-					        $('#packNewTd3_text_'+row).blur(function(){
-					            var node=this.parentNode;
-					            var rowMzCode=this;
-					            if(rowMzCode.value==""){
-					            	$(node).html("");
-					            	ck.ck?ck.ck=false:null;
-					            	return null;
-					            }
-					        	$.ajax({
+							var row=this.id.split("_")[1],ck=this;
+							var a=af.selectMzPack(null,null,null,false,function(e,id){
+								if(e==false){$(ck).html($('#packNewTd3_text_'+row+'').val());return null;};
+								var a=$.ajax({
 									url:getRootPath()+'/BaseDataAction.do?operType=getMzList',
 									type:'get',cache:false,
-									data:'type=head&where= where a.模组编码=\''+rowMzCode.value+'\'',
+									data:'type=head&where= where a.模组编码=\''+id+'\'', 
 									success:function(data){
-						    			var obj=eval("("+data+")");
-										if(obj.length>0){
-								            $(node).html(rowMzCode.value);
-								            $('#packNewTd4_'+row).html(obj[0].mozu_leixing);
-								            ck.ck?ck.ck=false:null;
-				                            var pack_table=$('#pack_table tbody tr');
+										if(data!="[]"){
+									    	var obj=eval("("+data+")");
+									    	var pack_table=$('#pack_table tbody tr');
 				                            for(var j=0;j<pack_table.length;j++){
 					                            var pack_mz_code=pack_table.eq(j).children("td").eq(2).html();
 					                            for(var k=0;k<pack_table.length;k++){
-					                            	if(j!=k && pack_mz_code==pack_table.eq(k).children("td").eq(2).html()){
+					                            	if(j!=k && pack_mz_code==obj[0].mozu_code){
 								    					layer.tips(pack_mz_code+'模组重复！','#packNewTd3_'+row);
 								    					return null;
-					                            	}
-					                            }
-				                            }
+					                            	};
+					                            };
+				                            };
+								            $(ck).html(obj[0].mozu_code);
+								            $('#packNewTd4_'+row).html(obj[0].mozu_leixing);
+								            if($(ck).parent().attr("class")==""){
+							                    $(ck).parent().attr("class","update");
+							                };
 										}else{
-								            $(node).html("");
-					            			ck.ck?ck.ck=false:null;
-								    		layer.tips(rowMzCode.value+'模组不存在！','#packNewTd3_'+row);
-										}
+											layer.msg(id+"还未配置载具！");
+										};
 									}
-								});
-						        return null;
-					        });
-				            //判断当前行 修改还是新增
-				            $('#packNewTd3_text_'+row+'').change(function(){
-				                if($(ck).parent().attr("class")==""){
-				                    $(ck).parent().attr("class","update");
-				                }
-						        return null;
-				            });
+								});a=null;
+							},"模组");a=null;
+							return null;
 						});
 						//数量
 						$('#packNewTd5_'+obj.num).click(function(){
@@ -1792,8 +1746,8 @@ var readyShow={
 			        return null;
 				},
 				/***选择模组 pack***/
-				selectMzPack:function(setLeiBie,setLeiXing,clean,fun,leibie){
-					var openWindow='<div style="width:100%;margin-right:0;"><div class="margin-top-10"><div class="col-md-11" style="margin-left:20px;"><!-- 标题 --><div style="padding-right:17px;"><table class="table table-bordered text-center" id="commonSearchTableHead_MzPack"><thead><tr><td style="width:50%;">编码</td><td style="width:50%;">类型</td></tr></thead></table></div><!-- 标题 end--><!-- 内容 --><div class="table-body" id="commonSearchTableBody_MzPack"><table class="table table-bordered text-center table-hover" id="searchTable_MzPack"></table></div><!-- 内容 end--></div></div></div>';
+				selectMzPack:function(setLeiBie,setLeiXing,clean,selectType,fun,leibie){
+					var openWindow='<div style="width:100%;margin-right:0;"><div class="margin-top-10"><div class="col-md-11" style="margin-left:20px;"><!-- 标题 --><div style="padding-right:17px;"><table class="table table-bordered text-center" id="commonSearchTableHead_MzPack"><thead><tr><td style="width:50%;">编码</td><td style="width:50%;">描述</td></tr></thead></table></div><!-- 标题 end--><!-- 内容 --><div class="table-body" id="commonSearchTableBody_MzPack"><table class="table table-bordered text-center table-hover" id="searchTable_MzPack"></table></div><!-- 内容 end--></div></div></div>';
 					var win=layer.open({
 					    type:1,
 					    title:leibie,
@@ -1803,6 +1757,9 @@ var readyShow={
 					    move:false,
 					    shade:[0.5,'#393D49'],
 					    area:['30%','50%'],
+					    cancel:function(){
+					    	return fun(false);
+					    },
 					    content:openWindow
 					});
 					/*设置table高度*/
@@ -1817,17 +1774,19 @@ var readyShow={
 				                $('#searchTable_MzPack').append('<tr class="commonTr" style="cursor:pointer;"></tr>');
 				               	var lastTr=$('#searchTable_MzPack tbody tr:last');
 			                    lastTr.append('<td class="leibie_id" style="width:50%;">'+obj[i].wuliao_code+'</td>');
-			                    lastTr.append('<td class="leixing_id" style="width:50%;">'+obj[i].leixing_id+'</td>');
-							}
+			                    lastTr.append('<td class="wuliao_miaoshu" style="width:50%;">'+obj[i].wuliao_miaoshu+'</td>');
+			                    lastTr.append('<td hidden class="leixing_id" style="width:50%;">'+obj[i].leixing_id+'</td>');
+							};
 							/*绑定双击事件*/
 			            	$('.commonTr').bind('dblclick',function(e){
 								var tr=$(e.target).parent();
-								clean.click();
-			            		setLeiBie.val(tr.find('.leibie_id').text());
-			            		setLeiXing.val(tr.find('.leixing_id').text());
+								if(selectType){
+									clean.click();
+				            		setLeiBie.val(tr.find('.leibie_id').text());
+				            		setLeiXing.val(tr.find('.leixing_id').text());
+								};
 			            		layer.close(win);
-			            		tr=null;
-			            		return fun();
+			            		return fun(true,tr.find('.leibie_id').text()),tr=null;
 			            	});
 			            	obj=null;
 						}

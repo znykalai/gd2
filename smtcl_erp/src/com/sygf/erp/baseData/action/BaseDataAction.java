@@ -395,8 +395,8 @@ public class BaseDataAction extends Action{
 				sql = " where a.物料编码='"+map.get("id")+"'";
 			}else if(map.get("leibie")!=null){
 				sql = " where a.类别='"+map.get("leibie")+"'";
-			}
-			map.put("sql", sql);
+			};
+			map.put("sql", sql);sql=null;
 			List list = dao.selectWlList(map);
 			ArrayList result = new ArrayList();
 			if(list!=null&&list.size()>0){
@@ -416,9 +416,9 @@ public class BaseDataAction extends Action{
 					mapPara.put("'plc_code'", "'"+((HashMap)list.get(i)).get("PLC编码")+"'");
 					mapPara.put("'shanghuoqu_id'", "'"+((HashMap)list.get(i)).get("默认上货区")+"'");
 					mapPara.put("'xiahuoqu_id'", "'"+((HashMap)list.get(i)).get("默认下货区")+"'");
-					result.add(mapPara);
+					result.add(mapPara);mapPara=null;
 				}
-			}
+			};list=null;
 			response.setContentType("text/html;charset=utf-8");
 			response.getWriter().print(result.toString().replaceAll("'='", "':'"));
 			response.getWriter().close();

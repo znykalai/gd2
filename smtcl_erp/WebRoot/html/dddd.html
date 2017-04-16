@@ -128,16 +128,16 @@
 					<div class="row" style="margin-top:-20px;">
 			        	<div class="col-md-1"></div>
 			            <div class="col-md-2 text-right" style="padding: 5px 0 0 0;">
-			                <span><span style="color:red;">*</span>工单序号:</span>
-			            </div>
-			            <div class="col-md-3">
-			                <input id="order_sequence" type="number" class="form-control"/>
-			            </div>
-			            <div class="col-md-2 text-right" style="padding: 5px 0 0 0;">
 			                <span><span style="color:red;">*</span>工单号:</span>
 			            </div>
 			            <div class="col-md-3">
-			                <input id="order_code" type="text" class="form-control"/>
+			                <input id="order_code" type="number" class="form-control"/>
+			            </div>
+			            <div class="col-md-2 text-right" style="padding: 5px 0 0 0;">
+			                <span><span style="color:red;">*</span>数量:</span>
+			            </div>
+		           		<div class="col-md-3">
+			                <input id="order_number" type="number" min="0" class="form-control"/>
 			            </div>
 		            </div> 
 					<div class="row margin-top-10">
@@ -154,14 +154,11 @@
 							 </div>
 			            </div>
 			            <div class="col-md-2 text-right" style="padding: 5px 0 0 0;">
-			                <span><span style="color:red;">*</span>工单数量:</span>
+			                <span>传送否:</span>
 			            </div>
 		           		<div class="col-md-3">
-		           		<!-- 
-			                <input id="order_number" type="text" onkeypress="return (/[\d.]/.test(String.fromCharCode(event.keyCode)))" class="form-control"/>
-			             -->
-			                <input id="order_number" type="number" min="0" class="form-control"/>
-			            </div>    
+			                <input id="chuansong_id" type="text" readonly="readonly" value="否" class="form-control"/>
+			            </div>
 			        </div>       				 
 		            <div class="row margin-top-10">
 			        	<div class="col-md-1"></div>
@@ -180,26 +177,8 @@
                             </div>
 			            </div>	   			            					           
 			            <div class="col-md-2 text-right" style="padding: 5px 0 0 0;">
-			                <span>传送否:</span>
-			            </div>
-			            <div class="col-md-3">
-			                <div class="cus-select" id="chuansong">
-                                <div class="cus-select-btn"></div>
-                                <input id="chuansong_id" type="text" placeholder="--请选择--" readonly/>
-                                <ul>
-                                	<li></li>	                               
-                                	<li>是</li>
-                                	<li>否</li>	
-                                </ul>
-                            </div>
-			            </div>	
-			        </div>
-		            <div class="row margin-top-10">
-			        	<div class="col-md-1"></div>
-			            <div class="col-md-2 text-right" style="padding: 5px 0 0 0;">
 			                <span>释放否:</span>
 			            </div>
-			            
 			            <div class="col-md-3">
 			                <div class="cus-select" id="shifang">
                                 <div class="cus-select-btn"></div>
@@ -211,12 +190,6 @@
                                 </ul>
                             </div>
 			            </div>				            
-			            <div class="col-md-2 text-right" style="padding: 5px 0 0 0;">
-			                <span>完成数量:</span>
-			            </div>			            
-			            <div class="col-md-3">
-			                <input id="complete_number" type="number" readonly class="form-control"/>
-         					</div>	
 		        	</div>
 		        </div>
 		    </form>

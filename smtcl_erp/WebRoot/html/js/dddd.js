@@ -253,7 +253,7 @@ var readyShow={
 									type:'post',cache:false, 
 									data:"dd_id="+gd_id+"&pack_code="+pack_code,
 									success:function(data){
-										showGdList('','',$('#getGdfenjieriqi').val(),false,winLayer.open({type:3}));
+										var a=$("#dd_selectBtn").click();a=null;
 				  						layer.msg("分解成功！");
 									}
 								});
@@ -270,7 +270,7 @@ var readyShow={
 							url:getRootPath()+'/OrderOperAction.do?operType=fenjieAllBtn',
 							type:'post',cache:false, 
 							success:function(data){
-								showGdList('','',$('#getGdfenjieriqi').val(),false,winLayer.open({type:3}));
+								var a=$("#dd_selectBtn").click();a=null;
 								layer.msg("分解成功！");
 							}
 						});
@@ -282,8 +282,12 @@ var readyShow={
 							url:getRootPath()+'/OrderOperAction.do?operType=downloadBtn',
 							type:'post',cache:false, 
 							success:function(data){
-								showGdList('','',$('#getGdfenjieriqi').val(),false,winLayer.open({type:3}));
-								layer.msg("下载成功！");
+								var a=$("#dd_selectBtn").click();a=null;
+								if(data=="true"){
+									layer.msg("下载成功！");
+								}else{
+									layer.msg("没有可下载的订单!");
+								};
 							}
 						});
 						return null;
@@ -301,7 +305,7 @@ var readyShow={
 									data:'gd_id='+gd_id,
 									success:function(data){
 										var obj=eval("("+data+")");
-										showGdList('','',$('#getGdfenjieriqi').val(),true,winLayer.open({type:3}));
+										showGdList($("#getGdId").val(),$("#getPackeCode").val(),$('#getGdfenjieriqi').val(),true,winLayer.open({type:3}));
 				  						layer.msg(obj.body);
 				  						obj=null;
 									}
@@ -345,7 +349,7 @@ var readyShow={
 											data:'gd_id='+gd_id+'&up_gd_id='+up_gd_id+'&gd_xuhao='+gd_xuhao+'&up_gd_xuhao='+up_gd_xuhao,
 											success:function(data){
 												var obj=eval("("+data+")");
-												showGdList('','',$('#getGdfenjieriqi').val(),false,winLayer.open({type:3}));
+												var a=$("#dd_selectBtn").click();a=null;
 						  						layer.msg(obj.body);
 						  						obj=null;
 											}
@@ -358,7 +362,7 @@ var readyShow={
 						};
 						return null;
 					});
-					//工单下调
+					//下调序
 					$("#dd_bomBtn").click(function(){
 						var cheBoolean=$("input[name='trGdRadio']").is(':checked');
 						if(cheBoolean){
@@ -390,7 +394,7 @@ var readyShow={
 											data:'gd_id='+gd_id+'&up_gd_id='+up_gd_id+'&gd_xuhao='+gd_xuhao+'&up_gd_xuhao='+up_gd_xuhao,
 											success:function(data){
 												var obj=eval("("+data+")");
-												showGdList('','',$('#getGdfenjieriqi').val(),false,winLayer.open({type:3}));
+												var a=$("#dd_selectBtn").click();a=null;
 						  						layer.msg(obj.body);
 						  						obj=null;
 											}
@@ -404,9 +408,10 @@ var readyShow={
 						};
 						return null;
 					});
-					if(showGdList('','',$('#getGdfenjieriqi').val(),false,winLayer.open({type:3}))&&dsState.state){
+					var a=$("#dd_selectBtn").click();a=null;
+					if(dsState.state){
 						readyShow.deleteSetInterval=setInterval(function(){//定时刷新
-							showGdList('','','',false);
+							showGdList($("#getGdId").val(),$("#getPackeCode").val(),$('#getGdfenjieriqi').val(),false);
 						},dsState.tim),af_Home.dlInterval=true;
 					};
 					return null;
@@ -416,29 +421,7 @@ var readyShow={
 				 */
 				loadDingDanWeiHu:function(){
 					$("#pack_code_button").click(function(){//pack编码显示
-						var openWindow = '<div style="width: 100%;margin-right: 0;">' +
-							    '<div class="margin-top-10">' +
-								'<div class="col-md-11" style="margin-left: 20px;">' +
-								'<!-- 标题 -->' +
-								'<div style="padding-right:17px;">' +
-								'<table class="table table-bordered text-center" id="commonSearchTableHead_pack">' +
-								'<thead>' +
-								'<tr>' +
-								'<td style="width: 50%;">pack编码</td>' +
-								'<td style="width: 50%;">pack类型</td>' +
-								'</tr>' +
-								'</thead>' +
-								'</table>' +
-								'</div>' +
-								'<!-- 标题 end-->' +
-								'<!-- 内容 -->' +
-								'<div class="table-body" id="commonSearchTableBody_pack">' +
-								'<table class="table table-bordered text-center table-hover" id="searchTable_pack"></table>' +
-								'</div>' +
-								'<!-- 内容 end-->' +
-								'</div>' +
-							'</div>' +
-						'</div>';
+						var openWindow = '<div style="width: 100%;margin-right: 0;"><div class="margin-top-10"><div class="col-md-11" style="margin-left: 20px;"><div style="padding-right:17px;"><table class="table table-bordered text-center" id="commonSearchTableHead_pack"><thead><tr><td style="width: 50%;">pack编码</td><td style="width: 50%;">pack类型</td></tr></thead></table></div><div class="table-body" id="commonSearchTableBody_pack"><table class="table table-bordered text-center table-hover" id="searchTable_pack"></table></div></div></div></div>';
 						var win = layer.open({
 						    type: 1,
 						    title: 'pack编码',
@@ -460,8 +443,8 @@ var readyShow={
 						    	for(var i=0;i<obj.length;i++){
 					                $('#searchTable_pack').append('<tr class="commonTr" style="cursor: pointer;"></tr>');
 					                var lastTr = $('#searchTable_pack tbody tr:last');
-				                    lastTr.append('<td class="pack_bianma" style="width: 50%;">' + obj[i].pack_bianma + '</td>');
-				                    lastTr.append('<td class="pack_leixing" style="width: 50%;">' + obj[i].pack_leixing + '</td>');         
+				                    lastTr.append('<td class="pack_bianma" style="width: 50%;">'+obj[i].pack_bianma+'</td>');
+				                    lastTr.append('<td class="pack_leixing" style="width: 50%;">'+obj[i].pack_leixing+'</td>');         
 						    	};obj=null;
 								$('.commonTr').bind('dblclick',function(a){
 									var tr = $(a.target).parent();
@@ -494,42 +477,9 @@ var readyShow={
 				        t2=null;a=null;
 			        	return null;
 				    });
-				    //传送否复选框加载
-				    $('#chuansong').click(function(){
-				        var a = $('#chuansong ul').toggle();a=null;
-			        	return null;
-				    });
-				    $('#chuansong ul').click(function(event){
-				        var t2 = $(event.target).text();
-				        var a = $('#chuansong_id').val(t2);
-				        t2 = null;a = null;
-				        return null;
-				    });
 				    //工单查找
 				    $('#gd_selectBtn').click(function(){
-				    	var openWindow = '<div style="width: 100%;margin-right: 0;">' +
-							    '<div class="margin-top-10">' +
-								'<div class="col-md-11" style="margin-left: 20px;">' +
-								'<!-- 标题 -->' +
-								'<div style="padding-right:17px;">' +
-								'<table class="table table-bordered text-center" id="commonSearchTableHead_pack">' +
-								'<thead>' +
-								'<tr>' +
-								'<td style="width: 50%;">工单序号</td>' +
-								'<td style="width: 50%;">pack编码</td>' +
-								'</tr>' +
-								'</thead>' +
-								'</table>' +
-								'</div>' +
-								'<!-- 标题 end-->' +
-								'<!-- 内容 -->' +
-								'<div class="table-body" id="commonSearchTableBody_pack">' +
-								'<table class="table table-bordered text-center table-hover" id="searchTable_pack"></table>' +
-								'</div>' +
-								'<!-- 内容 end-->' +
-								'</div>' +
-							'</div>' +
-						'</div>';
+				    	var openWindow = '<div style="width: 100%;margin-right: 0;"><div class="margin-top-10"><div class="col-md-11" style="margin-left: 20px;"><div style="padding-right:17px;"><table class="table table-bordered text-center" id="commonSearchTableHead_pack"><thead><tr><td style="width: 50%;">工单号</td><td style="width: 50%;">pack编码</td></tr></thead></table></div><div class="table-body" id="commonSearchTableBody_pack"><table class="table table-bordered text-center table-hover" id="searchTable_pack"></table></div></div></div></div>';
 				    	var win = layer.open({
 						    type: 1,
 						    title: '查询',
@@ -551,27 +501,23 @@ var readyShow={
 						    	for(var i=0;i<obj.length;i++){
 					                $('#searchTable_pack').append('<tr class="commonTr" style="cursor: pointer;"></tr>');
 					                var lastTr = $('#searchTable_pack tbody tr:last');
-					                lastTr.append('<td class="order_sequence" style="width: 50%;">' + obj[i].order_sequence + '</td>');
-				                    lastTr.append('<td class="pack_code" style="width: 50%;">' + obj[i].pack_code + '</td>');
-				                    lastTr.append('<td  hidden class="order_code" style="width: 50%;">' + obj[i].order_code + '</td>');
-				                    lastTr.append('<td  hidden class="order_number" style="width: 50%;">' + obj[i].order_number + '</td>');
-				                    lastTr.append('<td  hidden class="assemble_area_id" style="width: 50%;">' + obj[i].assemble_area_id + '</td>');
-				                    lastTr.append('<td  hidden class="chuansong_id" style="width: 50%;">' + obj[i].chuansong_id + '</td>');
-				                    lastTr.append('<td  hidden class="shifang_id" style="width: 50%;">' + obj[i].shifang_id + '</td>');
-				                    lastTr.append('<td  hidden class="complete_number" style="width: 50%;">' + obj[i].complete_number + '</td>');
-				                    lastTr.append('<td  hidden class="order_id" style="width: 50%;">' + obj[i].order_id + '</td>');
+				                    lastTr.append('<td class="order_code" style="width: 50%;">'+obj[i].order_code+'</td>');
+				                    lastTr.append('<td class="pack_code" style="width: 50%;">'+obj[i].pack_code+'</td>');
+				                    lastTr.append('<td  hidden class="order_number" style="width: 50%;">'+obj[i].order_number+'</td>');
+				                    lastTr.append('<td  hidden class="assemble_area_id" style="width: 50%;">'+obj[i].assemble_area_id+'</td>');
+				                    lastTr.append('<td  hidden class="chuansong_id" style="width: 50%;">'+obj[i].chuansong_id+'</td>');
+				                    lastTr.append('<td  hidden class="shifang_id" style="width: 50%;">'+obj[i].shifang_id+'</td>');
+				                    lastTr.append('<td  hidden class="order_id" style="width: 50%;">'+obj[i].order_id+'</td>');
 						    	};obj=null;
 								$('.commonTr').bind('dblclick',function(a){
 									var tr = $(a.target).parent();
-				            		$('#order_sequence').val(tr.find('.order_sequence').text());
+				            		$('#order_id').val(tr.find('.order_id').text());
 				            		$('#pack_code').val(tr.find('.pack_code').text());
 				            		$('#order_code').val(tr.find('.order_code').text());
 				            		$('#order_number').val(tr.find('.order_number').text());
-				            		$('#assemble_area_id').val(tr.find('.assemble_area_id').text());
 				            		$('#chuansong_id').val(tr.find('.chuansong_id').text());
+				            		$('#assemble_area_id').val(tr.find('.assemble_area_id').text());
 				            		$('#shifang_id').val(tr.find('.shifang_id').text());
-				            		$('#complete_number').val(tr.find('.complete_number').text());
-				            		$('#order_id').val(tr.find('.order_id').text());
 				            		layer.close(win);win=null;
 				            	});
 							}
@@ -585,11 +531,7 @@ var readyShow={
 				    });
 				    //工单保存
 				    $('#gd_saveBtn').click(function(){				    	
-				    	if($('#order_sequence').val()==""){				    		
-					    	$("#order_sequence").focus();
-				    		layer.tips('请填写订单序号！', '#order_sequence');				    	
-				    		return null;
-				    	}else if($('#order_code').val()==""){				    		
+				    	if($('#order_code').val()==""){				    		
 					    	$("#order_code").focus();
 				    		layer.tips('请填写订单号！', '#order_code');				    	
 				    		return null;
@@ -599,19 +541,16 @@ var readyShow={
 				    		return null;
 			    		}else if($('#order_number').val()==""){
 				    		$("#order_number").focus();
-				    		layer.tips('请填写订单数量！', '#order_number');			    		
+				    		layer.tips('请填写数量！', '#order_number');			    		
 				    		return null;
 			    		};
 					    var head={
 					    	'id':$('#order_id').val(),
-					    	'订单序号':$('#order_sequence').val(),
 					    	'订单号':$('#order_code').val(),					    	
 					    	'pack编码':$('#pack_code').val(),
 					    	'订单数量':$('#order_number').val(),
 					    	'装配区':$('#assemble_area_id').val(),
-					    	'传送否':$('#chuansong_id').val(),
-					    	'释放否':$('#shifang_id').val(),
-					    	'完成数量':$('#complete_number').val()
+					    	'释放否':$('#shifang_id').val()
 					    };
 				    	var a=$.ajax({
 							url:getRootPath()+'/OrderOperAction.do?operType=orderSave',

@@ -81,14 +81,12 @@ public class OrderOperAction extends Action{
 			JSONObject head = new JSONObject(map.get("head").toString());
 			JSONObject result = new JSONObject();
 			if(head.get("id").equals("")){//新增
-				String sql = "insert into `工单下载`(`工单序号`,`工单号`,`pack编码`,`工单数量`,`装配区`,`传送否`,`释放否`)" +
+				String sql = "insert into `工单下载`(`工单号`,`pack编码`,`工单数量`,`装配区`,`释放否`)" +
 						"values(" +
-						"'"+head.get("订单序号").toString()+"'," +
 						"'"+head.get("订单号").toString()+"'," +
 						"'"+head.get("pack编码").toString()+"'," +
 						"'"+head.get("订单数量").toString()+"'," +
 						"'"+head.get("装配区").toString()+"'," +
-						"'"+head.get("传送否").toString()+"'," +
 						"'"+head.get("释放否").toString()+"')";
 				map.put("sql", sql);sql=null;
 				result.put("result", dao.saveAll(map));//保存	
@@ -96,12 +94,10 @@ public class OrderOperAction extends Action{
 				result.put("id", ((HashMap)dao.getGdxzId(map).get(0)).get("ID"));//获取工单下载表ID
 			}else{//修改
 				String sql="update 工单下载 set "
-						+ "工单序号='"+head.get("订单序号").toString()+"',"
 						+ "工单号='"+head.get("订单号").toString()+"',"
 						+ "pack编码='"+head.get("pack编码").toString()+"',"
 						+ "工单数量='"+head.get("订单数量").toString()+"',"
 						+ "装配区='"+head.get("装配区").toString()+"',"
-						+ "传送否='"+head.get("传送否").toString()+"',"
 						+ "释放否='"+head.get("释放否").toString()+"' where ID="+head.get("id");
 				map.put("sql", sql);sql=null;
 				result.put("result", dao.saveAll(map));//保存
@@ -199,20 +195,18 @@ public class OrderOperAction extends Action{
 			ApplicationContext context = GetApplicationContext.getContext(request);
 			OrderOperactionDAO dao = (OrderOperactionDAO)context.getBean("orderOperactionDAO");
 			ArrayList result = new ArrayList();
-			String sql = "select * from `工单下载`";
+			String sql = "select a.* from `工单下载` as a";
 			map.put("sql", sql);sql=null;
 			List list = dao.getGdDownload(map);
 			for(int i=0;i<list.size();i++){
 				HashMap mapPara = new HashMap();
-				mapPara.put("'pack_code'", "'"+((HashMap)list.get(i)).get("pack编码")+"'");
-				mapPara.put("'order_sequence'", "'"+((HashMap)list.get(i)).get("工单序号")+"'");
+			    mapPara.put("'order_id'", "'"+((HashMap)list.get(i)).get("ID")+"'");
 				mapPara.put("'order_code'", "'"+((HashMap)list.get(i)).get("工单号")+"'");
+				mapPara.put("'pack_code'", "'"+((HashMap)list.get(i)).get("pack编码")+"'");
 				mapPara.put("'order_number'", "'"+((HashMap)list.get(i)).get("工单数量")+"'");
 				mapPara.put("'assemble_area_id'", "'"+((HashMap)list.get(i)).get("装配区")+"'");
 				mapPara.put("'chuansong_id'", "'"+((HashMap)list.get(i)).get("传送否")+"'");
 			    mapPara.put("'shifang_id'", "'"+((HashMap)list.get(i)).get("释放否")+"'");
-			    mapPara.put("'complete_number'", "'"+((HashMap)list.get(i)).get("完成数量")+"'");
-			    mapPara.put("'order_id'", "'"+((HashMap)list.get(i)).get("ID")+"'");
 				result.add(mapPara);mapPara=null;
 			};list=null;map=null;context=null;dao=null;
 			response.setContentType("text/html;charset=utf-8");
@@ -243,18 +237,18 @@ public class OrderOperAction extends Action{
 			String sql = " WHERE";
 			if(!map.get("getGdId").equals("")){
 				sql += " `工单表`.`工单号` = '"+map.get("getGdId")+"' AND ";
-			}
+			};
 			if(!map.get("getGdfenjieriqi").equals("")){
-				sql += " `工单表`.`分解日期` = '"+map.get("getGdfenjieriqi")+"' AND ";
-			}
+				sql += " `工单表`.`分解日期` like '%"+map.get("getGdfenjieriqi")+"%' AND ";
+			};
 			if(!map.get("getPackeCode").equals("")){
 				sql += " `工单表`.`pack编码` = '"+map.get("getPackeCode")+"' AND ";
-			}
+			};
 			if(sql.equals(" WHERE")){
 				sql = "";
 			}else if(sql.endsWith("AND ")){
 				sql = sql.substring(0,sql.length()-4);
-			}
+			};
 			map.put("sql", sql);sql=null;
 			List list = dao.getDdList(map);
 			if(list!=null&&list.size()>0){
@@ -745,44 +739,43 @@ public class OrderOperAction extends Action{
 			HashMap map = GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
 			ApplicationContext context = GetApplicationContext.getContext(request);
 			OrderOperactionDAO dao = (OrderOperactionDAO)context.getBean("orderOperactionDAO");
-			String sql = "SELECT a.`ID`,a.`工单号`,a.`工单序号`,a.`pack编码`,a.`工单数量`,a.`装配区`,a.`传送否`,a.`释放否` FROM `工单下载` a";
+			String sql = "SELECT a.* FROM `工单下载` a WHERE a.`传送否`='否'";
 			map.put("sql", sql);
 			List list = dao.getGdDownload(map);
+			boolean deleteType = false;
 			if(list!=null&&list.size()>0){
-				boolean deleteType = false;
 				for(int i=0;i<list.size();i++){
 					double gdNumber = Double.parseDouble(((HashMap)list.get(i)).get("工单数量").toString());
+					String id=((HashMap)list.get(i)).get("ID").toString();
 					for(int k=0;k<(int)gdNumber;k++){
 						//获取最大工单序号
 						List maxList = dao.getMaxGdxh();
 						int maxGdxh = 0;
 						if(maxList!=null&&maxList.size()>0){
 							maxGdxh = Integer.parseInt(((HashMap)maxList.get(0)).get("工单序号").toString().equals("")?"0":((HashMap)maxList.get(0)).get("工单序号").toString());
-						};
-						maxList=null;
+						};maxList=null;
 						sql = "insert into `工单表`(`工单序号`,`工单号`,`pack编码`,`工单数量`,`装配区`,`传送否`,`释放否`,`完成数量`)"+
 								"values("+(maxGdxh+1)+","+
 										""+((HashMap)list.get(i)).get("工单号")+"," +
 										"'"+((HashMap)list.get(i)).get("pack编码")+"'," +
 										"1," +
 										"'"+((HashMap)list.get(i)).get("装配区")+"'," +
-										"'"+((HashMap)list.get(i)).get("传送否")+"'," +
+										"'是'," +
 										"'"+((HashMap)list.get(i)).get("释放否")+"'," +
 										"0)";
-						map.put("sql",sql);
+						map.put("sql",sql);sql=null;
 						deleteType = dao.saveAll(map);//将工单下载到工单表中
-					}
-				}
-				if(deleteType){
-					//删除已下载的工单信息，工单下载表
-					sql = "DELETE FROM `工单下载`";
-					map.put("sql", sql);
-					dao.removeAll(map);
-				}
-			};
-			list=null;map=null;dao=null;sql=null;context=null;
+					};
+					if(deleteType){
+						//删除已下载的工单信息，工单下载表
+						sql = "UPDATE `工单下载` a SET a.`传送否`='是' WHERE a.ID='"+id+"'";
+						map.put("sql", sql);sql=null;id=null;
+						dao.saveAll(map);
+					};
+				};
+			};list=null;map=null;dao=null;sql=null;context=null;
 			response.setContentType("text/html;charset=utf-8");
-			response.getWriter().print("true");
+			response.getWriter().print(deleteType);
 			response.getWriter().close();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -859,7 +852,6 @@ public class OrderOperAction extends Action{
 			String sql = "update `工单表` set " +
 					"工单序号 = '-1' " +	 //需要先将调小的序号变为-1；然后根据-1改变成调小后的序号
 					"where ID = '"+up_gd_id+"'";
-//			System.out.println("sql="+sql);
 			map.put("sql", sql);
 			yesNo = dao.updateXuhaoUp(map);
 			if(yesNo){
@@ -867,7 +859,6 @@ public class OrderOperAction extends Action{
 					"工单序号 = '"+up_gd_xuhao+"' " +
 					"where ID = '"+gd_id+"'";
 				map.put("sql", sql);
-//				System.out.println("sql="+sql);
 				yesNo = dao.updateXuhaoUp(map);
 			}
 			if(yesNo){
@@ -875,7 +866,6 @@ public class OrderOperAction extends Action{
 					"工单序号 = '"+gd_xuhao+"' " +
 					"where ID = '"+up_gd_id+"'";
 				map.put("sql", sql);
-//				System.out.println("sql="+sql);
 				yesNo = dao.updateXuhaoUp(map);
 			}
 			if(yesNo){
@@ -915,7 +905,6 @@ public class OrderOperAction extends Action{
 			ApplicationContext context = GetApplicationContext.getContext(request);
 			BaseDataDAO dao = (BaseDataDAO)context.getBean("baseDataDAO");
 			JSONObject result = new JSONObject();
-//			System.out.println(map);
 			String gd_id = map.get("gd_id").toString();
 			String up_gd_id = map.get("up_gd_id").toString();
 			int gd_xuhao = Integer.parseInt(map.get("gd_xuhao").toString());
@@ -924,7 +913,6 @@ public class OrderOperAction extends Action{
 			String sql = "update `工单表` set " +
 					"工单序号 = '-1' " +	 //需要先将调小的序号变为-1；然后根据-1改变成调小后的序号
 					"where ID = '"+gd_id+"'";
-//			System.out.println("sql="+sql);
 			map.put("sql", sql);
 			yesNo = dao.updateXuhaoUp(map);
 			if(yesNo){
@@ -932,7 +920,6 @@ public class OrderOperAction extends Action{
 					"工单序号 = '"+gd_xuhao+"' " +
 					"where ID = '"+up_gd_id+"'";
 				map.put("sql", sql);
-//				System.out.println("sql="+sql);
 				yesNo = dao.updateXuhaoUp(map);
 			}
 			if(yesNo){
@@ -940,7 +927,6 @@ public class OrderOperAction extends Action{
 					"工单序号 = '"+up_gd_xuhao+"' " +
 					"where ID = '"+gd_id+"'";
 				map.put("sql", sql);
-//				System.out.println("sql="+sql);
 				yesNo = dao.updateXuhaoUp(map);
 			}
 			if(yesNo){

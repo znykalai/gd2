@@ -25,7 +25,7 @@ var readyShow={
 			var c=$('#table-body3').css('height', document.body.clientHeight/2.8);c=null;
 			winHeight=null;
 			/*绑定日历选择器*/
-			$('#getGdfenjieriqi').datetimepicker({
+			$('#Gdfenjieriqi').datetimepicker({
 			    format:'yyyy-mm-dd',
 			    autoclose:true,
 			    pickerPosition:'bottom-left',
@@ -426,11 +426,11 @@ var readyShow={
 				GdId:null,//工单ID
 				MzId:null,//模组序ID
 				//工单显示
-				showGdList:function(GdId,PackeCode,Gdfenjieriqi,fun){
+				showGdList:function(GdId,Gdfenjieriqi,PackeCode,fun){
 					var a=$.ajax({
 						url:getRootPath()+'/OrderOperAction.do?operType=getDdList',
-						type:'post',cache:false, 
-						data:"getGdId="+GdId+"&getGdfenjieriqi="+PackeCode+"&getPackeCode="+Gdfenjieriqi,
+						type:'post',cache:false,
+						data:"getGdId="+GdId+"&getGdfenjieriqi="+Gdfenjieriqi+"&getPackeCode="+PackeCode,
 						success:function (data) {
 							var a=$('#dd_table tbody tr').remove();a=null;//工单table
 			  				var obj=eval("("+data+")"),i=0;
@@ -485,6 +485,9 @@ var readyShow={
 			  				if(obj.length>0){
 								$('#dd_table tbody tr').eq(0).click();
 			  				}else{
+								var a=$('#mz_table tbody tr').remove();a=null;//模组table
+								var c=$('#pf_table1 tbody tr').remove();c=null;//配方table
+								var d=$('#pf_table2 tbody tr').remove();d=null;//配方table
 			  					var a=fun();a=null;fun=null;
 			  				};obj=null;
 			  				return null;
@@ -545,7 +548,7 @@ var readyShow={
 						success:function (data) {
 			  				var obj=eval("("+data+")");
 			  				for(var i=0;i<obj.A.length;i++){
-			  					$('#pf_table1 tbody').append('<tr bgcolor="#ffffff" line='+line+' style="height:'+obj.A[i].row+'px;">'+
+			  					$('#pf_table1 tbody').append('<tr bgcolor="#ffffff" line="'+line+'" style="height:'+obj.A[i].row+'px;">'+
 									'<td style="width:5%;">'+obj.A[i].dd_zaijuxuhao+'</td>'+//载具号
 									'<td class="dbClick" style="width:10%;">'+obj.A[i].dd_qianshengdubiaozhi+'</td>'+//前升读标志
 									'<td class="ybShuSx" style="width:10%;border-right:0px;">'+obj.A[i].shusongxian+'</td>'+//异步输送线位置
@@ -553,7 +556,7 @@ var readyShow={
 			  					'</tr>');
 			  				};obj.A=null;
 			  				for(var i=0;i<obj.B.length;i++){
-								$('#pf_table2 tbody').append('<tr bgcolor="#ffffff" line='+line+' style="height:24px;">'+
+								$('#pf_table2 tbody').append('<tr bgcolor="#ffffff" line="'+line+'" style="height:24px;">'+
 									'<td style="width:5%;">'+obj.B[i].dd_gdId+'</td>'+//工单ID
 									'<td style="width:5%;">'+obj.B[i].dd_mzxId+'</td>'+//模组序ID
 									'<td style="width:5%;">'+obj.B[i].dd_fenjiehao+'</td>'+//模组序ID
