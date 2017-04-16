@@ -558,6 +558,13 @@ public class PLC implements Serializable {
     				if(i<15){
     					Carry car=getCarryLine(装配区).getCarry(i);
     					if(car!=null){
+    						//首先移动载具到下一个工位，同时更新下一个工位的信息
+    						 if( getCarryLine(装配区).removeToNext(i)){
+    							 if(i<14)
+    							 getWrPLC(装配区).get(i+1).initFromSql(); 
+    							 
+    						 }
+    						
     					if(car.getName().equals(getWrPLC(装配区).get(i).firstST.getName())){
     						//如果这个托盘是本工位需要的托盘
     						 if( getWrPLC(装配区).get(i).firstST.get剩余数量()==0||不检测取料数量){
@@ -568,11 +575,11 @@ public class PLC implements Serializable {
     						     System.out.println("第"+i+"工位载具放行1"+back);
     						  if(back.contains("成功")){
     							  //写入PLC成功后,在这儿再次检测载具放行变为OFF
-    							  System.out.println("第"+i+"工位载具放行移動托盤完成");
+    							//  System.out.println("第"+i+"工位载具放行移動托盤完成");
     							  final int curr2=i;
     							  getWrPLC(装配区).get(i).firstST.updataFromPLC();
     							  System.out.println(i+"工位，数据更新完成="+getWrPLC(装配区).get(i).firstST.is数据更新完成());
-    							  try{Thread.sleep(500);}catch(Exception ee){}
+    							 // try{Thread.sleep(500);}catch(Exception ee){}
     							  new Thread(){
     								  public void run(){
     									  final int curr=curr2;
@@ -588,8 +595,9 @@ public class PLC implements Serializable {
     			    			//if(载具放行!=载具放行old){
     			    				if(载具放行new==0){
     			    					 getWrPLC(装配区).get(curr).firstST.set数据更新完成(false);
-    			    				 if( getCarryLine(装配区).removeToNext(curr))
+    			    				   //if( getCarryLine(装配区).removeToNext(curr))
     	    	    					 getWrPLC(装配区).get(curr).firstST.setWrite(false);	
+    	    	    					 getWrPLC(装配区).get(curr).firstST.writeifChangeToPLC();
     			    				 
     			    				 break;
     			    				 }
@@ -620,7 +628,7 @@ public class PLC implements Serializable {
 							  final int curr2=i;
 							  getWrPLC(装配区).get(i).firstST.updataFromPLC();
 							  System.out.println(i+"工位，数据更新完成="+getWrPLC(装配区).get(i).firstST.is数据更新完成());
-							  try{Thread.sleep(500);}catch(Exception ee){}
+							 // try{Thread.sleep(500);}catch(Exception ee){}
 							  new Thread(){
 								  public void run(){
 									  final int curr=curr2;
@@ -637,12 +645,12 @@ public class PLC implements Serializable {
 			    			//if(载具放行!=载具放行old){
 			    				if(载具放行new==0){
 			    					 
-			    				 if( getCarryLine(装配区).removeToNext(curr)){
+			    				// if( getCarryLine(装配区).removeToNext(curr)){
 			    					  //不更新命令
 			    					 getWrPLC(装配区).get(curr).firstST.set数据更新完成(false);
 			    					 getWrPLC(装配区).get(curr).firstST.writeifChangeToPLC();
 			    					 
-			    				 }
+			    				// }
 	    	    					 //getWrPLC(装配区).get(curr).firstST.setWrite(false);	
 			    				 
 			    				 break;
