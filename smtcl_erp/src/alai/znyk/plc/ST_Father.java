@@ -100,6 +100,8 @@ public class ST_Father implements STInterface, Serializable{
 		return write;
 	}
 	public void setWrite(boolean write) {
+		// if(!write)
+		//clear();
 		this.write = write;
 	}
 	 public void clear(){
@@ -121,6 +123,11 @@ public class ST_Father implements STInterface, Serializable{
 		 this.set模组序ID(st.get模组序ID());
 		 this.set工单ID(st.get工单ID());
 		
+		 
+	 }
+	 //子类必须覆盖
+	 public void set允许工位动作标志(boolean 允许工位动作标志) {
+		 
 		 
 	 }
 	 

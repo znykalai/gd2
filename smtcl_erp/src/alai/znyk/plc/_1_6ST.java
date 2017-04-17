@@ -87,7 +87,7 @@ public class _1_6ST extends ST_Father implements STInterface {
 	public void set需求数量(int 需求数量) {
 		this.需求数量 = 需求数量;
 	}
-	 public void clear(){
+	 public void clear(){ 
 	    	 boolContent=0;
 	         电芯类型标志=0;//D10007
   		     模组类型标志=0;//D10008

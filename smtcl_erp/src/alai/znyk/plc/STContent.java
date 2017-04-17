@@ -1053,6 +1053,10 @@ public class STContent implements Serializable {
 				  
 			  }
 			firstST.writeifChangeToPLC();
+		}else{
+		   // firstST.set允许工位动作标志(false);
+			//firstST.writeifChangeToPLC();
+			
 		}
 		
 		//更新第二个工位动作容许标志
@@ -1085,7 +1089,11 @@ public class STContent implements Serializable {
 				 }
 			    }
 			  }
-			secondST.writeifChangeToPLC();
+			 secondST.writeifChangeToPLC();
+		}else{
+			
+			//secondST.set允许工位动作标志(false);
+			//secondST.writeifChangeToPLC();
 		}
     }
     
