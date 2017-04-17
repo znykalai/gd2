@@ -124,7 +124,7 @@ public class STContent implements Serializable {
     	     	 carr.set电芯类型(row.get(20)==null?0:Integer.parseInt(row.get(20).toString()));
     	     	 carr.setPack类型(row.get(21)==null?0:Integer.parseInt(row.get(21).toString()));
     	     	 Vector<Vector> tost=SqlTool.findInVector("select 工位,物料 from 配方指令队列   where 工单ID='"+
-    	     	 carr.get工单ID()+"' and 分解号='"+carr.get分解号()+"' and 载具序号='"+carr.get载具序号()+"' order by 工位");
+    	     	 carr.get工单ID()+"' and 模组序ID='"+carr.get模组序ID()+"' and 分解号='"+carr.get分解号()+"' and 载具序号='"+carr.get载具序号()+"' order by 工位");
     	     	 for(int m=0;m<tost.size();m++){
     	     		 Vector vv=(Vector)tost.get(m);
     	     	     carr.set工位(carr.get工位()+""+vv.get(0));
@@ -158,7 +158,7 @@ public class STContent implements Serializable {
      	 carr2.set工单ID(row2.get(10)==null?0:(int)row2.get(10));
      	 carr2.setPack类型(row2.get(21)==null?0:Integer.parseInt(row2.get(21).toString()));
      	 Vector<Vector> tost2=SqlTool.findInVector("select 工位,物料 from 配方指令队列   where 工单ID='"+
-    	     	 carr2.get工单ID()+"' and 分解号='"+carr2.get分解号()+"' and 载具序号='"+carr2.get载具序号()+"' order by 工位");
+    	     	 carr2.get工单ID()+"' and 模组序ID='"+carr.get模组序ID()+"' and 分解号='"+carr2.get分解号()+"' and 载具序号='"+carr2.get载具序号()+"' order by 工位");
     	     	 for(int m=0;m<tost2.size();m++){
     	     		 Vector vv=(Vector)tost2.get(m);
     	     		 carr2.set工位(carr2.get工位()+""+vv.get(0));
@@ -197,11 +197,11 @@ public class STContent implements Serializable {
 	     	 carr.set电芯类型(row.get(20)==null?0:(int)row.get(20));
 	     	 carr.setPack类型(row.get(21)==null?0:Integer.parseInt(row.get(21).toString()));
 	     	Vector<Vector> tost=SqlTool.findInVector("select 工位,物料 from 配方指令队列   where 工单ID='"+
-	    	     	 carr.get工单ID()+"' and 分解号='"+carr.get分解号()+"' and 载具序号='"+carr.get载具序号()+"' order by 工位");
+	    	     	 carr.get工单ID()+"' and 模组序ID='"+carr.get模组序ID()+"' and 分解号='"+carr.get分解号()+"' and 载具序号='"+carr.get载具序号()+"' order by 工位");
 	    	     	 for(int m=0;m<tost.size();m++){
 	    	     		 Vector vv=(Vector)tost.get(m);
 	    	     		 carr.set工位(carr.get工位()+""+vv.get(0));
-	    	     	 
+	    	     	  
 	    	         }
 	    	     	 if(装配区==1) 	 
 	  		 PLC.getIntance().line.addFist(carr);
@@ -241,7 +241,7 @@ public class STContent implements Serializable {
         	 carr2.set工单ID(row.get(10)==null?0:(int)row.get(10));
         	 carr2.setPack类型(row.get(21)==null?0:Integer.parseInt(row.get(21).toString()));
         	 Vector<Vector> tost=SqlTool.findInVector("select 工位,物料 from 配方指令队列   where 工单ID='"+
-        	     	 carr2.get工单ID()+"' and 分解号='"+carr2.get分解号()+"' and 载具序号='"+carr2.get载具序号()+"' order by 工位");
+        	     	 carr2.get工单ID()+"' and 模组序ID='"+carr2.get模组序ID()+"' and 分解号='"+carr2.get分解号()+"' and 载具序号='"+carr2.get载具序号()+"' order by 工位");
         	     	 for(int m=0;m<tost.size();m++){
         	     		 Vector vv=(Vector)tost.get(m);
         	     		 carr2.set工位(carr2.get工位()+""+vv.get(0));
