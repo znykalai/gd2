@@ -89,18 +89,27 @@ public class OrderOperAction extends Action{
 						"'"+head.get("装配区").toString()+"'," +
 						"'"+head.get("释放否").toString()+"')";
 				map.put("sql", sql);sql=null;
-				result.put("result", dao.saveAll(map));//保存	
+				result.put("result", dao.saveAll(map)?"保存成功！":"保存失败！");//保存	
 				map.put("sql","SELECT MAX(a.ID)AS ID FROM `工单下载` a");//获取工单ID的 SQL
 				result.put("id", ((HashMap)dao.getGdxzId(map).get(0)).get("ID"));//获取工单下载表ID
 			}else{//修改
-				String sql="update 工单下载 set "
-						+ "工单号='"+head.get("订单号").toString()+"',"
-						+ "pack编码='"+head.get("pack编码").toString()+"',"
-						+ "工单数量='"+head.get("订单数量").toString()+"',"
-						+ "装配区='"+head.get("装配区").toString()+"',"
-						+ "释放否='"+head.get("释放否").toString()+"' where ID="+head.get("id");
+				String sql = "select a.* from `工单下载` as a where a.工单号='"+head.get("订单号").toString()+"'";
 				map.put("sql", sql);sql=null;
-				result.put("result", dao.saveAll(map));//保存
+				List list = dao.getGdDownload(map);
+				if(list!=null&&list.size()>0){
+					if(((HashMap)list.get(0)).get("传送否").equals("是")){
+						result.put("result", "此工单已经传送，不可修改！");//保存
+					}else{
+						sql="update 工单下载 set "
+								+ "工单号='"+head.get("订单号").toString()+"',"
+								+ "pack编码='"+head.get("pack编码").toString()+"',"
+								+ "工单数量='"+head.get("订单数量").toString()+"',"
+								+ "装配区='"+head.get("装配区").toString()+"',"
+								+ "释放否='"+head.get("释放否").toString()+"' where ID="+head.get("id");
+						map.put("sql", sql);sql=null;
+						result.put("result", dao.saveAll(map)?"保存成功！":"保存失败！");//保存
+					};
+				};list=null;
 				result.put("id", head.get("id"));
 			};
 			head=null;context=null;dao=null;map=null;

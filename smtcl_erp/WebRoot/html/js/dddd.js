@@ -521,7 +521,7 @@ var readyShow={
 				            		layer.close(win);win=null;
 				            	});
 							}
-						});a=null;		
+						});a=null;
 				    });
 				    //工单新建
 				    $('#gd_newBtn').click(function(){
@@ -530,18 +530,21 @@ var readyShow={
 				    	return null;
 				    });
 				    //工单保存
-				    $('#gd_saveBtn').click(function(){				    	
-				    	if($('#order_code').val()==""){				    		
+				    $('#gd_saveBtn').click(function(){
+				    	if($("#order_id").val()!=""&&$("#chuansong_id").val()=="是"){
+			  				layer.msg("此工单已经传送，不可修改！");
+				    		return null;
+				    	}else if($('#order_code').val()==""){
 					    	$("#order_code").focus();
-				    		layer.tips('请填写订单号！', '#order_code');				    	
+				    		layer.tips('请填写订单号！', '#order_code');
 				    		return null;
 				    	}else if($('#pack_code').val()==""){
 				    		$("#pack_code").focus();
-				    		layer.tips('请填写pack编码！', '#pack_code_button');			    		
+				    		layer.tips('请填写pack编码！', '#pack_code_button');
 				    		return null;
 			    		}else if($('#order_number').val()==""){
 				    		$("#order_number").focus();
-				    		layer.tips('请填写数量！', '#order_number');			    		
+				    		layer.tips('请填写数量！', '#order_number');
 				    		return null;
 			    		};
 					    var head={
@@ -558,12 +561,9 @@ var readyShow={
 							data:'head='+JSON.stringify(head),
 							success:function(data){
 						    	var obj = eval("("+data+")");data=null;
-						    	if(obj.result){
-						    		$('#order_id').val(obj.id)
-					  				layer.msg("保存成功！");
-						    	}else{
-					  				layer.msg("保存失败！");
-						    	};obj=null;
+					    		$('#order_id').val(obj.id)
+				  				layer.msg(obj.result);
+						    	obj=null;
 							}
 						});a=null;head=null;
 			    	    return null;				    	
@@ -581,8 +581,8 @@ var readyShow={
 					  				$("#gd_newBtn").click();
 						    	}else{
 					  				layer.msg("删除失败!");
-						    	};obj=null;							    	
-							}				    	        
+						    	};obj=null;
+							}
 						});a=null;
 				    	return null;
 				    });
@@ -595,6 +595,7 @@ var readyShow={
 				if(af_Home.administrator.订单调度.选择分解==false){var a=af_Home.cleanQX("dd_fenjieRadioBtn");a=null;};
 				if(af_Home.administrator.订单调度.分解全部==false){var a=af_Home.cleanQX("dd_fenjieAllBtn");a=null;};
 				if(af_Home.administrator.订单调度.删除==false){var a=af_Home.cleanQX("dd_delBtn");a=null;};
+				if(af_Home.administrator.订单维护==false){var a=af_Home.cleanQX("gd_newBtn"),a=null,a=af_Home.cleanQX("gd_saveBtn"),a=null,a=af_Home.cleanQX("gd_deleteBtn"),a=null;};
 			},{state:true,tim:5000});//渲染主页面,function(){}--第一个返回参数,{ds:true--是否为定时刷新、tim:刷新时间毫秒为单位};
 			return null;
 		}catch(e){

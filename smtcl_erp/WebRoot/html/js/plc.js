@@ -94,28 +94,28 @@ var readyShow={
 							type:'get',
 							data:'leibie=配方',
 							cache:false,
-							success:function (data) {
-						    	var obj=eval("("+data+")");
+							success:function(data){
+						    	var obj=eval("("+data+")");data=null;
 								for(var i=0;i<obj.length;i++){
 					                $('#searchTable').append('<tr class="commonTr" style="cursor:pointer;"></tr>');
 					                $('#searchTable tbody tr:last').
 					                append('<td class="wuliao_code" style="width:50%;">'+ obj[i].wuliao_code+ '</td>');
 					                $('#searchTable tbody tr:last').
 					                append('<td class="wuliao_miaoshu" style="width:50%;">'+ obj[i].wuliao_miaoshu+ '</td>');
-								}
+								};obj=null;
 								/*绑定双击事件*/
 				            	$('.commonTr').bind('dblclick',function(e){
 									var tr=$(e.target).parent();
 									fun(tr.find('.wuliao_code').text());
-				            		layer.close(win);
-				            		return openWindow=null,win=null,obj=null,tr=null,a=null;
+				            		layer.close(win),win=null,tr=null;
+				            		return null;
 				            	});
 							}
 						});a=null;
 						return null;
 					}catch(e){
 						return e;
-					}
+					};
 					return null;
 				},
 				//获取所有工位信息
@@ -131,7 +131,7 @@ var readyShow={
 						type:'get',
 						cache:false,
 						data:"type="+type+"&gw="+gw,
-						success:function (data) {
+						success:function(data){
 							var obj=eval("("+data+")");
 							return fun(obj),obj=null;
 						}
@@ -145,7 +145,7 @@ var readyShow={
 						type:'get',
 						data:map,
 						cache:false,
-						success:function (data) {
+						success:function(data){
 							if(data.indexOf("成功")==-1){
 								layer.msg("数据已同步，请重新设置");
 							}
@@ -207,7 +207,7 @@ var readyShow={
 								};
 								$(e).html('<input id="td_input" style="padding:0;font-size:10px;width:100%;height:19px;" type="number" min="0" class="form-control" value="'+ $(e).attr('title')+ '">');
 								$("#td_input").focus();
-								$("#td_input").blur(function (){
+								$("#td_input").blur(function(){
 									if(this.value==""){
 										this.value=0;
 									};
@@ -217,7 +217,7 @@ var readyShow={
 									var a=af.setValue(e,map);//update
 									return map=null,a=null,node=null;
 						        });
-								$("#td_input").keydown(function (event){
+								$("#td_input").keydown(function(event){
 						            if(event.keyCode==13){
 										if(this.value==""){
 											this.value=0;
@@ -250,9 +250,9 @@ var readyShow={
 								}
 							}catch(e){
 								alert(e);
-							}
+							};
 							j++;
-						}
+						};
 						j=null;
 					}else{
 						$("div[name='ssx']").attr("class","plc_gongwei_hui");
@@ -265,8 +265,7 @@ var readyShow={
 					if(mm.type=="A"||mm.type=="B"){
 						var j=0;
 						while(j<obj.data.length){
-							var i=0;
-							var map=obj.data[j];
+							var i=0,map=obj.data[j];
 							while(i<map.A_LIST.length){
 								if(map.A_LIST[i].A.indexOf('-')==-1&&map.A_LIST[i].A!="boolContent"){
 									$('#'+mm.tableId+''+j+' tbody').append('<tr name="'+mm.trId+'" GW="'+j+'" bgcolor="#ffffff" style="height:20px;">'+
@@ -431,7 +430,7 @@ var readyShow={
 						url:getRootPath()+'/OrderOperAction.do?operType=getDdList',
 						type:'post',cache:false,
 						data:"getGdId="+GdId+"&getGdfenjieriqi="+Gdfenjieriqi+"&getPackeCode="+PackeCode,
-						success:function (data) {
+						success:function(data){
 							var a=$('#dd_table tbody tr').remove();a=null;//工单table
 			  				var obj=eval("("+data+")"),i=0;
 							while(i<obj.length){
@@ -473,7 +472,7 @@ var readyShow={
 										type:'post',
 										cache:false, 
 										data:"dd_id="+gd_id+"&pack_code="+pack_code,
-										success:function (data) {
+										success:function(data){
 											var a=af.showGdMzList(eval("("+data+")"),line,fun);
 											a=null;return null;
 										}
@@ -545,7 +544,7 @@ var readyShow={
 						url:getRootPath()+'/OrderOperAction.do?operType=getZlpfList',
 						type:'post',cache:false, 
 						data:"dd_id="+GdId+"&mz_xuId="+MzId+"&type=GuzhangHuifu&line="+line,
-						success:function (data) {
+						success:function(data){
 			  				var obj=eval("("+data+")");
 			  				for(var i=0;i<obj.A.length;i++){
 			  					$('#pf_table1 tbody').append('<tr bgcolor="#ffffff" line="'+line+'" style="height:'+obj.A[i].row+'px;">'+
@@ -560,7 +559,7 @@ var readyShow={
 									'<td style="width:5%;">'+obj.B[i].dd_gdId+'</td>'+//工单ID
 									'<td style="width:5%;">'+obj.B[i].dd_mzxId+'</td>'+//模组序ID
 									'<td style="width:5%;">'+obj.B[i].dd_fenjiehao+'</td>'+//模组序ID
-									'<td style="width:5%;">'+obj.B[i].dd_wuliao+'</td>'+//物料编码
+									'<td style="width:5%;" title="'+obj.B[i].dd_wuliao+'">'+(obj.B[i].dd_wuliao.length>9?obj.B[i].dd_wuliao.substring(0,7)+'..':obj.B[i].dd_wuliao)+'</td>'+//物料编码
 									'<td style="width:5%;">'+obj.B[i].dd_xuqiushuliang+'</td>'+//需求数量
 									'<td class="wanChengSL" style="width:5%;">'+obj.B[i].dd_wanchengshuliang+'</td>'+//完成数量
 									'<td style="width:5%;">'+obj.B[i].dd_gongwei+'</td>'+//工位
@@ -576,7 +575,7 @@ var readyShow={
 									e.ck=true;
 									var c=$(e).html('<input id="wanChengSL" style="padding:0;font-size:10px;width:100%;height:23px;" type="number" min="0" class="form-control" value="'+ $(e).html()+ '">');
 									var a=$("#wanChengSL").focus();a=null;c=null;
-									var b=$("#wanChengSL").blur(function (){
+									var b=$("#wanChengSL").blur(function(){
 										if(this.value==""){this.value=0;};
 							            var a=$(e).html(this.value);a=null;
 							            e.ck?e.ck=false:null;e=null;
@@ -598,7 +597,7 @@ var readyShow={
 									var c=$(e).html('<select class="selectpicker" id="ybShuSx" style="height:'+(height-1)+';font-size:14px;width:100%;"><option value=""></option><option value="-1" '+($(this).html()=="-1"?"selected":"")+'>-1</option><option value="0" '+($(this).html()=="0"?"selected":"")+'>0</option><option value="1" '+($(this).html()=="1"?"selected":"")+'>1</option><option value="2" '+($(this).html()=="2"?"selected":"")+'>2</option><option value="3" '+($(this).html()=="3"?"selected":"")+'>3</option><option value="4" '+($(this).html()=="4"?"selected":"")+'>4</option><option value="5" '+($(this).html()=="5"?"selected":"")+'>5</option><option value="6" '+($(this).html()=="6"?"selected":"")+'>6</option><option value="7" '+($(this).html()=="7"?"selected":"")+'>7</option><option value="8" '+($(this).html()=="8"?"selected":"")+'>8</option><option value="9" '+($(this).html()=="9"?"selected":"")+'>9</option><option value="10" '+($(this).html()=="10"?"selected":"")+'>10</option><option value="11" '+($(this).html()=="11"?"selected":"")+'>11</option><option value="12" '+($(this).html()=="12"?"selected":"")+'>12</option><option value="13" '+($(this).html()=="13"?"selected":"")+'>13</option><option value="14" '+($(this).html()=="14"?"selected":"")+'>14</option><option value="15" '+($(this).html()=="15"?"selected":"")+'>15</option></select>');
 									c=null;height=null;
 									var a=$("#ybShuSx").focus();a=null;
-									var b=$("#ybShuSx").blur(function (){
+									var b=$("#ybShuSx").blur(function(){
 							            var a=$(e).html(this.value);a=null;
 							            e.ck?e.ck=false:null;e=null;
 							            return null;
