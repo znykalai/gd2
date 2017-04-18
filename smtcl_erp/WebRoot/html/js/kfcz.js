@@ -40,7 +40,24 @@ var readyShow={
 				/**
 				 * 显示物料位置记录仪
 				 */
-				showWlIp:{ip:[],oip:''},
+				showWlIp:{ip:[],oip:'',show:function(){
+					af.showWlIp.oip='';
+					$.each(af.showWlIp.ip,function(i,val){
+			        	if(val){
+				        	var wl=val.split("&");
+				        	if($('#show_wuliao').val()==wl[1]){
+				        		af.showWlIp.oip+="‘"+wl[0]+"’,";
+				        		$("#"+wl[0]).attr("class","kf_lv show");
+				        	};
+				        	wl=null;
+			        	};val=null;
+			        });
+			        //去掉，号
+			        if(af.showWlIp.oip.length>0){
+			        	af.showWlIp.oip=af.showWlIp.oip.substring(0,af.showWlIp.oip.length-1);
+			        };
+			        return null;
+				}},
 				/**
 				 * 渲染所有事件
 				 */
@@ -288,20 +305,8 @@ var readyShow={
 							    $('#show_wuliao_name ul').click(function(event){
 							        var t2=$(event.target).text();
 							        var a=$('#show_wuliao').val(t2);
-							        af.showWlIp.oip='';
 							        if(t2!=""){
-								        $.each(af.showWlIp.ip,function(i,val){
-								        	var wl=val.split("&");
-								        	if(t2==wl[1]){
-								        		af.showWlIp.oip+="‘"+wl[0]+"’,";
-								        		$("#"+wl[0]).attr("class","kf_lv show");
-								        	};
-								        	wl=null;
-								        });
-								        //去掉，号
-								        if(af.showWlIp.oip.length>0){
-								        	af.showWlIp.oip=af.showWlIp.oip.substring(0,af.showWlIp.oip.length-1);
-								        };
+							        	var b=af.showWlIp.show();b=null;
 							        };
 							        return a=null,t2=null;
 							    });
@@ -567,8 +572,7 @@ var readyShow={
 												};
 												var a=$("input[name='radioName']:checked").parent();
 										    	var b=$('#kfcz_id')[0].reset();
-										    	af.showWlIp.ip=[];
-										    	af.showWlIp.oip='';
+										    	af.showWlIp.ip=[],af.showWlIp.oip='';
 												var c=a.click();
 												return a=null,b=null,c=null,data=null;
 											}
@@ -699,10 +703,13 @@ var readyShow={
 							//获取每个物料对应的库位号
 							if(e[i].huoweihao!=""){
 								af.showWlIp.ip[i]=e[i].huoweihao+"&"+e[i].wl_code;
+							}else if(af.showWlIp.ip[i]!=e[i].huoweihao+"&"+e[i].wl_code){
+								af.showWlIp.ip[i]=null;
 							};
 							i++;
 						};
                     	var a=$('#show_wuliao_name ul').html(li);
+                    	var b=af.showWlIp.show();b=null;
 						return i=null,li=null,a=null;
 					}
 				},
@@ -725,7 +732,7 @@ var readyShow={
 							if(obj.hckTb.length > 0){
 								for(var i=0,j=0,k=af.arrayHome.length;i<k;i++){
 									try{
-										if(af.arrayHome.toString().indexOf('‘'+obj.hckTb[i][i]+'’')> -1){
+										if(af.arrayHome.toString().indexOf('‘'+obj.hckTb[i][i]+'’')>-1){
 											if(af.showWlIp.oip.indexOf("‘"+obj.hckTb[i][i]+"’")>-1){
 												$("#"+obj.hckTb[i][i]).attr("class","kf_lv show");
 											}else{
@@ -735,7 +742,7 @@ var readyShow={
 											k++;
 										};
 									}catch(e){
-										if(af.removeArry.toString().indexOf(af.arrayHome[j])== -1){
+										if(af.removeArry.toString().indexOf(af.arrayHome[j])==-1){
 											var upId=af.arrayHome[j].split("’")[0].split('‘')[1];
 											$("#"+upId).attr("class","kf_hui no");
 										};
