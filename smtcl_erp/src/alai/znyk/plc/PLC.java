@@ -40,7 +40,7 @@ public class PLC implements Serializable {
 	}
     
 	public boolean 不检测动作完成=true;
-	public boolean stop1=false;//停止调度系统从数据库里面读取数据
+	public boolean stop1=true;//停止调度系统从数据库里面读取数据
 	public boolean stop2=true;//停止调度系统从数据库里面读取数据
 	
 	public void setDiaodu1(boolean state){
@@ -207,6 +207,8 @@ public class PLC implements Serializable {
 	
 	private  PLC(){
 		  PLC pp=readO();
+		  pp.setDiaodu1(true);
+		  pp.setDiaodu2(true);
 		  if(pp!=null){
 			  INSTANCE=pp;
 			// String ss= INSTANCE.STC1.get(3).firstST.get物料编码();

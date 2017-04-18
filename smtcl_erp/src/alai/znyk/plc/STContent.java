@@ -46,7 +46,8 @@ public class STContent implements Serializable {
     		   //System.out.println("return----");
     			if(stNum==1){ 
     				 if(PLC.getIntance().line.getCarry(0)==null){
-    	    			 ((_FST)firstST).set允许工位动作标志(false); 
+    	    			 ((_FST)firstST).set允许工位动作标志(false);
+    	    			 ((_FST)secondST).set允许工位动作标志(false); 
     	    			 
     	    		 }
     				 firstST.writeifChangeToPLC();
@@ -65,6 +66,7 @@ public class STContent implements Serializable {
     			if(stNum==1){
     				 if(PLC.getIntance().line2.getCarry(0)==null){
     	    			 ((_FST)firstST).set允许工位动作标志(false); 
+    	    			 ((_FST)secondST).set允许工位动作标志(false); 
     	    			 
     	    		 }
     				 firstST.writeifChangeToPLC();

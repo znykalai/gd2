@@ -257,6 +257,23 @@ public class SqlTool {
       		      have=true;
             	  back="不允许从"+fomI+"货位把货下到"+toI+"货位3";
       	  }
+        	
+        	
+          if(machineID.equals(1)){
+        	  if((toI>600&&toI<615)){
+        		  have=true;
+            	  back="不允许从"+fomI+"货位把货下到"+toI+"货位,不能把A区的托盘放到B区输送线";
+        		  
+        	  }
+        	  
+          }else{
+        	  if((toI>500&&toI<515)){
+        		  have=true;
+            	  back="不允许从"+fomI+"货位把货下到"+toI+"货位,不能把B区的托盘放到A区输送线";
+        		  
+        	  }
+        	  
+          }
       }
       
         if(type.equals("输送线回流")){
