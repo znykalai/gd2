@@ -270,6 +270,8 @@ public class STContent implements Serializable {
     		 }
     		 
     	 }
+    	 
+    	 
     	 ////////
     	 if(装配区==1) {
     		 if(PLC.getIntance().line.getCarry(0)==null){
@@ -738,8 +740,10 @@ public class STContent implements Serializable {
 	    	 		 firstST.setWrite(true);	 
     				 }
     			 }else{
+    				 boolean f=((_12ST)firstST).is数据更新完成();
     				 firstST.setWrite(false);	
     				 ((_12ST)firstST).clear();
+    				 ((_12ST)firstST).set数据更新完成(f);
     				 
     			 }
     		 
@@ -771,8 +775,11 @@ public class STContent implements Serializable {
     	  			
     	    		      }  
     		   }else{
+    			   boolean f=((_13ST)firstST).is数据更新完成();
     			   ((_13ST)firstST).setWrite(false);  
      			   ((_13ST)firstST).clear();
+     			   ((_13ST)firstST).set数据更新完成(f);
+     			   
     			   
     		   }
     		 //  ((_13ST)firstST).set允许工位动作标志(true);

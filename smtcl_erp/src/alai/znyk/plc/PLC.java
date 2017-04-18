@@ -575,20 +575,22 @@ public class PLC implements Serializable {
     						 if( getWrPLC(装配区).get(i).firstST.get剩余数量()==0||不检测取料数量){
     							 if(取料完成1==1||不检测动作完成){
     							 System.out.println("载具放行1");
+    							 final long timeS=System.currentTimeMillis();
     							 getWrPLC(装配区).get(i).firstST.set数据更新完成(true);
     							 getWrPLC(装配区).get(i).firstST.set允许工位动作标志(false);
     							
     						     String back=getWrPLC(装配区).get(i).firstST.writeifChangeToPLC();
-    						     System.out.println("第"+i+"工位载具放行1"+back);
+    						     System.out.println("第"+i+"工位载具放行1"+back+":"+(System.currentTimeMillis()-timeS)+"ms");
     						  if(back.contains("成功")){
     							  //写入PLC成功后,在这儿再次检测载具放行变为OFF
-    							//  System.out.println("第"+i+"工位载具放行移動托盤完成");
+    							  System.out.println("1第"+i+"工位数据更新完成，发送成功");
     							  final int curr2=i;
     							//  getWrPLC(装配区).get(i).firstST.updataFromPLC();
     							  System.out.println(i+"工位，数据更新完成="+getWrPLC(装配区).get(i).firstST.is数据更新完成());
     							 // try{Thread.sleep(500);}catch(Exception ee){}
     							  new Thread(){
     								  public void run(){
+    									  final long timeS2=timeS;
     									  final int curr=curr2;
     									  System.out.println(Thread.currentThread()+"启动1");
     									  while(true){
@@ -607,6 +609,7 @@ public class PLC implements Serializable {
     	    	    					 getWrPLC(装配区).get(curr).firstST.clear();
     	    	    					 getWrPLC(装配区).get(curr).initFromSql();
     	    	    					 getWrPLC(装配区).get(curr).firstST.writeifChangeToPLC();
+    	    	    					 System.out.println("第"+curr+"工位载具放行1"+back+"------------------->:"+(System.currentTimeMillis()-timeS2)+"ms");
     			    				 
     			    				 break;
     			    				 }
@@ -628,13 +631,14 @@ public class PLC implements Serializable {
     						 }
     					}
     					else{//如托盘在本工位没有任何需要的动作，不判断动作完成标志
-    						
+    						final long timeS=System.currentTimeMillis();
     					   getWrPLC(装配区).get(i).firstST.set数据更新完成(true);
     					   getWrPLC(装配区).get(i).firstST.set允许工位动作标志(false);
    						   String back=getWrPLC(装配区).get(i).firstST.writeifChangeToPLC();
+   						   System.out.println("第"+i+"工位载具放行2"+back+":"+(System.currentTimeMillis()-timeS)+"ms");
    						    if(back.contains("成功")){
    							  //写入PLC成功后,在这儿再次检测载具放行变为OFF
-							  System.out.println("2第"+i+"工位载具放行移動托盤完成");
+							  System.out.println("2第"+i+"工位数据更新完成，发送成功");
 							  final int curr2=i;
 							//  getWrPLC(装配区).get(i).firstST.updataFromPLC();
 							  System.out.println(i+"工位，数据更新完成="+getWrPLC(装配区).get(i).firstST.is数据更新完成());
@@ -642,6 +646,7 @@ public class PLC implements Serializable {
 							  new Thread(){
 								  public void run(){
 									  final int curr=curr2;
+									  final long timeS2=timeS;
 									  System.out.println(Thread.currentThread()+"启动2");
 									  while(true){
 										  
@@ -659,6 +664,7 @@ public class PLC implements Serializable {
 			    					  //不更新命令
 			    					 getWrPLC(装配区).get(curr).firstST.set数据更新完成(false);
 			    					 getWrPLC(装配区).get(curr).firstST.writeifChangeToPLC();
+			    					 System.out.println("第"+curr+"工位载具放行2"+back+"------>:"+(System.currentTimeMillis()-timeS2)+"ms");
 			    					 
 			    				// }
 	    	    					 //getWrPLC(装配区).get(curr).firstST.setWrite(false);	

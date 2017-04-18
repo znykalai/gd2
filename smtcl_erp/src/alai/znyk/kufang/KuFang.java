@@ -199,22 +199,28 @@ public void start堆垛机指令(){
      Vector 堆1下=SqlTool.findInVector("select idEvent,来源,任务类别,动作,托盘编号,来源货位号,放回货位号,请求区,状态,状态2 from 立库动作指令  where 状态<>'完成' and 动作='下货' and 请求区= '1' order by idEvent");
     
      boolean run=false;
+     boolean run2=false;
+     boolean up1=false;
+     boolean up2=false;
+     boolean dw1=false;
+     boolean dw2=false;
      int last1=1;
      if(堆1上.size()>0){
     	 //首先判断当前指令有没有在执行中，如果有，那么就不在发送
     	 Vector up=(Vector)堆1上.get(0);
-    	 if(up.get(8).equals("执行中")||up.get(8).equals("已发送")){run=true;}
+    	 if(up.get(8).equals("执行中")||up.get(8).equals("已发送")){run=true;up1=true;}
       }
      
      if(堆1下.size()>0){
     	 //首先判断当前指令有没有在执行中，如果有，那么就不在发送
     	 Vector down=(Vector)堆1下.get(0);
-    	 if(down.get(8).equals("执行中")||down.get(8).equals("已发送")){run=true;}
+    	 if(down.get(8).equals("执行中")||down.get(8).equals("已发送")){run=true;dw1=false;}
       
      }
     //如果这个堆垛机没有执行的指令，那么继续 
     if(last1==1){//上货
     if(!run) {
+    	if(!up2){
     	//如果没有运行中的指令,那么就优先上料，上完料了在看看有没有下货的指令，如果有运行下货
     	if(堆1上.size()>0){
     	try {
@@ -236,12 +242,14 @@ public void start堆垛机指令(){
 		   } catch (Exception e) {e.printStackTrace();}
     	}
     	last1=2;
+    	}
        }
 	
   }
     if(last1==2){//下货
         if(!run) {
         	//如果没有运行中的指令,那么就优先上料，上完料了在看看有没有下货的指令，如果有运行下货
+        	if(!dw2){
         	if(堆1下.size()>0){
         	try {
     			String state=ClientSer.getIntance().getState(SqlPro.堆垛机1状态);//获取堆垛机1的状态
@@ -262,6 +270,7 @@ public void start堆垛机指令(){
         	}
         	last1=1;
            }
+        	}
     	
       }
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -269,24 +278,25 @@ public void start堆垛机指令(){
     Vector 堆2上=SqlTool.findInVector("select idEvent,来源,任务类别,动作,托盘编号,来源货位号,放回货位号,请求区,状态,状态2 from 立库动作指令  where 状态<>'完成' and 动作='上货' and 请求区= '2' order by idEvent");
     Vector 堆2下=SqlTool.findInVector("select idEvent,来源,任务类别,动作,托盘编号,来源货位号,放回货位号,请求区,状态,状态2 from 立库动作指令  where 状态<>'完成' and 动作='下货' and 请求区= '2' order by idEvent");
     
-    boolean run2=false;
+   
     int last2=1;
     if(堆2上.size()>0){
    	 //首先判断当前指令有没有在执行中，如果有，那么就不在发送
    	 Vector up=(Vector)堆2上.get(0);
-   	 if(up.get(8).equals("执行中")||up.get(8).equals("已发送")){run2=true;}
+   	 if(up.get(8).equals("执行中")||up.get(8).equals("已发送")){run2=true;up2=true;}
      }
     
     if(堆2下.size()>0){
    	 //首先判断当前指令有没有在执行中，如果有，那么就不在发送
    	 Vector down=(Vector)堆2下.get(0);
-   	 if(down.get(8).equals("执行中")||down.get(8).equals("已发送")){run2=true;}
+   	 if(down.get(8).equals("执行中")||down.get(8).equals("已发送")){run2=true;dw2=true;}
      
     }
    //如果这个堆垛机没有执行的指令，那么继续 
    if(last2==1){//上货
    if(!run2) {
    	//如果没有运行中的指令,那么就优先上料，上完料了在看看有没有下货的指令，如果有运行下货
+	   if(!up1){
 	   if(堆2上.size()>0){
    	try {
 			String state=ClientSer.getIntance().getState(SqlPro.堆垛机2状态);//获取堆垛机2的状态
@@ -306,17 +316,19 @@ public void start堆垛机指令(){
 			}
 		   } catch (Exception e) {e.printStackTrace();}
 	   }
-   	last2=2;
+   	       last2=2;
+   	    }
       }
 	
  }
    if(last2==2){//下货
        if(!run2) {
        	//如果没有运行中的指令,那么就优先上料，上完料了在看看有没有下货的指令，如果有运行下货
+    	   if(!dw1){
        	if(堆2下.size()>0){
        	try {
    			String state=ClientSer.getIntance().getState(SqlPro.堆垛机2状态);//获取堆垛机2的状态
-   			if(state.equals(SqlPro.AGV空闲码)){
+   			if(state.equals(SqlPro.堆垛空闲码)){
    				//首先判断当前指令有没有在执行中，如果有，那么就不在发送
 			    	 Vector up=(Vector)堆2下.get(0);
 			    	 String eventID=up.get(0).toString();
@@ -332,6 +344,7 @@ public void start堆垛机指令(){
        	}
        	
        	last2=1;
+       	}
           }
    	
      } 
