@@ -235,7 +235,7 @@ public class KuFangAction extends Action{
 			HashMap map = GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
 			ApplicationContext context = GetApplicationContext.getContext(request);
 			KuFangActionDAO dao = (KuFangActionDAO)context.getBean("kuFangActionDAO");
-//			System.out.println("map="+map);
+			System.out.println("map="+map);
 			String result = null;
 			if(map.get("title").equals("上货")){
 				result = SqlTool.manUpPallet(map.get("tp").toString(),
@@ -243,6 +243,7 @@ public class KuFangAction extends Action{
 						map.get("toID").toString(),map.get("machineID").toString());
 			}else{
 				List hwList = dao.getTpMachineID(map);
+				System.out.println("hwList="+hwList);
 				if(hwList!=null&&hwList.size()>0){
 					String tp = ((HashMap)hwList.get(0)).get("托盘编号").toString();
 					String machineID = ((HashMap)hwList.get(0)).get("方向").toString();

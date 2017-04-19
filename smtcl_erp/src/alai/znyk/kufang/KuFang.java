@@ -159,11 +159,15 @@ public void startLine(){
 		 SqlPro.getLog().error("A区输送线是否有托盘："+ex.getMessage());
 		 ex.printStackTrace();}
    
-   /*
+   
    try{
 	
 	 String ss2= ClientSer.getIntance().getState(SqlPro.B区输送线);
-	// System.out.println(ss2);
+	 //System.out.println(ss2);
+	 if(ss2==null||ss2.equals("-2")){
+		  System.out.println(ss2);
+		  return;}
+	 
 	 String sm2[]=ss2.split("\\|");
 	 String sql2= "select  货位序号,托盘编号   from 货位表  where  货位序号  between 601 and 614 order by 货位序号";
 	Vector<Vector> tem2=SqlTool.findInVector(sql2);
@@ -181,9 +185,11 @@ public void startLine(){
 			
 		 }
 		
-	 } }catch(Exception ex){
+	 } 
+	
+   }catch(Exception ex){
 		 SqlPro.getLog().error("B区输送线是否有托盘："+ex.getMessage());
-		 ex.printStackTrace();}*/
+		 ex.printStackTrace();}
 	
 	if(line==0)
      System.out.println("缓存货位与上料位自动更新启动完成");
@@ -214,9 +220,29 @@ public void start堆垛机指令(){
      if(堆1下.size()>0){
     	 //首先判断当前指令有没有在执行中，如果有，那么就不在发送
     	 Vector down=(Vector)堆1下.get(0);
-    	 if(down.get(8).equals("执行中")||down.get(8).equals("已发送")){run=true;dw1=false;}
+    	 if(down.get(8).equals("执行中")||down.get(8).equals("已发送")){run=true;dw1=true;}
       
      }
+     
+     
+     Vector 堆2上=SqlTool.findInVector("select idEvent,来源,任务类别,动作,托盘编号,来源货位号,放回货位号,请求区,状态,状态2 from 立库动作指令  where 状态<>'完成' and 动作='上货' and 请求区= '2' order by idEvent");
+     Vector 堆2下=SqlTool.findInVector("select idEvent,来源,任务类别,动作,托盘编号,来源货位号,放回货位号,请求区,状态,状态2 from 立库动作指令  where 状态<>'完成' and 动作='下货' and 请求区= '2' order by idEvent");
+     
+    
+     int last2=1;
+     if(堆2上.size()>0){
+    	 //首先判断当前指令有没有在执行中，如果有，那么就不在发送
+    	 Vector up=(Vector)堆2上.get(0);
+    	 if(up.get(8).equals("执行中")||up.get(8).equals("已发送")){run2=true;up2=true;}
+      }
+     
+     if(堆2下.size()>0){
+    	 //首先判断当前指令有没有在执行中，如果有，那么就不在发送
+    	 Vector down=(Vector)堆2下.get(0);
+    	 if(down.get(8).equals("执行中")||down.get(8).equals("已发送")){run2=true;dw2=true;}
+      
+     }
+     
     //如果这个堆垛机没有执行的指令，那么继续 
     if(last1==1){//上货
     if(!run) {
@@ -274,24 +300,7 @@ public void start堆垛机指令(){
     	
       }
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
-    Vector 堆2上=SqlTool.findInVector("select idEvent,来源,任务类别,动作,托盘编号,来源货位号,放回货位号,请求区,状态,状态2 from 立库动作指令  where 状态<>'完成' and 动作='上货' and 请求区= '2' order by idEvent");
-    Vector 堆2下=SqlTool.findInVector("select idEvent,来源,任务类别,动作,托盘编号,来源货位号,放回货位号,请求区,状态,状态2 from 立库动作指令  where 状态<>'完成' and 动作='下货' and 请求区= '2' order by idEvent");
-    
    
-    int last2=1;
-    if(堆2上.size()>0){
-   	 //首先判断当前指令有没有在执行中，如果有，那么就不在发送
-   	 Vector up=(Vector)堆2上.get(0);
-   	 if(up.get(8).equals("执行中")||up.get(8).equals("已发送")){run2=true;up2=true;}
-     }
-    
-    if(堆2下.size()>0){
-   	 //首先判断当前指令有没有在执行中，如果有，那么就不在发送
-   	 Vector down=(Vector)堆2下.get(0);
-   	 if(down.get(8).equals("执行中")||down.get(8).equals("已发送")){run2=true;dw2=true;}
-     
-    }
    //如果这个堆垛机没有执行的指令，那么继续 
    if(last2==1){//上货
    if(!run2) {

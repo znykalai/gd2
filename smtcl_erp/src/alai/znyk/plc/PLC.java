@@ -343,6 +343,7 @@ public class PLC implements Serializable {
 			INSTANCE=new PLC();
 			System.out.println("---------------");
 			INSTANCE.startTiaodu();
+			INSTANCE.sendHert(1);
 			return INSTANCE;
 		}
 		
@@ -402,7 +403,22 @@ public class PLC implements Serializable {
 		}
 	}
 	
+	public void sendHert(int machineID){
+		    new Thread(){
+		    	public void run(){
+		    	while(true){
+		    		try{
+		    			ClientSer.getIntance().writeSirIntToCTR("D11999", 1, new int[]{1}, machineID)	;
+		    			Thread.sleep(500);
+		    		}catch(Exception ex){ex.printStackTrace();}
+		    		
+		    	}
+		    	}
+		    }.start();
+	}
 	public void startTiaodu(){
+		
+		
 		new Thread(){
 			public void run(){
 			while(true){

@@ -704,7 +704,7 @@ var readyShow={
 							if(e[i].huoweihao!=""){
 								af.showWlIp.ip[i]=e[i].huoweihao+"&"+e[i].wl_code;
 							}else if(af.showWlIp.ip[i]!=e[i].huoweihao+"&"+e[i].wl_code){
-								af.showWlIp.ip[i]=null;
+								af.showWlIp.ip[i]=false;
 							};
 							i++;
 						};

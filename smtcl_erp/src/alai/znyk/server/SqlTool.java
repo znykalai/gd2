@@ -259,7 +259,7 @@ public class SqlTool {
       	  }
         	
         	
-          if(machineID.equals(1)){
+          if(machineID.equals("1")){
         	  if((toI>600&&toI<615)){
         		  have=true;
             	  back="不允许从"+fomI+"货位把货下到"+toI+"货位,不能把A区的托盘放到B区输送线";

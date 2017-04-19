@@ -626,6 +626,77 @@ var readyShow={
 					});a=null;
 					return fun();
 				},
+				/**
+				 * 故障恢复保存
+				 */
+				anNiuSave:function(function_){
+					var update1=new Array;
+					var pf_table1=$('#pf_table1 tbody tr');
+					var line=$('#pf_table1 tbody tr').attr("line");
+					for(var i=0;i<pf_table1.length;i++){
+			            if($(pf_table1).parent().children("tr").eq(i).attr("class")=="update"){
+			            	var zaiJh=pf_table1.eq(i).children("td").eq(0).html();
+			            	var zaiJydbz=pf_table1.eq(i).children("td").eq(1).html();
+			            	var yiBssx=pf_table1.eq(i).children("td").eq(2).html();
+			            	var fenJh=pf_table1.eq(i).children("td").eq(3).html();
+							var map={
+								GdId:af.GdId,
+								MzId:af.MzId,
+								zaiJh:zaiJh,
+								zaiJydbz:zaiJydbz=='已读'?'1':'',
+								yiBssx:yiBssx==''?'-2':yiBssx,
+								fenJh:fenJh
+							};zaiJh=null;zaiJydbz=null;yiBssx=null;fenJh=null;
+			                update1.push(map);//修改数据
+			                map=null;
+			            };
+					};pf_table1=null;
+					var update2=new Array;
+					var pf_table2=$('#pf_table2 tbody tr');
+					for(var i=0;i<pf_table2.length;i++){
+			            if($(pf_table2).parent().children("tr").eq(i).attr("class")=="update"){
+			            	var fenJh=pf_table2.eq(i).children("td").eq(2).html();
+			            	var zaiJh=pf_table2.eq(i).children("td").eq(8).html();
+			            	var wanCsl=pf_table2.eq(i).children("td").eq(5).html();
+			            	var stGwydbz=pf_table2.eq(i).children("td").eq(7).html();
+			            	var gw=pf_table2.eq(i).children("td").eq(6).html();
+							var map={
+								gw:gw,
+								GdId:af.GdId,
+								MzId:af.MzId,
+								zaiJh:zaiJh,
+								fenJh:fenJh,
+								wanCsl:wanCsl,
+								stGwydbz:stGwydbz=='已读'?'1':''
+							};fenJh=null;zaiJh=null;wanCsl=null;stGwydbz=null;
+							update2.push(map);//修改数据
+			                map=null;
+			            };
+					};pf_table2=null;
+					if(update1.length==0&&update2.length==0){
+						layer.msg("没有可恢复的数据！");
+						return null;
+					};
+					var a=$.ajax({
+						url:getRootPath()+'/PLCAction.do?operType=gwGzUpdate',
+						type:'post',cache:false,
+						data:'update1='+JSON.stringify(update1)+'&update2='+JSON.stringify(update2)+"&line="+line,
+						success:function(data){
+			  				var obj=eval("("+data+")");
+			  				if(!obj.plcDd){
+								layer.msg("请先停止调度！");
+			  				}else if(obj.result&&obj.setCarryAt=='成功'){
+								var a=$(".anNiuSelect").click();a=null;
+								layer.msg("故障已恢复！");
+			  				}else{
+								layer.msg("故障恢复失败或者异步输送线位置恢复失败！");
+			  				};
+			  				obj=null;
+			  				return function_(),function_=null;
+						}
+					});a=null;update1=null;update2=null;line=null;
+					return null;
+				},
 				/***
 				 * 渲染界面函数
 				 */
@@ -669,71 +740,9 @@ var readyShow={
 					});
 					//故障恢复保存按钮
 					$(".anNiuSave").click(function(){
-						var update1=new Array;
-						var pf_table1=$('#pf_table1 tbody tr');
-						var line=$('#pf_table1 tbody tr').attr("line");
-						for(var i=0;i<pf_table1.length;i++){
-				            if($(pf_table1).parent().children("tr").eq(i).attr("class")=="update"){
-				            	var zaiJh=pf_table1.eq(i).children("td").eq(0).html();
-				            	var zaiJydbz=pf_table1.eq(i).children("td").eq(1).html();
-				            	var yiBssx=pf_table1.eq(i).children("td").eq(2).html();
-				            	var fenJh=pf_table1.eq(i).children("td").eq(3).html();
-								var map={
-									GdId:af.GdId,
-									MzId:af.MzId,
-									zaiJh:zaiJh,
-									zaiJydbz:zaiJydbz=='已读'?'1':'',
-									yiBssx:yiBssx==''?'-2':yiBssx,
-									fenJh:fenJh
-								};zaiJh=null;zaiJydbz=null;yiBssx=null;fenJh=null;
-				                update1.push(map);//修改数据
-				                map=null;
-				            };
-						};pf_table1=null;
-						var update2=new Array;
-						var pf_table2=$('#pf_table2 tbody tr');
-						for(var i=0;i<pf_table2.length;i++){
-				            if($(pf_table2).parent().children("tr").eq(i).attr("class")=="update"){
-				            	var fenJh=pf_table2.eq(i).children("td").eq(2).html();
-				            	var zaiJh=pf_table2.eq(i).children("td").eq(8).html();
-				            	var wanCsl=pf_table2.eq(i).children("td").eq(5).html();
-				            	var stGwydbz=pf_table2.eq(i).children("td").eq(7).html();
-				            	var gw=pf_table2.eq(i).children("td").eq(6).html();
-								var map={
-									gw:gw,
-									GdId:af.GdId,
-									MzId:af.MzId,
-									zaiJh:zaiJh,
-									fenJh:fenJh,
-									wanCsl:wanCsl,
-									stGwydbz:stGwydbz=='已读'?'1':''
-								};fenJh=null;zaiJh=null;wanCsl=null;stGwydbz=null;
-								update2.push(map);//修改数据
-				                map=null;
-				            };
-						};pf_table2=null;
-						if(update1.length==0&&update2.length==0){
-							layer.msg("没有可恢复的数据！");
+						var a=af.anNiuSave(function(){
 							return null;
-						};
-						var a=$.ajax({
-							url:getRootPath()+'/PLCAction.do?operType=gwGzUpdate',
-							type:'post',cache:false,
-							data:'update1='+JSON.stringify(update1)+'&update2='+JSON.stringify(update2)+"&line="+line,
-							success:function(data){
-				  				var obj=eval("("+data+")");
-				  				if(!obj.plcDd){
-									layer.msg("请先停止调度！");
-				  				}else if(obj.result&&obj.setCarryAt=='成功'){
-									var a=$(".anNiuSelect").click();a=null;
-									layer.msg("故障已恢复！");
-				  				}else{
-									layer.msg("故障恢复失败或者异步输送线位置恢复失败！");
-				  				};
-				  				obj=null;
-				  				return null;
-							}
-						});a=null;update1=null;update2=null;line=null;
+						});a=null;
 						return null;
 					});
 					//清除PLC指令
@@ -755,6 +764,25 @@ var readyShow={
 						});a=null;
 						return null;
 					});
+					//一键还原
+					$(".anNiuYJHY").click(function(){
+						var pf_table=$('#pf_table1 tbody tr');
+						for(var i=0;i<pf_table.length;i++){
+							var a=pf_table.attr("class","update");a=null;
+							a=pf_table.eq(i).children("td").eq(1).html('');a=null;
+							a=pf_table.eq(i).children("td").eq(2).html('');a=null;
+						};pf_table=null;
+						pf_table=$('#pf_table2 tbody tr');
+						for(var i=0;i<pf_table.length;i++){
+							var a=pf_table.attr("class","update");a=null;
+							a=pf_table.eq(i).children("td").eq(5).html('0');a=null;
+							a=pf_table.eq(i).children("td").eq(7).html('');a=null;
+						};pf_table=null;
+						var a=af.anNiuSave(function(){
+							var a=$(".anNiuDelete").click();a=null;
+						});a=null;
+						return null;
+					});
 					return fun();
 				}
 			};
@@ -762,6 +790,7 @@ var readyShow={
 				if(af_Home.administrator.PLC==false){
 					var c=af_Home.cleanQX("anNiuSave");c=null;
 					var e=af_Home.cleanQX("anNiuDelete");e=null;
+					var f=af_Home.cleanQX("anNiuYJHY");f=null;
 				};
 				return null;
 			});a=null;
