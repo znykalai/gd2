@@ -45,7 +45,7 @@ var readyShow={
 					$.each(af.showWlIp.ip,function(i,val){
 			        	if(val){
 				        	var wl=val.split("&");
-				        	if($('#show_wuliao').val()==wl[1]){
+				        	if($('#show_wuliao').val()==wl[1]&&wl[0]!='60001'&&wl[0]!='60002'){
 				        		af.showWlIp.oip+="‘"+wl[0]+"’,";
 				        		$("#"+wl[0]).attr("class","kf_lv show");
 				        	};
@@ -704,7 +704,7 @@ var readyShow={
 							if(e[i].huoweihao!=""){
 								af.showWlIp.ip[i]=e[i].huoweihao+"&"+e[i].wl_code;
 							}else if(af.showWlIp.ip[i]!=e[i].huoweihao+"&"+e[i].wl_code){
-								af.showWlIp.ip[i]=false;
+								af.showWlIp.ip[i]=null;
 							};
 							i++;
 						};
@@ -730,6 +730,7 @@ var readyShow={
 						success:function(data){
 							var obj=eval("("+data+")");
 							if(obj.hckTb.length > 0){
+								af.removeArry=[];
 								for(var i=0,j=0,k=af.arrayHome.length;i<k;i++){
 									try{
 										if(af.arrayHome.toString().indexOf('‘'+obj.hckTb[i][i]+'’')>-1){
