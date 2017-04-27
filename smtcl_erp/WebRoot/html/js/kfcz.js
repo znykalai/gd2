@@ -97,7 +97,7 @@ var readyShow={
 								}else if(id=="xiahuodaoshusongxian"){
 									//从货位-------只允许选择有托盘的货位
 									if($("#cong_xhdssx_huowei").val()==""){
-										if(Number(hwId)> 28){
+										if(Number(hwId)>28){
 											return(function(){
 												layer.tips('请选择1-28货位！','#'+hwId);
 												hwId=null,id=null;
@@ -161,7 +161,7 @@ var readyShow={
 										}
 									//到货位
 									}else{
-										if(Number(hwId)> 28){
+										if(Number(hwId)>28){
 											return(function(){
 												layer.tips('请选择1-28货位！','#'+hwId);
 												hwId=null,id=null;
@@ -209,7 +209,7 @@ var readyShow={
 								/**************从货架回大库**************/
 								}else{
 									//从货位-只允许选择1-28货位
-									if(Number(hwId)> 28){
+									if(Number(hwId)>28){
 										return(function(){
 											layer.tips('请选择1-28货位！','#'+hwId);
 											hwId=null,id=null;
@@ -729,7 +729,7 @@ var readyShow={
 						cache:false,
 						success:function(data){
 							var obj=eval("("+data+")");
-							if(obj.hckTb.length > 0){
+							if(obj.hckTb.length>0){
 								af.removeArry=[];
 								for(var i=0,j=0,k=af.arrayHome.length;i<k;i++){
 									try{
