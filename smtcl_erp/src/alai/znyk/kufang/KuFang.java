@@ -10,6 +10,7 @@ import alai.znyk.plc.PLC;
 import alai.znyk.server.SqlTool;
 
 public class KuFang {
+	int version=0;
 	int zl=0;
 	int agv=0;
 	private static KuFang INSTANCE;
