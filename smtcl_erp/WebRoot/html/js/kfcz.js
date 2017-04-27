@@ -419,24 +419,24 @@ var readyShow={
 									return null;
 								});
 								//从货架回大库
-								$("#conghuojiahuidaku").click(function(){
-									$(this).find("input:radio").prop("checked",true);
-									//开启文本
-									var arryStart=['cong_hjhdk_huowei'];
-									map.startEnd(0,arryStart,false,'none',function(){
-										return arryStart=null;
-									});
-									//关闭文本
-									var arryEnd=['tp_code','wl_code',
-									               'up_number','go_huowei','fangxiang',
-									               'cong_xhdssx_huowei','dao_xhdssx_huowei',
-									               'cong_ssxhhj_gongwei','dao_ssxhhj_huowei',
-									               'cong_ssxhdk_gongwei'];
-									map.startEnd(0,arryEnd,true,'none',function(){
-										return arryEnd=null;
-									});
-									return null;
-								});
+//								$("#conghuojiahuidaku").click(function(){
+//									$(this).find("input:radio").prop("checked",true);
+//									//开启文本
+//									var arryStart=['cong_hjhdk_huowei'];
+//									map.startEnd(0,arryStart,false,'none',function(){
+//										return arryStart=null;
+//									});
+//									//关闭文本
+//									var arryEnd=['tp_code','wl_code',
+//									               'up_number','go_huowei','fangxiang',
+//									               'cong_xhdssx_huowei','dao_xhdssx_huowei',
+//									               'cong_ssxhhj_gongwei','dao_ssxhhj_huowei',
+//									               'cong_ssxhdk_gongwei'];
+//									map.startEnd(0,arryEnd,true,'none',function(){
+//										return arryEnd=null;
+//									});
+//									return null;
+//								});
 								//所有单选按钮事件
 								$("input[name='radioName']").click(function(){
 									var clk=$(this).parent().click();

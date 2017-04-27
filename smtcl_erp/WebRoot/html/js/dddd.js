@@ -596,7 +596,7 @@ var readyShow={
 				if(af_Home.administrator.订单调度.分解全部==false){var a=af_Home.cleanQX("dd_fenjieAllBtn");a=null;};
 				if(af_Home.administrator.订单调度.删除==false){var a=af_Home.cleanQX("dd_delBtn");a=null;};
 				if(af_Home.administrator.订单维护==false){var a=af_Home.cleanQX("gd_newBtn"),a=null,a=af_Home.cleanQX("gd_saveBtn"),a=null,a=af_Home.cleanQX("gd_deleteBtn"),a=null;};
-			},{state:true,tim:5000});//渲染主页面,function(){}--第一个返回参数,{ds:true--是否为定时刷新、tim:刷新时间毫秒为单位};
+			},{state:false,tim:5000});//渲染主页面,function(){}--第一个返回参数,{ds:true--是否为定时刷新、tim:刷新时间毫秒为单位};
 			return null;
 		}catch(e){
 			return e;
