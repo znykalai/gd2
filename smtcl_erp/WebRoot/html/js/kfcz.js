@@ -16,6 +16,11 @@ var readyShow={
 						var a=af.getGDFrame();
 						a=null;return null;
 					});
+					var nude=af.getFx(function(fx){
+						var a=$("#fangxiang").val(fx);a=null;
+						var b=$("#fangxiang").attr("oval",fx);b=null;
+						return null;
+					});nude=null;
 					var a=this.readyEvent();a=null;
 					if(af.hwLoad()&&af.table.load()&&dsState.state){//是否启动定时
 						readyShow.deleteSetInterval=setInterval(function(){
@@ -24,6 +29,19 @@ var readyShow={
 					};
 					var ly=layer.close(win),winHeight=null,win=null,ly=null;
 					return fun();
+				},
+				/**
+				 * 查看当前用户默认方向
+				 */
+				getFx:function(fun_){
+					var a=$.ajax({
+						url:getRootPath()+'/KuFangAction.do?operType=getFx',
+						type:'get',cache:false,
+						success:function(data){
+							return fun_(data),af.getFx=null;
+						}
+					});a=null;
+					return null;
 				},
 				/**
 				 * 显示GDFrame
@@ -317,6 +335,7 @@ var readyShow={
 											url:getRootPath()+'/KuFangAction.do?operType=getTp',
 											type:'get',
 											cache:false,
+											data:'fx='+$("#fangxiang").val(),
 											success:function(data){
 												var show=$("#tp_code").val(data);
 												return show=null;
@@ -361,6 +380,7 @@ var readyShow={
 									map.startEnd(0,arryEnd,true,'none',function(){
 										return arryEnd=null;
 									});
+									var a=$("#fangxiang").val($("#fangxiang").attr("oval"));a=null;
 									return null;
 								});
 								//下货到输送线事件
@@ -635,7 +655,7 @@ var readyShow={
 									var a=layer.msg(data);a=null;
 									return null;
 								}
-							});
+							});a=null;
 						});
 						return null;
 					},
@@ -661,7 +681,7 @@ var readyShow={
 								'<td title="'+e[i].fasongshijian+'" style="width:55px;padding:0px;font-size:10px;">'+(e[i].fasongshijian!=""?e[i].fasongshijian.substring(0,10)+"...":"")+'</td>'+
 								//完成时间
 								'<td title="'+e[i].wanchengshijian+'" style="width:55px;padding:0px;font-size:10px;">'+(e[i].wanchengshijian!=""?e[i].wanchengshijian.substring(0,10)+"...":"")+'</td>'+
-								//完成时间
+								//删除
 								'<td style="width:20px;padding:0px;">'+(e[i].zhuangtai=="排队"&&af_Home.administrator.发送命令?"<span class='del' title="+e[i].idEvent+" style='cursor:pointer;' aria-hidden='true'>&times;</span>":"")+'</td>'+
 							'</tr>');
 							i++;

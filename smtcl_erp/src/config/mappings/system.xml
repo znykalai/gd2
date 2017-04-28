@@ -469,6 +469,7 @@
     	<result property="密码" column="密码" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     	<result property="角色" column="角色" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     	<result property="角色名" column="角色名" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="方向" column="方向" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     </resultMap>
 	<select id="BaseDataDAO.selectYongHJues" parameterClass="java.util.HashMap" resultMap="BaseDataDAO.selectYongHJuesMap">
 		$sql$
@@ -487,5 +488,17 @@
 	</resultMap>
 	<select parameterClass="java.util.HashMap" id="OrderOperactionDAO.getGdxzId" resultMap="OrderOperactionDAO.getGdxzIdMap">
 		$sql$
+	</select>
+	<!-- 物料请求 大立体库 -->
+	<resultMap id="HomeActionDAO.getDltkMap" class="java.util.HashMap">
+    	<result property="id" column="id" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="托盘编码" column="托盘编码" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="物料" column="物料" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="数量" column="数量" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="方向" column="方向" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="状态" column="状态" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    </resultMap>
+	<select id="HomeActionDAO.getDltk" parameterClass="java.util.HashMap" resultMap="HomeActionDAO.getDltkMap">
+		SELECT a.* FROM `大库请求` AS a WHERE a.`状态`&lt;&gt;1 ORDER BY a.ID
 	</select>
 </sqlMap>

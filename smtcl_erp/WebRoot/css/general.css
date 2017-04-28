@@ -1459,53 +1459,33 @@ footer {
 	height:100%;
 	font-family:'微软雅黑';
 }
-.按钮操控{
+.right_home1_but{
 	cursor: pointer;width: 100px; height: 100px;
 	background-image: url(../images/xitongshezhi_huise.png);
 }
-.按钮操控:hover{
+.right_home1_but:hover{
 	background-image: url(../images/xitongshezhi_huangse.png);
 }
-.xtsz_home{
+.right_home1{
 	width: 500px; 
 	height: 100px; 
 	position: absolute; 
 	bottom: 480px; 
 	left:-82px;
 }
-.xtsz_id_{
-	position: absolute;
-	z-index:999;
-	width:500px;
-	height:500px;
-	display:none;
-	widh:500px;
-	height:500px;
-	background-color: #fff;
-}
-.用户信息{
+.right_home2_but{
 	cursor: pointer;width: 100px; height: 100px;
 	background-image: url(../images/yonghushezhi_huise.png);
 }
-.用户信息:hover{
+.right_home2_but:hover{
 	background-image: url(../images/yonghushezhi_huangse.png);
 }
-.yhsz_home{
+.right_home2{
 	width: 500px; 
 	height: 100px; 
 	position: absolute; 
 	bottom: 325px; 
 	left:-82px;
-}
-.yhsz_id_{
-	position: absolute; 
-	z-index:999;
-	width:500px;
-	height:500px;
-	display:none;
-	widh:500px;
-	height:500px;
-	background-color: #fff;
 }
 .h_div_mo_img_close{
 	position: relative; height: 67px; width: 100%;

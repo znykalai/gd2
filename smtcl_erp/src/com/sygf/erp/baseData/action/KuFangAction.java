@@ -15,6 +15,7 @@ import org.apache.struts.action.ActionMapping;
 import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 
+import com.sygf.erp.baseData.dao.BaseDataDAO;
 import com.sygf.erp.baseData.dao.HomeActionDAO;
 import com.sygf.erp.baseData.dao.KuFangActionDAO;
 import com.sygf.erp.util.GetApplicationContext;
@@ -40,8 +41,35 @@ public class KuFangAction extends Action{
 				return fsMingLing(mapping, form, request, response);
 			}else if (operType.equals("delEvent")){
 				return delEvent(mapping, form, request, response);
+			}else if (operType.equals("getFx")){
+				return getFx(mapping, form, request, response);
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	/**
+	 * 获取当前用户库房操作方向
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	private ActionForward getFx(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) {
+		try{
+			HttpSession session = request.getSession();
+			ApplicationContext context = GetApplicationContext.getContext(request);
+			BaseDataDAO dao = (BaseDataDAO)context.getBean("baseDataDAO");
+			HashMap map=new HashMap();
+			map.put("sql", "SELECT DISTINCT(a.`账户`) AS `账户`,a.`密码`,a.`角色`,a.`方向`,b.`角色名` FROM `账户` AS a LEFT JOIN `角色` AS b ON a.`角色`=b.ID WHERE a.`账户`='"+session.getAttribute("username").toString()+"' ORDER BY a.`角色`");
+			response.setContentType("text/html;charset=utf-8");
+			response.getWriter().print(((HashMap)dao.selectYongHJues(map).get(0)).get("方向"));
+			map=null;dao=null;context=null;session=null;
+			response.getWriter().close();
+		}catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
@@ -209,8 +237,12 @@ public class KuFangAction extends Action{
 	private ActionForward getTp(ActionMapping mapping, ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) {
 		try{
+			request.setCharacterEncoding("utf-8");
+			response.setCharacterEncoding("utf-8");
+			//方向
+			int fx=Integer.parseInt(request.getParameter("fx").toString());
 			//获取托盘编码
-			String tp_code = ClientSer.getIntance().ReadFromRffid("",1);
+			String tp_code = ClientSer.getIntance().ReadFromRffid("",fx);
 			response.setContentType("text/html;charset=utf-8");
 			response.getWriter().print(tp_code);
 			response.getWriter().close();
@@ -235,7 +267,7 @@ public class KuFangAction extends Action{
 			HashMap map = GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
 			ApplicationContext context = GetApplicationContext.getContext(request);
 			KuFangActionDAO dao = (KuFangActionDAO)context.getBean("kuFangActionDAO");
-			System.out.println("map="+map);
+//			System.out.println("map="+map);
 			String result = null;
 			if(map.get("title").equals("上货")){
 				result = SqlTool.manUpPallet(map.get("tp").toString(),

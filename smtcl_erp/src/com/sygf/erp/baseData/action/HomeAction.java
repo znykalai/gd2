@@ -1,5 +1,6 @@
 package com.sygf.erp.baseData.action;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,12 +15,10 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationEvent;
-import org.springframework.context.support.AbstractApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.sygf.erp.baseData.dao.BaseDataDAO;
 import com.sygf.erp.baseData.dao.HomeActionDAO;
+import com.sygf.erp.baseData.dao.OrderOperactionDAO;
 import com.sygf.erp.util.GDFrame;
 import com.sygf.erp.util.GetApplicationContext;
 import com.sygf.erp.util.GetParam;
@@ -47,12 +46,86 @@ public class HomeAction extends Action{
 				return getQX(mapping, form, request, response);
 			}else if(operType.equals("stop")){
 				return stop(mapping, form, request, response);
+			}else if(operType.equals("getDltk")){
+				return getDltk(mapping, form, request, response);
+			}else if(operType.equals("delDltk")){
+				return delDltk(mapping, form, request, response);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
+	/**
+	 * 删除大立体库请求
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws IOException 
+	 */
+	private ActionForward delDltk(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws IOException {
+		try{
+			request.setCharacterEncoding("utf-8");
+			response.setCharacterEncoding("utf-8");
+			ApplicationContext context = GetApplicationContext.getContext(request);
+			OrderOperactionDAO dao = (OrderOperactionDAO)context.getBean("orderOperactionDAO");
+			HashMap map=new HashMap();
+			map.put("sql", "delete from `大库请求` where ID="+request.getParameter("eid").toString());
+			dao.removeAll(map);
+			response.setContentType("text/html;charset=utf-8");
+			response.getWriter().print("删除成功!");
+			response.getWriter().close();
+		}catch (Exception e) {
+			response.setContentType("text/html;charset=utf-8");
+			response.getWriter().print("删除失败!");
+			response.getWriter().close();
+			e.printStackTrace();
+		};
+		return null;
+	};
+	/**
+	 * 查询大立体库数据
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	private ActionForward getDltk(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) {
+		try{
+			request.setCharacterEncoding("utf-8");
+			response.setCharacterEncoding("utf-8");
+			ApplicationContext context = GetApplicationContext.getContext(request);
+			HomeActionDAO dao = (HomeActionDAO)context.getBean("homeActionDAO");
+			JSONObject result = new JSONObject();
+			List list = dao.getDltk();
+			ArrayList dltkList = new ArrayList();
+			if(list!=null&&list.size()>0){
+				int i=0;
+				while(i<list.size()){
+					HashMap map = new HashMap();
+					map.put("id", ((HashMap)list.get(i)).get("id"));
+					map.put("tpCode", ((HashMap)list.get(i)).get("托盘编码"));
+					map.put("wlCode", ((HashMap)list.get(i)).get("物料"));
+					map.put("number", ((HashMap)list.get(i)).get("数量"));
+					map.put("fangXiang", ((HashMap)list.get(i)).get("方向"));
+					dltkList.add(map);
+					i++;
+				};
+			};
+			result.put("data", dltkList);
+			response.setContentType("text/html;charset=utf-8");
+			response.getWriter().print(result);
+			response.getWriter().close();
+		}catch (Exception e) {
+			e.printStackTrace();
+		};
+		return null;
+	};
 	/**
 	 * 关机按钮操作
 	 * @param mapping

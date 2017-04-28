@@ -132,7 +132,7 @@ public class BaseDataAction extends Action{
 			ApplicationContext context = GetApplicationContext.getContext(request);
 			BaseDataDAO dao = (BaseDataDAO)context.getBean("baseDataDAO");
 			ArrayList result = new ArrayList();
-			map.put("sql", "SELECT DISTINCT(a.`账户`) AS `账户`,a.`密码`,a.`角色`,b.`角色名` FROM `账户` AS a LEFT JOIN `角色` AS b ON a.`角色`=b.ID WHERE a.`账户`<>'admin' ORDER BY a.`角色`");
+			map.put("sql", "SELECT DISTINCT(a.`账户`) AS `账户`,a.`密码`,a.`角色`,a.`方向`,b.`角色名` FROM `账户` AS a LEFT JOIN `角色` AS b ON a.`角色`=b.ID WHERE a.`账户`<>'admin' ORDER BY a.`角色`");
 			List list=dao.selectYongHJues(map);
 			for(int i=0;i<list.size();i++){
 				HashMap mapPara = new HashMap();
@@ -140,6 +140,7 @@ public class BaseDataAction extends Action{
 				mapPara.put("'NAME'", "'"+((HashMap)list.get(i)).get("账户")+"'");
 				mapPara.put("'JUESE'", "'"+((HashMap)list.get(i)).get("角色")+"'");
 				mapPara.put("'JUESENAME'", "'"+((HashMap)list.get(i)).get("角色名")+"'");
+				mapPara.put("'FANGXIANG'", "'"+((HashMap)list.get(i)).get("方向")+"'");
 				result.add(mapPara);mapPara=null;
 			};list=null;map=null;dao=null;context=null;
 			response.setContentType("text/html;charset=utf-8");
@@ -177,9 +178,9 @@ public class BaseDataAction extends Action{
 				if(yesId!=null&&yesId.size()>0){
 					HttpSession session = request.getSession();
 					session.setAttribute("juese",map.get("jueSe"));
-					map.put("sql", "update `账户` set `密码`='"+map.get("name")+"',`角色`='"+map.get("jueSe")+"' where `账户`='"+userName+"'");
+					map.put("sql", "update `账户` set `密码`='"+map.get("name")+"',`角色`='"+map.get("jueSe")+"',`方向`='"+map.get("fangXiang")+"' where `账户`='"+userName+"'");
 				}else{
-					map.put("sql", "INSERT INTO `账户`(`账户`,`密码`,`角色`)VALUES('"+userName+"','"+map.get("name")+"','"+map.get("jueSe")+"')");
+					map.put("sql", "INSERT INTO `账户`(`账户`,`密码`,`角色`,`方向`)VALUES('"+userName+"','"+map.get("name")+"','"+map.get("jueSe")+"','"+map.get("fangXiang")+"')");
 				};
 				boolean yesNo=dao.insertJueSe(map);map=null;userName=null;
 				result.put("success", yesNo);
@@ -294,6 +295,7 @@ public class BaseDataAction extends Action{
 				mapPara.put("'NAME'", "'"+((HashMap)list.get(i)).get("角色名")+"'");
 				mapPara.put("'JUESE'", "'"+((HashMap)list.get(i)).get("ID")+"'");
 				mapPara.put("'JUESENAME'", "''");
+				mapPara.put("'FANGXIANG'", "''");
 				result.add(mapPara);mapPara=null;
 			};list=null;map=null;dao=null;context=null;
 			response.setContentType("text/html;charset=utf-8");

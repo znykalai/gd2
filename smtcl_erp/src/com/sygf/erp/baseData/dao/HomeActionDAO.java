@@ -47,4 +47,17 @@ public class HomeActionDAO extends SqlMapClientDaoSupport {
 		}
 		return null;
 	}
+	/**
+	 * 物料请求，大立体库
+	 * @return
+	 */
+	public List getDltk() {
+		try{
+			return getSqlMapClientTemplate().queryForList("HomeActionDAO.getDltk",null);
+		}catch (Exception e) {
+			Log.error("HomeActionDAO.getDltk方法出现异常！" + e.getMessage());
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

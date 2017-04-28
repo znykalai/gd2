@@ -1865,6 +1865,7 @@ var readyShow={
 			                    lastTr.append('<td class="selectJuesYh_name" style="width:50%;">'+obj[i].NAME+'</td>');
 			                    lastTr.append('<td class="selectJuesYh_jueSe" style="display:none;">'+obj[i].JUESE+'</td>');
 			                    lastTr.append('<td class="selectJuesYh_jueSeName" style="display:none;">'+obj[i].JUESENAME+'</td>');
+			                    lastTr.append('<td class="selectJuesYh_fangXiang" style="display:none;">'+obj[i].FANGXIANG+'</td>');
 			                    lastTr=null;
 							};obj=null;
 							/*绑定双击事件*/
@@ -1874,7 +1875,8 @@ var readyShow={
 									idValue:tr.find('.selectJuesYh_id').text(),
 									nameValue:tr.find('.selectJuesYh_name').text(),
 									jueSeValue:tr.find('.selectJuesYh_jueSe').text(),
-									jueSeNameValue:tr.find('.selectJuesYh_jueSeName').text()
+									jueSeNameValue:tr.find('.selectJuesYh_jueSeName').text(),
+									fangXiangValue:tr.find('.selectJuesYh_fangXiang').text()
 								};tr=null;
 			            		var b=layer.close(win);
 			            		b=null;win=null;map=null;
@@ -1922,8 +1924,11 @@ var readyShow={
 						}else if($("#"+map.jueSe).val()==''){
 				    		var a=layer.tips('请选择角色！','.'+map.jueSeName);a=null;
 				    		map=null;return null;
+						}else if($("#"+map.fangXiang).val()==''){
+				    		var a=layer.tips('请选择方向！','#'+map.fangXiang);a=null;
+				    		map=null;return null;
 						};
-						where='id='+$("#"+map.id).val()+"&name="+$("#"+map.name).val()+"&jueSe="+$("#"+map.jueSe).val();
+						where='id='+$("#"+map.id).val()+"&name="+$("#"+map.name).val()+"&jueSe="+$("#"+map.jueSe).val()+"&fangXiang="+$("#"+map.fangXiang).val();
 					};
 					var lay=layer.open({type:3});
 					var a=$.ajax({
@@ -1998,6 +2003,16 @@ var readyShow={
 						}else{$(this).html("false");};val=null;
 						return null;
 					});
+					//方向点击事件
+					$('#fangxiang_name').click(function(){
+				        var a=$('#fangxiang_name ul').toggle();
+				        return a=null;
+				    });
+				    $('#fangxiang_name ul').click(function(event){
+				        var t2=$(event.target).text();
+				        var a=$('#fangxiang').val(t2);
+				        return a=null,t2=null;
+				    });
 					//角色-按钮事件
 					$(".baseJuese").click(function(e){
 						var title=$(e.target).html();
@@ -2055,7 +2070,7 @@ var readyShow={
 							var a=af.clerYongHu();a=null;
 							title=null;return null;
 						}else if(title=="保存"){
-							var map={type:'userInfo',id:'userName',name:'password',name1:'yesPassword',jueSe:'juese_id',jueSeName:'selectYh'};
+							var map={type:'userInfo',id:'userName',name:'password',name1:'yesPassword',jueSe:'juese_id',fangXiang:'fangxiang',jueSeName:'selectYh'};
 							var a=af.saveJuesYh(map,function(obj){
 								var a=$('#userName').attr("readOnly",true);a=null;
 								var b=af_Home.getQX(function(){return null;});b=null;//重新获取权限
@@ -2074,6 +2089,7 @@ var readyShow={
 								var c=$("#yesPassword").val(map.idValue);c=null;
 								var d=$("#juese_id").val(map.jueSeValue);d=null;
 								var e=$("#juese_name").val(map.jueSeNameValue);e=null;
+								var e=$("#fangxiang").val(map.fangXiangValue);e=null;
 								map=null;return null;
 							});map=null;a=null;
 							title=null;return null;
