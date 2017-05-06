@@ -19,6 +19,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JSplitPane;
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
+import javax.swing.JCheckBox;
 
 public class PLCFrame extends JFrame {
 	static{
@@ -68,6 +69,36 @@ public class PLCFrame extends JFrame {
 			}
 		});
 		panel_18.add(btnNewButton_1);
+		
+		JCheckBox chckbxA = new JCheckBox("A\u533A\u8F93\u9001\u7EBF\u5E38\u5F00");
+		
+		panel_18.add(chckbxA);
+		
+		JCheckBox chckbxB = new JCheckBox("B\u533A\u8F93\u9001\u7EBF\u5E38\u5F00");
+		panel_18.add(chckbxB);
+		chckbxA.setSelected(PLC.getIntance().A区输送线到位常有);
+		chckbxB.setSelected(PLC.getIntance().B区输送线到位常有);
+		
+		JCheckBox checkBox = new JCheckBox("\u8F93\u9001\u7EBF\u81EA\u52A8\u8BF7\u6C42\u6253\u5F00");
+		checkBox.setSelected(PLC.getIntance().输送线自动请求打开);
+		checkBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PLC.getIntance().输送线自动请求打开=checkBox.isSelected();
+			}
+		});
+		panel_18.add(checkBox);
+		
+		chckbxA.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PLC.getIntance().A区输送线到位常有=chckbxA.isSelected();
+				System.out.println("A区输送线到位常有="+PLC.getIntance().A区输送线到位常有);
+			}
+		});
+		chckbxB.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PLC.getIntance().B区输送线到位常有=chckbxB.isSelected();
+			}
+		});
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setPreferredSize(new Dimension(1600,780));

@@ -242,7 +242,7 @@ public class CommentPanel extends JPanel {
 				ClientSer.TP=textField.getText();	
 				SqlTool.fromDKisTP=textField_1.getText()+"!_!"+10;
 				  }
-				ClientSer.rffid1=textField_2.getText().equals("")?"0":"1";
+				ClientSer.rffid2=textField_2.getText().equals("")?"0":"1";
 			}
 		});
 		btnNewButton.setBounds(347, 24, 93, 23);
@@ -275,7 +275,7 @@ public class CommentPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 			
 					 ClientSer.TP=textField_3.getText();
-					 ClientSer.rffid2=textField_4.getText().equals("")?"0":"1";
+					 ClientSer.rffid1=textField_4.getText().equals("")?"0":"1";
 					
 				
 			}
@@ -508,13 +508,13 @@ public class CommentPanel extends JPanel {
 		button_5.setBounds(347, 548, 93, 23);
 		add(button_5);
 		
-		JLabel label_17 = new JLabel("\u4E0A\u6599");
-		label_17.setBounds(0, 28, 75, 15);
-		add(label_17);
+		JLabel lblagvb = new JLabel("\u4E0A\u6599agvB");
+		lblagvb.setBounds(0, 28, 75, 15);
+		add(lblagvb);
 		
-		JLabel label_18 = new JLabel("\u56DE\u5E93/\u56DE\u5927\u5E93");
-		label_18.setBounds(0, 71, 86, 15);
-		add(label_18);
+		JLabel lblagva = new JLabel("\u56DE\u5E93/\u5927\u5E93agvA");
+		lblagva.setBounds(0, 71, 93, 15);
+		add(lblagva);
 		
 		JLabel label_19 = new JLabel("\u5DE6/\u53F3\u5347\u964D\u53F0");
 		label_19.setBounds(0, 116, 93, 15);

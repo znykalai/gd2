@@ -18,6 +18,8 @@ public class KuFang {
 	int line=0;
 	String isRffid1="";
 	String isRffid2="";
+	String isRffid3="";
+	String isRffid4="";
 	public static void main(String ss[]){
 		
 		//KuFang.getIntance();
@@ -73,7 +75,7 @@ public class KuFang {
 			public void run(){
 			try{
 				while(true){
-					startUpRFFID();
+				  startDownRFFID2();
 				Thread.sleep(500);
 				
 				}
@@ -87,7 +89,7 @@ public class KuFang {
 			public void run(){
 			try{
 				while(true){
-					startDownRFFID();
+				startDownRFFID();
 				Thread.sleep(500);
 				
 				}
@@ -151,6 +153,17 @@ public void startLine(){
 				String fromID=line1.get(0)+"";
 				String toID=line2.get(0)+"";
 				SqlTool.update7Line(firstTP, fromID, toID);
+				/*
+				 * 像PLC里面写入PLC地址
+				 * **/
+				if(!firstTP.equals("")){
+					// String sql2="select 托盘编号  from 货位表   where  货位序号='"+toID+"'";	
+				  String wuliao= SqlTool.findOneRecord("select 物料  from 库存托盘  where 托盘编号="+"'"+firstTP+"'");
+				  String leixing=SqlTool.findOneRecord("select 类型  from 通用物料  where 物料编码="+"'"+wuliao+"'");
+				  SqlTool.clearValueForPalet(toID, 1);
+				  SqlTool.WriteAddresInPaletToPLC(leixing, firstTP, toID, 1);
+					
+				  }
 			}
 			
 		 }
@@ -181,6 +194,17 @@ public void startLine(){
 				String fromID=line1.get(0)+"";
 				String toID=line2.get(0)+"";
 				SqlTool.update7Line(firstTP, fromID, toID);
+				/*
+				 * 像PLC里面写入PLC地址
+				 * **/
+				if(!firstTP.equals("")){
+					// String sql2="select 托盘编号  from 货位表   where  货位序号='"+toID+"'";	
+				  String wuliao= SqlTool.findOneRecord("select 物料  from 库存托盘  where 托盘编号="+"'"+firstTP+"'");
+				  String leixing=SqlTool.findOneRecord("select 类型  from 通用物料  where 物料编码="+"'"+wuliao+"'");
+				  SqlTool.clearValueForPalet(toID, 2);
+				  SqlTool.WriteAddresInPaletToPLC(leixing, firstTP, toID, 2);
+					
+				  }
 			}
 			
 		 }
@@ -250,6 +274,8 @@ public void start堆垛机指令(){
     	//如果没有运行中的指令,那么就优先上料，上完料了在看看有没有下货的指令，如果有运行下货
     	if(堆1上.size()>0){
     	try {
+    		//在临时方案里面加入如下判断
+    		
 			String state=ClientSer.getIntance().getState(SqlPro.堆垛机1状态);//获取堆垛机1的状态
 			if(state.equals(SqlPro.堆垛空闲码)){
 				 if(堆1上.size()>0){
@@ -266,6 +292,8 @@ public void start堆垛机指令(){
 				
 			}
 		   } catch (Exception e) {e.printStackTrace();}
+    	
+    	
     	}
     	last1=2;
     	}
@@ -477,26 +505,46 @@ public void startlineAGV(){
 	      rf1=1;
      }
   
+ 
 //启动升降机的型号检测
   public void startDownRFFID(){
 	  //测试通过
+	  /*  String sql="select idEvent,动作,状态,状态2,是否回大库,来源货位号,放回货位号,托盘编号,"
+        		+"请求区  from 立库动作指令   where 动作='预上货' and 状态2<>'1' and 状态='完成'"
+        		+" and 托盘编号='"+tp+"' order by idEvent";
+        		*/
+	 /* String sql3="select max(idEvent),动作,状态,状态2,是否回大库,来源货位号,放回货位号,托盘编号,"
+       		+"请求区  from 立库动作指令   where   动作='输送线回流' and 状态='完成' and 状态2<>'1'"
+       		+" and 托盘编号='"+tp+"'";*/
+	  
+	  
 	    try {
-			String b=ClientSer.getIntance().getState(5);
+			String b=ClientSer.getIntance().getState(4);
 			
 			
 			if(b.equals("1")){//升降台上有货物
-				System.out.println("RFID2+++++");
-			String tp=ClientSer.getIntance().ReadFromRffid("", 2);
-			System.out.println("RFID2+++++="+tp);
+				String sql="select idEvent,托盘编号,"
+			      		+"请求区  from 立库动作指令   where 动作 IN('输送线回流','预上货') and 状态2<>'1' and 状态='完成'"
+			      		+" and 请求区=1  order by idEvent";
+				
+			 System.out.println("A区RFID+++++");
+			//String tp=ClientSer.getIntance().ReadFromRffid("", 3);
+			String tp="";
+			String res=SqlTool.findOneRecord(sql);
+			if(res!=null){
+				 tp=res.split("!_!")[1];
+			System.out.println("A区RFID+++++="+tp);
 			if(isRffid1!=null&&isRffid1.equals(tp))return;
 			 isRffid1=tp;
 			if(tp.equals(""))return;
 			 
-			String back=SqlTool.exeRffid2(tp);
+			    String back=SqlTool.exeRffid2(tp);
 			
 				if(back.contains("成功")){
 					
 				}
+				
+			    }
 			}
 			
 			
@@ -505,15 +553,57 @@ public void startlineAGV(){
 			e.printStackTrace();
 		} 
 	    if(rf2==0)
-		       System.out.println("去料升降机处理程序启动完成");
+	    	 System.out.println("A区AGV处理程序启动完成");
 		      rf2=1;
 	    
      }
   
+  public void startDownRFFID2(){
+	  //测试通过
+	    try {
+			String b=ClientSer.getIntance().getState(5);
+			
+			
+			if(b.equals("1")){//升降台上有货物
+	           String sql="select idEvent,托盘编号,"
+			      		+"请求区  from 立库动作指令   where 动作 IN('输送线回流','预上货') and 状态2<>'1' and 状态='完成'"
+			      		+" and 请求区=2  order by idEvent";
+				System.out.println("B区RFID2+++++");
+			  // String tp=ClientSer.getIntance().ReadFromRffid("", 4);
+				String tp="";
+				String res=SqlTool.findOneRecord(sql);
+				if(res!=null){
+					 tp=res.split("!_!")[1];
+			   System.out.println("B区RFID2+++++="+tp);
+			       if(isRffid2!=null&&isRffid2.equals(tp))return;
+			        isRffid2=tp;
+			      if(tp.equals(""))return;
+			 
+			    String back=SqlTool.exeRffid2(tp);
+			
+				if(back.contains("成功")){
+					
+				}
+				
+				}
+			}
+			
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+	    if(rf1==0)
+		       System.out.println("B区AGV处理程序启动完成");
+		      rf1=1;
+	    
+     }
+  
+  
     public  void startDakuQingqiu(){
     	 //	第一步读取大库请求表格里面的内容。放到一个hashtable里面。
     	 //  第二步按着模组配套顺序请求大库的物料。
-    	 // 得到大库里面有多少空位
+    	 //  得到大库里面有多少空位
     	//读取装载系数
     	//读取货位空位
     	 Hashtable<String,Integer>sumWL1=new Hashtable<String,Integer>();//装配区A的已有物料请求总和
@@ -535,7 +625,7 @@ public void startlineAGV(){
     		   
     		  Hashtable<String,Integer>temp1=new Hashtable<String,Integer>();
     		  Vector<Hashtable<String,Integer>> zl=new Vector<Hashtable<String,Integer>>();
-    	    	String sql="select  物料,数量-完成数量,装配区 from 配方指令队列 where IFNULL(数量,0)-IFNULL(完成数量,0)>0 and 装配区='1' ORDER BY 工单序号,模组序号,分解号,载具序号  LIMIT 50";
+    	    	String sql="select  物料,数量-完成数量,装配区 from 配方指令队列  where IFNULL(数量,0)-IFNULL(完成数量,0)>0 and 装配区='1' ORDER BY 工单序号,模组序号,分解号,载具序号  LIMIT 50";
     		    Vector v1=SqlTool.findInVector(sql);
     		  
     		    for(int i=0;i<v1.size();i++){

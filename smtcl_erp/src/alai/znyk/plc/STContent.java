@@ -10,7 +10,7 @@ public class STContent implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public static int checkNum_预装=0;
+	public static int checkNum_预装=1;
 	
 	public ST_Father firstST;
     public ST_Father secondST;
@@ -562,8 +562,10 @@ public class STContent implements Serializable {
     	 
     	 
     	 if(stNum==9||stNum==11||stNum==12){//动作容许标志默认false，托盘到这儿直接放行
+    		 boolean 数据更新完成 =((_1_6ST)firstST).is数据更新完成();
     		 ((_1_6ST)firstST).clear();
     		 ((_1_6ST)firstST).set允许工位动作标志(false);
+    		 ((_1_6ST)firstST).set数据更新完成(数据更新完成);
     		 ((_1_6ST)firstST).set立库RDY(true);
     		 Carry ca= plc.line.getCarry(stNum-1);//本工位,只要当载具到了本工位才进行处理
     		 if(ca!=null){
@@ -824,7 +826,7 @@ public class STContent implements Serializable {
     		//从叠装工位向前判断
     		 if(!firstST.isWrite()&&!secondST.isWrite()){
     			 Vector tem=new Vector();
-    			 for(int i=12;i>=plc.getIntance().checkNum_同步;i--){
+    			 for(int i=10;i>=plc.getIntance().checkNum_同步;i--){
     			 Carry car=plc.line.getCarry(i);
     			
     			 if(car==null){continue;}
@@ -919,7 +921,7 @@ public class STContent implements Serializable {
     		 }
     		 if(firstST.isWrite()&&!secondST.isWrite()){
     			 Vector tem=new Vector();
-    			 for(int i=12;i>=plc.getIntance().checkNum_同步;i--){
+    			 for(int i=10;i>=plc.getIntance().checkNum_同步;i--){
         			 Carry car=plc.line.getCarry(i);
         			
         			 if(car==null){continue;}
@@ -1135,6 +1137,22 @@ public class STContent implements Serializable {
   				   SqlTool.insert(new String[]{sql});
   				   SqlTool.insert(new String[]{sql2});
   				   ((_1_6ST)st).set完成数量(完成数量+fshul);
+  				 /*******
+  		  	  	 在这里要重新货物在托盘的位置，从PLC更新
+  		  		 * 
+  		  		 * *********/	
+  				   if(stNum==2){//读取PLC，然后保存到数据库里面
+  					   
+  				   }
+  				   if(stNum==3){}
+  				   if(stNum==4){}
+  				   if(stNum==5){}
+  				   if(stNum==6){}
+  				   if(stNum==7){}
+  				  //查找类型
+  				   String leixing=SqlTool.findOneRecord("select 类型  from 通用物料  where 物料编码="+"'"+wuliao2+"'");
+  				   SqlTool.readAddresInPaletFromPLC(leixing, tp, 货位+"", 装配区);
+  				   
   				    return true;
   			   }else{
   				 /* String sql="update 库存托盘 set 数量="+0+" where 托盘编号="+"'"+tp+"'";
@@ -1148,12 +1166,16 @@ public class STContent implements Serializable {
   			   }
   				
   			 }
+  		
+  			
   		}
   		  
   	  }
   	  }
+  	  
     	
-    	if(stNum==8){//电芯的数量一次只能取一个
+    	
+    	if(stNum==8){//假电芯的数量一次只能取一个
     		 String tem=SqlTool.findOneRecord("select  物料,数量  from 配方指令队列   where  ID='"+st.getId()+"'");
     	  	  if(tem!=null){
     	  		String wuliao=tem.split("!_!")[0];
@@ -1176,6 +1198,13 @@ public class STContent implements Serializable {
     	  				   SqlTool.insert(new String[]{sql});
     	  				   SqlTool.insert(new String[]{sql2});
     	  				   ((_7ST)st).set完成数量(完成数量+1);
+    	  				 /*******
+    	    		  	  	 在这里要重新货物在托盘的位置，从PLC更新
+    	    		  		 * 
+    	    		  		 * *********/	
+    	  				  String leixing=SqlTool.findOneRecord("select 类型  from 通用物料  where 物料编码="+"'"+wuliao2+"'");
+    	  				  SqlTool.readAddresInPaletFromPLC(leixing, tp, 货位+"", 装配区);
+    	  				  
     	  				    return true;
     	  			   }else{
     	  				  /*String sql="update 库存托盘 set 数量="+0+" where 托盘编号="+"'"+tp+"'";
@@ -1202,15 +1231,15 @@ public class STContent implements Serializable {
     		System.out.println(stNum);
     		//更新物料在托盘的数量
     	if(stNum==2){//1ST
-    		return updataSTDB(502, st);
+    		return updataSTDB(514, st);
     	 
     	}
         if(stNum==3){//2ST
-        	return updataSTDB(504, st);
+        	return updataSTDB(512, st);
     		
     	 }
         if(stNum==4){//2ST
-        	return updataSTDB(506, st);
+        	return updataSTDB(510, st);
     		
     	 }
         if(stNum==5){//2ST
@@ -1218,15 +1247,15 @@ public class STContent implements Serializable {
     		
     	 }
         if(stNum==6){//2ST
-        	return updataSTDB(510, st);
+        	return updataSTDB(506, st);
     		
     	 }
         if(stNum==7){//2ST
-        	return updataSTDB(512, st);
+        	return updataSTDB(504, st);
     		
     	 }
         if(stNum==8){//2ST
-        	return updataSTDB(514, st);
+        	return updataSTDB(502, st);
     		
     	 }
         
@@ -1235,15 +1264,15 @@ public class STContent implements Serializable {
     	if(装配区==2){
     		//更新物料在托盘的数量
     	if(stNum==2){//1ST
-    		return updataSTDB(602, st);
+    		return updataSTDB(614, st);
     	 
     	}
         if(stNum==3){//2ST
-        	return updataSTDB(604, st);
+        	return updataSTDB(612, st);
     		
     	 }
         if(stNum==4){//2ST
-        	return updataSTDB(606, st);
+        	return updataSTDB(610, st);
     		
     	 }
         if(stNum==5){//2ST
@@ -1251,15 +1280,15 @@ public class STContent implements Serializable {
     		
     	 }
         if(stNum==6){//2ST
-        	return updataSTDB(610, st);
+        	return updataSTDB(606, st);
     		
     	 }
         if(stNum==7){//2ST
-        	return updataSTDB(612, st);
+        	return updataSTDB(604, st); 
     		
     	 }
         if(stNum==8){//2ST
-        	return updataSTDB(614, st);
+        	return updataSTDB(602, st);
     		
     	 }
         

@@ -15,12 +15,16 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Time;
+import java.util.Properties;
 import java.util.Vector;
 
+import alai.znyk.common.ClientSer;
 import alai.znyk.common.SqlPro;
 import alai.znyk.plc.PLC;
 
 public class SqlTool {
+	
+	static Properties pro;
 	
 	public static Vector findInVector(String sql) {
         Vector has=new Vector();
@@ -91,13 +95,15 @@ public class SqlTool {
          String val=null;
          ConnactionPool p=ConnactionPool.getPool();
          Conn fac=p.getCon2("");
+         Connection con=fac.getCon();
          Statement  st=null;
+         ResultSet set=null;
      try{
 
 
-     Connection con=fac.getCon();
+     
      st=con.createStatement();
-     ResultSet set=st.executeQuery(sql);
+      set=st.executeQuery(sql);
 
      ResultSetMetaData rs=set.getMetaData();
      int num=rs.getColumnCount();
@@ -111,13 +117,17 @@ public class SqlTool {
        val=val.substring(0,val.length()-3);
        break;
     }
+     set.close();
     st.close();
     fac.realseCon();
     return val;
      }
    catch(Exception e){
        try {
+    	   if(set!=null)
+    	   set.close();
            st.close();
+           fac.realseCon();
        } catch (SQLException ex) {
            ex.printStackTrace();
        }
@@ -228,16 +238,18 @@ public class SqlTool {
         int fomI=Integer.parseInt(fromID);
         int toI=Integer.parseInt(toID);
         if(type.equals("上货")){
-              if(fomI==60001||fomI==60002){
+              if(fomI==60001||fomI==60002||fomI==60003||fomI==60004){
         		  if(fomI==60001){
-        			  if((toI>0&&toI<29)||toI>500&&toI<615){}else{
+        			  if((toI>0&&toI<29)||toI>500&&toI<615){}
+        			  else{
         				  have=true;
         				  back="不允许从"+fomI+"货位把货上到"+toI+"货位1";    
         			  }
         			  
         		  }
         		  if(fomI==60002){
-        			  if(toI>0&&toI<29){}else{
+        			  if(toI>0&&toI<29||toI>500&&toI<615){}
+        			  else{
         				  have=true;
         				  back="不允许从"+fomI+"货位把货上到"+toI+"货位2";    
         			  }
@@ -253,7 +265,7 @@ public class SqlTool {
         }
         
         if(type.equals("下货")){
-        	if(!((fomI>0&&fomI<29)&&(toI==60002||(toI>500&&toI<615)))){
+        	if(!((fomI>0&&fomI<29)&&(/*toI==60002||*/(toI>500&&toI<615)))){
       		      have=true;
             	  back="不允许从"+fomI+"货位把货下到"+toI+"货位3";
       	  }
@@ -278,10 +290,35 @@ public class SqlTool {
       
         if(type.equals("输送线回流")){
         	  if(!(fomI>500&&fomI<615)){
+        		 
         		  have=true;
               	  back="输送不允许从"+fomI+"回流到"+toI+"货位";
         	  }
+        	  
+        	  if(toI>500&&toI<615){//toI只能是60001或60002或货架号
+        		  have=true;
+              	  back="输送不允许从"+fomI+"回流到"+toI+"货位";  
+        		  
+        	  }
+        	//零时方案添加，只要有预装的命令没完成，就不能调动输送线
+        	  String sqll="select idEvent,状态,状态2 from 立库动作指令  where 动作='预上货' and 状态2<>'1'  order by idEvent";
+              set=st.executeQuery(sqll);
+              
+              if(set.next()){
+               	have=true;
+               	back="AGV小车已经被人工上货指令占用，等人工上货完成后在发送此命令";
+                }
+        	 
         }
+        
+        if(type.equals("预上货")){
+        	 String sqll="select idEvent,状态,状态2 from 立库动作指令  where 动作='预上货' and 状态2<>'1' and 托盘编号='"+tp+"' order by idEvent";
+             set=st.executeQuery(sqll);
+             if(set.next()){
+             	have=true;
+             	back="关于这个托盘已有预上货指令";
+              }
+      }
         
         if(!have){
         String sqll="select idEvent,状态,状态2 from 立库动作指令  where 状态<>'完成' and 托盘编号='"+tp+"' order by idEvent";
@@ -304,6 +341,11 @@ public class SqlTool {
    	        }
   		 
   		 if(!have){
+  			 int toID2=toI;
+  			 if(toI==60002){
+  				 if(fomI>500&&fomI<515){toID2=60001;}
+  				 if(fomI>600&&fomI<615){toID2=60002;}
+  			 }
     	   String  ql="insert into 立库动作指令 (来源,任务类别,动作,"+
                    "托盘编号,状态,来源货位号,放回货位号,状态2,请求区,是否回大库,新建时间) values("+
                    "'立库',"+
@@ -312,7 +354,7 @@ public class SqlTool {
                    "'"+tp+"',"+
                     "'排队',"+
                      "'"+fromID+"',"+
-                     "'"+toID+"',"+
+                     "'"+toID2+"',"+
                       "'"+(0)+"',"+
                       "'"+machineID+"',"+
                       "'"+todaku+"',"+
@@ -323,6 +365,28 @@ public class SqlTool {
   		       }
 			   
          }else{
+        	 
+        	 if(type.equals("预上货")){
+            	if(!have){
+            		  String  ql="insert into 立库动作指令 (来源,任务类别,动作,"+
+                              "托盘编号,状态,来源货位号,放回货位号,状态2,请求区,是否回大库,新建时间) values("+
+                              "'立库',"+
+                              "'PACK装配',"+
+                              "'预上货',"+
+                              "'"+tp+"',"+
+                               "'完成',"+
+                                "'"+fromID+"',"+
+                                "'"+toID+"',"+
+                                 "'"+0+"',"+
+                                 "'"+machineID+"',"+
+                                 "'"+0+"',"+
+                                 SqlPro.getDate()[1]+
+                              ")";
+        			    st.executeUpdate(ql);
+        			    back="指令成功加入";	
+            		
+            	}
+          }
         	
         	 if(type.equals("上货")){
         		 
@@ -336,7 +400,7 @@ public class SqlTool {
          	        	Object t=set.getObject(1)==null?"":set.getObject(1);
          	        	if(!t.equals("")){
          	        		have=true;
-         	        	         back="去往的货位已经有托盘";
+         	        	   back="去往的货位已经有托盘";
          	        	          }
          	           }	
          	        }
@@ -385,7 +449,7 @@ public class SqlTool {
          	           }	
          	        }
         		 
-        		 if(toID.equals("60002")){
+        		 if(toID.equals("60002")||toID.equals("60001")){
         		 //判断取料升降台有没有托盘
         		 if(!have){//暂时先不做
         		
@@ -491,9 +555,17 @@ public class SqlTool {
 			   st.executeUpdate(ql);	   
 			   
 		   }
+		   
+		   if(machineID.equals("1")){
        
-		   back = add动作指令( tp,"60001", toID,"上货"/*上货，下货，输送线回流*/, 
+		   back = add动作指令( tp,"60001", toID,"预上货"/*上货，下货，输送线回流,预上货*/, 
 					  0,  machineID);
+		   }
+		   if(machineID.equals("2")){
+		       
+		  back = add动作指令( tp,"60002", toID,"预上货"/*上货，下货，输送线回流,预上货*/, 
+						  0,  machineID);
+		    }
 		  
 
        con.commit();
@@ -541,7 +613,7 @@ public class SqlTool {
         st=con.createStatement();
         con.setAutoCommit(false);
         boolean isToLine=false;
-       if(fromID.equals("60001")){
+       if(fromID.equals("60001")||fromID.equals("60002")){//两个上货点
     	 //判断这个货物应该去哪个工位，优先去7个工位,首先检测7个工位有没有指令，然后在检测工位上有没有托盘
     	  // String sql="SELECT DISTINCT 工位,数量-IFNULL(完成数量,0) from 配方指令队列   where 物料='"
     	  // +wuliao+"' AND 装配区='"+machineID+"' and 数量-IFNULL(完成数量,0)>0 ORDER BY 工单序号,模组序号,分解号,载具序号  LIMIT 2 ";
@@ -599,7 +671,7 @@ public class SqlTool {
     	   if(set.next()){quyu=set.getString(1)==null?"":(String)set.getString(1);}
     	   if(!quyu.equals("")){
     	   String s2=" SELECT 货位序号 from 货位表   where 货位序号 IN("+quyu+") or `托盘编号` is  null and `托盘编号`='' order by 距离";
-    	   set=st.executeQuery(s2);
+    	   set=st.executeQuery(s2); 
     	   while(set.next()){
     		   String iss=add动作指令( tp, fromID,set.getObject(1)+"","上货"/*上货，下货，输送线回流*/, 
 	    				  0/*1=回大库，非1=不回*/,  machineID);
@@ -659,11 +731,13 @@ public class SqlTool {
        return back;
 
 }  
+   
+
    static String  lock="";
    public static String setStateForEventID(int idEvent, int state, String ext) {
 		// TODO Auto-generated method stub
 	   System.out.println("调用"+idEvent+"/"+state);
-	   synchronized(lock){
+	  synchronized(lock){
 		   System.out.println("進入LOCL"+idEvent+"/"+state);
 	  String back="";
 	  ConnactionPool p=ConnactionPool.getPool();
@@ -688,21 +762,42 @@ try{  boolean isEvent=false;
     	   if(zong.equals("上货")){
     	   //1.第一步更新库存托盘表
     	  
-    		   set=st.executeQuery("select 托盘编号 from 库存托盘  where 托盘编号="+"'"+tp+"'");   
+    		   set=st.executeQuery("select 托盘编号,物料 from 库存托盘  where 托盘编号="+"'"+tp+"'");   
     		   if(set.next()){
+    			    String wuliao=set.getString(2);
     			   st.executeUpdate("update 库存托盘  set 货位号='"+toID+"',方向='"+qu+"' where 托盘编号='"+tp+"'");  
+    			   if(fromID.equals("60001")||fromID.equals("60002")){
+    				 //更新托盘内的配方位置 
+    				   set=st.executeQuery("select 类型  from 通用物料  where 物料编码="+"'"+wuliao+"'"); 
+    				   String lei="";
+    				   if(set.next()){
+    					   lei=set.getString(1);
+    					   SqlTool.initAddresInPalet(lei, tp,st); 
+    				   }
+    				  
+	    			  
+    				}
     		   }else{
     			   String sba[]=getWuliaoFromLK(tp).split("!_!");
     			   
     			   String  ql="insert into 库存托盘 (托盘编号,物料,数量,"+
     	                   "方向,货位号) values("+
     	                     "'"+tp+"',"+
-    	                     "'"+sba[0]+"',"+
+    	                      "'"+sba[0]+"',"+
     	                      "'"+sba[1]+"',"+
     	                      "'"+qu+"',"+
     	                      "'"+toID+"'"+
     	                    ")";
     			   st.executeUpdate(ql);
+    			   
+    			   if(fromID.equals("60001")||fromID.equals("60002")){
+      				/*****更新托盘内的配方位置，等着做  
+      				   */
+    				   set=st.executeQuery("select 类型  from 通用物料  where 物料编码="+"'"+sba[0]+"'"); 
+    				   if(set.next()){
+    					   SqlTool.initAddresInPalet(set.getString(1), tp,st);
+    				   }
+      			   }
     		  
     		   }
     		   //2.第二步更新货位表
@@ -716,14 +811,15 @@ try{  boolean isEvent=false;
     	   if(zong.equals("下货")){
     		  
         	   //1.第一步更新库存托盘表
-    		   if(toID.equals("60002")){//这儿应该把货位
-    		   st.executeUpdate("update 库存托盘  set 货位号='"+toID+"' ,方向='"+qu+"' where 托盘编号='"+tp+"'");
+    		   if(toID.equals("60002")||toID.equals("60001")){
+    			   //如果是下到人工台的，直接把托盘的货位清空
+    		     st.executeUpdate("update 库存托盘  set 货位号=NULL ,方向='"+qu+"' where 托盘编号='"+tp+"'");
     		   }else{
     		   st.executeUpdate("update 库存托盘  set 货位号='"+toID+"' ,方向='"+qu+"' where 托盘编号='"+tp+"'");   
     		   }
     		   //2.第二步更新货位表
     		   st.executeUpdate("update 货位表     set 托盘编号=NULL,堆垛机=NULL where 货位序号="+"'"+fromID+"'");
-    		   if(!toID.equals("60002"))
+    		   if(!toID.equals("60002")&&!toID.equals("60001"))
     		   st.executeUpdate("update 货位表     set 托盘编号='"+tp+"',堆垛机='"+qu+"'  where 货位序号="+"'"+toID+"'");
     		  //3.第三步更新配方指令队列表
     		   st.executeUpdate("update 立库动作指令  set 状态='完成',完成时间="+SqlPro.getDate()[1]+" where idEvent="+"'"+idEvent+"'");
@@ -731,15 +827,23 @@ try{  boolean isEvent=false;
         		   }
     	   
     	   if(zong.equals("输送线回流")){
+    		   //在临时版本里面，输送线回流要分两种方式来处理，一种回货架，一种回人工台
     		  
     		 //1.第一步更新库存托盘表
          	  
-    		  // st.executeUpdate("update 库存托盘  set 货位号='"+toID+"' ,方向='"+qu+"' where 托盘编号='"+tp+"'");
-    		   st.executeUpdate("update 库存托盘  set 货位号=NULL  where 托盘编号='"+tp+"'");
+    		   // st.executeUpdate("update 库存托盘  set 货位号='"+toID+"' ,方向='"+qu+"' where 托盘编号='"+tp+"'");
+    		    st.executeUpdate("update 库存托盘  set 货位号=NULL  where 托盘编号='"+tp+"'");
     		   //2.第二步更新货位表
     		   st.executeUpdate("update 货位表     set 托盘编号=NULL,堆垛机=NULL where 货位序号="+"'"+fromID+"'");
-    		   if(toID.equals("60002"))
-    		   st.executeUpdate("update 货位表     set 托盘编号='"+tp+"',堆垛机='"+qu+"'  where 货位序号="+"'"+toID+"'");
+    		   if(toID.equals("60002")||toID.equals("60001")){
+    			   //如果是回人工台的
+    			   
+    		     //  st.executeUpdate("update 货位表     set 托盘编号='"+tp+"',堆垛机='"+qu+"'  where 货位序号="+"'"+toID+"'");
+    			     st.executeUpdate("update 立库动作指令  set 状态2='1' where idEvent="+"'"+idEvent+"'");
+    			     st.executeUpdate("DELETE from `库存托盘` where 托盘编号='"+tp+"'");
+    			     
+    	        	
+    		   }
     		  //3.第三步更新配方指令队列表
     		   st.executeUpdate("update 立库动作指令  set 状态='完成',完成时间="+SqlPro.getDate()[1]+" where idEvent="+"'"+idEvent+"'");
     		   
@@ -813,36 +917,71 @@ try{  boolean isEvent=false;
         st=con.createStatement();
         con.setAutoCommit(false);
         String sql="select idEvent,动作,状态,状态2,是否回大库,来源货位号,放回货位号,托盘编号,"
-        		+"请求区  from 立库动作指令   where 是否回大库='1' and 状态2<>'1' and 状态='完成'"
+        		+"请求区  from 立库动作指令   where 动作='预上货' and 状态2<>'1' and 状态='完成'"
         		+" and 托盘编号='"+tp+"' order by idEvent";
         set=st.executeQuery(sql);
         if(set.next()){
-        	//如果这个托盘是回大库的
-        	//1.首先删除库存托盘表里面的记录
-        	 System.out.println("RFID2-------------");
+        	 boolean isHuowei=false;
+        	 System.out.println("RFID2-------------3="+tp);
         	 Object eventID=set.getObject(1);
-        	 set=st.executeQuery("select 物料,数量  from 库存托盘  where 托盘编号="+"'"+tp+"'"); 
-        	 String wuliao="";
-        	 int shul=0;
-        	 if(set.next()){
-        		 wuliao=set.getString(1);
-        		 shul=set.getInt(2);
-        	 }
-        	 st.executeUpdate("DELETE from `库存托盘` where 托盘编号='"+tp+"'");
+        	 Object toID=set.getObject(7)==null?"":set.getObject(7);
+        	 String machineID=set.getObject(9)==null?"":set.getObject(9).toString();
         	 
-        	 //2.通知去料升降台向大库送去托盘
-        	 if( informToDK(tp,wuliao,shul).contains("成功"))
-        	   {
-        	//3.更新立库指令队列
-        	 st.executeUpdate("update 立库动作指令  set 状态2='1' where idEvent="+"'"+eventID+"'");
-        	 st.executeUpdate("update 货位表     set 托盘编号=NULL,堆垛机=NULL where 货位序号="+"'60002'");
-        	   }
-        	//4.如果去了升降机想大库送货失败怎办
+        	 if(!toID.equals("")){
+        		if(machineID.equals("1")) {
+        	 String iss=add动作指令( tp, "60001",toID+"","上货"/*上货，下货，输送线回流*/, 
+    				  0/*1=回大库，非1=不回*/,  machineID);
+        	 
+        	 if(iss.contains("成功")){
+        		 System.out.println("RFID2-------------4="+tp);
+        		 //更新状态二
+        		 st.executeUpdate("update 立库动作指令  set 状态2='1' where idEvent="+"'"+eventID+"'");
+        		
+        		 isHuowei=true;
+        		 back=iss+"!_!"+toID;
+        		 
+        	   }}
+        		
+        		if(machineID.equals("2")) {
+               	 String iss=add动作指令( tp, "60002",toID+"","上货"/*上货，下货，输送线回流*/, 
+   	    				  0/*1=回大库，非1=不回*/,  machineID);
+               	 
+               	 if(iss.contains("成功")){
+               		 System.out.println("RFID2-------------4="+tp);
+               		 //更新状态二
+               		 st.executeUpdate("update 立库动作指令  set 状态2='1' where idEvent="+"'"+eventID+"'");
+               		
+               		 isHuowei=true; 
+               		 back=iss+"!_!"+toID;
+               		 
+               	   }}
+               	 
+        	 
+        	 }
+        	 
+        	 if(!isHuowei){
+            	 set=st.executeQuery("select 物料,方向  from 库存托盘  where 托盘编号="+"'"+tp+"'"); 	
+            	 
+            	 if(set.next()){
+            		 Object wul=set.getObject(1);
+            		 Object machineID2=set.getObject(2);
+            		 if(machineID.equals("1")){
+            		 back =autoUpPallet( tp,wul+"","60001",machineID2+"");
+            		 }
+            		 else{
+            	     back =autoUpPallet( tp,wul+"","60002",machineID2+""); 
+            			 
+            		 }
+            		 if(back.contains("成功"))
+            		 st.executeUpdate("update 立库动作指令  set 状态2='1' where 托盘编号="+"'"+tp+"'");
+            	      }
+            	 
+                 } 
         	
         	 back="成功处理!_!100000";
         }
          else{
-        	//上货架
+        	//如果这个托盘是来源与7条输送线的上货架
         	 boolean isHuowei=false;
         	 //首先判断这个托盘有没有指定货位
         	 String sql3="select max(idEvent),动作,状态,状态2,是否回大库,来源货位号,放回货位号,托盘编号,"
@@ -856,9 +995,10 @@ try{  boolean isEvent=false;
             	 Object toID=set.getObject(7)==null?"":set.getObject(7);
             	 String machineID=set.getObject(9)==null?"":set.getObject(9).toString();
             	 if(!toID.equals("60001")&&!toID.equals("60002")&&!toID.equals("")){
-            		 
-            	 String iss=add动作指令( tp, "60002",toID+"","上货"/*上货，下货，输送线回流*/, 
+            		if(machineID.equals("1")) {
+            	 String iss=add动作指令( tp, "60003",toID+"","上货"/*上货，下货，输送线回流*/, 
 	    				  0/*1=回大库，非1=不回*/,  machineID);
+            	 
             	 if(iss.contains("成功")){
             		 System.out.println("RFID2-------------4="+tp);
             		 //更新状态二
@@ -867,7 +1007,23 @@ try{  boolean isEvent=false;
             		 isHuowei=true;
             		 back=iss+"!_!"+toID;
             		 
-            	   }
+            	   }}
+            		
+            		if(machineID.equals("2")) {
+                   	 String iss=add动作指令( tp, "60004",toID+"","上货"/*上货，下货，输送线回流*/, 
+       	    				  0/*1=回大库，非1=不回*/,  machineID);
+                   	 
+                   	 if(iss.contains("成功")){
+                   		 System.out.println("RFID2-------------4="+tp);
+                   		 //更新状态二
+                   		 st.executeUpdate("update 立库动作指令  set 状态2='1' where idEvent="+"'"+eventID+"'");
+                   		
+                   		 isHuowei=true;
+                   		 back=iss+"!_!"+toID;
+                   		 
+                   	   }}
+                   	 
+            	 
             	 
             	 }
             	 
@@ -878,7 +1034,14 @@ try{  boolean isEvent=false;
         	 
         	 if(set.next()){
         		 Object wul=set.getObject(1);
-        		 back =autoUpPallet( tp,wul+"","60002",set.getObject(2)+"");
+        		 Object machineID=set.getObject(2);
+        		 if(machineID.equals("1")){
+        		 back =autoUpPallet( tp,wul+"","60003",machineID+"");
+        		 }
+        		 else{
+        	     back =autoUpPallet( tp,wul+"","60004",machineID+""); 
+        			 
+        		 }
         		 if(back.contains("成功"))
         		 st.executeUpdate("update 立库动作指令  set 状态2='1' where 托盘编号="+"'"+tp+"'");
         	      }
@@ -922,6 +1085,7 @@ try{  boolean isEvent=false;
 	      out = new ObjectOutputStream(baos); 
 	      out.writeObject(ob);    
 	    } catch (IOException e) { 
+	    	e.printStackTrace();
 	    
 	    }finally{ 
 	      try { 
@@ -1034,7 +1198,201 @@ try{  boolean isEvent=false;
 
        return null;
 
-}  
+} 
+
+public static void clearValueForPalet( String 货位号,int machineID){
+	System.out.println("clear pallet address-------------");
+	if(pro==null){pro=SqlPro.loadProperties(SqlPro.class.getResource("conf.pro").getFile());}
+	if(pro!=null){
+		 int to[]=new int[41];
+		 ClientSer.getIntance().writeSirIntToCTR(pro.getProperty(货位号), 41, to,  machineID)  ;	
+		
+	  }
+	
+	
+ }	
+
+//写入托盘里面的货物位置,刚开始入托盘时，说有货物全是慢的。	 
+public static	void initAddresInPalet(String lei/*1=10行X2列X2成*/,String palet, Statement st){
+	if(lei==null||lei.equals(""))return;
+	//向数据库里面插入的数据格式如下
+	//地址1=1,地址2=0，。。。。。。1代表有货，0代表没货
+		if(lei.equals("1")){//类别确定了写入的长度，10行X2列X2成
+			//1-40
+			//货位的起始地址，标注有没有初始化，比如货位的起始地址是D200，那么D200就标注为有没有初始化。
+			String val="1=1,2=1,3=1,4=1,5=1,6=1,7=1,8=1,"+
+					    "9=1,10=1,11=1,12=1,13=1,14=1,15=1,16=1,17=1,"+
+					    "18=1,19=1,20=1,21=1,22=1,23=1,24=1,25=1,26=1,"+
+					    "27=1,28=1,29=1,30=1,31=1,32=1,33=1,34=1,35=1,"+
+					    "36=1,37=1,38=1,39=1,40=1";
+			String sql= "update 库存托盘  set address='"+val+"' where 托盘编号="+"'"+palet+"'";
+			System.out.println(sql);
+			try{
+				if(st==null){
+				SqlTool.insert(new String[]{sql});}
+				else{
+					st.executeUpdate(sql);
+					
+				}
+				
+			}catch(Exception ex){}
+			
+			
+		}
+       if(lei.equals("2")){//类别确定了写入的长度，7行X2列X2成
+			//1-28
+    	    //货位的起始地址，标注有没有初始化
+    	   String val="1=1,2=1,3=1,4=1,5=1,6=1,7=1,8=1,"+
+				    "9=1,10=1,11=1,12=1,13=1,14=1,15=1,16=1,17=1,"+
+				    "18=1,19=1,20=1,21=1,22=1,23=1,24=1,25=1,26=1,"+
+				    "27=1,28=1";
+    	   String sql= "update 库存托盘  set address='"+val+"' where 托盘编号="+"'"+palet+"'";
+    		try{
+				if(st==null){
+				SqlTool.insert(new String[]{sql});}
+				else{
+					st.executeUpdate(sql);
+					
+				}
+				
+			}catch(Exception ex){}
+			
+		}
+       
+       if(lei.equals("3")){//类别确定了写入的长度，7行X1列X1成
+			//1-7
+    	   String val="1=1,2=1,3=1,4=1,5=1,6=1,7=1";
+    	   String sql= "update 库存托盘  set address='"+val+"' where 托盘编号="+"'"+palet+"'";
+    		try{
+				if(st==null){
+				SqlTool.insert(new String[]{sql});}
+				else{
+					st.executeUpdate(sql);
+					
+				}
+				
+			}catch(Exception ex){}
+			
+			
+		}
+       if(lei.equals("4")){//类别确定了写入的长度，4行X2列X1成
+			//1-8
+    	   String val="1=1,2=1,3=1,4=1,5=1,6=1,7=1,8=1";
+    	   String sql= "update 库存托盘  set address='"+val+"' where 托盘编号="+"'"+palet+"'";
+    		try{
+				if(st==null){
+				SqlTool.insert(new String[]{sql});}
+				else{ 
+					st.executeUpdate(sql);
+					
+				}
+				
+			}catch(Exception ex){}
+			
+		}
+} 
+
+//向PLC里面写入托盘上的货物位置型号 ,只有当托盘到达输送线的终端时才写入,在startLine里调用
+public static	void WriteAddresInPaletToPLC(String lei/*1=10行X2列X2成*/,String palet,String huowei,int machineID){
+	System.out.println("write pallet address-------------");
+	if(lei==null||lei.equals(""))return;
+	
+	if(pro==null){pro=SqlPro.loadProperties(SqlPro.class.getResource("conf.pro").getFile());}
+	if(pro!=null){
+		
+	
+			//货位的起始地址，标注有没有初始化，比如货位的起始地址是D200，那么D200就标注为有没有初始化。
+	   String val=SqlTool.findOneRecord("select address from 库存托盘  where  托盘编号='"+palet+"'");
+	   if(val!=null){
+		   String sm[]=val.split(",");
+		   int length=sm.length+1;
+		   int to[]=new int[length];
+		   to[0]=1;
+		   for(int i=1;i<to.length;i++){
+			     to[i]=Integer.parseInt(sm[i-1].split("=")[1]);
+			   
+		     }
+		   
+		   ClientSer.getIntance().writeSirIntToCTR(pro.getProperty(huowei), length, to,  machineID)  ;
+		   
+	   }
+			
+		}
+    
+	
+} 
+
+//从PLC里面读取数据后，然后保存到数据库里面，接受到数据更新完成时多会调用此方法
+public static	void readAddresInPaletFromPLC(String lei/*1=10行X2列X2成*/,String palet,String huowei,int machineID){
+	System.out.println("read pallet address from plc -------------huowei="+huowei+"/tp="+palet+"machineID="+machineID);
+	if(lei==null||lei.equals(""))return;
+	
+	if(pro==null){pro=SqlPro.loadProperties(SqlPro.class.getResource("conf.pro").getFile());}
+	if(pro!=null){
+		
+		if(lei.equals("1")){//类别确定了写入的长度，10行X2列X2成
+			//1-40
+			//货位的起始地址，标注有没有初始化，比如货位的起始地址是D200，那么D200就标注为有没有初始化。
+			String val="";
+			alai.GDT.Resint[]back=ClientSer.getIntance().getSirIntValuesFromCTR(pro.getProperty(huowei), 41, 16, machineID);
+			for(int i=1;i<41;i++){
+				 val=val+","+i+"="+back[i].resInt;
+				
+			}
+			val=val.substring(1, val.length());
+			String sql= "update 库存托盘  set address='"+val+"' where 托盘编号="+"'"+palet+"'";
+			SqlTool.insert(new String[]{sql});
+			
+		}
+       if(lei.equals("2")){//类别确定了写入的长度，7行X2列X2成
+			//1-28
+    	    //货位的起始地址，标注有没有初始化
+    	   String val="";
+			alai.GDT.Resint[]back=ClientSer.getIntance().getSirIntValuesFromCTR(pro.getProperty(huowei), 29, 16, machineID);
+			for(int i=1;i<29;i++){
+				 val=val+","+i+"="+back[i].resInt;
+				
+			}
+			val=val.substring(1, val.length());
+    	   String sql= "update 库存托盘  set address='"+val+"' where 托盘编号="+"'"+palet+"'";
+			SqlTool.insert(new String[]{sql});
+			
+		}
+       
+       if(lei.equals("3")){//类别确定了写入的长度，7行X1列X1成
+			//1-7
+    	   String val="";
+			alai.GDT.Resint[]back=ClientSer.getIntance().getSirIntValuesFromCTR(pro.getProperty(huowei), 8, 16, machineID);
+			for(int i=1;i<8;i++){
+				 val=val+","+i+"="+back[i].resInt;
+				
+			}
+			val=val.substring(1, val.length());
+    	   String sql= "update 库存托盘  set address='"+val+"' where 托盘编号="+"'"+palet+"'";
+			SqlTool.insert(new String[]{sql});
+			
+			
+		}
+       if(lei.equals("4")){//类别确定了写入的长度，4行X2列X1成
+			//1-8
+    	   String val="";
+			alai.GDT.Resint[]back=ClientSer.getIntance().getSirIntValuesFromCTR(pro.getProperty(huowei), 9, 16, machineID);
+			for(int i=1;i<9;i++){
+				 val=val+","+i+"="+back[i].resInt;
+				
+			}
+			val=val.substring(1, val.length());
+    	   String sql= "update 库存托盘  set address='"+val+"' where 托盘编号="+"'"+palet+"'";
+			SqlTool.insert(new String[]{sql});
+			
+		}
+			
+		}
+  
+	
+} 
+
+
 	 
 public static void main(String ss[]){
 	String s="11111112";
