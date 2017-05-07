@@ -355,7 +355,9 @@ public class PLC implements Serializable {
 			INSTANCE=new PLC();
 			System.out.println("PLC启动---------------");
 			INSTANCE.startTiaodu();
+			INSTANCE.startTiaodu2();
 			INSTANCE.sendHert(1);
+			INSTANCE.sendHert(2);//第2区域
 			return INSTANCE;
 		}
 		
@@ -463,6 +465,7 @@ public class PLC implements Serializable {
 				getSTRdy(1,7);
 				getSTRdy(1,8);
 				getFromPLC(1);//必须写在最后
+				
 				writeO();
 				try {
 					Thread.sleep(500);
