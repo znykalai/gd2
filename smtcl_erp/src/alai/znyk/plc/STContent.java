@@ -129,10 +129,16 @@ public class STContent implements Serializable {
     	     	 carr.get工单ID()+"' and 模组序ID='"+carr.get模组序ID()+"' and 分解号='"+carr.get分解号()+"' and 载具序号='"+carr.get载具序号()+"' order by 工位");
     	     	 for(int m=0;m<tost.size();m++){
     	     		 Vector vv=(Vector)tost.get(m);
-    	     	     carr.set工位(carr.get工位()+""+vv.get(0));
+    	     	     carr.set工位(carr.get工位()+""+vv.get(0)); 
     	     	 
     	         }
+    	     	 if(装配区==1){
     	  		 PLC.getIntance().line.addFist(carr);
+    	  		 }
+    	     	 else{
+    	     	 PLC.getIntance().line2.addFist(carr); 
+    	     	 System.out.println("line2---------");
+    	  		 }
     	 		 
     	 	 ((_FST)secondST).clear();
    	 		 ((_FST)secondST).setId(row2.get(0)==null?0:(int)row2.get(0));
@@ -167,7 +173,7 @@ public class STContent implements Serializable {
     	     	 
     	         }
     	    if(装配区==1) 	 
-  		 PLC.getIntance().line.setBuffer(carr2);
+  		          PLC.getIntance().line.setBuffer(carr2);
     	    else  PLC.getIntance().line2.setBuffer(carr2);
     	 		 
     	 	}else{
@@ -206,7 +212,7 @@ public class STContent implements Serializable {
 	    	     	  
 	    	         }
 	    	     	 if(装配区==1) 	 
-	  		 PLC.getIntance().line.addFist(carr);
+	  		             PLC.getIntance().line.addFist(carr);
 	    	     	 else  PLC.getIntance().line2.addFist(carr);
     	 		}
     	 		
@@ -250,7 +256,7 @@ public class STContent implements Serializable {
         	     	 
         	         }
         	     	if(装配区==1) 
-      		           PLC.getIntance().line.setBuffer(carr2);
+      		               PLC.getIntance().line.setBuffer(carr2);
         	     	else  PLC.getIntance().line2.setBuffer(carr2);
         	 		 
     	 		}
