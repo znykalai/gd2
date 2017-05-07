@@ -897,7 +897,7 @@ var readyShow={
 					  			var obj=eval("("+data+")");
 					  			if(obj.success){
 				                    //将所有行重置class变为老数据
-				                    mz_zj_table.attr("class","");
+				                    mz_zj_table.attr("class","");mz_zj_table=null;
 				                    $("#mozu_id").val(obj.mz_id);
 				                    showMzzj(obj.mz_id);//显示模组载具行
 					  				layer.msg("保存模组成功！");
@@ -905,7 +905,7 @@ var readyShow={
 					  			obj=null;
 							}
 						});
-						head=null,add=null,update=null,mz_zj_table=null;
+						head=null,add=null,update=null;
 				        return null;
 					});
 					//模组指令行显示
