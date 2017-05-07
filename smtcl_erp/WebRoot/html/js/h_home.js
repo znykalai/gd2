@@ -122,7 +122,7 @@ var readyShow={
 							/**
 							 * 缓存库下层
 							 */
-							if(obj.hckBottom>0){
+							if(obj.hckBottom.length>0){
 								for(var i=0,j=0,k=af.bottomHome.length;i<k;i++){
 									try{
 										if(af.bottomHome.toString().indexOf('‘'+obj.hckBottom[i][i]+'’')>-1){
