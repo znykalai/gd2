@@ -234,10 +234,10 @@
 						   		</div>
 				            </div>
 				            <div class="col-md-2 text-right" style="padding:5px 0 0 0;">
-				                <span><span style="color:red;">*</span>模组类型:</span>
+				                <span>时间:</span>
 				            </div>
 				            <div class="col-md-3">
-				                <input id="mozu_leixing" type="text" class="form-control"/>
+				                <input id="mozu_newDate" type="text" readonly="readonly" class="form-control"/>
 				            </div>
 				            <div class="col-md-2">
 						        <div class="button button-primary button-rounded button-small baseAnniu" id="mz_selectBtn">查找</div>
@@ -251,9 +251,20 @@
 				                <input id="mozu_dianxinleixing" type="text" class="form-control"/>
 				            </div>
 				            <div class="col-md-2 text-right" style="padding:5px 0 0 0;">
-				                <span>工位类别:</span>
+				                <span><span style="color:red;">*</span>模组类型:</span>
 				            </div>
 				            <div class="col-md-3">
+				                <input id="mozu_leixing" type="text" class="form-control"/>
+				            </div>
+							<div class="col-md-2">
+						        <div class="button button-primary button-rounded button-small baseAnniu" id="mz_newBtn">新建模组</div>
+					        </div>
+				        </div>
+			            <div class="row margin-top-10" style="margin-right:10px;">
+				            <div class="col-md-2 text-right" style="padding:5px 0 0 0;">
+				                <span>工位类别:</span>
+				            </div>
+				            <div class="col-md-2">
 			            		<div class="cus-select" id="gongwei">
 	                                <div class="cus-select-btn"></div>
 	                                <input id="mozu_gongweileibie" value="" type="text" readonly/>
@@ -264,22 +275,17 @@
 	                                </ul>
 	                            </div>
 				            </div>
-							<div class="col-md-2">
-						        <div class="button button-primary button-rounded button-small baseAnniu" id="mz_newBtn">新建模组</div>
-					        </div>
-				        </div>
-			            <div class="row margin-top-10" style="margin-right:10px;">
-				            <div class="col-md-2 text-right" style="padding:5px 0 0 0;">
+				            <div class="col-md-1 text-right" style="padding:5px 0 0 0;">
 				                <span>型腔数:</span>
 				            </div>
-				            <div class="col-md-3">
-				                <input id="mozu_xingqiangshu" type="number" min="0" value="0" class="form-control"/>
+				            <div class="col-md-2">
+				            	<input id="mozu_xingqiangshu" type="number" min="0" value="0" class="form-control"/>
 				            </div>
-				            <div class="col-md-2 text-right" style="padding:5px 0 0 0;">
-				                <span>时间:</span>
+				            <div class="col-md-1 text-right" style="padding:5px 0 0 0;">
+				                <span><span style="color:red;">*</span>层数:</span>
 				            </div>
-				            <div class="col-md-3">
-				                <input id="mozu_newDate" type="text" readonly="readonly" class="form-control"/>
+				            <div class="col-md-2">
+				                <input id="mozu_cengshu" type="number" min="1" class="form-control"/>
 				            </div>
 							<div class="col-md-2">
 						        <div class="button button-primary button-rounded button-small baseAnniu" id="mz_deleteBtn">删除模组</div>
@@ -370,11 +376,12 @@
 				           <thead>
 				               <tr>
 				                  <th class="text-center" style="width:3%;" bgcolor="#EFEFEF"></th>
-				                  <th class="text-center" style="width:5%;" bgcolor="#EFEFEF">序号</th>
+				                  <th class="text-center" style="width:7%;" bgcolor="#EFEFEF">序号</th>
 				                  <th class="text-center" style="width:25%;" bgcolor="#EFEFEF">物料</th>
 				                  <th class="text-center" style="width:35%;" bgcolor="#EFEFEF">物料描述 </th>
 				                  <th class="text-center" style="width:10%;" bgcolor="#EFEFEF">数量</th>
 				                  <th class="text-center" style="width:10%;" bgcolor="#EFEFEF">工位</th>
+				                  <th class="text-center" style="width:10%;" bgcolor="#EFEFEF">载具位置</th>
 				               </tr>
 				           </thead>
 						</table>

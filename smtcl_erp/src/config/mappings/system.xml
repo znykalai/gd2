@@ -126,6 +126,7 @@
     	<result property="新建时间" column="新建时间" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     	<result property="更新者" column="更新者" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     	<result property="更新时间" column="更新时间" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="层数" column="层数" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     </resultMap>
 	<select id="BaseDataDAO.getMzYesNo" parameterClass="java.util.HashMap" resultMap="BaseDataDAO.getMzYesNoMap">
 		select a.* from 模组题头 a where a.模组编码 = #mozu_code#
@@ -169,6 +170,7 @@
     	<result property="物料描述" column="物料描述" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     	<result property="数量" column="数量" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     	<result property="工位" column="工位" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="载具位置" column="载具位置" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     </resultMap>
 	<select id="BaseDataDAO.getMzzlhList" parameterClass="java.util.HashMap" resultMap="BaseDataDAO.getMzzlhListMap">
 		$sql$
@@ -279,6 +281,8 @@
     	<result property="有效型腔" column="有效型腔" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     	<result property="完成数量" column="完成数量" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     	<result property="装配区" column="装配区" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="模组层数" column="模组层数" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="载具位置" column="载具位置" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     </resultMap>
 	<select id="OrderOperactionDAO.getZlList" parameterClass="java.util.HashMap" resultMap="OrderOperactionDAO.getZlListMap">
 		$sql$
@@ -325,8 +329,8 @@
 	</select>
 	<!-- 配方指令队列 保存 -->
 	<insert id="OrderOperactionDAO.savePfzldl" parameterClass="java.util.HashMap">
-		insert into `配方指令队列`(`工单ID`,`工单序号`,`pack编码`,`pack类型`,`装配区`,`模组序ID`,`模组序号`,`模组编码`,`载具序号`,`模组类型`,`电芯类型`,`物料`,`物料描述`,`数量`,`工位`,`电芯数量`,`翻面否`,`电芯位置1`,`电芯位置2`,`电芯位置3`,`电芯位置4`,`假电芯1`,`假电芯2`,`叠装否`,`有效型腔`,`完成数量`,`分解号`)
-		values(#工单ID#,#工单序号#,#pack编码#,#pack类型#,#装配区#,#模组序ID#,#模组序号#,#模组编码#,#载具序号#,#模组类型#,#电芯类型#,#物料#,#物料描述#,#数量#,#工位#,#电芯数量#,#翻面否#,#电芯位置1#,#电芯位置2#,#电芯位置3#,#电芯位置4#,#假电芯1#,#假电芯2#,#叠装否#,#有效型腔#,#完成数量#,#分解号#)
+		insert into `配方指令队列`(`工单ID`,`工单序号`,`pack编码`,`pack类型`,`装配区`,`模组序ID`,`模组序号`,`模组编码`,`载具序号`,`模组类型`,`电芯类型`,`物料`,`物料描述`,`数量`,`工位`,`电芯数量`,`翻面否`,`电芯位置1`,`电芯位置2`,`电芯位置3`,`电芯位置4`,`假电芯1`,`假电芯2`,`叠装否`,`有效型腔`,`完成数量`,`分解号`,`模组层数`,`载具位置`)
+		values(#工单ID#,#工单序号#,#pack编码#,#pack类型#,#装配区#,#模组序ID#,#模组序号#,#模组编码#,#载具序号#,#模组类型#,#电芯类型#,#物料#,#物料描述#,#数量#,#工位#,#电芯数量#,#翻面否#,#电芯位置1#,#电芯位置2#,#电芯位置3#,#电芯位置4#,#假电芯1#,#假电芯2#,#叠装否#,#有效型腔#,#完成数量#,#分解号#,#模组层数#,#载具位置#)
 	</insert>
 	<!-- 修改工单分解日期 -->
 	<update id="OrderOperactionDAO.updateGdState" parameterClass="java.util.HashMap">

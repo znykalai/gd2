@@ -271,6 +271,7 @@ var readyShow={
 						           		$('#mozu_gongweileibie').val(obj[0].mozu_gongweileibie);
 						           		$('#mozu_xingqiangshu').val(obj[0].mozu_xingqiangshu);
 						           		$('#mozu_newDate').val(obj[0].mozu_newDate);
+						           		$('#mozu_cengshu').val(obj[0].mozu_cengshu);
 						           		showMzzj(obj[0].mozu_id);
 						           		obj=null;
 									}
@@ -609,6 +610,7 @@ var readyShow={
 						});
 					};
 					var num=1;//序号
+					//添加载具
 					$('#mz_zj_addTr').click(function(){
 						//模组编码不允许为空
 						if($("#mozu_code").val()==""){
@@ -727,6 +729,7 @@ var readyShow={
 				                    lastTr.append('<td class="mozu_gongweileibie" style="display:none;">'+obj[i].mozu_gongweileibie+'</td>');
 				                    lastTr.append('<td class="mozu_xingqiangshu" style="display:none;">'+obj[i].mozu_xingqiangshu+'</td>');
 				                    lastTr.append('<td class="mozu_newDate" style="display:none;">'+obj[i].mozu_newDate+'</td>');
+				                    lastTr.append('<td class="mozu_cengshu" style="display:none;">'+obj[i].mozu_cengshu+'</td>');
 								};obj=null;
 								/*绑定双击事件*/
 				            	$('.commonTr').bind('dblclick',function(e){
@@ -739,6 +742,7 @@ var readyShow={
 				            		$('#mozu_gongweileibie').val(tr.find('.mozu_gongweileibie').text());
 				            		$('#mozu_xingqiangshu').val(tr.find('.mozu_xingqiangshu').text());
 				            		$('#mozu_newDate').val(tr.find('.mozu_newDate').text());
+				            		$('#mozu_cengshu').val(tr.find('.mozu_cengshu').text());
 									showMzzj(tr.find('.mozu_id').text());//显示模组载具行
 				            		layer.close(win);
 				            	});
@@ -832,7 +836,6 @@ var readyShow={
 						}
 				        return null;
 					});
-					
 					//模组-载具保存
 					$("#mz_zj_saveBtn").click(function(){
 						var head={
@@ -841,26 +844,33 @@ var readyShow={
 							mozu_dianxinleixing:$("#mozu_dianxinleixing").val(),
 							mozu_gongweileibie:$("#mozu_gongweileibie").val(),
 							mozu_xingqiangshu:$("#mozu_xingqiangshu").val(),
-							mozu_newDate:$("#mozu_newDate").val()
+							mozu_newDate:$("#mozu_newDate").val(),
+							mozu_cengshu:$("#mozu_cengshu").val()
 						};
 						//模组编码不允许为空
 						if(head.mozu_code==""){
 				    	 	$("#mozu_code").focus();
 				    		layer.tips('请选择模组编码！','#mozu_code');
 				    		return null;
-						}
+						};
 						//模组类型不允许为空
 						if(head.mozu_leixing==""){
 				    	 	$("#mozu_leixing").focus();
 				    		layer.tips('请填写模组类型！','#mozu_leixing');
 				    		return null;
-						}
+						};
 						//电芯类型不允许为空
 						if(head.mozu_dianxinleixing==""){
 				    	 	$("#mozu_dianxinleixing").focus();
 				    		layer.tips('请填写电芯类型！','#mozu_dianxinleixing');
 				    		return null;
-						}
+						};
+						//层数不允许为空以及0
+						if(head.mozu_cengshu==""||Number(head.mozu_cengshu)<=0){
+				    	 	$("#mozu_cengshu").focus();
+				    		layer.tips('层数不允许为空,数值必须大于0','#mozu_cengshu');
+				    		return null;
+						};
 						//新增
 						var add=new Array;
 						//修改
@@ -919,14 +929,15 @@ var readyShow={
 								$('#mz_zlh_table tbody tr').remove();
 				  				for(var i=0;i<zlh_obj.length;i++){
 				  					var map={
-				  						mozu_id:mozu_id,
 				  						zj_id:zj_id,
+				  						mozu_id:mozu_id,
 				  						num:zlh_obj[i].zlh_xuhao,
 				  						zlh_xuhao:zlh_obj[i].zlh_xuhao,
 				  						zlh_wuliao:zlh_obj[i].zlh_wuliao,
 				  						zlh_wuliaomiaoshu:zlh_obj[i].zlh_wuliaomiaoshu,
 				  						zlh_shuliang:zlh_obj[i].zlh_shuliang,
-				  						zlh_gongwei:zlh_obj[i].zlh_gongwei
+				  						zlh_gongwei:zlh_obj[i].zlh_gongwei,
+				  						zlh_zaijuweizhi:zlh_obj[i].zlh_zaijuweizhi
 				  					};
 				  					addMzZlhRow(map);
 				  					zlhNum=Number(map.num)+1;
@@ -951,7 +962,7 @@ var readyShow={
 								'<input type="hidden" id="zj_id'+obj.num+'" value="'+obj.zj_id+'"/>' +
 							'</td>' +
 							//序号
-							'<td id="zlhNewTd2_'+obj.num+'" style="width:5%;padding:0px;">'+obj.num+'</td>' +
+							'<td id="zlhNewTd2_'+obj.num+'" style="width:7%;padding:0px;">'+obj.num+'</td>' +
 							//物料
 							'<td id="zlhNewTd3_'+obj.num+'" style="width:25%;padding:0px;">'+obj.zlh_wuliao+'</td>' +
 							//物料描述
@@ -960,6 +971,8 @@ var readyShow={
 							'<td id="zlhNewTd5_'+obj.num+'" style="width:10%;padding:0px;">'+obj.zlh_shuliang+'</td>' +
 							//工位
 							'<td id="zlhNewTd6_'+obj.num+'" style="width:10%;padding:0px;">'+obj.zlh_gongwei+'</td>' +
+							//载具位置
+							'<td id="zlhNewTd7_'+obj.num+'" style="width:10%;padding:0px;">'+obj.zlh_zaijuweizhi+'</td>' +
 						'</tr>');
 						//单选框
 						$("#zlhNewTd1_"+obj.num).click(function(){
@@ -992,12 +1005,7 @@ var readyShow={
 						//数量
 						$('#zlhNewTd5_'+obj.num).click(function(){
 							var row=this.id.split("_")[1];
-							var ck=this;
-							if(this.ck){
-								return null;
-							}else{
-								this.ck=true;
-							}
+							var ck=this;if(this.ck){return null;}else{this.ck=true;}
 							$(this).html('<input id="zlhNewTd5_text_'+row+'" type="number" class="form-control" value="'+$(this).html()+'">');
 							$('#zlhNewTd5_text_'+row).focus();
 					        $('#zlhNewTd5_text_'+row).blur(function(){
@@ -1018,12 +1026,7 @@ var readyShow={
 						//工位
 						$('#zlhNewTd6_'+obj.num).click(function(){
 							var row=this.id.split("_")[1];
-							var ck=this;
-							if(this.ck){
-								return null;
-							}else{
-								this.ck=true;
-							}
+							var ck=this;if(this.ck){return null;}else{this.ck=true;}
 							var optionHtml=null;
 							if($("#mozu_gongweileibie").val()=="奇数"){
 								optionHtml="<option></option>" +
@@ -1075,6 +1078,32 @@ var readyShow={
 				            });
 					        return null;
 						});
+						//载具位置
+						$('#zlhNewTd7_'+obj.num).click(function(){
+							var row=this.id.split("_")[1];
+							var ck=this;if(this.ck){return null;}else{this.ck=true;};
+				            if($(this).html()==0||$(this).html()=='0'){
+			                    $(ck).parent().attr("class","update");
+				            };
+							var optionHtml="<option"+($(this).html()=='1'?' selected':'')+">1</option><option"+($(this).html()=='2'?' selected':'')+">2</option>";
+							$(this).html('<select class="selectpicker"  id="zlhNewTd7_text_'+row+'" style="width:100%;height:100%;">'+optionHtml+'</select>');
+							optionHtml=null;
+							$('#zlhNewTd7_text_'+row).focus();
+					        $('#zlhNewTd7_text_'+row).blur(function(){
+					            var node=this.parentNode;
+					            $(node).html(this.value);
+					            ck.ck?ck.ck=false:null;node=null;
+						        return null;
+					        });
+				            //判断当前行 修改还是新增
+				            $('#zlhNewTd7_text_'+row+'').change(function(){
+				                if($(ck).parent().attr("class")==""){
+				                    $(ck).parent().attr("class","update");
+				                }
+						        return null;
+				            });
+					        return null;
+						});
 					};
 					//添加指令行
 					var zlhNum=1;
@@ -1099,7 +1128,8 @@ var readyShow={
 							zlh_wuliao:'',
 							zlh_wuliaomiaoshu:'',
 							zlh_shuliang:'',
-							zlh_gongwei:''
+							zlh_gongwei:'',
+							zlh_zaijuweizhi:'1'
 						};
 						addMzZlhRow(map);
 						zlhNum++;
@@ -1109,9 +1139,7 @@ var readyShow={
 					//保存指令行
 					$("#mz_zlh_saveBtn").click(function(){
 						var cheBoolean=$("input[name='trRadio_zj']").is(':checked');
-						if(!cheBoolean){
-							return null;
-						}
+						if(!cheBoolean){return null;}
 						var mozu_id=$("#mozu_id").val();//模组ID
 						var zj_id=$("input[name='trRadio_zj']:checked").val();//载具ID
 						var add=new Array;//新增
@@ -1125,13 +1153,14 @@ var readyShow={
 								zlh_wuliao:mz_zlh_table.eq(i).children("td").eq(2).html(),
 								zlh_wuliaomiaoshu:mz_zlh_table.eq(i).children("td").eq(3).html(),
 								zlh_shuliang:mz_zlh_table.eq(i).children("td").eq(4).html()==''?0:mz_zlh_table.eq(i).children("td").eq(4).html(),
-								zlh_gongwei:mz_zlh_table.eq(i).children("td").eq(5).html()
+								zlh_gongwei:mz_zlh_table.eq(i).children("td").eq(5).html(),
+								zlh_zaijuweizhi:mz_zlh_table.eq(i).children("td").eq(6).html()
 							};
 							if(mz_zlh_table.eq(i).children("td").eq(5).html()==""){
 								mz_zlh_table.eq(i).children("td").eq(5).click();
 					    		layer.tips('工位不允许为空行！','#zlhNewTd6_'+(i+1));
 								return null;
-							}
+							};
 							//判断当前行,修改还是新增
 				            if($(mz_zlh_table).parent().children("tr").eq(i).attr("class")=='add'){
 				                add.push(zjRowMap);//新增数据
