@@ -534,8 +534,8 @@ public void startlineAGV(){
 			if(res!=null){
 				 tp=res.split("!_!")[1];
 			System.out.println("AÇøRFID+++++="+tp);
-			if(isRffid1!=null&&isRffid1.equals(tp))return;
-			 isRffid1=tp;
+			//if(isRffid1!=null&&isRffid1.equals(tp))return;
+			// isRffid1=tp;
 			if(tp.equals(""))return;
 			 
 			    String back=SqlTool.exeRffid2(tp);
@@ -575,8 +575,8 @@ public void startlineAGV(){
 				if(res!=null){
 					 tp=res.split("!_!")[1];
 			   System.out.println("BÇøRFID2+++++="+tp);
-			       if(isRffid2!=null&&isRffid2.equals(tp))return;
-			        isRffid2=tp;
+			     //  if(isRffid2!=null&&isRffid2.equals(tp))return;
+			     //   isRffid2=tp;
 			      if(tp.equals(""))return;
 			 
 			    String back=SqlTool.exeRffid2(tp);

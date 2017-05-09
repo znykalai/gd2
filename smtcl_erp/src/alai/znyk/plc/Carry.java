@@ -46,6 +46,10 @@ public class Carry implements Serializable{
     public boolean 叠装否;
     
    
+	public int 模组层数;//
+    
+    
+   
   
    
 	public Carry(int 工单号,int 分解号,int 载具序号,int 模组序ID){
@@ -190,6 +194,13 @@ public class Carry implements Serializable{
 	public void set电芯位置4(String 电芯位置4) {
 		this.电芯位置4 = 电芯位置4;
 	}
+	
+	 public int get模组层数() {
+			return 模组层数;
+		}
+		public void set模组层数(int 模组层数) {
+			this.模组层数 = 模组层数;
+		}
 	 
 	public String getName(){
 		//工单号ID+模组序ID+分解号+载具序号,这三个也决定了唯一的载具

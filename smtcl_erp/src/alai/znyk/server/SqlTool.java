@@ -271,17 +271,34 @@ public class SqlTool {
       	  }
         	
         	
-          if(machineID.equals("1")){
+          if(machineID.equals("1")){//A区
         	  if((toI>600&&toI<615)){
         		  have=true;
             	  back="不允许从"+fomI+"货位把货下到"+toI+"货位,不能把A区的托盘放到B区输送线";
         		  
         	  }
+        	  if((toI>500&&toI<515)){
+        		  if(toI%2==0){
+        			  have=true;
+                	  back="不允许从"+fomI+"货位把货下到"+toI+"货位,只能发到奇数位"; 
+        			  
+        		  } 
+        		  
+        	  }
         	  
-          }else{
+          }else{////B区
         	  if((toI>500&&toI<515)){
         		  have=true;
             	  back="不允许从"+fomI+"货位把货下到"+toI+"货位,不能把B区的托盘放到A区输送线";
+        		  
+        	  }
+        	  
+        	  if((toI>600&&toI<615)){
+        		  if(toI%2==0){ 
+        			  have=true;
+                	  back="不允许从"+fomI+"货位把货下到"+toI+"货位,只能发到奇数位"; 
+        			  
+        		  } 
         		  
         	  }
         	  
@@ -300,6 +317,8 @@ public class SqlTool {
               	  back="输送不允许从"+fomI+"回流到"+toI+"货位";  
         		  
         	  }
+        	
+        	  
         	//零时方案添加，只要有预装的命令没完成，就不能调动输送线
         	  String sqll="select idEvent,状态,状态2 from 立库动作指令  where 动作='预上货' and 状态2<>'1'  order by idEvent";
               set=st.executeQuery(sqll);
@@ -312,12 +331,52 @@ public class SqlTool {
         }
         
         if(type.equals("预上货")){
-        	 String sqll="select idEvent,状态,状态2 from 立库动作指令  where 动作='预上货' and 状态2<>'1' and 托盘编号='"+tp+"' order by idEvent";
-             set=st.executeQuery(sqll);
+        	
+        	if(machineID.equals("1")){
+       		 if((toI>600&&toI<615)){
+          		  have=true;
+              	  back="不允许从"+fomI+"货位把货下到"+toI+"货位,不能把A区的托盘放到B区输送线";
+          		  
+          	  }
+       		
+       	}else{
+       	   if((toI>500&&toI<515)){
+     		     have=true;
+         	     back="不允许从"+fomI+"货位把货下到"+toI+"货位,不能把A区的托盘放到B区输送线";
+     		  
+     	     }
+       		
+       	}  
+        	
+        	 if((toI>500&&toI<515)){
+       		  if(toI%2==0){
+       			  have=true;
+               	  back="不允许从"+fomI+"货位把货下到"+toI+"货位,只能发到奇数位"; 
+       			  
+       		  } 
+       		  
+       	  }
+        	 
+         if((toI>600&&toI<615)){
+       		  if(toI%2==0){ 
+       			  have=true;
+               	  back="不允许从"+fomI+"货位把货下到"+toI+"货位,只能发到奇数位"; 
+       			  
+       		  } 
+       		  
+       	  }
+        	
+        if(!have)	{
+        	// String sqll="select idEvent,状态,状态2 from 立库动作指令  where 动作='预上货' and 状态2<>'1' and 托盘编号='"+tp+"' order by idEvent";
+        	/*在临时方案里面，由于Y向上货点没RFID，所以一次只能上一个命令，来防止托盘串号*/
+        	String sqll="select idEvent,状态,状态2 from 立库动作指令  where 动作='预上货' and 状态2<>'1' order by idEvent";
+        	set=st.executeQuery(sqll);
              if(set.next()){
              	have=true;
              	back="关于这个托盘已有预上货指令";
               }
+             }
+             
       }
         
         if(!have){

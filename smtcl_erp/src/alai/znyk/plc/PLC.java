@@ -29,6 +29,7 @@ public class PLC implements Serializable {
 	public boolean B区输送线到位常有=false;
 	public boolean 不检测取料数量=true;
 	public  int checkNum_同步=0;
+	public int 回流阀值=2;
 	public boolean is不检测取料数量() {
 		return 不检测取料数量;
 	}
@@ -436,10 +437,12 @@ public class PLC implements Serializable {
 		new Thread(){
 			public void run(){
 			while(true){
+				
 				try{
 					setSTATE1();
 					setSTATE2();
 				}catch(Exception e){e.printStackTrace();}
+				
 				ST0_1.initFromSql();
 				ST1_1.initFromSql();
 				ST2_1.initFromSql();
@@ -464,6 +467,7 @@ public class PLC implements Serializable {
 				getSTRdy(1,6);
 				getSTRdy(1,7);
 				getSTRdy(1,8);
+				if(!stop1)
 				getFromPLC(1);//必须写在最后
 				
 				writeO();
@@ -514,6 +518,7 @@ public class PLC implements Serializable {
 				getSTRdy(2,6);
 				getSTRdy(2,7);
 				getSTRdy(2,8);
+				if(!stop2)
 				getFromPLC(2);//必须写在最后
 				//writeO();
 				try {
@@ -627,7 +632,7 @@ public class PLC implements Serializable {
     								  public void run(){
     									  final long timeS2=timeS;
     									  final int curr=curr2;
-    									  System.out.println(Thread.currentThread()+"启动1");
+    									  System.out.println(Thread.currentThread()+"启动1-------------------------------------------------------------------------------------");
     									  while(true){
     						    Resint r2[]=	ClientSer.getIntance().getReturnPlc("D11001", 63, 16, 装配区);	  
     						    Resint bint2=r2[curr*2];
@@ -653,7 +658,7 @@ public class PLC implements Serializable {
     			    			try{Thread.sleep(200);}catch(Exception ee){}
     			    			
     			    			}//end while
-    						 System.out.println(Thread.currentThread()+"结束1");
+    									  System.out.println(Thread.currentThread()+"结束1-------------------------------------------------------------------------------------");
     								  }
     							  }.start();
     							  
@@ -691,7 +696,7 @@ public class PLC implements Serializable {
 								  public void run(){
 									  final int curr=curr2;
 									  final long timeS2=timeS;
-									  System.out.println(Thread.currentThread()+"启动2");
+									  System.out.println(Thread.currentThread()+"启动2-------------------------------------------------------------------------------------");
 									  while(true){
 										  
 						    Resint r2[]=	ClientSer.getIntance().getReturnPlc("D11001", 63, 16, 装配区);	  
@@ -720,9 +725,9 @@ public class PLC implements Serializable {
 			    			try{Thread.sleep(200);}catch(Exception ee){}
 			    			 
 			    			}//end while
-							System.out.println(Thread.currentThread()+"结束2");
+									  System.out.println(Thread.currentThread()+"结束2-------------------------------------------------------------------------------------");
 								  }
-							  }.start();
+							  }.start(); 
    	    				  }
     						
     	    				  
@@ -750,7 +755,7 @@ public class PLC implements Serializable {
 								  public void run(){
 									  final int curr=curr2;
 									  final long timeS2=timeS;
-									  System.out.println(Thread.currentThread()+"启动2");
+									  System.out.println(Thread.currentThread()+"启动15-------------------------------------------------------------------------------------");
 									  while(true){
 										  
 						    Resint r2[]=	ClientSer.getIntance().getReturnPlc("D11001", 63, 16, 装配区);	  
@@ -778,7 +783,7 @@ public class PLC implements Serializable {
 			    			try{Thread.sleep(200);}catch(Exception ee){}
 			    			 
 			    			}//end while
-							System.out.println(Thread.currentThread()+"结束2");
+									  System.out.println(Thread.currentThread()+"结束15-------------------------------------------------------------------------------------");
 								  }
 							  }.start();
 	    				  }	
@@ -915,7 +920,26 @@ public class PLC implements Serializable {
 			     到位1=false;
 			   //return false;  
 		   }else{
-			     到位1=true;
+			   Resint r[]=	ClientSer.getIntance().getReturnPlc("D11001", 63, 16, line);
+			   Resint bint=r[(st-1)*2];
+   			   int tem1=bint.getResInt();
+   			   int 托盘回大库=(tem1&0b10000)==16?1:0;
+   			   if(托盘回大库==1){//把托盘出库
+   				String sb=SqlTool.findOneRecord("select  托盘编号,物料,数量,货位号  from 库存托盘   where  货位号='"+gw1[st-2]+"'");
+   				if(sb!=null){
+   					String sm[]=sb.split("!_!");
+   				    String bb=SqlTool.add动作指令(sm[0], sm[3], 人工点, "输送线回流", 1, line+"");
+   				    if(bb.contains("成功")){
+   				     STC1.get(st-1).firstST.set立库RDY(false);
+				     STC1.get(st-1).secondST.set立库RDY(false); 
+   				    return false; }
+   				    }
+   			      }else{
+   			    	  
+			        到位1=true;
+			      }
+			     
+			     
 		   }
 		   
 	   }else{
@@ -927,7 +951,26 @@ public class PLC implements Serializable {
 			   到位2=false;
 			  // return false;  
 		   }else{
-			   到位2=true;
+			   Resint r[]=	ClientSer.getIntance().getReturnPlc("D11001", 63, 16, line);
+			   Resint bint=r[(st-1)*2];
+   			   int tem1=bint.getResInt();
+   			   int 托盘回大库=(tem1&0b10000)==16?1:0;
+   			   if(托盘回大库==1){//把托盘出库
+   				String sb=SqlTool.findOneRecord("select  托盘编号,物料,数量,货位号  from 库存托盘   where  货位号='"+gw2[st-2]+"'");
+   				if(sb!=null){
+   					String sm[]=sb.split("!_!");
+   				    String bb=SqlTool.add动作指令(sm[0], sm[3], 人工点, "输送线回流", 1, line+"");
+   				    if(bb.contains("成功")){
+   				     STC2.get(st-1).firstST.set立库RDY(false);
+				     STC2.get(st-1).secondST.set立库RDY(false); 
+   				    return false; }
+   				    }
+   			      }else{
+   			    	  
+			        到位2=true;
+			      }
+			   
+			   
 		    }
 		   
 	   }
@@ -1023,7 +1066,7 @@ public class PLC implements Serializable {
 		    	   
 		       }else{ //托盘物料跟本工位的不一样
 		    	      //叫托盘回流  
-		    	   if(tpshul>2){//回货架
+		    	   if(tpshul>回流阀值){//回货架
 		    		   if(输送线自动请求打开){
 		    	     String b=SqlTool.add动作指令(sm[0], sm[3], AGV点, "输送线回流", 0, line+"");
 		    	     System.out.println("因为托盘物料不是本工位要的物料------而回到货架"+sm[1]+"=="+tem.split("!_!")[0]+"->"+b);
@@ -1069,7 +1112,7 @@ public class PLC implements Serializable {
 				        else{
 			    	      //叫托盘回流  
 				        cot.secondST.set立库RDY(false);
-				        if(tpshul>2){//回货架
+				        if(tpshul>回流阀值){//回货架
 				        	 if(输送线自动请求打开)
 				    	     SqlTool.add动作指令(sm[0], sm[3], AGV点, "输送线回流", 0, line+"");
 				    	     //System.out.println("2因为托盘物料不是本工位要的物料------而回到货架"+sm[1]+"=="+tem.split("!_!")[0]);
@@ -1173,7 +1216,7 @@ public class PLC implements Serializable {
 			    	      //叫托盘回流  
 			    	   cot.firstST.set立库RDY(false);
 			    	   
-			    	   if(tpshul>2){//回货架
+			    	   if(tpshul>回流阀值){//回货架
 			    		     if(输送线自动请求打开)
 				    	     SqlTool.add动作指令(sm[0], sm[3], AGV点, "输送线回流", 0, line+"");
 				    	     }else{//回大库
@@ -1215,7 +1258,7 @@ public class PLC implements Serializable {
 					        else{
 				    	      //叫托盘回流  
 					        	 cot.secondST.set立库RDY(false);
-					        	 if(tpshul>2){//回货架
+					        	 if(tpshul>回流阀值){//回货架
 					        		 if(输送线自动请求打开)
 						    	     SqlTool.add动作指令(sm[0], sm[3], AGV点, "输送线回流", 0, line+"");
 						    	     }else{//回大库

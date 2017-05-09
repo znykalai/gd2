@@ -208,17 +208,55 @@ public class ClientSer {
 			
 	};
 	
+	public static Resint RST2[]=new Resint[]{
+			new Resint(), new Resint(),new Resint(),
+			new Resint(), new Resint(),new Resint(),
+			new Resint(), new Resint(),new Resint(),
+			new Resint(), new Resint(),new Resint(),
+			new Resint(), new Resint(),new Resint(),new Resint(),
+			
+			new Resint(), new Resint(),new Resint(),
+			new Resint(), new Resint(),new Resint(),
+			new Resint(), new Resint(),new Resint(),
+			new Resint(), new Resint(),new Resint(),
+			new Resint(), new Resint(),new Resint(),new Resint(),
+			
+			new Resint(), new Resint(),new Resint(),
+			new Resint(), new Resint(),new Resint(),
+			new Resint(), new Resint(),new Resint(),
+			new Resint(), new Resint(),new Resint(),
+			new Resint(), new Resint(),new Resint(),new Resint(),
+			
+			new Resint(), new Resint(),new Resint(),
+			new Resint(), new Resint(),new Resint(),
+			new Resint(), new Resint(),new Resint(),
+			new Resint(), new Resint(),new Resint(),
+			new Resint(), new Resint(),new Resint(),new Resint()
+			
+	};
+	
 	public alai.GDT.Resint[] getReturnPlc(String startAddress,int nums,int valueLen,
 	          int machineID){
 			try{
 				if(isOpenPlc){
+					if(machineID==1){
 					RST1=gd.getGD().getSirIntValuesFromCTR(startAddress, nums, valueLen, machineID);
-				return RST1;}
+				return RST1;
+				
+					}
+					 else{
+						  RST2=gd.getGD().getSirIntValuesFromCTR(startAddress, nums, valueLen, machineID);
+							return RST2;
+						  
+					  }
+				
+				}
 				
 			}catch(Exception ex){
 				SqlPro.getLog().error(ex.getMessage());
 				ex.printStackTrace();}
-			return RST1;
+			
+			return machineID==1?RST1:RST2;
 		
 		}
 	
@@ -231,7 +269,9 @@ public class ClientSer {
 			
 			
 		}catch(Exception ex){SqlPro.getLog().error(ex.getMessage());}
-		return RST1;
+		
+		
+		return machineID==1?RST1:RST2;
 	
 	}
 	 public int writeSirIntToCTR(String strAddress, int valuseLeng, int[] invalues, int machineID) 

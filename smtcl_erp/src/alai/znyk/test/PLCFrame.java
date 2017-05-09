@@ -20,6 +20,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
 import javax.swing.JCheckBox;
+import javax.swing.JTextField;
 
 public class PLCFrame extends JFrame {
 	static{
@@ -87,6 +88,25 @@ public class PLCFrame extends JFrame {
 			}
 		});
 		panel_18.add(checkBox);
+		
+		JLabel label = new JLabel("\u56DE\u6D41\u9600\u503C");
+		panel_18.add(label);
+		
+		textField = new JTextField();
+		panel_18.add(textField);
+		textField.setColumns(10);
+		textField.setText(PLC.getIntance().回流阀值+"");
+		JButton button = new JButton("\u5199\u5165");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String in=textField.getText();
+				try{
+					PLC.getIntance().回流阀值=Integer.parseInt(in)	;
+					
+				}catch(Exception eex){}
+			}
+		});
+		panel_18.add(button);
 		
 		chckbxA.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -224,4 +244,5 @@ public class PLCFrame extends JFrame {
 		contentPane.add(cp, BorderLayout.NORTH);
 	}
 	public  int start =0;
+	private JTextField textField;
 }

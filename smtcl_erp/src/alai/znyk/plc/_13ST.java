@@ -12,11 +12,14 @@ public class _13ST extends ST_Father implements STInterface {
 	private int PACK类型标志;
 	private int PACK号;
 	private int 模组号;
+	
+	public int 模组层数;//
+    
 
 	
 	
 	protected _13ST(PLC plc, int machineID,String startAddress) {
-		super(plc, machineID,startAddress,7);
+		super(plc, machineID,startAddress,8);
 		// TODO Auto-generated constructor stub
 	}
 	public int getBoolContent(){return boolContent;}
@@ -103,6 +106,7 @@ public class _13ST extends ST_Father implements STInterface {
 	     PACK类型标志=((_13ST)st).getPACK类型标志();
 	     PACK号=((_13ST)st).getPACK号();
   		 模组号=((_13ST)st).get模组号();
+  		 模组层数=((_13ST)st).get模组层数();
    	
 	 
  }
@@ -113,7 +117,7 @@ public class _13ST extends ST_Father implements STInterface {
 			 return true;
 			 
 		 }else{
-			 if(this.boolContent!=old.getBoolContent()||!this.getName().equals(old.getName())){return true;} 
+			 if(this.boolContent!=old.getBoolContent()||!this.getName().equals(old.getName())||模组层数!=((_13ST)old).get模组层数()){return true;} 
 			 
 		 }
 		 return false;}
@@ -132,6 +136,7 @@ public class _13ST extends ST_Father implements STInterface {
 	   		  PACK号=0;
 	   		  模组号=0;
 	   		 write=false; 
+	   		 模组层数=0;
 	    	
 	    }
 	@Override
@@ -148,7 +153,7 @@ public class _13ST extends ST_Father implements STInterface {
 	public String writeToPLC() {
 		return plc.writeBlockToBLC(startAddress, length, 
 				new int[]{boolContent,电芯类型标志,模组类型标志,有效型腔数,
-						PACK类型标志,PACK号,模组号},
+						PACK类型标志,PACK号,模组号,模组层数},
 				machineID);
 	}
 	@Override
@@ -168,6 +173,7 @@ public class _13ST extends ST_Father implements STInterface {
    		     PACK类型标志=back[4];
    		     PACK号=back[5];
    		     模组号=back[6];
+   		     模组层数=back[7];
    		    
    	 
    	   return "ST 读取成功";
@@ -178,5 +184,11 @@ public class _13ST extends ST_Father implements STInterface {
 	}
 	
 
+	public int get模组层数() {
+		return 模组层数;
+	}
+	public void set模组层数(int 模组层数) {
+		this.模组层数 = 模组层数;
+	}
 
 }

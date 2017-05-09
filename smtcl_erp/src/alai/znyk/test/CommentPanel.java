@@ -570,6 +570,46 @@ public class CommentPanel extends JPanel {
 	    });
 	    button_6.setBounds(578, 548, 93, 23);
 	    add(button_6);
+	    
+	    JLabel label_17 = new JLabel("\u9996\u5730\u5740\uFF1A");
+	    label_17.setBounds(10, 602, 54, 15);
+	    add(label_17);
+	    
+	    textField_13 = new JTextField();
+	    textField_13.setBounds(59, 599, 91, 21);
+	    add(textField_13);
+	    textField_13.setColumns(10);
+	    
+	    JLabel label_18 = new JLabel("\u503C");
+	    label_18.setBounds(159, 602, 54, 15);
+	    add(label_18);
+	    
+	    textField_14 = new JTextField();
+	    textField_14.setBounds(177, 599, 489, 21);
+	    add(textField_14);
+	    textField_14.setColumns(10);
+	    
+	    JButton button_7 = new JButton("\u53D1\u9001");
+	    button_7.addActionListener(new ActionListener() { 
+	    	public void actionPerformed(ActionEvent e) {
+	    		String startA=textField_13.getText();
+	    		String val=textField_14.getText();
+	    		 if(val!=null&&!val.equals("")&&!startA.equals("")){
+	    			   String sm[]=val.split(",");
+	    			   int length=sm.length+1;
+	    			   int to[]=new int[length];
+	    			   to[0]=1;
+	    			  for(int i=1;i<to.length;i++){
+	    				     to[i]=Integer.parseInt(sm[i-1].split("=")[1]);
+	    				}
+	    		ClientSer.getIntance().writeSirIntToCTR(startA, length, to,  1)  ;
+	    			   
+	    		   }
+	    				
+	    	}
+	    });
+	    button_7.setBounds(175, 569, 93, 23);
+	    add(button_7);
 	    table_5.getColumnModel().getColumn(1).setCellEditor(edit);
 	    table_5.getColumnModel().getColumn(2).setCellEditor(edit);
 	    
@@ -602,6 +642,8 @@ public class CommentPanel extends JPanel {
 	
 	ReST first=new ReST(new Resint());
 	ReST second=new ReST(new Resint());
+	private JTextField textField_13;
+	private JTextField textField_14;
 	public void setData(){
 		Resint[] rs=ClientSer.getIntance().getReturnPlc("D11001",63,16,1);
 		String st=comboBox.getSelectedItem().toString();

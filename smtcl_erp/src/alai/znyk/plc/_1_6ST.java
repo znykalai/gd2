@@ -13,7 +13,21 @@ public class _1_6ST extends ST_Father implements STInterface {
 	private int 模组类型标志;//D10008
 	private int 需求数量;//D100033
 	private int 完成数量;
+	
     protected  String 物料编码="";
+    
+   
+    private int 模组层数;
+    
+   
+	public int get模组层数() {
+		return 模组层数;
+	}
+	public void set模组层数(int 模组层数) {
+		this.模组层数 = 模组层数;
+	}
+
+	
 	
 	public String get物料编码() {
 		return 物料编码;
@@ -30,7 +44,7 @@ public class _1_6ST extends ST_Father implements STInterface {
 		this.完成数量 = 完成数量;
 	}
 	protected _1_6ST(PLC plc, int machineID,String startAddress) {
-		super(plc, machineID,startAddress,5);
+		super(plc, machineID,startAddress,6);
 		// TODO Auto-generated constructor stub
 	}
 	public int getBoolContent(){return boolContent;}
@@ -98,6 +112,8 @@ public class _1_6ST extends ST_Father implements STInterface {
  		     数据更新完成=false;
  		     完成数量=0;
  		     物料编码="";
+ 		    
+ 		     模组层数=0;
  		     write=false; 
 	    	
 	    }
@@ -114,6 +130,8 @@ public class _1_6ST extends ST_Father implements STInterface {
 		     数据更新完成=((_1_6ST)st).is数据更新完成();
 		     完成数量=((_1_6ST)st).get完成数量();
 		     物料编码=((_1_6ST)st).get物料编码();
+		    
+ 		     模组层数=((_1_6ST)st).get模组层数();
 	 }
 	 
 	 @Override
@@ -150,7 +168,7 @@ public class _1_6ST extends ST_Father implements STInterface {
 	@Override
 	public String writeToPLC() {
 		 System.out.println("writeToPLC()->数据更新完成="+ 数据更新完成+"/boolContent="+boolContent);
-		return plc.writeBlockToBLC(startAddress, length, new int[]{boolContent,电芯类型标志,模组类型标志,需求数量,完成数量},machineID);
+		return plc.writeBlockToBLC(startAddress, length, new int[]{boolContent,电芯类型标志,模组类型标志,需求数量,完成数量,模组层数},machineID);
 	}
 	@Override
 	public String updataFromPLC() {
@@ -163,6 +181,7 @@ public class _1_6ST extends ST_Father implements STInterface {
 	     模组类型标志=back[2];//D10008
 	     需求数量=back[3];//D10009
 	     完成数量=back[4]; 
+         模组层数=back[5];
 	     
    	//	}
    		 int tem= boolContent;

@@ -13,6 +13,7 @@ public class ReST implements  Serializable{
 	public boolean 动作完成;
 	public boolean 载具放行;
 	public boolean 人工组装线模式;
+	public boolean 托盘回大库;
 	public Resint boolCont;
 	public String startAddres="D0";
 	public String getStartAddres() {
@@ -37,6 +38,7 @@ public class ReST implements  Serializable{
 		 动作完成=((con&0b10)==2);
 		 载具放行=((con&0b100)==4);
 		 人工组装线模式=((con&0b1000)==8);
+		 托盘回大库=((con&0b10000)==16);
 		
 	}
 	public boolean is载具到位() {
@@ -70,6 +72,15 @@ public class ReST implements  Serializable{
 		this.人工组装线模式 = 人工组装线模式;
 		if( 人工组装线模式)
 			boolCont.resInt=boolCont.resInt|0b1000;else boolCont.resInt=boolCont.resInt&0b1111111111110111;
+	}
+	
+	public boolean is托盘回大库() {
+		return 托盘回大库;
+	}
+	public void set托盘回大库(boolean 托盘回大库) {
+		this.托盘回大库 = 托盘回大库;
+		if( 托盘回大库)
+			boolCont.resInt=boolCont.resInt|0b10000;else boolCont.resInt=boolCont.resInt&0b1111111111101111;
 	}
 	public Resint getBoolCont() {
 		return boolCont;

@@ -92,7 +92,7 @@ public class STContent implements Serializable {
     		// 工单序号=PACK序号，分解号=这个工单号下面的模组分成的序号，
     		//工单ID+模组序ID+分解号+载具序号,这4个也决定了唯一的载具
     		
-    	 Vector<Vector> tem=SqlTool.findInVector("select  ID,工单序号,分解号,载具序号,pack编码,模组编码,物料,数量,翻面否,工位,工单ID,模组序ID,IFNULL(假电芯1,0),IFNULL(假电芯2,0),电芯位置1,电芯位置2,电芯位置3,电芯位置4,IFNULL(叠装否,'否'),模组类型,电芯类型  ,pack类型,COUNT(DISTINCT 工单序号,模组序ID,分解号,载具序号 )  from 配方指令队列   where  装配区="+装配区+" and IFNULL(前升读标志,0)<>1 GROUP BY 工单序号,分解号,载具序号   ORDER BY 工单序号,模组序号,分解号,载具序号 LIMIT 10");
+    	 Vector<Vector> tem=SqlTool.findInVector("select  ID,工单序号,分解号,载具序号,pack编码,模组编码,物料,数量,翻面否,工位,工单ID,模组序ID,IFNULL(假电芯1,0),IFNULL(假电芯2,0),电芯位置1,电芯位置2,电芯位置3,电芯位置4,IFNULL(叠装否,'否'),模组类型,电芯类型  ,pack类型,模组层数,载具位置,COUNT(DISTINCT 工单序号,模组序ID,分解号,载具序号 )  from 配方指令队列   where  装配区="+装配区+" and IFNULL(前升读标志,0)<>1 GROUP BY 工单序号,分解号,载具序号   ORDER BY 工单序号,模组序号,分解号,载具序号 LIMIT 10");
     	 //System.out.println(tem);	
     	 if(tem.size()>1){
     	 		 Vector row=(Vector)tem.get(0);
@@ -125,6 +125,7 @@ public class STContent implements Serializable {
     	     	 carr.set模组类型(row.get(19)==null?0:Integer.parseInt(row.get(19).toString()));
     	     	 carr.set电芯类型(row.get(20)==null?0:Integer.parseInt(row.get(20).toString()));
     	     	 carr.setPack类型(row.get(21)==null?0:Integer.parseInt(row.get(21).toString()));
+    	     	 carr.set模组层数(row.get(22)==null?0:Integer.parseInt(row.get(22).toString()));
     	     	 Vector<Vector> tost=SqlTool.findInVector("select 工位,物料 from 配方指令队列   where 工单ID='"+
     	     	 carr.get工单ID()+"' and 模组序ID='"+carr.get模组序ID()+"' and 分解号='"+carr.get分解号()+"' and 载具序号='"+carr.get载具序号()+"' order by 工位");
     	     	 for(int m=0;m<tost.size();m++){
@@ -165,6 +166,7 @@ public class STContent implements Serializable {
      	 carr2.set电芯类型(row2.get(20)==null?0:(int)row2.get(20));
      	 carr2.set工单ID(row2.get(10)==null?0:(int)row2.get(10));
      	 carr2.setPack类型(row2.get(21)==null?0:Integer.parseInt(row2.get(21).toString()));
+     	 carr2.set模组层数(row2.get(22)==null?0:Integer.parseInt(row2.get(22).toString()));
      	 Vector<Vector> tost2=SqlTool.findInVector("select 工位,物料 from 配方指令队列   where 工单ID='"+
     	     	 carr2.get工单ID()+"' and 模组序ID='"+carr.get模组序ID()+"' and 分解号='"+carr2.get分解号()+"' and 载具序号='"+carr2.get载具序号()+"' order by 工位");
     	     	 for(int m=0;m<tost2.size();m++){
@@ -204,6 +206,7 @@ public class STContent implements Serializable {
 	     	 carr.set模组类型(row.get(19)==null?0:(int)row.get(19));
 	     	 carr.set电芯类型(row.get(20)==null?0:(int)row.get(20));
 	     	 carr.setPack类型(row.get(21)==null?0:Integer.parseInt(row.get(21).toString()));
+	     	 carr.set模组层数(row.get(22)==null?0:Integer.parseInt(row.get(22).toString()));
 	     	Vector<Vector> tost=SqlTool.findInVector("select 工位,物料 from 配方指令队列   where 工单ID='"+
 	    	     	 carr.get工单ID()+"' and 模组序ID='"+carr.get模组序ID()+"' and 分解号='"+carr.get分解号()+"' and 载具序号='"+carr.get载具序号()+"' order by 工位");
 	    	     	 for(int m=0;m<tost.size();m++){
@@ -221,7 +224,7 @@ public class STContent implements Serializable {
     	
     	 if(firstST.isWrite()&&!secondST.isWrite()){
     		  //如果第一个指令有队列，第二个没有，那么就写入第二条指令，读取下一条数据库的动作，前升降机读取标志=0的第一条记录。
-    		 Vector<Vector> tem=SqlTool.findInVector("select  ID,工单序号,分解号,载具序号,pack编码,模组编码,物料,数量,翻面否,工位,工单ID,模组序ID,IFNULL(假电芯1,0),IFNULL(假电芯2,0),电芯位置1,电芯位置2,电芯位置3,电芯位置4,IFNULL(叠装否,'否') ,模组类型,电芯类型 ,pack类型, COUNT(DISTINCT 工单序号,模组序ID,分解号,载具序号 )  from 配方指令队列   where  装配区="+装配区+" and IFNULL(前升读标志,0)<>1 GROUP BY 工单序号,分解号,载具序号   ORDER BY 工单序号,模组序号,分解号,载具序号 LIMIT 10");
+    		 Vector<Vector> tem=SqlTool.findInVector("select  ID,工单序号,分解号,载具序号,pack编码,模组编码,物料,数量,翻面否,工位,工单ID,模组序ID,IFNULL(假电芯1,0),IFNULL(假电芯2,0),电芯位置1,电芯位置2,电芯位置3,电芯位置4,IFNULL(叠装否,'否') ,模组类型,电芯类型 ,pack类型,模组层数,载具位置, COUNT(DISTINCT 工单序号,模组序ID,分解号,载具序号 )  from 配方指令队列   where  装配区="+装配区+" and IFNULL(前升读标志,0)<>1 GROUP BY 工单序号,分解号,载具序号   ORDER BY 工单序号,模组序号,分解号,载具序号 LIMIT 10");
     		 if(tem.size()>0){
     	 		 Vector row=(Vector)tem.get(0);
     	 		 ((_FST)secondST).clear();
@@ -248,6 +251,7 @@ public class STContent implements Serializable {
         	 carr2.set电芯类型(row.get(20)==null?0:(int)row.get(20));
         	 carr2.set工单ID(row.get(10)==null?0:(int)row.get(10));
         	 carr2.setPack类型(row.get(21)==null?0:Integer.parseInt(row.get(21).toString()));
+        	 carr2.set模组层数(row.get(22)==null?0:Integer.parseInt(row.get(22).toString()));
         	 Vector<Vector> tost=SqlTool.findInVector("select 工位,物料 from 配方指令队列   where 工单ID='"+
         	     	 carr2.get工单ID()+"' and 模组序ID='"+carr2.get模组序ID()+"' and 分解号='"+carr2.get分解号()+"' and 载具序号='"+carr2.get载具序号()+"' order by 工位");
         	     	 for(int m=0;m<tost.size();m++){
@@ -312,7 +316,7 @@ public class STContent implements Serializable {
     				cc=PLC.getIntance().line2.getCarry(0);
     			}
     			if(cc!=null){
-          tem=SqlTool.findInVector("select  ID,工单序号,分解号,载具序号,pack编码,模组编码,物料,数量,翻面否,工位 ,模组类型,电芯类型 ,工单ID,模组序ID from 配方指令队列 "+
+          tem=SqlTool.findInVector("select  ID,工单序号,分解号,载具序号,pack编码,模组编码,物料,数量,翻面否,工位 ,模组类型,电芯类型 ,工单ID,模组序ID,模组层数,载具位置  from 配方指令队列 "+
     "  where  工单ID="+cc.get工单ID()+" and IFNULL(ST读取标志,0)<>1  and 装配区='"+装配区+"' and 模组序ID='"+cc.get模组序ID()+"' and 分解号='"+cc.get分解号()+"' "
     		+ " and 工位='"+(stNum-1)+"ST' ORDER BY 工单序号,模组序号,分解号,载具序号  LIMIT 3");
           
@@ -326,7 +330,7 @@ public class STContent implements Serializable {
     	    	 		 ((_1_6ST)firstST).set分解号((int)row.get(2));
     	    	 		 ((_1_6ST)firstST).set载具序号((int)row.get(3));
     	    	 		 ((_1_6ST)firstST).set允许工位动作标志(false);
-    	    	 		 ((_1_6ST)firstST).set投放型腔标志(false);//根据
+    	    	 		 ((_1_6ST)firstST).set投放型腔标志((row.get(15)==null?0:Integer.parseInt(row.get(15).toString()))==2);//根据
     	    	 		// System.out.println(row.get(10).getClass());
     	    	 		 ((_1_6ST)firstST).set模组类型标志((int)row.get(10));
     	    	 		 
@@ -337,7 +341,7 @@ public class STContent implements Serializable {
     	    	 		 firstST.set模组序ID((int)row.get(13));
     	    	 		 firstST.set物料编码((String)row.get(6));
     	    	 		 firstST.setWrite(true);
-    	    	 		  update标志(firstST,2);
+    	    	 	     update标志(firstST,2);
     	    	 		
     	    	 		 
     	    	 		 ((_1_6ST)secondST).clear();
@@ -346,7 +350,7 @@ public class STContent implements Serializable {
     	    	 		 ((_1_6ST)secondST).set分解号((int)row2.get(2));
     	    	 		 ((_1_6ST)secondST).set载具序号((int)row2.get(3));
     	    	 		 ((_1_6ST)secondST).set允许工位动作标志(false);
-    	    	 		 ((_1_6ST)secondST).set投放型腔标志(false);//根据
+    	    	 		 ((_1_6ST)secondST).set投放型腔标志((row2.get(15)==null?0:Integer.parseInt(row2.get(15).toString()))==2);//根据
     	    	 		 ((_1_6ST)secondST).set模组类型标志((int)row2.get(10));
     	    	 		 ((_1_6ST)secondST).set电芯类型标志((int)row2.get(11));
     	    	 		 ((_1_6ST)secondST).set需求数量((int)row2.get(7));
@@ -355,6 +359,7 @@ public class STContent implements Serializable {
     	    	 		 secondST.set模组序ID((int)row2.get(13));
     	    	 		 secondST.set物料编码((String)row2.get(6));
     	    	 		 secondST.setWrite(true);
+    	    	 		
     	    	 		 update标志(secondST,2);
     	    	 		 
     	    	 	}else{
@@ -366,7 +371,7 @@ public class STContent implements Serializable {
     	    	 		 ((_1_6ST)firstST).set分解号((int)row.get(2));
     	    	 		 ((_1_6ST)firstST).set载具序号((int)row.get(3));
     	    	 		 ((_1_6ST)firstST).set允许工位动作标志(false);
-    	    	 		 ((_1_6ST)firstST).set投放型腔标志(false);//根据
+    	    	 		 ((_1_6ST)firstST).set投放型腔标志((row.get(15)==null?0:Integer.parseInt(row.get(15).toString()))==2);//根据
     	    	 		 ((_1_6ST)firstST).set模组类型标志((int)row.get(10));
     	    	 		 ((_1_6ST)firstST).set电芯类型标志((int)row.get(11));
     	    	 		 ((_1_6ST)firstST).set需求数量((int)row.get(7));
@@ -375,6 +380,7 @@ public class STContent implements Serializable {
     	    	 		firstST.set模组序ID((int)row.get(13));
     	    	 		firstST.set物料编码((String)row.get(6));
     	    	 		firstST.setWrite(true);
+    	    	 		
     	    	 		  update标志(firstST,2);
     	    	 		}
     	    	 		
@@ -390,7 +396,7 @@ public class STContent implements Serializable {
     				cc=PLC.getIntance().line2.getCarry(0);
     			}
     			if(cc!=null){
-          tem=SqlTool.findInVector("select  ID,工单序号,分解号,载具序号,pack编码,模组编码,物料,数量,翻面否,工位 ,模组类型,电芯类型 ,工单ID,模组序ID from 配方指令队列 "+
+          tem=SqlTool.findInVector("select  ID,工单序号,分解号,载具序号,pack编码,模组编码,物料,数量,翻面否,工位 ,模组类型,电芯类型 ,工单ID,模组序ID,模组层数,载具位置  from 配方指令队列 "+
     "  where  工单ID="+cc.get工单ID()+" and IFNULL(ST读取标志,0)<>1  and 装配区='"+装配区+"' and 模组序ID='"+cc.get模组序ID()+"' and 分解号='"+cc.get分解号()+"' "
     		+ " and 工位='"+(stNum-1)+"ST' ORDER BY 工单序号,模组序号,分解号,载具序号  LIMIT 3");
           
@@ -404,7 +410,7 @@ public class STContent implements Serializable {
 				   ((_1_6ST)secondST).set分解号((int)row.get(2));
 				   ((_1_6ST)secondST).set载具序号((int)row.get(3));
 				   ((_1_6ST)secondST).set允许工位动作标志(false);
-				   ((_1_6ST)secondST).set投放型腔标志(false);//根据
+				   ((_1_6ST)secondST).set投放型腔标志((row.get(15)==null?0:Integer.parseInt(row.get(15).toString()))==2);//根据
 				   ((_1_6ST)secondST).set模组类型标志((int)row.get(10));
 				   ((_1_6ST)secondST).set电芯类型标志((int)row.get(11));
 				   ((_1_6ST)secondST).set需求数量((int)row.get(7));
@@ -413,6 +419,7 @@ public class STContent implements Serializable {
 	    	 	   secondST.set模组序ID((int)row.get(13));
 	    	 	   secondST.set物料编码((String)row.get(6));
 				   secondST.setWrite(true);	
+				 
 				   update标志(secondST,2);
 				 
 				 }
@@ -441,7 +448,7 @@ public class STContent implements Serializable {
    				cc=PLC.getIntance().line2.getCarry(0);
    			}
    			if(cc!=null){
-         tem=SqlTool.findInVector("select  ID,工单序号,分解号,载具序号,pack编码,模组编码,物料,数量,翻面否,工位 ,模组类型,电芯类型 ,假电芯1,假电芯2,工单ID,模组序ID from 配方指令队列 "+
+         tem=SqlTool.findInVector("select  ID,工单序号,分解号,载具序号,pack编码,模组编码,物料,数量,翻面否,工位 ,模组类型,电芯类型 ,假电芯1,假电芯2,工单ID,模组序ID,模组层数,载具位置 from 配方指令队列 "+
    "  where 工单ID="+cc.get工单ID()+" and IFNULL(ST读取标志,0)<>1  and 装配区='"+装配区+"' and 模组序ID='"+cc.get模组序ID()+"' and 分解号='"+cc.get分解号()+"' "
    		+ " and 工位='"+(stNum-1)+"ST' ORDER BY 工单序号,模组序号,分解号,载具序号  LIMIT 3");
          
@@ -525,7 +532,7 @@ public class STContent implements Serializable {
      	   				cc=PLC.getIntance().line2.getCarry(0);
      	   			}
      	   			if(cc!=null){
-     	         tem=SqlTool.findInVector("select  ID,工单序号,分解号,载具序号,pack编码,模组编码,物料,数量,翻面否,工位 ,模组类型,电芯类型 ,假电芯1,假电芯2,工单ID,模组序ID from 配方指令队列 "+
+     	         tem=SqlTool.findInVector("select  ID,工单序号,分解号,载具序号,pack编码,模组编码,物料,数量,翻面否,工位 ,模组类型,电芯类型 ,假电芯1,假电芯2,工单ID,模组序ID,模组层数,载具位置 from 配方指令队列 "+
      	   "  where  工单ID="+cc.get工单ID()+" and IFNULL(ST读取标志,0)<>1  and 装配区='"+装配区+"' and 模组序ID='"+cc.get模组序ID()+"' and 分解号='"+cc.get分解号()+"' "
      	   		+ " and 工位='"+(stNum-1)+"ST' ORDER BY 工单序号,模组序号,分解号,载具序号  LIMIT 3");
      	         
@@ -781,6 +788,7 @@ public class STContent implements Serializable {
     	  			((_13ST)firstST).set电芯类型标志(car.get电芯类型());
     	  			((_13ST)firstST).set有效型腔数(car.get有效型腔数());
     	  			((_13ST)firstST).set立库RDY(true);
+    	  			((_13ST)firstST).set模组层数(car.get模组层数());
     	  			((_13ST)firstST).setWrite(true);
     	  			
     	    		      }  
