@@ -283,9 +283,7 @@ var readyShow={
 					//添加载具行
 					function addMzZjRow(obj){
 						var typeClass="";
-						if(obj.mozu_id==""){
-							typeClass="add";
-						};
+						if(obj.mozu_id==""){typeClass="add";};
 						$('#mz_zj_table tbody').append('<tr name="newTr" bgcolor="#ffffff" class="'+typeClass+'" style="height:28px;">' +
 							//复选框
 							'<td id="newTd1_'+obj.num+'" style="width:3%;padding:0px;"> ' +
@@ -343,11 +341,7 @@ var readyShow={
 						$('#newTd3_'+obj.num).click(function(){
 							var row=this.id.split("_")[1];
 							var ck=this;
-							if(this.ck ){
-								return null;
-							}else{
-								this.ck=true;
-							};
+							if(this.ck){return null;}else{this.ck=true;};
 							var optionHtml="<option></option><option>是</option><option>否</option>";
 							if($(this).html()=="是"){
 								optionHtml="<option></option><option selected>是</option><option>否</option>";
@@ -375,11 +369,7 @@ var readyShow={
 						$('#newTd4_'+obj.num).click(function(){
 							var row=this.id.split("_")[1];
 							var ck=this;
-							if(this.ck){
-								return null;
-							}else{
-								this.ck=true;
-							}
+							if(this.ck){return null;}else{this.ck=true;};
 							var optionHtml="<option></option><option>是</option><option>否</option>";
 							if($(this).html()=="是"){
 								optionHtml="<option></option><option selected>是</option><option>否</option>";
@@ -407,11 +397,7 @@ var readyShow={
 						$('#newTd5_'+obj.num).click(function(){
 							var row=this.id.split("_")[1];
 							var ck=this;
-							if(this.ck){
-								return null;
-							}else{
-								this.ck=true;
-							}
+							if(this.ck){return null;}else{this.ck=true;};
 							$(this).html('<input id="newTd5_text_'+row+'" type="number" min="0" class="form-control" value="'+$(this).html()+'">');
 							$('#newTd5_text_'+row).focus();
 					        $('#newTd5_text_'+row).blur(function(){
@@ -433,11 +419,7 @@ var readyShow={
 						$('#newTd6_'+obj.num).click(function(){
 							var row=this.id.split("_")[1];
 							var ck=this;
-							if(this.ck){
-								return null;
-							}else{
-								this.ck=true;
-							}
+							if(this.ck){return null;}else{this.ck=true;};
 							$(this).html('<input id="newTd6_text_'+row+'" type="text" min="1" class="form-control" value="'+$(this).html()+'">');
 							$('#newTd6_text_'+row).focus();
 					        $('#newTd6_text_'+row).blur(function(){
@@ -459,11 +441,7 @@ var readyShow={
 						$('#newTd7_'+obj.num).click(function(){
 							var row=this.id.split("_")[1];
 							var ck=this;
-							if(this.ck){
-								return null;
-							}else{
-								this.ck=true;
-							}
+							if(this.ck){return null;}else{this.ck=true;};
 							$(this).html('<input id="newTd7_text_'+row+'" type="text" class="form-control" value="'+$(this).html()+'">');
 							$('#newTd7_text_'+row).focus();
 					        $('#newTd7_text_'+row).blur(function(){
@@ -485,11 +463,7 @@ var readyShow={
 						$('#newTd8_'+obj.num).click(function(){
 							var row=this.id.split("_")[1];
 							var ck=this;
-							if(this.ck){
-								return null;
-							}else{
-								this.ck=true;
-							}
+							if(this.ck){return null;}else{this.ck=true;};
 							$(this).html('<input id="newTd8_text_'+row+'" type="text" class="form-control" value="'+$(this).html()+'">');
 							$('#newTd8_text_'+row).focus();
 					        $('#newTd8_text_'+row).blur(function(){
@@ -511,11 +485,7 @@ var readyShow={
 						$('#newTd9_'+obj.num).click(function(){
 							var row=this.id.split("_")[1];
 							var ck=this;
-							if(this.ck){
-								return null;
-							}else{
-								this.ck=true;
-							}
+							if(this.ck){return null;}else{this.ck=true;};
 							$(this).html('<input id="newTd9_text_'+row+'" type="text" class="form-control" value="'+$(this).html()+'">');
 							$('#newTd9_text_'+row).focus();
 					        $('#newTd9_text_'+row).blur(function(){
@@ -537,11 +507,7 @@ var readyShow={
 						$('#newTd10_'+obj.num).click(function(){
 							var row=this.id.split("_")[1];
 							var ck=this;
-							if(this.ck){
-								return null;
-							}else{
-								this.ck=true;
-							}
+							if(this.ck){return null;}else{this.ck=true;};
 							$(this).html('<input id="newTd10_text_'+row+'" type="text" class="form-control" value="'+$(this).html()+'">');
 							$('#newTd10_text_'+row).focus();
 					        $('#newTd10_text_'+row).blur(function(){
@@ -550,7 +516,7 @@ var readyShow={
 					            ck.ck?ck.ck=false:null;
 					        });
 				            //判断当前行 修改还是新增
-				            $('#newTd9_text_'+row+'').change(function(){
+				            $('#newTd10_text_'+row+'').change(function(){
 				                if($(ck).parent().attr("class")==""){
 				                    $(ck).parent().attr("class","update");
 				                }
@@ -561,11 +527,7 @@ var readyShow={
 						$('#newTd11_'+obj.num).click(function(){
 							var row=this.id.split("_")[1];
 							var ck=this;
-							if(this.ck){
-								return null;
-							}else{
-								this.ck=true;
-							}
+							if(this.ck){return null;}else{this.ck=true;}
 							$(this).html('<input id="newTd11_text_'+row+'" type="number" class="form-control" value="'+$(this).html()+'">');
 							$('#newTd11_text_'+row).focus();
 					        $('#newTd11_text_'+row).blur(function(){
@@ -587,11 +549,7 @@ var readyShow={
 						$('#newTd12_'+obj.num).click(function(){
 							var row=this.id.split("_")[1];
 							var ck=this;
-							if(this.ck){
-								return null;
-							}else{
-								this.ck=true;
-							}
+							if(this.ck){return null;}else{this.ck=true;};
 							$(this).html('<input id="newTd12_text_'+row+'" type="number" class="form-control" value="'+$(this).html()+'">');
 							$('#newTd12_text_'+row).focus();
 					        $('#newTd12_text_'+row).blur(function(){
