@@ -22,7 +22,7 @@ public class CarryLine implements Serializable{
 
 	private  Carry[]cont=new Carry[15];
 	int machineID=0;
-	
+    private Carry lastMoveCarry;
 	public Carry buffer;
 	public CarryLine(int machineID){
 		 this.machineID=machineID;
@@ -30,8 +30,16 @@ public class CarryLine implements Serializable{
 	public boolean addFist(Carry carr){
 		if(1==1){
 			cont[0]=carr;
+			if(carr!=null)
+			 lastMoveCarry=carr;
 			return true;
 		}else{return false;}
+	}
+	public Carry getLastMoveCarry() {
+		return lastMoveCarry;
+	}
+	public void setLastMoveCarry(Carry lastMoveCarry) {
+		this.lastMoveCarry = lastMoveCarry;
 	}
 	public int getLength(){return cont.length;}
 	public void setBuffer(Carry carr){this.buffer=carr;}

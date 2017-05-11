@@ -21,6 +21,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Hashtable;
 import java.util.Vector;
 
 import javax.swing.JTable;
@@ -172,13 +173,38 @@ public class CommentPanel extends JPanel {
 			 public void setValueAt(Object aValue, int row, int column) {
 									}
 	 };
+	 
+	 
+	 
+	  DefaultTableModel mode6=new DefaultTableModel(){
+			 public void setValueAt(Object aValue, int row, int column) {
+				 super.setValueAt(aValue, row, column);
+									}
+			 public boolean isCellEditable(int row, int column) {
+				    if(column==0||column==2||column==4||column==6) return false;
+			        return true;
+			    }
+	 };
+	 
     private JTextField textField_12;
     private JTable table_5;
+	 Vector colum6=new Vector();
+	 Hashtable<String,String> aH=new Hashtable<String,String>();
+	
+	 
 	 
 	/**
 	 * Create the panel.
 	 */
 	public CommentPanel() {
+		colum6.addElement("序号");colum6.addElement("1层");
+		colum6.addElement("序号");colum6.addElement("1层");
+		colum6.addElement("序号");colum6.addElement("2层");
+		colum6.addElement("序号");colum6.addElement("2层");
+		aH.put("1ST", "D11299");aH.put("2ST", "D11349");
+		aH.put("3ST", "D11399");aH.put("4ST", "D11449");
+		aH.put("5ST", "D11499");aH.put("6ST", "D11549");
+		aH.put("7ST", "D11599");
 		KuFang f=KuFang.getIntance();
 		colum3.addElement("工位");colum3.addElement("信号");
 		Vector v=SqlTool.findInVector("select 工位,信号 from 有货信号");
@@ -428,7 +454,7 @@ public class CommentPanel extends JPanel {
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "\u6258\u76D8\u8868", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		scrollPane_1.setBounds(0, 384, 440, 155);
+		scrollPane_1.setBounds(0, 415, 440, 124);
 		add(scrollPane_1);
 		
 		table_1 = new JTable();
@@ -474,7 +500,7 @@ public class CommentPanel extends JPanel {
 		table_3.setModel(mode3);
 		table_4.setModel(mode4);
 		
-		this.setPreferredSize(new Dimension(671, 739));
+		this.setPreferredSize(new Dimension(1012, 739));
 		
 		textField_12 = new JTextField();
 		textField_12.setBounds(0, 549, 64, 21);
@@ -608,8 +634,83 @@ public class CommentPanel extends JPanel {
 	    				
 	    	}
 	    });
-	    button_7.setBounds(175, 569, 93, 23);
+	    button_7.setBounds(676, 598, 93, 23);
 	    add(button_7);
+	    
+	    JLabel label_20 = new JLabel("\u88C5\u914D\u533A");
+	    label_20.setBounds(669, 10, 54, 15);
+	    add(label_20);
+	    
+	    JComboBox comboBox_1 = new JComboBox();
+	    comboBox_1.setBounds(714, 7, 93, 21);
+	    add(comboBox_1);
+	    comboBox_1.addItem(1); comboBox_1.addItem(2);
+	    
+	    JLabel label_21 = new JLabel("\u5DE5\u4F4D");
+	    label_21.setBounds(817, 10, 54, 15);
+	    add(label_21);
+	    
+	    JComboBox comboBox_2 = new JComboBox();
+	    comboBox_2.addItem("1ST"); comboBox_2.addItem("2ST");
+	    comboBox_2.addItem("3ST"); comboBox_2.addItem("4ST");
+	    comboBox_2.addItem("5ST"); comboBox_2.addItem("6ST");
+	    comboBox_2.addItem("7ST");
+	    comboBox_2.addActionListener(new ActionListener() {
+	    	public void actionPerformed(ActionEvent e) {
+	    		System.out.println(comboBox_2.getSelectedItem());
+	    		String st=comboBox_2.getSelectedItem().toString();
+	    		String machID=comboBox_1.getSelectedItem().toString();
+	    		initTable6(aH.get(st),Integer.parseInt(machID));
+	    	}
+	    });
+	    comboBox_2.setBounds(881, 7, 121, 21);
+	    add(comboBox_2);
+	    
+	    JScrollPane scrollPane_6 = new JScrollPane();
+	    scrollPane_6.setBounds(676, 47, 326,324);
+	    add(scrollPane_6);
+	    
+	    table_6 = new JTable();
+	    table_6.setRowHeight(25);
+	    scrollPane_6.setViewportView(table_6);
+	    mode6.setDataVector(new Vector(), colum6);
+	    table_6.setModel(mode6);
+	    
+	    JButton button_8 = new JButton("\u5199\u5165\u6599\u7BB1\u4F4D\u7F6E");
+	    button_8.addActionListener(new ActionListener() {
+	    	public void actionPerformed(ActionEvent e) {
+	    		String st=comboBox_2.getSelectedItem().toString();
+	    		String machID=comboBox_1.getSelectedItem().toString();
+	    		writeTable6ToPLC(Integer.parseInt(machID),aH.get(st));
+	    	}
+	    });
+	    button_8.setBounds(881, 384, 121, 23);
+	    add(button_8);
+	    
+	    JButton button_9 = new JButton("\u5220\u9664\u6307\u4EE4");
+	    button_9.addActionListener(new ActionListener() {
+	    	public void actionPerformed(ActionEvent e) {
+	    		int r=table.getSelectedRow();
+	    		if(r!=-1){
+	    			Object ID=table.getValueAt(r, 0);
+	    			int i=JOptionPane.showConfirmDialog(null, "执行中的指令删除时要注意，排队中的可以安全删除", "提示", JOptionPane.YES_NO_OPTION);
+	               
+	                 if(i==JOptionPane.YES_OPTION){
+	                	 String back=SqlTool.insert(new String[]{"delete from 立库动作指令  where idEvent='"+ID+"'"});
+	                	 refsh();
+	                 }
+	    			
+	    			
+	    			
+	    		   }
+	    		
+	    	}
+	    });
+	    button_9.setBounds(335, 384, 93, 23);
+	    add(button_9);
+	   // initTable6();
+	    
+	   
 	    table_5.getColumnModel().getColumn(1).setCellEditor(edit);
 	    table_5.getColumnModel().getColumn(2).setCellEditor(edit);
 	    
@@ -630,6 +731,42 @@ public class CommentPanel extends JPanel {
 
 	}
 	
+	public void initTable6(String addr,int machineID){
+		
+		alai.GDT.Resint[]back=ClientSer.getIntance().getSirIntValuesFromCTR(addr, 29, 16, machineID);
+		if(back==null)return;
+		Vector data=new Vector();
+		for(int r=0;r<7;r++){
+			Vector row=new Vector();
+			row.addElement(r*2+1);row.addElement(back[r*2+1].getResInt());
+			row.addElement(r*2+2);row.addElement(back[r*2+2].getResInt());
+			//第2成
+			row.addElement(14+r*2+1);row.addElement(back[14+r*2+1].getResInt());
+			row.addElement(14+r*2+2);row.addElement(back[14+r*2+2].getResInt());
+			
+			data.addElement(row);
+			
+		}
+		 mode6.setDataVector(data, colum6);
+		
+		
+	}
+	
+	public void writeTable6ToPLC(int machineID,String addr){
+		int to[]=new int[29]; to[0]=1;
+		for(int r=0;r<mode6.getRowCount();r++){
+			to[r*2+1]=(int)mode6.getValueAt(r, 1);
+			to[r*2+2]=(int)mode6.getValueAt(r, 3);
+			to[14+r*2+1]=(int)mode6.getValueAt(r, 5);
+			to[14+r*2+2]=(int)mode6.getValueAt(r, 7);
+			
+		   }
+	int b= ClientSer.getIntance().writeSirIntToCTR(addr, to.length, to,  machineID)  ;
+		if(b==1){
+			JOptionPane.showMessageDialog(null,"写入成功","提示",JOptionPane.WARNING_MESSAGE,null);
+		}
+	}
+	
 	public void refsh(){
 		Vector v3=SqlTool.findInVector("select idEvent,动作,托盘编号,来源货位号,放回货位号,状态,状态2,是否回大库,空  from 立库动作指令  order by idEvent");
 		modezl.setDataVector(v3, zl);
@@ -644,6 +781,7 @@ public class CommentPanel extends JPanel {
 	ReST second=new ReST(new Resint());
 	private JTextField textField_13;
 	private JTextField textField_14;
+	private JTable table_6;
 	public void setData(){
 		Resint[] rs=ClientSer.getIntance().getReturnPlc("D11001",63,16,1);
 		String st=comboBox.getSelectedItem().toString();

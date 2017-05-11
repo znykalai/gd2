@@ -30,6 +30,7 @@ public class ServiceServerImp implements ServiceServer {
 				if(堆1.size()>0){
 					Vector row=(Vector)堆1.get(0);
 					try{
+						System.out.println(row.get(0)+"|"+row.get(5)+"|"+row.get(6)+"|"+ClientSer.getIntance().getState(2)+"|"+(row.get(3).equals("上货")?1:2));
 					return row.get(0)+"|"+row.get(5)+"|"+row.get(6)+"|"+ClientSer.getIntance().getState(2)+"|"+(row.get(3).equals("上货")?1:2);
 					}catch(Exception e){
 						e.printStackTrace();
@@ -43,6 +44,7 @@ public class ServiceServerImp implements ServiceServer {
 				if(堆1.size()>0){
 					Vector row=(Vector)堆1.get(0);
 					try{
+					System.out.println(row.get(0)+"|"+row.get(5)+"|"+row.get(6)+"|"+ClientSer.getIntance().getState(2)+"|"+(row.get(3).equals("上货")?1:2));
 					return row.get(0)+"|"+row.get(5)+"|"+row.get(6)+"|"+ClientSer.getIntance().getState(2)+"|"+3;
 					}catch(Exception e){
 						e.printStackTrace();
@@ -60,6 +62,7 @@ public class ServiceServerImp implements ServiceServer {
 				if(堆1.size()>0){
 					Vector row=(Vector)堆1.get(0);
 					try{
+						System.out.println(row.get(0)+"|"+row.get(5)+"|"+row.get(6)+"|"+ClientSer.getIntance().getState(2)+"|"+(row.get(3).equals("上货")?1:2));
 					return row.get(0)+"|"+row.get(5)+"|"+row.get(6)+"|"+ClientSer.getIntance().getState(2)+"|"+(row.get(3).equals("上货")?1:2);
 					}catch(Exception e){
 						e.printStackTrace();
@@ -67,11 +70,12 @@ public class ServiceServerImp implements ServiceServer {
 					}
 				}
 			}
-			if(type==2){
+			if(type==2){ 
 				Vector 堆1=SqlTool.findInVector("select idEvent,来源,任务类别,动作,托盘编号,来源货位号,放回货位号,请求区,状态,状态2 from 立库动作指令  where 状态='执行中' and 动作='输送线回流' and 请求区= '2' order by idEvent");		
 				if(堆1.size()>0){
 					Vector row=(Vector)堆1.get(0);
 					try{
+						System.out.println(row.get(0)+"|"+row.get(5)+"|"+row.get(6)+"|"+ClientSer.getIntance().getState(2)+"|"+3);
 					return row.get(0)+"|"+row.get(5)+"|"+row.get(6)+"|"+ClientSer.getIntance().getState(2)+"|"+3;
 					}catch(Exception e){
 						e.printStackTrace();
@@ -81,7 +85,8 @@ public class ServiceServerImp implements ServiceServer {
 			}
 			
 		}
-		return "-1";
+		System.out.println("0");
+		return "0";
 	}
 
 	@Override
