@@ -508,19 +508,39 @@ var readyShow={
 							var row=this.id.split("_")[1];
 							var ck=this;
 							if(this.ck){return null;}else{this.ck=true;};
-							$(this).html('<input id="newTd10_text_'+row+'" type="text" class="form-control" value="'+$(this).html()+'">');
+							
+							var optionHtml="<option"+($(this).html()=='0'?' selected':'')+">0</option><option"+($(this).html()=='1'?' selected':'')+">1</option><option"+($(this).html()=='2'?' selected':'')+">2</option><option"+($(this).html()=='3'?' selected':'')+">3</option><option"+($(this).html()=='4'?' selected':'')+">4</option>";
+							$(this).html('<select class="selectpicker"  id="newTd10_text_'+row+'" style="width:100%;height:100%;">'+optionHtml+'</select>');
+							optionHtml=null;
 							$('#newTd10_text_'+row).focus();
 					        $('#newTd10_text_'+row).blur(function(){
 					            var node=this.parentNode;
 					            $(node).html(this.value);
-					            ck.ck?ck.ck=false:null;
+					            ck.ck?ck.ck=false:null;node=null;
+						        return null;
 					        });
 				            //判断当前行 修改还是新增
 				            $('#newTd10_text_'+row+'').change(function(){
 				                if($(ck).parent().attr("class")==""){
 				                    $(ck).parent().attr("class","update");
 				                }
+						        return null;
 				            });
+					        return null;
+//							
+//							$(this).html('<input id="newTd10_text_'+row+'" type="number" min="0 class="form-control" value="'+$(this).html()+'">');
+//							$('#newTd10_text_'+row).focus();
+//					        $('#newTd10_text_'+row).blur(function(){
+//					            var node=this.parentNode;
+//					            $(node).html(this.value==''?0:this.value);
+//					            ck.ck?ck.ck=false:null;
+//					        });
+//				            //判断当前行 修改还是新增
+//				            $('#newTd10_text_'+row+'').change(function(){
+//				                if($(ck).parent().attr("class")==""){
+//				                    $(ck).parent().attr("class","update");
+//				                }
+//				            });
 					        return null;
 						});
 						//假电芯1
@@ -605,7 +625,7 @@ var readyShow={
 							zj_dianxin2:'',
 							zj_dianxin3:'',
 							zj_dianxin4:'',
-							zj_youxiaoxingqiang:'',
+							zj_youxiaoxingqiang:'1',
 							zj_jiadianxin1:'',
 							zj_jiadianxin2:''
 						};
