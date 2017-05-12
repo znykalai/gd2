@@ -1549,11 +1549,11 @@ var readyShow={
 				                    var pack_code=$("#pack_code").val();
 					  				rowIndex=1;
 				                    packShowAction(obj.pack_id,pack_code);
-					  				layer.msg("pack保存成功！");
+					  				layer.msg("pack保存成功！");pack_table=null;
 				                }
 				            }
 						});
-						head=null;add=null;update=null;pack_table=null;
+						head=null;add=null;update=null;
 				        return null;
 					});
 					//pack查询按钮
