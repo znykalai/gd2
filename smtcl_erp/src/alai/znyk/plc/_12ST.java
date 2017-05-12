@@ -4,8 +4,9 @@ public class _12ST extends ST_Father implements STInterface {
 //1到6的工位，要求每个数字的地址必须连续
 	private int boolContent;//保存几个布尔值
     private boolean 允许工位动作标志;//D10006.1
-	private boolean 立库RDY;//D10006.3
-	private boolean 数据更新完成;//D10006.4
+	private boolean 立库RDY;//D10006.2
+	private boolean 数据更新完成;//D10006.3
+	private boolean 有盖板叠装;//D10006.4
 	private int 电芯类型标志;//D10007
 	private int 模组类型标志;//D10008
 
@@ -28,7 +29,7 @@ public class _12ST extends ST_Father implements STInterface {
 		return 立库RDY;
 	}
 	public void set立库RDY(boolean 立库rdy) {
-		立库RDY = 立库rdy;
+		this.立库RDY = 立库rdy;
 		if(立库rdy)
 			boolContent=boolContent|0b10;else boolContent=boolContent&0b1111111111111101;
 	}
@@ -42,6 +43,15 @@ public class _12ST extends ST_Father implements STInterface {
 		this.数据更新完成 = 数据更新完成;
 		if(数据更新完成)
 			boolContent=boolContent|0b100;else boolContent=boolContent&0b1111111111111011;
+	}
+	
+	public boolean is有盖板叠装() {
+		return 有盖板叠装;
+	}
+	public void set有盖板叠装(boolean 有盖板叠装) {
+		this.有盖板叠装 = 有盖板叠装;
+		if(有盖板叠装)
+			boolContent=boolContent|0b1000;else boolContent=boolContent&0b1111111111110111;
 	}
 	public int get电芯类型标志() {
 		return 电芯类型标志;
@@ -62,6 +72,7 @@ public class _12ST extends ST_Father implements STInterface {
 		     允许工位动作标志=false;
    		     立库RDY=false;
    		     数据更新完成=false;
+   		     有盖板叠装=false;
    		    write=false; 
 		   
 	    	
@@ -73,7 +84,7 @@ public class _12ST extends ST_Father implements STInterface {
 	     模组类型标志=((_12ST)st).get模组类型标志();
 	   
 	     允许工位动作标志=((_12ST)st).is允许工位动作标志();
-	    
+	     有盖板叠装=((_12ST)st).is有盖板叠装();
 	     立库RDY=((_12ST)st).is立库RDY();
 	     数据更新完成=((_12ST)st).is数据更新完成();
 	 
@@ -113,6 +124,7 @@ public class _12ST extends ST_Father implements STInterface {
    		     允许工位动作标志=((tem&0b01)==1);
    		     立库RDY=((tem&0b10)==2);
    		     数据更新完成=((tem&0b100)==4);
+   		     有盖板叠装=((tem&0b1000)==8);
    		     电芯类型标志=back[1];//D10007
    		     模组类型标志=back[2];//D10008
    		    

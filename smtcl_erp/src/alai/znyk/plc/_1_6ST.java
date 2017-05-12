@@ -9,6 +9,7 @@ public class _1_6ST extends ST_Father implements STInterface {
 	private boolean 投放型腔标志;//D10006.2
 	private boolean 立库RDY;//D10006.3
 	private boolean 数据更新完成;//D10006.4
+	private boolean 单盖板载具;//D10006.5
 	private int 电芯类型标志;//D10007
 	private int 模组类型标志;//D10008
 	private int 需求数量;//D100033
@@ -83,6 +84,18 @@ public class _1_6ST extends ST_Father implements STInterface {
 		if(数据更新完成)
 			boolContent=boolContent|0b1000;else boolContent=boolContent&0b1111111111110111;
 	}
+	
+	public boolean is单盖板载具() {
+		return 单盖板载具;
+	}
+	
+	public void set单盖板载具(boolean 单盖板载具) {
+		
+		this.单盖板载具 = 单盖板载具;
+		if(单盖板载具)
+			boolContent=boolContent|0b10000;else boolContent=boolContent&0b1111111111101111;
+	}
+	
 	public int get电芯类型标志() {
 		return 电芯类型标志;
 	}
@@ -110,6 +123,7 @@ public class _1_6ST extends ST_Father implements STInterface {
  		     投放型腔标志=false;
  		     立库RDY=false;
  		     数据更新完成=false;
+ 		     单盖板载具=false;
  		     完成数量=0;
  		     物料编码="";
  		    
@@ -130,7 +144,7 @@ public class _1_6ST extends ST_Father implements STInterface {
 		     数据更新完成=((_1_6ST)st).is数据更新完成();
 		     完成数量=((_1_6ST)st).get完成数量();
 		     物料编码=((_1_6ST)st).get物料编码();
-		    
+		     单盖板载具=((_1_6ST)st).is单盖板载具();
  		     模组层数=((_1_6ST)st).get模组层数();
 	 }
 	 
@@ -190,6 +204,7 @@ public class _1_6ST extends ST_Father implements STInterface {
    		     投放型腔标志=((tem&0b10)==2);
    		     立库RDY=((tem&0b100)==4);
    		     数据更新完成=((tem&0b1000)==8);
+   		     单盖板载具=((tem&0b10000)==16);
    		     System.out.println("数据更新完成=((tem&0b1000)==1)="+ 数据更新完成);
    		     
    		   

@@ -4,7 +4,7 @@ import alai.znyk.test.PLCFrame;
 
 public class GDFrame {
 	static PLCFrame frame;
-	public static void showFrame(){
+	public static synchronized void showFrame(){
 		if(frame==null){
 			frame=new PLCFrame();
 			frame.setVisible(true);

@@ -2,6 +2,7 @@ package alai.znyk.kufang;
 
 import java.rmi.RemoteException;
 import java.util.Hashtable;
+import java.util.Properties;
 import java.util.Vector;
 
 import alai.znyk.common.ClientSer;
@@ -91,6 +92,34 @@ public class KuFang {
 				while(true){
 				startDownRFFID();
 				Thread.sleep(500);
+				
+				}
+			}catch(Exception ex){}
+			
+			}
+			
+		}.start();
+		
+		new Thread(){
+			public void run(){
+			try{
+				while(true){
+					statPaletToPLC(1);
+				Thread.sleep(2000);
+				
+				}
+			}catch(Exception ex){}
+			
+			}
+			
+		}.start();
+		
+		new Thread(){
+			public void run(){
+			try{
+				while(true){
+					statPaletToPLC(2);
+				Thread.sleep(2000);
 				
 				}
 			}catch(Exception ex){}
@@ -828,6 +857,73 @@ public void startlineAGV(){
     		   
     		   
     	   }
+    	
+    }
+    Properties pro;
+    public void statPaletToPLC(int machineID){
+    	try{
+    		alai.GDT.Resint[] bak=ClientSer.getIntance().getReturnPlc("D11998", 1, 16, machineID);
+    		if(bak[0].getResInt()==1){
+    			if(pro==null){pro=SqlPro.loadProperties(SqlPro.class.getResource("conf.pro").getFile());}
+    			if(pro!=null){
+    				String huoweiA[]=new String[]{"514","512","510","508","506","504","502"};
+    				String huoweiB[]=new String[]{"614","612","610","608","606","604","602"};
+    				if(machineID==1){
+    			    for(int r=0;r<huoweiA.length;r++){
+    					//货位的起始地址，标注有没有初始化，比如货位的起始地址是D200，那么D200就标注为有没有初始化。
+    			   String palet=SqlTool.findOneRecord("select 托盘编号 from 库存托盘  where  货位号='"+huoweiA[r]+"'");
+    			   String val=SqlTool.findOneRecord("select address from 库存托盘  where  托盘编号='"+palet+"'");
+    			   if(val!=null){
+    				   String sm[]=val.split(",");
+    				   int length=sm.length+1;
+    				   int to[]=new int[length];
+    				   to[0]=1;
+    				   for(int i=1;i<to.length;i++){
+    					     to[i]=Integer.parseInt(sm[i-1].split("=")[1]);
+    					   
+    				     }
+    				   
+    				   ClientSer.getIntance().writeSirIntToCTR(pro.getProperty(huoweiA[r]), length, to,  machineID)  ;
+    				   
+    			   }
+    			   
+    					
+    				}//
+    			    
+    				}
+    				
+    				if(machineID==2){
+    					  for(int r=0;r<huoweiB.length;r++){
+    	    					//货位的起始地址，标注有没有初始化，比如货位的起始地址是D200，那么D200就标注为有没有初始化。
+    	    			   String palet=SqlTool.findOneRecord("select 托盘编号 from 库存托盘  where  货位号='"+huoweiB[r]+"'");
+    	    			   String val=SqlTool.findOneRecord("select address from 库存托盘  where  托盘编号='"+palet+"'");
+    	    			   if(val!=null){
+    	    				   String sm[]=val.split(",");
+    	    				   int length=sm.length+1;
+    	    				   int to[]=new int[length];
+    	    				   to[0]=1;
+    	    				   for(int i=1;i<to.length;i++){
+    	    					     to[i]=Integer.parseInt(sm[i-1].split("=")[1]);
+    	    					   
+    	    				     }
+    	    				   
+    	    				   ClientSer.getIntance().writeSirIntToCTR(pro.getProperty(huoweiB[r]), length, to,  machineID)  ;
+    	    				   
+    	    			   }
+    	    			   
+    	    					
+    	    				}//	
+    					
+    					
+    				}
+    			    
+    			}
+    		    
+    			 ClientSer.getIntance().writeSirIntToCTR("D11998", 10, new int[]{0},  machineID)  ;
+    			
+    		}
+    		
+    	}catch(Exception ex){}
     	
     }
 	

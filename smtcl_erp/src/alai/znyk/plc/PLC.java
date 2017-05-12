@@ -917,7 +917,7 @@ public class PLC implements Serializable {
 			  
 			   STC1.get(st-1).firstST.set立库RDY(false);
 			   STC1.get(st-1).secondST.set立库RDY(false);
-			     到位1=false;
+			    到位1=false;
 			   //return false;  
 		   }else{
 			   Resint r[]=	ClientSer.getIntance().getReturnPlc("D11001", 63, 16, line);
@@ -1426,11 +1426,15 @@ public class PLC implements Serializable {
 
 	
 	public void reLoad(int machineID){
+		System.out.println("=+clear plc  ========================================");
 		if(machineID==1){
 			for(int i=0;i<STC1.size();i++)
 			{
 				STC1.get(i).firstST.clear();
 				STC1.get(i).secondST.clear();
+				STC1.get(i).firstST.writeifChangeToPLC();
+				STC1.get(i).secondST.writeifChangeToPLC();
+				
 			}
 		     }else{
 		    	 
@@ -1438,6 +1442,8 @@ public class PLC implements Serializable {
 					{
 						STC2.get(i).firstST.clear();
 						STC2.get(i).secondST.clear();
+						STC1.get(2).firstST.writeifChangeToPLC();
+						STC1.get(2).secondST.writeifChangeToPLC();
 					}	 
 		     }
 		

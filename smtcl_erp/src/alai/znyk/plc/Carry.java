@@ -48,10 +48,17 @@ public class Carry implements Serializable{
    
 	public int 模组层数;//
     
-    
+	public String 配方=null;
    
   
    
+	public String get配方() {
+		if(配方.equals(""))return null;
+		return 配方;
+	}
+	public void set配方(String 配方) {
+		this.配方 = 配方;
+	}
 	public Carry(int 工单号,int 分解号,int 载具序号,int 模组序ID){
     	this.工单号=工单号;
     	this.分解号=分解号;
