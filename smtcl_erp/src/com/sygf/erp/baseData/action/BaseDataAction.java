@@ -568,16 +568,17 @@ public class BaseDataAction extends Action{
 			String sql="insert into 模组题头(模组编码,模组类型,电芯类型,工位类别,型腔数,层数,新建者,新建时间)" +
 						"values(" +
 						"'"+mozu_code+"'," +
-						"'"+mozu_leixing+"'," +
+						"'"+Integer.parseInt(mozu_leixing, 16)+"'," +
 						"'"+mozu_dianxinleixing+"'," +
 						"'"+mozu_gongweileibie+"'," +
 						"'"+mozu_xingqiangshu+"'," +
 						"'"+mozu_cengshu+"'," +
 						"'"+userName+"'," +
 						"'"+mozu_newDate+"')";
+			
 			if(mzYesNo > 0 ){
 				sql="update 模组题头 set " +
-					"模组类型='" +mozu_leixing+"'," +
+					"模组类型='" +Integer.parseInt(mozu_leixing, 16)+"'," +
 					"电芯类型='" +mozu_dianxinleixing+"'," +
 					"工位类别='" +mozu_gongweileibie+"'," +
 					"型腔数='" +mozu_xingqiangshu+"'," +
@@ -695,7 +696,10 @@ public class BaseDataAction extends Action{
 						HashMap mapPara=new HashMap();
 						mapPara.put("'mozu_id'", "'"+((HashMap)list.get(i)).get("模组ID")+"'");
 						mapPara.put("'mozu_code'", "'"+((HashMap)list.get(i)).get("模组编码")+"'");
-						mapPara.put("'mozu_leixing'", "'"+((HashMap)list.get(i)).get("模组类型")+"'");
+						mapPara.put("'mozu_leixing'", "'"+Integer.toHexString(
+								Integer.parseInt(((HashMap)list.get(i)).get("模组类型")+""))
+						
+						+"'");
 						mapPara.put("'mozu_dianxinleixing'", "'"+((HashMap)list.get(i)).get("电芯类型")+"'");
 						mapPara.put("'mozu_gongweileibie'", "'"+((HashMap)list.get(i)).get("工位类别")+"'");
 						mapPara.put("'mozu_xingqiangshu'", "'"+((HashMap)list.get(i)).get("型腔数")+"'");
@@ -732,7 +736,7 @@ public class BaseDataAction extends Action{
 				map.put("sql", sql);
 				List zlhList=dao.getMzzlhList(map);
 				if(zlhList!=null&&zlhList.size()>0){
-					for(int i=0;i<zlhList.size();i++){
+					for(int i=0;i<zlhList.size();i++){ 
 						HashMap mapPara=new HashMap();
 						mapPara.put("'mozu_id'", "'"+((HashMap)zlhList.get(i)).get("模组ID")+"'");
 						mapPara.put("'zj_id'", "'"+((HashMap)zlhList.get(i)).get("载具ID")+"'");
