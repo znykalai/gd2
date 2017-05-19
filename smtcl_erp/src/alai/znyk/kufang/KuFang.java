@@ -163,8 +163,11 @@ public void startLine(){
    try{
 	  String ss= ClientSer.getIntance().getState(SqlPro.A区输送线);
 	  if(ss==null||ss.equals("-2")){
-	  System.out.println(ss);
+	  System.out.println("startLine 断开读取超时");
 	  return;}
+	  if(ss==null||ss.equals("-1")){
+		  System.out.println("startLine 立库断开");
+		  return;}
 	  String sm[]=ss.split("\\|");
 	String sql1= "select  货位序号,托盘编号   from 货位表  where  货位序号  between 501 and 514 order by 货位序号";
 	
@@ -181,11 +184,12 @@ public void startLine(){
 				//System.out.println((r*2+1)+"="+sm[r*2+1]+"="+ss);
 				String fromID=line1.get(0)+"";
 				String toID=line2.get(0)+"";
-				SqlTool.update7Line(firstTP, fromID, toID);
+				
 				/*
 				 * 像PLC里面写入PLC地址
 				 * **/
 				if(!firstTP.equals("")){
+					SqlTool.update7Line(firstTP, fromID, toID);
 					// String sql2="select 托盘编号  from 货位表   where  货位序号='"+toID+"'";	
 				  String wuliao= SqlTool.findOneRecord("select 物料  from 库存托盘  where 托盘编号="+"'"+firstTP+"'");
 				  String leixing=SqlTool.findOneRecord("select 类型  from 通用物料  where 物料编码="+"'"+wuliao+"'");
@@ -222,11 +226,12 @@ public void startLine(){
 			if(sm2[r*2+1].split("=")[1].equals("0")){
 				String fromID=line1.get(0)+"";
 				String toID=line2.get(0)+"";
-				SqlTool.update7Line(firstTP, fromID, toID);
+				
 				/*
 				 * 像PLC里面写入PLC地址
 				 * **/
 				if(!firstTP.equals("")){
+					SqlTool.update7Line(firstTP, fromID, toID);
 					// String sql2="select 托盘编号  from 货位表   where  货位序号='"+toID+"'";	
 				  String wuliao= SqlTool.findOneRecord("select 物料  from 库存托盘  where 托盘编号="+"'"+firstTP+"'");
 				  String leixing=SqlTool.findOneRecord("select 类型  from 通用物料  where 物料编码="+"'"+wuliao+"'");
@@ -926,5 +931,114 @@ public void startlineAGV(){
     	}catch(Exception ex){}
     	
     }
+    
+    int startLine1=0; int startLine2=0;
+    int huojia1=0; int huojia2=0;
+   public void testLiKu(int machinID){
+	       try{
+	    	   if(machinID==1){
+	    		   
+	    			  String tem2=SqlTool.findOneRecord("select  托盘编号,物料,货位号,方向  from 库存托盘"
+	    			  		+ "   where  货位号 in (514,512,510,508,506,504,502) and  托盘编号=8888 and 方向=1");   
+	    			    if(tem2!=null){
+	    			    	//如果这个托盘在输送线上，那么就是输送线回流
+	    			    	String sm[]=tem2.split("!_!");
+	    			    	String tem=SqlTool.findOneRecord("select  货位序号,托盘编号  from 货位表   where  货位序号 BETWEEN 1 AND 28  AND (托盘编号 IS NULL OR  托盘编号='')  and 货位序号>'"+huojia1+"' ORDER BY  货位序号 " );   
+	    			    	  if(tem!=null){
+	    			    		  String sm2[]=tem.split("!_!");
+	    			    		  String b=SqlTool.add动作指令(sm[0], sm[2], sm2[0], "输送线回流", 0, 1+"");
+	    			    		  if(b.contains("成功")){
+	    			    		  huojia1++;}
+	    			    		  if(huojia1==28)huojia1=0;
+	    			    	     }
+	    			            
+	    			         }else{
+	    			          //若果托盘不在输送线上，那么就是下货
+	    			        	 tem2=SqlTool.findOneRecord("select  托盘编号,物料,货位号,方向  from 库存托盘"
+	    			        		  		+ "   where  货位号 between 1 and 28 and  托盘编号=8888 and 方向=1");  
+	    			        	 if(tem2!=null){
+	    			        		 String sm[]=tem2.split("!_!");
+	    			               Vector v=SqlTool.findInVector("select  货位序号,托盘编号  from 货位表   where  货位序号  between 501 and 514 AND 货位序号>"+(500+startLine1*2)+"  ORDER BY  货位序号 " ); 
+	    			               int maxCols=7-startLine1;
+	    			               
+	    			               for(int i=0;i<maxCols;i++){
+	    			            	   Vector row1=(Vector)v.get(i*2); //奇数位
+	    			            	   Vector row2=(Vector)v.get(i*2+1); //偶数位
+	    			            	 String tp1=(row1.get(1)==null?"": row1.get(1).toString());
+	    			            	 String tp2=(row2.get(1)==null?"": row2.get(1).toString());
+	    			            	 if(tp1.equals("")&&tp2.equals("")){
+	    			            		 String b=SqlTool.add动作指令(sm[0], sm[2], row1.get(0).toString(), "下货", 0, 1+""); 
+	    			            		 if(b.contains("成功")){
+	    			            			/* if(row1.get(0).toString().equals("501")) startLine1=1;
+	    			            			 if(row1.get(0).toString().equals("503")) startLine1=2;
+	    			            			 if(row1.get(0).toString().equals("505")) startLine1=3;
+	    			            			 if(row1.get(0).toString().equals("507")) startLine1=4;
+	    			            			 if(row1.get(0).toString().equals("509")) startLine1=5;
+	    			            			 if(row1.get(0).toString().equals("511")) startLine1=6;
+	    			            			 if(row1.get(0).toString().equals("513")) startLine1=7;*/
+	    			            		   startLine1++;
+	    			            		 System.out.println("startLine1="+startLine1);
+	    			            		 }
+	    			            		 if(startLine1==7)startLine1=0;
+	    			            		  break;
+	    			            	 }
+	    			                 }
+	    			        	   }
+	    			        	 
+	    			         }
+
+	    		          } 
+	    	   
+	    	  /////////////////////////////////////////////////////////////////////////////////
+	    	   
+	    	   if(machinID==2){
+	    		   
+	    			  String tem2=SqlTool.findOneRecord("select  托盘编号,物料,货位号,方向  from 库存托盘"
+	    			  		+ "   where  货位号 in (614,612,610,608,606,604,602) and  托盘编号=8888 and 方向=2");   
+	    			    if(tem2!=null){
+	    			    	//如果这个托盘在输送线上，那么就是输送线回流
+	    			    	String sm[]=tem2.split("!_!");
+	    			    	String tem=SqlTool.findOneRecord("select  货位序号,托盘编号  from 货位表   where  货位序号 BETWEEN 1 AND 28  AND (托盘编号 IS NULL OR  托盘编号='')  and 货位序号>'"+huojia2+"' ORDER BY  货位序号 " );   
+	    			    	  if(tem!=null){
+	    			    		  String sm2[]=tem.split("!_!");
+	    			    		  String b=SqlTool.add动作指令(sm[0], sm[2], sm2[0], "输送线回流", 0, 2+"");
+	    			    		  if(b.contains("成功")){
+	    			    		  huojia2++;}
+	    			    		  if(huojia2==28)huojia2=0;
+	    			    	     }
+	    			            
+	    			         }else{
+	    			          //若果托盘不在输送线上，那么就是下货
+	    			        	 tem2=SqlTool.findOneRecord("select  托盘编号,物料,货位号,方向  from 库存托盘"
+	    			        		  		+ "   where  货位号 between 1 and 28 and  托盘编号=8888 and 方向=2");  
+	    			        	 if(tem2!=null){
+	    			        		 String sm[]=tem2.split("!_!");
+	    			               Vector v=SqlTool.findInVector("select  货位序号,托盘编号  from 货位表   where  货位序号  between 601 and 614 AND 货位序号>"+(600+startLine2*2)+"  ORDER BY  货位序号 " ); 
+	    			               int maxCols=7-startLine2;
+	    			               
+	    			               for(int i=0;i<maxCols;i++){
+	    			            	   Vector row1=(Vector)v.get(i*2); //奇数位
+	    			            	   Vector row2=(Vector)v.get(i*2+1); //偶数位
+	    			            	 String tp1=(row1.get(1)==null?"": row1.get(1).toString());
+	    			            	 String tp2=(row2.get(1)==null?"": row2.get(1).toString());
+	    			            	 if(tp1.equals("")&&tp2.equals("")){
+	    			            		 String b=SqlTool.add动作指令(sm[0], sm[2], row1.get(0).toString(), "下货", 0, 2+""); 
+	    			            		 if(b.contains("成功")){
+	    			            		 startLine2++;
+	    			            		 System.out.println("startLine2="+startLine2);
+	    			            		 }
+	    			            		 if(startLine2==7)startLine2=0;
+	    			            		  break;
+	    			            	 }
+	    			                 }
+	    			        	   }
+	    			        	 
+	    			         }
+
+	    		               } 
+	    			    	      
+	         }catch(Exception ex){ex.printStackTrace();}
+	   
+       }
 	
 }

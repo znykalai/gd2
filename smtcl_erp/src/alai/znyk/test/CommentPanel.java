@@ -52,6 +52,7 @@ public class CommentPanel extends JPanel {
 	private JTable table_2;
 	private JTable table_3;
 	private JTable table_4;
+	private static int start=0;
     Vector colum3=new  Vector();
     Vector zl=new  Vector();
     Vector TP=new Vector();
@@ -167,6 +168,12 @@ public class CommentPanel extends JPanel {
 		   
 	DefaultTableModel modeTP=new DefaultTableModel(){
 				 public void setValueAt(Object aValue, int row, int column) {
+					 if(column==0)return;
+					 super.setValueAt(aValue, row, column);
+					 if(column==2){  
+						 Object name=modeTP.getValueAt(row, 0);
+						SqlTool.insert(new String[]{"update 库存托盘  set 数量='"+aValue+"' where 托盘编号='"+name+"'"}); 
+					     }
 										}
 		 };
     DefaultTableModel modeKF=new DefaultTableModel(){
@@ -182,7 +189,7 @@ public class CommentPanel extends JPanel {
 									}
 			 public boolean isCellEditable(int row, int column) {
 				    if(column==0||column==2||column==4||column==6) return false;
-			        return true;
+			        return false;
 			    }
 	 };
 	 
@@ -190,7 +197,8 @@ public class CommentPanel extends JPanel {
     private JTable table_5;
 	 Vector colum6=new Vector();
 	 Hashtable<String,String> aH=new Hashtable<String,String>();
-	
+	 Hashtable<String,String> aH1=new Hashtable<String,String>();
+	 Hashtable<String,String> aH2=new Hashtable<String,String>();
 	 
 	 
 	/**
@@ -201,10 +209,22 @@ public class CommentPanel extends JPanel {
 		colum6.addElement("序号");colum6.addElement("1层");
 		colum6.addElement("序号");colum6.addElement("2层");
 		colum6.addElement("序号");colum6.addElement("2层");
+		
 		aH.put("1ST", "D11299");aH.put("2ST", "D11349");
 		aH.put("3ST", "D11399");aH.put("4ST", "D11449");
 		aH.put("5ST", "D11499");aH.put("6ST", "D11549");
 		aH.put("7ST", "D11599");
+		
+		aH1.put("1ST", "514");aH1.put("2ST", "512");
+		aH1.put("3ST", "510");aH1.put("4ST", "508");
+		aH1.put("5ST", "506");aH1.put("6ST", "504");
+		aH1.put("7ST", "502");
+		
+		aH2.put("1ST", "614");aH2.put("2ST", "612");
+		aH2.put("3ST", "610");aH2.put("4ST", "608");
+		aH2.put("5ST", "606");aH2.put("6ST", "604");
+		aH2.put("7ST", "602");
+		
 		KuFang f=KuFang.getIntance();
 		colum3.addElement("工位");colum3.addElement("信号");
 		Vector v=SqlTool.findInVector("select 工位,信号 from 有货信号");
@@ -671,6 +691,28 @@ public class CommentPanel extends JPanel {
 	    add(scrollPane_6);
 	    
 	    table_6 = new JTable();
+	    table_6.addMouseListener(new MouseAdapter() {
+	    	@Override
+	    	public void mouseClicked(MouseEvent e) {
+	    		if(e.getClickCount()==2){
+	    		int row=table_6.getSelectedRow();
+	    		int col=table_6.getSelectedColumn();
+	    		if(row!=-1&&col!=-1){
+	    			if(col==1||col==3||col==5||col==7){
+	    				Object ob=table_6.getValueAt(row, col)==null?"0":table_6.getValueAt(row, col);
+	    				if(Integer.parseInt(ob.toString())==0){
+	    					table_6.setValueAt(1, row, col);
+	    					
+	    				}else{
+	    					table_6.setValueAt(0, row, col);
+	    				}
+	    				
+	    			 }
+	    			
+	    		}
+	    	}
+	    		}
+	    });
 	    table_6.setRowHeight(25);
 	    scrollPane_6.setViewportView(table_6);
 	    mode6.setDataVector(new Vector(), colum6);
@@ -679,9 +721,32 @@ public class CommentPanel extends JPanel {
 	    JButton button_8 = new JButton("\u5199\u5165\u6599\u7BB1\u4F4D\u7F6E");
 	    button_8.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
+	    		System.out.println("写入PLC，同时准备写到数据库");
 	    		String st=comboBox_2.getSelectedItem().toString();
 	    		String machID=comboBox_1.getSelectedItem().toString();
 	    		writeTable6ToPLC(Integer.parseInt(machID),aH.get(st));
+	    		if(Integer.parseInt(machID)==1){
+	         String tem2=SqlTool.findOneRecord("select  托盘编号,物料,数量  from 库存托盘   where  货位号='"+aH1.get(st)+"'");
+	         if(tem2!=null){
+ 	  			String tp=tem2.split("!_!")[0];
+ 	  			String wuliao2=tem2.split("!_!")[1];
+ 	  		    String leixing=SqlTool.findOneRecord("select 类型  from 通用物料  where 物料编码="+"'"+wuliao2+"'");
+				SqlTool.readAddresInPaletFromPLC(leixing, tp, aH1.get(st), 1);
+	         }
+	    			
+	    		}
+	    		
+	    		if(Integer.parseInt(machID)==2){
+	   	         String tem2=SqlTool.findOneRecord("select  托盘编号,物料,数量  from 库存托盘   where  货位号='"+aH2.get(st)+"'");
+	   	         if(tem2!=null){
+	    	  			String tp=tem2.split("!_!")[0];
+	    	  			String wuliao2=tem2.split("!_!")[1];
+	    	  		    String leixing=SqlTool.findOneRecord("select 类型  from 通用物料  where 物料编码="+"'"+wuliao2+"'");
+	   				SqlTool.readAddresInPaletFromPLC(leixing, tp, aH2.get(st), 2);
+	   	         }
+	   	    			
+	   	    		}		
+	    		
 	    	}
 	    });
 	    button_8.setBounds(881, 384, 121, 23);
@@ -708,6 +773,101 @@ public class CommentPanel extends JPanel {
 	    });
 	    button_9.setBounds(335, 384, 93, 23);
 	    add(button_9);
+	    
+	    JButton button_10 = new JButton("\u6E050");
+	    button_10.addActionListener(new ActionListener() {
+	    	public void actionPerformed(ActionEvent e) {
+	    		
+	    		Vector data=new Vector();
+	    		for(int r=0;r<7;r++){
+	    			Vector row=new Vector();
+	    			row.addElement(r*2+1);row.addElement(0);
+	    			row.addElement(r*2+2);row.addElement(0);
+	    			//第2成
+	    			row.addElement(14+r*2+1);row.addElement(0);
+	    			row.addElement(14+r*2+2);row.addElement(0);
+	    			
+	    			data.addElement(row);
+	    			
+	    		}
+	    		 mode6.setDataVector(data, colum6);
+	    		 setWidth();
+	    		
+	    		
+	    	}
+	    });
+	    button_10.setBounds(676, 383, 93, 23);
+	    add(button_10);
+	    
+	    JButton button_11 = new JButton("\u7F6E1");
+	    button_11.addActionListener(new ActionListener() {
+	    	public void actionPerformed(ActionEvent e) {
+	    		Vector data=new Vector();
+	    		for(int r=0;r<7;r++){
+	    			Vector row=new Vector();
+	    			row.addElement(r*2+1);row.addElement(1);
+	    			row.addElement(r*2+2);row.addElement(1);
+	    			//第2成
+	    			row.addElement(14+r*2+1);row.addElement(1);
+	    			row.addElement(14+r*2+2);row.addElement(1);
+	    			
+	    			data.addElement(row);
+	    			
+	    		}
+	    		 mode6.setDataVector(data, colum6);
+	    		 setWidth();
+	    		
+	    	}
+	    });
+	    button_11.setBounds(779, 385, 93, 23);
+	    add(button_11);
+	    JComboBox comboBox_3 = new JComboBox();
+	    comboBox_3.addItem("2");  comboBox_3.addItem("1");
+	    
+	    comboBox_3.setBounds(817, 599, 54, 21);
+	    add(comboBox_3);
+	    JButton button_12 = new JButton("\u8BD5\u8DD18888\u6258\u76D8");
+	    
+	    button_12.addActionListener(new ActionListener() {
+	    	public void actionPerformed(ActionEvent e) {
+	    		
+	    		if(start==0){
+	    			start=1;
+	    			button_12.setText("停止试运行");
+	    		new Thread(){public void run(){
+	    				while(start==1){ 
+	    					int q=Integer.parseInt(comboBox_3.getSelectedItem().toString());
+	    					comboBox_3.setEnabled(false);
+	    					KuFang.getIntance().testLiKu(q);
+	    					try{
+	    					Thread.sleep(2000);}catch(Exception ee){ee.printStackTrace();}
+	    					
+	    					
+	    				 }
+	    				System.out.println("试运8888托盘结束");
+	    			}}.start();
+	    			
+	    			return;
+	    		}
+	    		
+	    		if(start==1){
+	    			start=0;
+	    			comboBox_3.setEnabled(true);
+	    			button_12.setText("试运8888托盘");
+	    		}
+	    		
+	    		
+	    		
+	    	}
+	    });
+	    button_12.setBounds(881, 598, 121, 23);
+	    add(button_12);
+	    
+	    JLabel label_22 = new JLabel("\u5206\u533A");
+	    label_22.setBounds(779, 602, 54, 15);
+	    add(label_22);
+	    
+	   
 	   // initTable6();
 	    
 	   
@@ -730,6 +890,14 @@ public class CommentPanel extends JPanel {
 		}.start();
 
 	}
+	public void setWidth(){
+		table_6.getColumnModel().getColumn(0).setPreferredWidth(10);
+		table_6.getColumnModel().getColumn(2).setPreferredWidth(10);
+		table_6.getColumnModel().getColumn(4).setPreferredWidth(10);
+		table_6.getColumnModel().getColumn(6).setPreferredWidth(10);
+		
+		
+	}
 	
 	public void initTable6(String addr,int machineID){
 		
@@ -748,21 +916,23 @@ public class CommentPanel extends JPanel {
 			
 		}
 		 mode6.setDataVector(data, colum6);
-		
+		 setWidth();
 		
 	}
 	
 	public void writeTable6ToPLC(int machineID,String addr){
 		int to[]=new int[29]; to[0]=1;
 		for(int r=0;r<mode6.getRowCount();r++){
-			to[r*2+1]=(int)mode6.getValueAt(r, 1);
-			to[r*2+2]=(int)mode6.getValueAt(r, 3);
-			to[14+r*2+1]=(int)mode6.getValueAt(r, 5);
-			to[14+r*2+2]=(int)mode6.getValueAt(r, 7);
+			to[r*2+1]=Integer.parseInt(mode6.getValueAt(r, 1)==null?"0":mode6.getValueAt(r, 1).toString());
+			to[r*2+2]=Integer.parseInt(mode6.getValueAt(r, 3)==null?"0":mode6.getValueAt(r, 3).toString());
+			to[14+r*2+1]=Integer.parseInt(mode6.getValueAt(r, 5)==null?"0":mode6.getValueAt(r, 5).toString());
+			to[14+r*2+2]=Integer.parseInt(mode6.getValueAt(r, 7)==null?"0":mode6.getValueAt(r, 7).toString()); 
 			
 		   }
-	int b= ClientSer.getIntance().writeSirIntToCTR(addr, to.length, to,  machineID)  ;
-		if(b==1){
+	 int b= ClientSer.getIntance().writeSirIntToCTR(addr, to.length, to,  machineID)  ;
+	 //System.out.println("b======="+b);
+	  
+		if(b==0){
 			JOptionPane.showMessageDialog(null,"写入成功","提示",JOptionPane.WARNING_MESSAGE,null);
 		}
 	}
@@ -774,6 +944,7 @@ public class CommentPanel extends JPanel {
 		modeTP.setDataVector(v4, TP);
 		Vector v5=SqlTool.findInVector("select 货位序号,托盘编号   from 货位表  order by 距离");
 		modeKF.setDataVector(v5, KF);
+		
 		
 	}
 	

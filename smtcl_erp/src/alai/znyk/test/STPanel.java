@@ -32,6 +32,8 @@ import java.awt.SystemColor;
 
 public class STPanel extends JPanel {
 	private JTable table;
+    JLabel label_1;
+    PLCFrame plframe;
 	DefaultTableModel mode=new DefaultTableModel(){
 		 public void setValueAt(Object aValue, int row, int column) {
 			 super.setValueAt(aValue, row, column);
@@ -161,8 +163,8 @@ public class STPanel extends JPanel {
         initPanel();
        
 	}
-	public STPanel(STContent ST){
-	
+	public STPanel(STContent ST, PLCFrame plcframe){
+	    this.plframe=plcframe;
 		this.ST=ST;
 		RS=PLC.getIntance().RST[ST.stNum-1];
 		setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
@@ -201,7 +203,7 @@ public class STPanel extends JPanel {
         JPanel panel_1 = new JPanel();
         add(panel_1, BorderLayout.SOUTH);
         
-        JLabel label_1 = new JLabel((ST.stNum-1)+"工位:");
+       label_1 = new JLabel((ST.stNum-1)+"工位:"+ST.firstST.getName());
         panel_1.add(label_1);
         
         JButton btnNewButton = new JButton("\u66F4\u65B0\u5230PLC");
@@ -216,11 +218,13 @@ public class STPanel extends JPanel {
         table.getColumnModel().getColumn(2).setCellEditor(edit);
         initPanel();
         new Thread(){
-        	public void run(){
+        	public void run(){ 
         		while(true){
-        		//initPanel();
+        			if(plframe!=null&&plframe.isShowing()){
+        				//System.out.println("isShowing");
+        		      initPanel();}
         		try {
-					Thread.sleep(3000);
+					Thread.sleep(1000);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -231,9 +235,12 @@ public class STPanel extends JPanel {
         	
         }.start();
 	}
+	
 	public void initPanel(){
 		
 		if(ST==null) return;
+		
+		label_1.setText((ST.stNum-1)+"工位:"+ST.firstST.getName());
 		mode.getDataVector().removeAllElements();
 		Field f[]=ST.firstST.getClass().getDeclaredFields();
 		

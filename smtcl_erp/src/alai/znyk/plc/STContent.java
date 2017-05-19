@@ -12,7 +12,7 @@ public class STContent implements Serializable {
 	private static final long serialVersionUID = 1L;
 	public static int checkNum_预装=1;
 	
-	public ST_Father firstST;
+	public ST_Father firstST; 
     public ST_Father secondST;
     public int stNum;
     public PLC plc;
@@ -39,7 +39,7 @@ public class STContent implements Serializable {
     }
    
   
-    public void initFromSql(){
+    public synchronized void initFromSql(){
     	
     	if(plc.getIntance().stop1){//不再重数据库里面读数了，单是不影响搬运机构的继续执行
     		if(装配区==1){
@@ -92,7 +92,7 @@ public class STContent implements Serializable {
     		// 工单序号=PACK序号，分解号=这个工单号下面的模组分成的序号，
     		//工单ID+模组序ID+分解号+载具序号,这4个也决定了唯一的载具
     		
-    	 Vector<Vector> tem=SqlTool.findInVector("select  ID,工单序号,分解号,载具序号,pack编码,模组编码,物料,数量,翻面否,工位,工单ID,模组序ID,IFNULL(假电芯1,0),IFNULL(假电芯2,0),电芯位置1,电芯位置2,电芯位置3,电芯位置4,IFNULL(叠装否,'否'),模组类型,电芯类型  ,pack类型,模组层数,载具位置,COUNT(DISTINCT 工单序号,模组序ID,分解号,载具序号 )  from 配方指令队列   where  装配区="+装配区+" and IFNULL(前升读标志,0)<>1 GROUP BY 工单序号,分解号,载具序号   ORDER BY 工单序号,模组序号,分解号,载具序号 LIMIT 10");
+    	 Vector<Vector> tem=SqlTool.findInVector("select  ID,工单序号,分解号,载具序号,pack编码,模组编码,物料,数量,翻面否,工位,工单ID,模组序ID,IFNULL(假电芯1,0),IFNULL(假电芯2,0),电芯位置1,电芯位置2,电芯位置3,电芯位置4,IFNULL(叠装否,'否'),模组类型,电芯类型  ,pack类型,模组层数,载具位置, COUNT(DISTINCT 工单序号,模组序ID,分解号,载具序号 )  from 配方指令队列    where  装配区="+装配区+"   and IFNULL(前升读标志,0)<>1 GROUP BY 工单序号,模组序号,分解号,载具序号   ORDER BY 工单序号,模组序号,分解号,载具序号 LIMIT 10");
     	 //System.out.println(tem);	
     	 if(tem.size()>1){
     	 		 Vector row=(Vector)tem.get(0);
@@ -105,7 +105,7 @@ public class STContent implements Serializable {
     	 		 ((_FST)firstST).set分解号(row.get(2)==null?0:(int)row.get(2));
     	 		 ((_FST)firstST).set载具序号(row.get(3)==null?0:(int)row.get(3));
     	 		 ((_FST)firstST).set翻B面(row.get(8).equals("是")?true:false);
-    	 		 ((_FST)firstST).set允许工位动作标志(true);
+    	 		 ((_FST)firstST).set允许工位动作标志(false);
     	 		 ((_FST)firstST).set立库RDY(false);
     	 		  firstST.set工单ID(row.get(10)==null?0:(int)row.get(10));
     	 		  firstST.set模组序ID(row.get(11)==null?0:(int)row.get(11));
@@ -140,9 +140,11 @@ public class STContent implements Serializable {
     	     	 carr.set配方(beifangs);
     	     	 if(装配区==1){
     	  		 PLC.getIntance().line.addFist(carr);
+    	  		 ((_FST)firstST).set允许工位动作标志(true);
     	  		 }
     	     	 else{
     	     	 PLC.getIntance().line2.addFist(carr); 
+    	     	 ((_FST)firstST).set允许工位动作标志(true);
     	     	 System.out.println("line2---------");
     	  		 }
     	 		 
@@ -152,7 +154,7 @@ public class STContent implements Serializable {
    	 		 ((_FST)secondST).set分解号(row2.get(2)==null?0:(int)row2.get(2));
    	 		 ((_FST)secondST).set载具序号(row2.get(3)==null?0:(int)row2.get(3));
    	 		 ((_FST)secondST).set翻B面(row2.get(8).equals("是")?true:false);
-   	 		 ((_FST)secondST).set允许工位动作标志(true);
+   	 		 ((_FST)secondST).set允许工位动作标志(false);
    	 		 ((_FST)secondST).set立库RDY(false);
    	 	     secondST.set工单ID(row2.get(10)==null?0:(int)row2.get(10));
    	         secondST.set模组序ID(row2.get(11)==null?0:(int)row2.get(11));
@@ -186,9 +188,12 @@ public class STContent implements Serializable {
      	     	    }
      	     	 carr2.set配方(beifangs2);
     	  
-    	    if(装配区==1) 	 
+    	    if(装配区==1) 	 {
   		          PLC.getIntance().line.setBuffer(carr2);
-    	    else  PLC.getIntance().line2.setBuffer(carr2);
+  		        ((_FST)secondST).set允许工位动作标志(true);}
+    	          
+    	    else  {PLC.getIntance().line2.setBuffer(carr2);
+    	         ((_FST)secondST).set允许工位动作标志(true);}
     	 		 
     	 	}else{
     	 		if(tem.size()==1){
@@ -199,7 +204,7 @@ public class STContent implements Serializable {
     	 		 ((_FST)firstST).set分解号(row.get(2)==null?0:(int)row.get(2));
     	 		 ((_FST)firstST).set载具序号(row.get(3)==null?0:(int)row.get(3));
        	 		 ((_FST)firstST).set翻B面(row.get(8).equals("是")?true:false);
-       	 		 ((_FST)firstST).set允许工位动作标志(true);
+       	 		 ((_FST)firstST).set允许工位动作标志(false);
        	 		 ((_FST)firstST).set立库RDY(false);
        	 	    firstST.set工单ID(row.get(10)==null?0:(int)row.get(10));
 	 		    firstST.set模组序ID(row.get(11)==null?0:(int)row.get(11));
@@ -232,9 +237,12 @@ public class STContent implements Serializable {
 	    	     		beifangs=beifangs.substring(0,  beifangs.length()-3) ;
 	    	     	    }
 	    	     	 carr.set配方(beifangs);     	 
-	    	     	 if(装配区==1) 	 
+	    	     	 if(装配区==1) {	 
 	  		             PLC.getIntance().line.addFist(carr);
-	    	     	 else  PLC.getIntance().line2.addFist(carr);
+	  		           ((_FST)firstST).set允许工位动作标志(true);}
+	    	     	 else  {PLC.getIntance().line2.addFist(carr);
+	    	     	      ((_FST)firstST).set允许工位动作标志(true);
+	    	     	 }
     	 		}
     	 		
     	 	}
@@ -242,7 +250,7 @@ public class STContent implements Serializable {
     	
     	 if(firstST.isWrite()&&!secondST.isWrite()){
     		  //如果第一个指令有队列，第二个没有，那么就写入第二条指令，读取下一条数据库的动作，前升降机读取标志=0的第一条记录。
-    		 Vector<Vector> tem=SqlTool.findInVector("select  ID,工单序号,分解号,载具序号,pack编码,模组编码,物料,数量,翻面否,工位,工单ID,模组序ID,IFNULL(假电芯1,0),IFNULL(假电芯2,0),电芯位置1,电芯位置2,电芯位置3,电芯位置4,IFNULL(叠装否,'否') ,模组类型,电芯类型 ,pack类型,模组层数,载具位置, COUNT(DISTINCT 工单序号,模组序ID,分解号,载具序号 )  from 配方指令队列   where  装配区="+装配区+" and IFNULL(前升读标志,0)<>1 GROUP BY 工单序号,分解号,载具序号   ORDER BY 工单序号,模组序号,分解号,载具序号 LIMIT 10");
+    		 Vector<Vector> tem=SqlTool.findInVector("select  ID,工单序号,分解号,载具序号,pack编码,模组编码,物料,数量,翻面否,工位,工单ID,模组序ID,IFNULL(假电芯1,0),IFNULL(假电芯2,0),电芯位置1,电芯位置2,电芯位置3,电芯位置4,IFNULL(叠装否,'否') ,模组类型,电芯类型 ,pack类型,模组层数,载具位置,COUNT(DISTINCT 工单序号,模组序ID,分解号,载具序号 )  from 配方指令队列  where  装配区="+装配区+"      and IFNULL(前升读标志,0)<>1 GROUP BY 工单序号,模组序号,分解号,载具序号   ORDER BY 工单序号,模组序号,分解号,载具序号 LIMIT 10");
     		 if(tem.size()>0){
     	 		 Vector row=(Vector)tem.get(0);
     	 		 ((_FST)secondST).clear();
@@ -284,27 +292,33 @@ public class STContent implements Serializable {
         	     	    }
         	     	 carr2.set配方(beifangs);
         	     	 
-        	     	if(装配区==1) 
+        	     	if(装配区==1) {
       		               PLC.getIntance().line.setBuffer(carr2);
-        	     	else  PLC.getIntance().line2.setBuffer(carr2);
+      		               ((_FST)secondST).set允许工位动作标志(true);   
+        	     	    }
+        	     	else { PLC.getIntance().line2.setBuffer(carr2);
+        	     	        ((_FST)secondST).set允许工位动作标志(true);   
+        	          	}
         	 		 
     	 		}
     	 		
     	  }
     	 
-    	 if(!firstST.isWrite()&&secondST.isWrite()){
+    	 if(!firstST.isWrite()&&secondST.isWrite()){ 
     		  //如果第一个指令有队列，第二个没有，那么把第二条指令移到第一条动作指令，然后在写入第二条动作指令
-    		 firstST.intFromST(secondST);
-    		 secondST.setWrite(false);
-    		 secondST.clear();
+    		 ((_FST)firstST).set允许工位动作标志(false);   
     		 if(装配区==1) {
     		 PLC.getIntance().line.addFist(PLC.getIntance().line.buffer);
     		 PLC.getIntance().line.buffer=null;}
-    		 else{
+    		 else{ 
     			 
     			 PLC.getIntance().line2.addFist(PLC.getIntance().line2.buffer);
         		 PLC.getIntance().line2.buffer=null;	 
     		 }
+    		 
+    		 firstST.intFromST(secondST);
+    		 secondST.setWrite(false);
+    		 secondST.clear();
     		 
     	 }
     	 
@@ -340,15 +354,15 @@ public class STContent implements Serializable {
     			}else{
     				       cc=PLC.getIntance().line2.getCarry(0);
     			}
-    			if(/*cc!=null*/false){
-          tem=SqlTool.findInVector("select  ID,工单序号,分解号,载具序号,pack编码,模组编码,物料,数量,翻面否,工位 ,模组类型,电芯类型 ,工单ID,模组序ID,模组层数,载具位置  from 配方指令队列 "+
+    			if(cc!=null){
+          tem=SqlTool.findInVector("select  ID,工单序号,分解号,载具序号,pack编码,模组编码,物料,数量,翻面否,工位 ,模组类型,电芯类型 ,工单ID,模组序ID,模组层数,载具位置 ,第二编码  from 配方指令队列,通用物料 "+
     "  where  工单ID="+cc.get工单ID()+" and IFNULL(ST读取标志,0)<>1  and 装配区='"+装配区+"' and 模组序ID='"+cc.get模组序ID()+"' and 分解号='"+cc.get分解号()+"' "
-    		+ " and 工位='"+(stNum-1)+"ST' ORDER BY 工单序号,模组序号,分解号,载具序号  LIMIT 3");
+    		+ " and 工位='"+(stNum-1)+"ST'  and 物料=物料编码 ORDER BY 工单序号,模组序号,分解号,载具序号  LIMIT 3");
           
     			}else{
-        tem=SqlTool.findInVector("select  ID,工单序号,分解号,载具序号,pack编码,模组编码,物料,数量,翻面否,工位 ,模组类型,电芯类型 ,工单ID,模组序ID,模组层数,载具位置  from 配方指令队列 "+
+        tem=SqlTool.findInVector("select  ID,工单序号,分解号,载具序号,pack编码,模组编码,物料,数量,翻面否,工位 ,模组类型,电芯类型 ,工单ID,模组序ID,模组层数,载具位置,第二编码 from 配方指令队列,通用物料 "+
     			 "  where   工位='"+(stNum-1)+"ST'"+" and IFNULL(ST读取标志,0)<>1  and 装配区='"+装配区+"' "
-    				+ " ORDER BY 工单序号,模组序号,分解号,载具序号  LIMIT 3");				
+    				+ " and 物料=物料编码  ORDER BY 工单序号,模组序号,分解号,载具序号  LIMIT 3");				
     				
     			}
     	    	 	if(tem.size()>1){
@@ -367,6 +381,7 @@ public class STContent implements Serializable {
     	    	 		 ((_1_6ST)firstST).set电芯类型标志((int)row.get(11));
     	    	 		 ((_1_6ST)firstST).set需求数量((int)row.get(7));
     	    	 		 ((_1_6ST)firstST).set立库RDY(false);
+    	    	 		  ((_1_6ST)firstST).set配方特征(row.get(16)==null?0:(row.get(16).equals("")?0:Integer.parseInt(row.get(16)+"")));
     	    	 		 firstST.set工单ID((int)row.get(12));
     	    	 		 firstST.set模组序ID((int)row.get(13));
     	    	 		 firstST.set物料编码((String)row.get(6));
@@ -388,6 +403,7 @@ public class STContent implements Serializable {
     	    	 		 secondST.set工单ID((int)row2.get(12));
     	    	 		 secondST.set模组序ID((int)row2.get(13));
     	    	 		 secondST.set物料编码((String)row2.get(6));
+    	    	 		 ((_1_6ST)secondST).set配方特征(row2.get(16)==null?0:(row2.get(16).equals("")?0:Integer.parseInt(row2.get(16)+"")));
     	    	 		 secondST.setWrite(true);
     	    	 		
     	    	 		 update标志(secondST,2);
@@ -410,8 +426,8 @@ public class STContent implements Serializable {
     	    	 		firstST.set模组序ID((int)row.get(13));
     	    	 		firstST.set物料编码((String)row.get(6));
     	    	 		firstST.setWrite(true);
-    	    	 		
-    	    	 		  update标志(firstST,2);
+    	    	 		 ((_1_6ST)firstST).set配方特征(row.get(16)==null?0:(row.get(16).equals("")?0:Integer.parseInt(row.get(16)+"")));
+    	    	 		update标志(firstST,2);
     	    	 		}
     	    	 		
     	    	 	}
@@ -425,14 +441,14 @@ public class STContent implements Serializable {
     			}else{
     				cc=PLC.getIntance().line2.getCarry(0);
     			}
-    			if(/*cc!=null*/false){
-          tem=SqlTool.findInVector("select  ID,工单序号,分解号,载具序号,pack编码,模组编码,物料,数量,翻面否,工位 ,模组类型,电芯类型 ,工单ID,模组序ID,模组层数,载具位置  from 配方指令队列 "+
+    			if(cc!=null){
+          tem=SqlTool.findInVector("select  ID,工单序号,分解号,载具序号,pack编码,模组编码,物料,数量,翻面否,工位 ,模组类型,电芯类型 ,工单ID,模组序ID,模组层数,载具位置 ,第二编码  from 配方指令队列 ,通用物料"+
     "  where  工单ID="+cc.get工单ID()+" and IFNULL(ST读取标志,0)<>1  and 装配区='"+装配区+"' and 模组序ID='"+cc.get模组序ID()+"' and 分解号='"+cc.get分解号()+"' "
-    		+ " and 工位='"+(stNum-1)+"ST' ORDER BY 工单序号,模组序号,分解号,载具序号  LIMIT 3");
+    		+ " and 工位='"+(stNum-1)+"ST' and 物料=物料编码  ORDER BY 工单序号,模组序号,分解号,载具序号  LIMIT 3");
           
     			}else{
-    	  tem=SqlTool.findInVector("select  ID,工单序号,分解号,载具序号,pack编码,模组编码,物料,数量,翻面否,工位 ,模组类型,电芯类型 ,工单ID,模组序ID,模组层数,载具位置  from 配方指令队列 "+
-    			  "  where   工位='"+(stNum-1)+"ST'"+" and IFNULL(ST读取标志,0)<>1  and 装配区='"+装配区+"' "
+    	  tem=SqlTool.findInVector("select  ID,工单序号,分解号,载具序号,pack编码,模组编码,物料,数量,翻面否,工位 ,模组类型,电芯类型 ,工单ID,模组序ID,模组层数,载具位置 ,第二编码  from 配方指令队列,通用物料 "+
+    			  "  where   工位='"+(stNum-1)+"ST'"+" and IFNULL(ST读取标志,0)<>1  and 装配区='"+装配区+"'  and 物料=物料编码  "
   				+ " ORDER BY 工单序号,模组序号,分解号,载具序号  LIMIT 3");	
     				
     			}
@@ -454,7 +470,7 @@ public class STContent implements Serializable {
 	    	 	   secondST.set模组序ID((int)row.get(13));
 	    	 	   secondST.set物料编码((String)row.get(6));
 				   secondST.setWrite(true);	
-				 
+				   ((_1_6ST)secondST).set配方特征(row.get(16)==null?0:(row.get(16).equals("")?0:Integer.parseInt(row.get(16)+"")));
 				   update标志(secondST,2);
 				 
 				 }
@@ -482,14 +498,14 @@ public class STContent implements Serializable {
    			}else{
    				cc=PLC.getIntance().line2.getCarry(0);
    			}
-   			if(/*cc!=null*/false){
-         tem=SqlTool.findInVector("select  ID,工单序号,分解号,载具序号,pack编码,模组编码,物料,数量,翻面否,工位 ,模组类型,电芯类型 ,假电芯1,假电芯2,工单ID,模组序ID,模组层数,载具位置 from 配方指令队列 "+
+   			if(cc!=null){
+         tem=SqlTool.findInVector("select  ID,工单序号,分解号,载具序号,pack编码,模组编码,物料,数量,翻面否,工位 ,模组类型,电芯类型 ,假电芯1,假电芯2,工单ID,模组序ID,模组层数,载具位置,第二编码  from 配方指令队列,通用物料 "+
    "  where 工单ID="+cc.get工单ID()+" and IFNULL(ST读取标志,0)<>1  and 装配区='"+装配区+"' and 模组序ID='"+cc.get模组序ID()+"' and 分解号='"+cc.get分解号()+"' "
-   		+ " and 工位='"+(stNum-1)+"ST' ORDER BY 工单序号,模组序号,分解号,载具序号  LIMIT 3");
+   		+ " and 工位='"+(stNum-1)+"ST'  and 物料=物料编码  ORDER BY 工单序号,模组序号,分解号,载具序号  LIMIT 3");
          
    			}else{
-   	tem=SqlTool.findInVector("select  ID,工单序号,分解号,载具序号,pack编码,模组编码,物料,数量,翻面否,工位 ,模组类型,电芯类型 ,假电芯1,假电芯2,工单ID,模组序ID,模组层数,载具位置 from 配方指令队列 "+
-   		 "  where   工位='"+(stNum-1)+"ST'"+" and IFNULL(ST读取标志,0)<>1  and 装配区='"+装配区+"' "
+   	tem=SqlTool.findInVector("select  ID,工单序号,分解号,载具序号,pack编码,模组编码,物料,数量,翻面否,工位 ,模组类型,电芯类型 ,假电芯1,假电芯2,工单ID,模组序ID,模组层数,载具位置,第二编码  from 配方指令队列,通用物料  "+
+   		 "  where   工位='"+(stNum-1)+"ST'"+" and IFNULL(ST读取标志,0)<>1  and 装配区='"+装配区+"'  and 物料=物料编码  "
 			+ " ORDER BY 工单序号,模组序号,分解号,载具序号  LIMIT 3");					
    				
    			}    	   
@@ -571,15 +587,15 @@ public class STContent implements Serializable {
      	   			}else{
      	   				cc=PLC.getIntance().line2.getCarry(0);
      	   			}
-     	   			if(/*cc!=null*/false){
-     	         tem=SqlTool.findInVector("select  ID,工单序号,分解号,载具序号,pack编码,模组编码,物料,数量,翻面否,工位 ,模组类型,电芯类型 ,假电芯1,假电芯2,工单ID,模组序ID,模组层数,载具位置 from 配方指令队列 "+
+     	   			if(cc!=null){
+     	         tem=SqlTool.findInVector("select  ID,工单序号,分解号,载具序号,pack编码,模组编码,物料,数量,翻面否,工位 ,模组类型,电芯类型 ,假电芯1,假电芯2,工单ID,模组序ID,模组层数,载具位置 ,第二编码 from 配方指令队列 ,通用物料"+
      	   "  where  工单ID="+cc.get工单ID()+" and IFNULL(ST读取标志,0)<>1  and 装配区='"+装配区+"' and 模组序ID='"+cc.get模组序ID()+"' and 分解号='"+cc.get分解号()+"' "
-     	   		+ " and 工位='"+(stNum-1)+"ST' ORDER BY 工单序号,模组序号,分解号,载具序号  LIMIT 3");
+     	   		+ " and 工位='"+(stNum-1)+"ST' and 物料=通用物料 ORDER BY 工单序号,模组序号,分解号,载具序号  LIMIT 3");
      	         
      	   			} 
      	   		else{
-     	   		tem=SqlTool.findInVector("select  ID,工单序号,分解号,载具序号,pack编码,模组编码,物料,数量,翻面否,工位 ,模组类型,电芯类型 ,假电芯1,假电芯2,工单ID,模组序ID,模组层数,载具位置 from 配方指令队列 "+
-     	   			 "  where   工位='"+(stNum-1)+"ST'"+" and IFNULL(ST读取标志,0)<>1  and 装配区='"+装配区+"' "
+     	   		tem=SqlTool.findInVector("select  ID,工单序号,分解号,载具序号,pack编码,模组编码,物料,数量,翻面否,工位 ,模组类型,电芯类型 ,假电芯1,假电芯2,工单ID,模组序ID,模组层数,载具位置 ,第二编码 from 配方指令队列 ,通用物料"+
+     	   			 "  where   工位='"+(stNum-1)+"ST'"+" and IFNULL(ST读取标志,0)<>1  and 装配区='"+装配区+"' and 物料=通用物料  "
      				+ " ORDER BY 工单序号,模组序号,分解号,载具序号  LIMIT 3");	 				
      	   			} 			
      			// Vector<Vector> tem=SqlTool.findInVector("select  ID,工单序号,分解号,载具序号,pack编码,模组编码,物料,数量,翻面否,工位 ,模组类型,电芯类型,假电芯1,假电芯2,工单ID,模组序ID "
@@ -641,10 +657,11 @@ public class STContent implements Serializable {
     	 				 if(sm.length==1){
     	 					String back= SqlTool.findOneRecord("Select 第二编码 from 通用物料  where 物料编码='"+sm[0]+"'");
     	 					if(back!=null&&back.equals("1000")) {
-    	 					  ((_1_6ST)firstST).set单盖板载具(true);}
+    	 					    ((_1_6ST)firstST).set单盖板载具(true);}
     	 					else{
     	 						((_1_6ST)firstST).set单盖板载具(false);  
     	 					  }
+    	 					
     	 					 
     	 				   }else{
     	 					  ((_1_6ST)firstST).set单盖板载具(false);  
@@ -697,11 +714,53 @@ public class STContent implements Serializable {
 			((_9ST)firstST).set第4个电芯位置(d4);
 			((_9ST)firstST).set立库RDY(true);
 			((_9ST)firstST).setWrite(true);
+		///////////////////////////////////////////////////////////////////////////////////////////////////	
+			String pei=car.get配方(); 
+	 			if(pei!=null){
+	 				 String sm[]=pei.split("!_!")	;
+	 				 if(sm.length==2){
+	 					 boolean is有盖板=false;
+	 					String back= SqlTool.findOneRecord("Select 第二编码 from 通用物料  where 物料编码='"+sm[0]+"'");
+	 					String back2= SqlTool.findOneRecord("Select 第二编码 from 通用物料  where 物料编码='"+sm[1]+"'");
+	 					if(back!=null&&back.equals("1000")) {
+	 						   is有盖板=true;  }
+	 					if(back2!=null&&back2.equals("1000")) {
+	 						   is有盖板=true;  }
+	 					
+	 					if(!is有盖板)
+	 					  {
+	 						
+	 					
+	 					if(back!=null&&!back.equals("0")) {
+	 						((_9ST)firstST).set配方特征(Integer.parseInt(back.equals("")?"0":back)); 
+	 						   
+	 					}
+	 					if(back2!=null&&!back2.equals("0")) {
+	 						((_9ST)firstST).set配方特征(Integer.parseInt(back2.equals("")?"0":back2)); 
+	 						}
+	 					
+	 					  }
+	 					 
+	 				   }else{
+	 					  if(sm.length==1){
+	 						 String back= SqlTool.findOneRecord("Select 第二编码 from 通用物料  where 物料编码='"+sm[0]+"'");
+	 						if(back!=null&&!back.equals("1000")){
+	 							((_9ST)firstST).set配方特征(Integer.parseInt(back.equals("")?"0":back)); 
+	 							
+	 						 }
+	 						  
+	 					  }
+	 					   
+	 				   }
+	 				
+	 			  }
+		////////////////////////////////////////////////////////////////////////////////////////	
+			
 			  next=i;
 			    break;
     			 }
     		
-    			 }//end for
+    	}//////////////////////////////////////end for
     	 for(int i=next-1;i>=checkNum_预装;i--){
         			 Carry car=plc.line.getCarry(i);
         			 if(car==null){continue;}
@@ -735,6 +794,49 @@ public class STContent implements Serializable {
         				((_9ST)secondST).set第4个电芯位置(d4);
         				((_9ST)secondST).set立库RDY(true);
         				((_9ST)secondST).setWrite(true);
+        				
+        				///////////////////////////////////////////////////////////////////////////////////////////////////	
+        				String pei=car.get配方(); 
+        		 			if(pei!=null){
+        		 				 String sm[]=pei.split("!_!")	;
+        		 				 if(sm.length==2){
+        		 					 boolean is有盖板=false;
+        		 					String back= SqlTool.findOneRecord("Select 第二编码 from 通用物料  where 物料编码='"+sm[0]+"'");
+        		 					String back2= SqlTool.findOneRecord("Select 第二编码 from 通用物料  where 物料编码='"+sm[1]+"'");
+        		 					if(back!=null&&back.equals("1000")) {
+        		 						   is有盖板=true;  }
+        		 					if(back2!=null&&back2.equals("1000")) {
+        		 						   is有盖板=true;  }
+        		 					
+        		 					if(!is有盖板)
+        		 					  {
+        		 						
+        		 					
+        		 					if(back!=null&&!back.equals("0")) {
+        		 						((_9ST)secondST).set配方特征(Integer.parseInt(back.equals("")?"0":back)); 
+        		 						   
+        		 					}
+        		 					if(back2!=null&&!back2.equals("0")) {
+        		 						((_9ST)secondST).set配方特征(Integer.parseInt(back2.equals("")?"0":back2)); 
+        		 						}
+        		 					
+        		 					  }
+        		 					 
+        		 				   }else{
+        		 					  if(sm.length==1){
+        		 						 String back= SqlTool.findOneRecord("Select 第二编码 from 通用物料  where 物料编码='"+sm[0]+"'");
+        		 						if(back!=null&&!back.equals("1000")){
+        		 							((_9ST)secondST).set配方特征(Integer.parseInt(back.equals("")?"0":back)); 
+        		 							
+        		 						 }
+        		 						  
+        		 					  }
+        		 					   
+        		 				   }
+        		 				
+        		 			  }
+        			////////////////////////////////////////////////////////////////////////////////////////	
+        				
     			  
     			    break;
         			 }
@@ -770,7 +872,7 @@ public class STContent implements Serializable {
  				((_9ST)secondST).set载具序号(car.载具序号);
  				((_9ST)secondST).set允许工位动作标志(false);
  				((_9ST)secondST).setPACK号(car.get工单号());
- 				((_9ST)firstST).setPACK类型标志(car.getPack类型());
+ 				((_9ST)secondST).setPACK类型标志(car.getPack类型());
  				((_9ST)secondST).set模组号(car.get分解号());
  				((_9ST)secondST).set模组类型标志(car.get模组类型());
  				((_9ST)secondST).set电芯类型标志(car.get电芯类型());
@@ -781,6 +883,49 @@ public class STContent implements Serializable {
  				((_9ST)secondST).set第4个电芯位置(d4);
  				((_9ST)secondST).set立库RDY(true);
  				((_9ST)secondST).setWrite(true);
+ 				///////////////////////////////////////////////////////////////////////////////////////////////////	
+				String pei=car.get配方(); 
+		 			if(pei!=null){
+		 				 String sm[]=pei.split("!_!")	;
+		 				 if(sm.length==2){
+		 					 boolean is有盖板=false;
+		 					String back= SqlTool.findOneRecord("Select 第二编码 from 通用物料  where 物料编码='"+sm[0]+"'");
+		 					String back2= SqlTool.findOneRecord("Select 第二编码 from 通用物料  where 物料编码='"+sm[1]+"'");
+		 					if(back!=null&&back.equals("1000")) {
+		 						   is有盖板=true;  }
+		 					if(back2!=null&&back2.equals("1000")) {
+		 						   is有盖板=true;  }
+		 					
+		 					if(!is有盖板)
+		 					  {
+		 						
+		 					
+		 					if(back!=null&&!back.equals("0")) {
+		 						((_9ST)secondST).set配方特征(Integer.parseInt(back.equals("")?"0":back)); 
+		 						   
+		 					}
+		 					if(back2!=null&&!back2.equals("0")) {
+		 						((_9ST)secondST).set配方特征(Integer.parseInt(back2.equals("")?"0":back2)); 
+		 						}
+		 					
+		 					  }
+		 					 
+		 				   }else{
+		 					  if(sm.length==1){
+		 						 String back= SqlTool.findOneRecord("Select 第二编码 from 通用物料  where 物料编码='"+sm[0]+"'");
+		 						if(back!=null&&!back.equals("1000")){
+		 							((_9ST)secondST).set配方特征(Integer.parseInt(back.equals("")?"0":back)); 
+		 							
+		 						 }
+		 						  
+		 					  }
+		 					   
+		 				   }
+		 				
+		 			  }
+			////////////////////////////////////////////////////////////////////////////////////////	
+				
+ 				
     			    break;
         			 }
         		
@@ -838,10 +983,31 @@ public class STContent implements Serializable {
 	     	 					if(back2!=null&&back2.equals("1000")) {
 	     	 						   is有盖板=true;  }
 	     	 					
-	     	 					if(is有盖板){ ((_12ST)firstST).set有盖板叠装(true );  }
+	     	 					if(is有盖板){ ((_12ST)firstST).set有盖板叠装(true ); }
+	     	 					else{
+	     	 						
+	     	 					
+	     	 					if(back!=null&&!back.equals("0")) {
+	     	 						((_12ST)firstST).set配方特征(Integer.parseInt(back.equals("")?"0":back)); 
+	     	 						   
+	     	 					}
+	     	 					if(back2!=null&&!back2.equals("0")) {
+	     	 						((_12ST)firstST).set配方特征(Integer.parseInt(back2.equals("")?"0":back2));
+	     	 						}
+	     	 					
+	     	 					  }
 	     	 					 
 	     	 				   }else{
 	     	 					 ((_12ST)firstST).set有盖板叠装(false );  
+	     	 					 
+	     	 					  if(sm.length==1){
+	     	 						 String back= SqlTool.findOneRecord("Select 第二编码  from 通用物料  where 物料编码='"+sm[0]+"'");
+	     	 						if(back!=null&&!back.equals("1000")){
+	     	 							((_12ST)firstST).set配方特征(Integer.parseInt(back.equals("")?"0":back)); 
+	     	 							
+	     	 						 }
+	     	 						  
+	     	 					  }
 	     	 					   
 	     	 				   }
 	     	 				
@@ -920,6 +1086,7 @@ public class STContent implements Serializable {
   			((_BST)firstST).set模组类型标志(car.get模组类型());
   			((_BST)firstST).set电芯类型标志(car.get电芯类型());
   			((_BST)firstST).set有效型腔数(car.get有效型腔数());
+  			((_BST)firstST).set模组层数(car.get模组层数());
   			((_BST)firstST).set立库RDY(true);
   			((_BST)firstST).setWrite(true);
   			
@@ -932,7 +1099,7 @@ public class STContent implements Serializable {
     		  
  	      }
     	 
-    	 if(stNum==16){
+    	 if(stNum==16){ 
   		    //同步输送线
     		//从叠装工位向前判断
     		 if(!firstST.isWrite()&&!secondST.isWrite()){
@@ -1132,14 +1299,14 @@ public class STContent implements Serializable {
 			String id2=car.get工单ID()+""+car.get模组序ID()+""+car.get分解号()+car.get载具序号();
 			next=stNum-1;
 			 if(id1.equals(id2)){
-				
+				//System.out.println("first="+id1);
     				 if(firstST instanceof _1_6ST )
     				( (_1_6ST)firstST).set允许工位动作标志(true);
     				 if(firstST instanceof _7ST )
 		    		 ( (_7ST)firstST).set允许工位动作标志(true);
     				 if(firstST instanceof _9ST ){
 			    	 ( (_9ST)firstST).set允许工位动作标志(true);
-			    	
+			    	 
     				 }
     				 
     				 if(firstST instanceof _DST ){
@@ -1156,6 +1323,7 @@ public class STContent implements Serializable {
 		    		  String id2=car2.get工单ID()+""+car2.get模组序ID()+""+car2.get分解号()+car2.get载具序号();
 		    		  next=stNum-2;
 		    			 if(id1.equals(id2)){
+		    				// System.out.println("second="+id1);
 		    				 if(firstST instanceof _1_6ST )
 		    				( (_1_6ST)firstST).set允许工位动作标志(true);
 		    				 if(firstST instanceof _7ST )
@@ -1231,7 +1399,7 @@ public class STContent implements Serializable {
   		int shul=Integer.parseInt(tem.split("!_!")[1]);
   		String tem2=SqlTool.findOneRecord("select  托盘编号,物料,数量  from 库存托盘   where  货位号='"+货位+"'");
   		
-  		if(tem2!=null){
+  		if(tem2!=null){ 
   			String tp=tem2.split("!_!")[0];
   			String wuliao2=tem2.split("!_!")[1];	
   			int shul2=Integer.parseInt(tem2.split("!_!")[2]);

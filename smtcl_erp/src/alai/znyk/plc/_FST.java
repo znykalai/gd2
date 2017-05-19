@@ -7,11 +7,19 @@ public class _FST extends ST_Father implements STInterface {
 	private boolean 翻B面;//D10001.2
 	private boolean 立库RDY;//D10001.3
 	private boolean 数据更新完成;//D10001.4
-	
+	private boolean 数据处理中=false;//D10006.5
+    private int 配方特征;
+
+	public int get配方特征() {
+		return 配方特征;
+	}
+	public void set配方特征(int 配方特征) {
+		this.配方特征 = 配方特征;
+	}
 
 	
 	protected  _FST(PLC plc,int machineID,String startAddress){
-		super(plc,machineID,startAddress,1);
+		super(plc,machineID,startAddress,2);
 		}
 	public int getBoolContent(){return boolContent;}
 	public boolean is允许工位动作标志() {
@@ -54,22 +62,32 @@ public class _FST extends ST_Father implements STInterface {
 		System.out.println("boolContent2="+boolContent);
 	}
 	
+	public boolean is数据处理中() {
+		return 数据处理中;
+	}
+	public void set数据处理中(boolean 数据处理中) {
+		this.数据处理中 = 数据处理中;
+		if(数据处理中)
+		boolContent=boolContent|0b10000;else boolContent=boolContent&0b1111111111101111;
+	}
 	
 	
     public int getLength(){return length;}
     public String getStartAddress(){return startAddress;}
     public String writeToPLC(){
     	
-    	return plc.writeBlockToBLC(startAddress, length, new int[]{boolContent},machineID);
+    	return plc.writeBlockToBLC(startAddress, length, new int[]{boolContent,配方特征},machineID);
     	
     }
     public void intFromST(ST_Father st){
 	     super.intFromST(st);
 	     boolContent=((_FST)st).getBoolContent();
 	     允许工位动作标志=((_FST)st).is允许工位动作标志();
+	     数据处理中=((_FST)st).is数据处理中();
 		 立库RDY=((_FST)st).is立库RDY();
 		 翻B面=((_FST)st).is翻B面();
 		 数据更新完成=((_FST)st).is数据更新完成();
+		 配方特征=((_FST)st).get配方特征();
 	 
 }
     @Override
@@ -79,7 +97,8 @@ public class _FST extends ST_Father implements STInterface {
 			 return true;
 			 
 		 }else{
-			 if(this.boolContent!=old.getBoolContent()||!this.getName().equals(old.getName())){return true;} 
+			 if(this.boolContent!=old.getBoolContent()||!this.getName().equals(old.getName())
+					 || 配方特征!=((_FST)old).get配方特征()){return true;} 
 			 
 		 }
 		 return false;}
@@ -90,7 +109,9 @@ public class _FST extends ST_Father implements STInterface {
 	     翻B面=false;
 	     立库RDY=false;
 		 数据更新完成=false;
+		 数据处理中=false;
 		 write=false; 
+		 配方特征=0;
 		
     }
       
@@ -103,6 +124,8 @@ public class _FST extends ST_Father implements STInterface {
     		     翻B面=((tem&0b10)==2);
     		     立库RDY=((tem&0b100)==4);
     			 数据更新完成=((tem&0b1000)==8);
+    			 数据处理中=((tem&0b10000)==16);
+    			 配方特征=back[1];
     		    
     	 
     	   return "FST 读取成功";

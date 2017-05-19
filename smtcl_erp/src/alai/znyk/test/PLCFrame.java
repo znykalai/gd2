@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import alai.znyk.common.ClientSer;
 import alai.znyk.plc.PLC;
 import alai.znyk.plc.STContent;
 
@@ -29,6 +30,7 @@ public class PLCFrame extends JFrame {
 		   }catch(Exception ex){}
 	   }
 	private JPanel contentPane;
+	private DeletOrderFrame delet;
 
 	/**
 	 * Launch the application.
@@ -59,6 +61,21 @@ public class PLCFrame extends JFrame {
 		
 		JPanel panel_18 = new JPanel();
 		contentPane.add(panel_18, BorderLayout.SOUTH);
+		
+		JButton button_1 = new JButton("\u5DE5\u5355\u5220\u9664");
+		button_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(delet==null){delet=new DeletOrderFrame();
+				delet.setVisible(true);
+				}else{
+					delet.setVisible(true);
+					delet.getData();
+					
+				}
+				
+			}
+		});
+		panel_18.add(button_1);
 		
 		JButton btnNewButton = new JButton("\u5237\u65B0");
 		panel_18.add(btnNewButton);
@@ -108,6 +125,19 @@ public class PLCFrame extends JFrame {
 		});
 		panel_18.add(button);
 		
+		JCheckBox chckbxrfid = new JCheckBox("\u6253\u5F00RFID");
+		chckbxrfid.setSelected(ClientSer.isOpenRfid);
+		chckbxrfid.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(chckbxrfid.isSelected()){ 
+					ClientSer.isOpenRfid=true;
+				}else{
+					ClientSer.isOpenRfid=false;
+				}
+			}
+		});
+		panel_18.add(chckbxrfid);
+		
 		chckbxA.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				PLC.getIntance().A区输送线到位常有=chckbxA.isSelected();
@@ -127,63 +157,63 @@ public class PLCFrame extends JFrame {
 		tabbedPane.addTab("装配区A_plc", null, panel, null);
 		panel.setLayout(null);
 		
-		STPanel panel_3 = new STPanel(PLC.getIntance().ST0_1);
+		STPanel panel_3 = new STPanel(PLC.getIntance().ST0_1,this);
 		panel_3.setBounds(0, 0, 255, 210);
 		panel.add(panel_3);
 		
-		STPanel panel_4 = new STPanel(PLC.getIntance().ST1_1);
+		STPanel panel_4 = new STPanel(PLC.getIntance().ST1_1,this);
 		panel_4.setBounds(265, 0, 255, 210);
 		panel.add(panel_4);
 		
-		STPanel panel_5 = new STPanel(PLC.getIntance().ST2_1);
+		STPanel panel_5 = new STPanel(PLC.getIntance().ST2_1,this);
 		panel_5.setBounds(530, 0, 255, 210);
 		panel.add(panel_5);
 		
-		STPanel panel_6 = new STPanel(PLC.getIntance().ST3_1);
+		STPanel panel_6 = new STPanel(PLC.getIntance().ST3_1,this);
 		panel_6.setBounds(795, 0, 255, 210);
 		panel.add(panel_6);
 		
-		STPanel panel_7 = new STPanel(PLC.getIntance().ST4_1);
+		STPanel panel_7 = new STPanel(PLC.getIntance().ST4_1,this);
 		panel_7.setBounds(1060, 0, 255, 210);
 		panel.add(panel_7);
 		
-		STPanel panel_8 = new STPanel(PLC.getIntance().ST5_1);
+		STPanel panel_8 = new STPanel(PLC.getIntance().ST5_1,this);
 		panel_8.setBounds(0, 208, 255, 210);
 		panel.add(panel_8);
 		
-		STPanel panel_9 = new STPanel(PLC.getIntance().ST6_1);
+		STPanel panel_9 = new STPanel(PLC.getIntance().ST6_1,this);
 		panel_9.setBounds(265, 208, 255, 210);
 		panel.add(panel_9);
 		
-		STPanel panel_10 = new STPanel(PLC.getIntance().ST7_1);
+		STPanel panel_10 = new STPanel(PLC.getIntance().ST7_1,this);
 		panel_10.setBounds(530, 208, 255, 210);
 		panel.add(panel_10);
 		
-		STPanel panel_11 = new STPanel(PLC.getIntance().ST8_1);
+		STPanel panel_11 = new STPanel(PLC.getIntance().ST8_1,this);
 		panel_11.setBounds(795, 208, 255, 210);
 		panel.add(panel_11);
 		
-		STPanel panel_12 = new STPanel(PLC.getIntance().ST9_1);
+		STPanel panel_12 = new STPanel(PLC.getIntance().ST9_1,this);
 		panel_12.setBounds(1060, 208, 255, 210);
 		panel.add(panel_12);
 		
-		STPanel panel_13 = new STPanel(PLC.getIntance().ST10_1);
+		STPanel panel_13 = new STPanel(PLC.getIntance().ST10_1,this);
 		panel_13.setBounds(0, 417, 255, 210);
 		panel.add(panel_13);
 		
-		STPanel panel_14 = new STPanel(PLC.getIntance().ST11_1);
+		STPanel panel_14 = new STPanel(PLC.getIntance().ST11_1,this);
 		panel_14.setBounds(265, 417, 255, 210);
 		panel.add(panel_14);
 		
-		STPanel panel_15 = new STPanel(PLC.getIntance().ST12_1);
+		STPanel panel_15 = new STPanel(PLC.getIntance().ST12_1,this);
 		panel_15.setBounds(530, 417, 255, 210);
 		panel.add(panel_15);
 		
-		STPanel panel_16 = new STPanel(PLC.getIntance().ST13_1);
+		STPanel panel_16 = new STPanel(PLC.getIntance().ST13_1,this);
 		panel_16.setBounds(795, 417, 255, 210);
 		panel.add(panel_16);
 		
-		STPanel panel_17 = new STPanel(PLC.getIntance().ST15_1);
+		STPanel panel_17 = new STPanel(PLC.getIntance().ST15_1,this);
 		panel_17.setBounds(1060, 417, 255, 210);
 		panel.add(panel_17);
 		//contentPane.add(tabbedPane, BorderLayout.WEST);
@@ -200,8 +230,9 @@ public class PLCFrame extends JFrame {
 		splitPane.setLeftComponent(pann);
 	
 		scrollPane.setViewportView(tabbedPane);
+		splitPane.setDividerLocation(1000);
 		//splitPane.setDividerLocation(100);
-		splitPane.setDividerLocation(0.8);
+		//splitPane.setDividerLocation(0.0);
 		
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

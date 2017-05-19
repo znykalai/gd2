@@ -134,6 +134,14 @@ public class ST_Father implements STInterface, Serializable{
 	 public void set数据更新完成(boolean 数据更新完成){//子类覆盖
 		// System.out.println(startAddress+"的数据更新完成="+数据更新完成);
 	 }
+	 //子类必须覆盖
+	 public boolean is数据处理中() {
+			return false;
+		}
+	 //子类必须覆盖
+	 public void set数据处理中(boolean 数据处理中) {
+			
+		}
 	 //子類必須覆蓋
 	 public boolean is数据更新完成() {
 		 System.out.println("父類=is数据更新完成");

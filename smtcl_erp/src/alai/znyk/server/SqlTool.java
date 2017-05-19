@@ -222,7 +222,7 @@ public class SqlTool {
 
 }  
     
-   public static String  add动作指令(String tp,String fromID,String toID,String type/*上货，下货，输送线回流*/, 
+   public synchronized static String  add动作指令(String tp,String fromID,String toID,String type/*上货，下货，输送线回流*/, 
 		  int todaku/*1=回大库，非1=不回*/, String machineID){
 	   ConnactionPool p=ConnactionPool.getPool();
        Conn conn=p.getCon2("");
@@ -420,7 +420,7 @@ public class SqlTool {
                       SqlPro.getDate()[1]+
                    ")";
 			   st.executeUpdate(ql);
-			   back="指令成功加入";
+			   back="指令成功加入-"+toID;
   		       }
 			   
          }else{
@@ -442,7 +442,7 @@ public class SqlTool {
                                  SqlPro.getDate()[1]+
                               ")";
         			    st.executeUpdate(ql);
-        			    back="指令成功加入";	
+        			    back="指令成功加入-"+toID;
             		
             	}
           }
@@ -492,7 +492,7 @@ public class SqlTool {
                                  SqlPro.getDate()[1]+
                               ")";
         			    st.executeUpdate(ql);
-        			    back="指令成功加入";
+        			    back="指令成功加入-"+toID;
         		  }
         		 
         	 }//end上货
@@ -548,7 +548,7 @@ public class SqlTool {
                                  SqlPro.getDate()[1]+
                               ")";
         			    st.executeUpdate(ql);
-        			    back="指令成功加入";
+        		        back="指令成功加入-"+toID;
         		  }
         		 
         	 }//end下货
@@ -655,11 +655,11 @@ public class SqlTool {
 //主要应用与来料升降台   
    public static String autoUpPallet(String tp,String wuliao,String fromID,String machineID)  {
 	   Integer id=Integer.parseInt(fromID);
-	   if(id>60002&&id<60001)
-	   {
-		  
-		     return "上料点超出范围!_!-1";
+	   if(id>60004&&id<60001)
+	   {//60002,60003
+		  return "上料点超出范围!_!-1";
 	   }
+	   
 	   if(wuliao.equals("")||wuliao==null){wuliao="-1";}
 	   
        ConnactionPool p=ConnactionPool.getPool();
@@ -672,7 +672,7 @@ public class SqlTool {
         st=con.createStatement();
         con.setAutoCommit(false);
         boolean isToLine=false;
-       if(fromID.equals("60001")||fromID.equals("60002")){//两个上货点
+       if(fromID.equals("60001")||fromID.equals("60002")/*||fromID.equals("60003")||fromID.equals("60004")*/){//两个上货点
     	 //判断这个货物应该去哪个工位，优先去7个工位,首先检测7个工位有没有指令，然后在检测工位上有没有托盘
     	  // String sql="SELECT DISTINCT 工位,数量-IFNULL(完成数量,0) from 配方指令队列   where 物料='"
     	  // +wuliao+"' AND 装配区='"+machineID+"' and 数量-IFNULL(完成数量,0)>0 ORDER BY 工单序号,模组序号,分解号,载具序号  LIMIT 2 ";
@@ -729,7 +729,7 @@ public class SqlTool {
     	   set=st.executeQuery(s1);
     	   if(set.next()){quyu=set.getString(1)==null?"":(String)set.getString(1);}
     	   if(!quyu.equals("")){
-    	   String s2=" SELECT 货位序号 from 货位表   where 货位序号 IN("+quyu+") or `托盘编号` is  null and `托盘编号`='' order by 距离";
+    	   String s2=" SELECT 货位序号 from 货位表   where 货位序号 IN("+quyu+") and (`托盘编号`='' or `托盘编号` is  null)  order by 距离";
     	   set=st.executeQuery(s2); 
     	   while(set.next()){
     		   String iss=add动作指令( tp, fromID,set.getObject(1)+"","上货"/*上货，下货，输送线回流*/, 

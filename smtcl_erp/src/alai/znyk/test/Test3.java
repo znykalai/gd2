@@ -11,6 +11,7 @@ import org.apache.log4j.PropertyConfigurator;
 import alai.znyk.common.ClientSer;
 import alai.znyk.common.SqlPro;
 import alai.znyk.plc.PLC;
+import alai.znyk.plc._1_6ST;
 import alai.znyk.server.SqlTool;
 import alai.znyk.server.webService.WebServiceAPP;
 
@@ -42,7 +43,18 @@ public class Test3 {
 			//String val=val2+",3=0,2=3";
 			//SqlTool.setStateForEventID(84, 3, "");
 		    // System.out.println( SqlTool.findOneRecord("select 类型  from 通用物料  where 物料编码='TIBAN'"));
-			System.out.println(PLC.getIntance());
+			//System.out.println(PLC.getIntance());
+			
+			String val="1!_!";
+			val=val.substring(0, val.length()-3);
+			//if(val.equals(""))
+			System.out.println(Integer.toHexString(16));
+			
+			//String back= SqlTool.findOneRecord("Select 第二编码 from 通用物料  where 物料编码='"+11+"'");
+				//if(back!=null&&back.equals("1000")) {
+				// }
+			
+			
 		}catch(Exception e){
 			
 			e.printStackTrace();

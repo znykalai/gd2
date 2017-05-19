@@ -7,12 +7,24 @@ public class _12ST extends ST_Father implements STInterface {
 	private boolean 立库RDY;//D10006.2
 	private boolean 数据更新完成;//D10006.3
 	private boolean 有盖板叠装;//D10006.4
+	private boolean 数据处理中=false;//D10006.5
+	
 	private int 电芯类型标志;//D10007
 	private int 模组类型标志;//D10008
+    private int 配方特征;
+
+	
+	
+	public int get配方特征() {
+		return 配方特征;
+	}
+	public void set配方特征(int 配方特征) {
+		this.配方特征 = 配方特征;
+	}
 
 	
 	protected _12ST(PLC plc, int machineID,String startAddress) {
-		super(plc, machineID,startAddress,3);
+		super(plc, machineID,startAddress,4);
 		// TODO Auto-generated constructor stub
 	}
 	public int getBoolContent(){return boolContent;}
@@ -53,6 +65,15 @@ public class _12ST extends ST_Father implements STInterface {
 		if(有盖板叠装)
 			boolContent=boolContent|0b1000;else boolContent=boolContent&0b1111111111110111;
 	}
+	
+	public boolean is数据处理中() {
+		return 数据处理中;
+	}
+	public void set数据处理中(boolean 数据处理中) {
+		this.数据处理中 = 数据处理中;
+		if(数据处理中)
+			boolContent=boolContent|0b10000;else boolContent=boolContent&0b1111111111101111;
+	}
 	public int get电芯类型标志() {
 		return 电芯类型标志;
 	}
@@ -73,7 +94,9 @@ public class _12ST extends ST_Father implements STInterface {
    		     立库RDY=false;
    		     数据更新完成=false;
    		     有盖板叠装=false;
-   		    write=false; 
+   		     write=false; 
+   		     数据处理中 =false;
+   		     配方特征=0;
 		   
 	    	
 	    }
@@ -87,6 +110,8 @@ public class _12ST extends ST_Father implements STInterface {
 	     有盖板叠装=((_12ST)st).is有盖板叠装();
 	     立库RDY=((_12ST)st).is立库RDY();
 	     数据更新完成=((_12ST)st).is数据更新完成();
+	     数据处理中=((_12ST)st).is数据处理中();
+	     配方特征=((_12ST)st).get配方特征();
 	 
  }
 	 @Override
@@ -96,7 +121,10 @@ public class _12ST extends ST_Father implements STInterface {
 			 return true;
 			 
 		 }else{
-			 if(this.boolContent!=old.getBoolContent()||!this.getName().equals(old.getName())){return true;} 
+			 if(this.boolContent!=old.getBoolContent()||
+					 !this.getName().equals(old.getName())||
+					 this.get配方特征()!=((_12ST)old).get配方特征())
+			 {return true;} 
 			 
 		 }
 		 return false;}
@@ -113,7 +141,7 @@ public class _12ST extends ST_Father implements STInterface {
 	}
 	@Override
 	public String writeToPLC() {
-		return plc.writeBlockToBLC(startAddress, length, new int[]{boolContent,电芯类型标志,模组类型标志},machineID);
+		return plc.writeBlockToBLC(startAddress, length, new int[]{boolContent,电芯类型标志,模组类型标志,配方特征},machineID);
 	}
 	@Override
 	public String updataFromPLC() {
@@ -125,8 +153,10 @@ public class _12ST extends ST_Father implements STInterface {
    		     立库RDY=((tem&0b10)==2);
    		     数据更新完成=((tem&0b100)==4);
    		     有盖板叠装=((tem&0b1000)==8);
+   		     数据处理中=((tem&0b10000)==16);
    		     电芯类型标志=back[1];//D10007
    		     模组类型标志=back[2];//D10008
+   		     配方特征=back[3];
    		    
    	 
    	   return "ST 读取成功";

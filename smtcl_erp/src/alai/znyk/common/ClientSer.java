@@ -33,18 +33,26 @@ public class ClientSer {
 	public GDLocator gd =new GDLocator();
 	private static ClientSer INSTANCE;
 	public static boolean isOpenPlc=false;
+	public static boolean isOpenRfid=false;
 	private ClientSer(){
         try{
         	Properties pro=SqlPro.loadProperties(SqlPro.class.getResource("conf.pro").getFile());
     		String OpenPlc =pro.getProperty("isOpenPlc");	
+    		String OpenRfid =pro.getProperty("isOpenPlc");	
     		//System.out.println(OpenPlc+"/====");
     		if(OpenPlc==null){
-    			isOpenPlc=false;	
+    			isOpenPlc=false;
+    			isOpenRfid=false;
     		}else{
     			if(OpenPlc.equals("1")){
     				System.out.println("连接PLC");
     				isOpenPlc=true;}
     			else{isOpenPlc=false;}
+    			
+    			if(OpenRfid.equals("1")){
+    				System.out.println("连接Rfid");
+    				isOpenRfid=true;}
+    			else{isOpenRfid=false;}
     			
     		}
 			
@@ -111,8 +119,8 @@ public class ClientSer {
 		}
 		
 		if(t==SqlPro.B区输送线){
-			return "601=1|602=0|603=1|604=0|605=1|606=0|607=1|608=0|"+
-					"609=1|610=0|611=1|612=0|613=1|614=0"
+			return "601=0|602=0|603=0|604=0|605=0|606=0|607=0|608=0|"+
+					"609=0|610=0|611=0|612=0|613=0|614=0"
 		;
 		}
 		
@@ -140,13 +148,13 @@ public class ClientSer {
 		
 		}
 		
-		if(t==SqlPro.来料升){return rffid1;}//返回升降机是否有信号
+		if(t==SqlPro.来料升){return rffid1; }//返回升降机是否有信号
 		if(t==SqlPro.去料升){return rffid2;}//返回升降机是否有信号
 		return "1";
 	}
 	  public static String TP="1";
 	public String ReadFromRffid(String message,int id) throws RemoteException, ServiceException{
-		//if(isOpenPlc) return gd.getGD().readFromRffid(message, id);
+		if(isOpenRfid) return gd.getGD().readFromRffid(message, id);
        // if(id==1)
         // TP= Math.round(Math.random()*10000)+"";
 		return TP;
@@ -278,14 +286,20 @@ public class ClientSer {
 	 { if(isOpenPlc){
 		 try{   alai.GDT.Inint tem []=new alai.GDT.Inint[invalues.length];
 		         for(int i=0;i<tem.length;i++){tem[i]=new alai.GDT.Inint(invalues[i]);}
-			 
+		         
+			// if(strAddress.equals("D10046")){
+		      //   if(!strAddress.equals("D11999"))
+			//System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"+strAddress+",nums="+invalues.length+",lengths="+valuseLeng+">>>>>>>>>>>>>>>>>>>>"+((invalues[0]&0b01)==1));
+			// }
+		         
 				return gd.getGD().writeSirIntToCTR(strAddress, valuseLeng, tem, machineID);
 				
-			}catch(Exception ex){
+			}catch(Exception ex){ 
 				SqlPro.getLog().error(ex.getMessage());
 				ex.printStackTrace();}
 		 }else{
-			 
+			 if(!strAddress.equals("D11999"))
+			 System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"+strAddress+",nums="+invalues.length+",lengths="+valuseLeng+">>>>>>>>>>>>>>>>>>>>"+((invalues[0]&0b01)==1));
 			 //alai.GDT.Inint tem []=new alai.GDT.Inint[invalues.length];
 	        //  for(int i=0;i<tem.length;i++){tem[i]=new alai.GDT.Inint(invalues[i]);}
 			

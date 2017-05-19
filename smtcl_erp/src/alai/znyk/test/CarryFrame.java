@@ -2,6 +2,7 @@ package alai.znyk.test;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.Font;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -52,6 +53,7 @@ public class CarryFrame extends JPanel {
 		contentPane.setLayout(new GridLayout(0, 15, 0, 0));
 		
 		JButton button = new JButton("1");
+		
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				click(button);
@@ -206,8 +208,8 @@ public class CarryFrame extends JPanel {
 		
 		int col=buts.lastIndexOf(but);
 		li.removeToNext(col);
-		STContent st=PLC.getIntance().STC1.get(col);
-		st.firstST.setWrite(false);
+		//STContent st=PLC.getIntance().STC1.get(col);
+		//st.firstST.setWrite(false);
 		init();
 		
 	}
@@ -215,10 +217,13 @@ public class CarryFrame extends JPanel {
 		CarryLine li=PLC.getIntance().line;
 		for(int i=0;i<buts.size();i++){
 			if(li.getCarry(i)==null){
-				buts.get(i).setText("");
+				buts.get(i).setFont(new Font("宋体", Font.PLAIN, 11));
+				buts.get(i).setText((i)+"工位");
 				buts.get(i).setEnabled(false);
 			}else{
-				buts.get(i).setText(li.getCarry(i).get载具序号()+"-"+li.getCarry(i).get工位());
+				buts.get(i).setFont(new Font("宋体", Font.PLAIN, 10));
+				buts.get(i).setToolTipText(li.getCarry(i).get载具序号()+"-"+li.getCarry(i).get工位());
+				buts.get(i).setText(li.getCarry(i).get载具序号()+"-"+li.getCarry(i).getName().replace("=", "|"));
 				buts.get(i).setEnabled(true);
 				
 			}

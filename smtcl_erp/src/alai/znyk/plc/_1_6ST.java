@@ -10,26 +10,25 @@ public class _1_6ST extends ST_Father implements STInterface {
 	private boolean 立库RDY;//D10006.3
 	private boolean 数据更新完成;//D10006.4
 	private boolean 单盖板载具;//D10006.5
+	private boolean 数据处理中=false;//D10006.6
+	
+	
+
 	private int 电芯类型标志;//D10007
 	private int 模组类型标志;//D10008
 	private int 需求数量;//D100033
 	private int 完成数量;
+    private int 配方特征;
 	
+	  
     protected  String 物料编码="";
     
-   
-    private int 模组层数;
-    
-   
-	public int get模组层数() {
-		return 模组层数;
+   public int get配方特征() {
+		return 配方特征;
 	}
-	public void set模组层数(int 模组层数) {
-		this.模组层数 = 模组层数;
+	public void set配方特征(int 配方特征) {
+		this.配方特征 = 配方特征;
 	}
-
-	
-	
 	public String get物料编码() {
 		return 物料编码;
 	}
@@ -53,6 +52,7 @@ public class _1_6ST extends ST_Father implements STInterface {
 		return 允许工位动作标志;
 	}
 	public void set允许工位动作标志(boolean 允许工位动作标志) {
+		//if(允许工位动作标志){System.out.println("<<<<<<<<<<<<<<允许工位动作标志=TRUE>>>>>>>>>>>>>>>>>>>>>>>>");}
 		this.允许工位动作标志 = 允许工位动作标志;
 		if(允许工位动作标志)
 			boolContent=boolContent|0b1;else boolContent=boolContent&0b1111111111111110;
@@ -96,6 +96,15 @@ public class _1_6ST extends ST_Father implements STInterface {
 			boolContent=boolContent|0b10000;else boolContent=boolContent&0b1111111111101111;
 	}
 	
+	public boolean is数据处理中() {
+		return 数据处理中;
+	}
+	public void set数据处理中(boolean 数据处理中) {
+		this.数据处理中 = 数据处理中;
+		if(数据处理中)
+			boolContent=boolContent|0b100000;else boolContent=boolContent&0b1111111111011111;
+	}
+	
 	public int get电芯类型标志() {
 		return 电芯类型标志;
 	}
@@ -124,10 +133,11 @@ public class _1_6ST extends ST_Father implements STInterface {
  		     立库RDY=false;
  		     数据更新完成=false;
  		     单盖板载具=false;
+ 		     数据处理中 = false;
  		     完成数量=0;
  		     物料编码="";
  		    
- 		     模组层数=0;
+ 		     配方特征=0;
  		     write=false; 
 	    	
 	    }
@@ -142,10 +152,12 @@ public class _1_6ST extends ST_Father implements STInterface {
 		     投放型腔标志=((_1_6ST)st).is投放型腔标志();
 		     立库RDY=((_1_6ST)st).is立库RDY();
 		     数据更新完成=((_1_6ST)st).is数据更新完成();
+		     数据处理中=((_1_6ST)st).is数据处理中();
 		     完成数量=((_1_6ST)st).get完成数量();
 		     物料编码=((_1_6ST)st).get物料编码();
 		     单盖板载具=((_1_6ST)st).is单盖板载具();
- 		     模组层数=((_1_6ST)st).get模组层数();
+		     配方特征=((_1_6ST)st).get配方特征();
+		   
 	 }
 	 
 	 @Override
@@ -181,8 +193,8 @@ public class _1_6ST extends ST_Father implements STInterface {
 	}
 	@Override
 	public String writeToPLC() {
-		 System.out.println("writeToPLC()->数据更新完成="+ 数据更新完成+"/boolContent="+boolContent);
-		return plc.writeBlockToBLC(startAddress, length, new int[]{boolContent,电芯类型标志,模组类型标志,需求数量,完成数量,模组层数},machineID);
+		 System.out.println(startAddress+"工位+writeToPLC()->数据更新完成="+ 数据更新完成+"/boolContent="+boolContent);
+		return plc.writeBlockToBLC(startAddress, length, new int[]{boolContent,电芯类型标志,模组类型标志,需求数量,完成数量,配方特征},machineID);
 	}
 	@Override
 	public String updataFromPLC() {
@@ -195,7 +207,7 @@ public class _1_6ST extends ST_Father implements STInterface {
 	     模组类型标志=back[2];//D10008
 	     需求数量=back[3];//D10009
 	     完成数量=back[4]; 
-         模组层数=back[5];
+	     配方特征=back[5];
 	     
    	//	}
    		 int tem= boolContent;
@@ -205,6 +217,7 @@ public class _1_6ST extends ST_Father implements STInterface {
    		     立库RDY=((tem&0b100)==4);
    		     数据更新完成=((tem&0b1000)==8);
    		     单盖板载具=((tem&0b10000)==16);
+   		     数据处理中=((tem&0b100000)==32);
    		     System.out.println("数据更新完成=((tem&0b1000)==1)="+ 数据更新完成);
    		     
    		   

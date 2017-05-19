@@ -57,7 +57,7 @@ public class PLC implements Serializable {
 	public boolean isStartDiaodu2(){return stop2;}
 	
 	public Vector<STContent> STC1=new Vector<STContent>();
-	public Vector<STContent> STC2=new Vector<STContent>();
+	public Vector<STContent> STC2=new Vector<STContent>(); 
 	public CarryLine line=new CarryLine(1);
 	public CarryLine line2=new CarryLine(2);
 	String STATE1="502=0|504=0|506=0|508=0|510=0|512=0|514=0";
@@ -73,9 +73,9 @@ public class PLC implements Serializable {
 	public STContent ST0_2=new STContent(this,_FST_1_2, _FST_2_2, 1, 2);
 	
 	private _1_6ST _1ST_1_1=new _1_6ST(this, 1, "D10006");
-	private _1_6ST _1ST_2_1=new _1_6ST(this, 1, "D10043");
+	private _1_6ST _1ST_2_1=new _1_6ST(this, 1, "D10143");
 	private _1_6ST _1ST_1_2=new _1_6ST(this, 2, "D10006");
-	private _1_6ST _1ST_2_2=new _1_6ST(this, 2, "D10043");
+	private _1_6ST _1ST_2_2=new _1_6ST(this, 2, "D10143");
 	public STContent ST1_1=new STContent(this,_1ST_1_1, _1ST_2_1, 2, 1);
 	public STContent ST1_2=new STContent(this,_1ST_1_2, _1ST_2_2, 2, 2);
 	
@@ -425,6 +425,7 @@ public class PLC implements Serializable {
 		    		try{
 		    			ClientSer.getIntance().writeSirIntToCTR("D11999", 1, new int[]{1}, machineID)	;
 		    			Thread.sleep(500);
+		    			ClientSer.getIntance().writeSirIntToCTR("D11999", 1, new int[]{0}, machineID)	;
 		    		}catch(Exception ex){ex.printStackTrace();}
 		    		
 		    	}
@@ -553,7 +554,8 @@ public class PLC implements Serializable {
     public ReST[] getFromPLC(int 装配区){
     	try{
     		Resint r[]=	ClientSer.getIntance().getReturnPlc("D11001", 63, 16, 装配区);
-    		
+    		if(r[0].getResInt()==-1)return null;
+    		if(r[0].getResInt()==-2)return null;
     		for(int i=0;i<16;i++){
     			
     			Resint bint=r[i*2];
@@ -576,6 +578,7 @@ public class PLC implements Serializable {
     					//检测本工位有没有托盘
     					if(i<15){//=15没有载具了，是同步输送线的电芯，不处理这个情况
     					//if(getCarryLine(装配区).getCarry(i)!=null){
+    					  
     					   getWrPLC(装配区).get(i).updataDB(getWrPLC(装配区).get(i).firstST);//更新托盘的数量
     					 // getWrPLC(装配区).get(i).firstST.SET
     					   
@@ -587,7 +590,7 @@ public class PLC implements Serializable {
     				
     			}
     			
-    			
+    		
     			
     			if(载具放行1!=载具放行2){
     				
@@ -610,6 +613,7 @@ public class PLC implements Serializable {
     							 
     						 }
     						
+    						
     					if(car.getName().equals(getWrPLC(装配区).get(i).firstST.getName())){
     						//如果这个托盘是本工位需要的托盘
     						 if( getWrPLC(装配区).get(i).firstST.get剩余数量()==0||不检测取料数量){
@@ -617,6 +621,7 @@ public class PLC implements Serializable {
     							 System.out.println("载具放行1");
     							 final long timeS=System.currentTimeMillis();
     							 getWrPLC(装配区).get(i).firstST.set数据更新完成(true);
+    							 getWrPLC(装配区).get(i).firstST.set数据处理中(true);
     							 getWrPLC(装配区).get(i).firstST.set允许工位动作标志(false);
     							
     						     String back=getWrPLC(装配区).get(i).firstST.writeifChangeToPLC();
@@ -637,21 +642,59 @@ public class PLC implements Serializable {
     						    Resint r2[]=	ClientSer.getIntance().getReturnPlc("D11001", 63, 16, 装配区);	  
     						    Resint bint2=r2[curr*2];
     			    			int tem11=bint2.getResInt();
-    			    			int tem22=getRePLC(装配区)[curr].boolCont.getResInt();
+    			    			//int tem22=getRePLC(装配区)[curr].boolCont.getResInt();
     			    			
     			    			int 载具放行new=(tem11&0b100)==4?1:0;
-    			    			int 载具放行old=(tem22&0b100)==4?1:0;
+    			    			//int 载具放行old=(tem22&0b100)==4?1:0;
     			    			//if(载具放行!=载具放行old){
     			    				if(载具放行new==0){
-    			    					 getWrPLC(装配区).get(curr).firstST.set数据更新完成(false);
-    			    				   //if( getCarryLine(装配区).removeToNext(curr))
-    	    	    					 getWrPLC(装配区).get(curr).firstST.setWrite(false);	
+    			    					if(curr==5){
+    			    						//如果是5ST，先不要让指令队列移动。等接受到放料完成后，在移动队列
+    			    						
+    			    						 new Thread(){
+        	    	    						 
+        	    	    						 public void run(){
+        	    	    							 int dd=0;
+        	    	    						    while(true)	{
+        	    	    						    	try{
+        	    	    						    if(dd%5==0)	{ System.out.println("等待放料完成信号=================");}
+        	    	    						    dd++;
+        	    	    						   Resint r2[]=	ClientSer.getIntance().getReturnPlc("D11001", 63, 16, 装配区);	  
+        	    	    		    			   Resint bint2=r2[curr*2];
+        	    	    		    			   int tem11=bint2.getResInt();
+        	    	    		    			   int 放料完成=(tem11&0b100000)==32?1:0; 		
+        	    				    if(放料完成==1){		
+        	    	    				getWrPLC(装配区).get(curr).firstST.setWrite(false);	 
+        	    	    	    	    getWrPLC(装配区).get(curr).firstST.clear();
+        	    	    	    	    getWrPLC(装配区).get(curr).firstST.set数据更新完成(false);
+        	    	    			    getWrPLC(装配区).get(curr).initFromSql();
+        	    	    	    	    getWrPLC(装配区).get(curr).firstST.writeifChangeToPLC();
+        	    	    	    	    System.out.println("第"+curr+"工位载具放行1"+back+"------------------->:"+(System.currentTimeMillis()-timeS2)+"ms");
+        	    	    	    	    break;	
+                                        }
+        	    	    			Thread.sleep(200);	
+        	    	    						    		
+        	    	    				}catch(Exception eee){}
+        	    	    						    	
+        	    	    					} 
+        	    	    							 
+        	    	    					}
+        	    	    				}.start();
+        	    	    					 break;	
+    			    						
+    			    				}else{
+    			    						//非5工位的
+    			    					 getWrPLC(装配区).get(curr).firstST.setWrite(false);	
     	    	    					 getWrPLC(装配区).get(curr).firstST.clear();
+    	    	    					 
+    			    					 getWrPLC(装配区).get(curr).firstST.set数据更新完成(false);
+    			    				 
     	    	    					 getWrPLC(装配区).get(curr).initFromSql();
     	    	    					 getWrPLC(装配区).get(curr).firstST.writeifChangeToPLC();
     	    	    					 System.out.println("第"+curr+"工位载具放行1"+back+"------------------->:"+(System.currentTimeMillis()-timeS2)+"ms");
-    			    				 
-    			    				 break;
+    	    	    					 break;
+    			    					}
+    			    				
     			    				 }
     			    				
     			    			//}
@@ -682,6 +725,7 @@ public class PLC implements Serializable {
     						 
     						final long timeS=System.currentTimeMillis();
     					   getWrPLC(装配区).get(i).firstST.set数据更新完成(true);
+    					  // getWrPLC(装配区).get(i).firstST.set数据处理中(true);
     					   getWrPLC(装配区).get(i).firstST.set允许工位动作标志(false);
    						   String back=getWrPLC(装配区).get(i).firstST.writeifChangeToPLC();
    						   System.out.println("第"+i+"工位载具放行2"+back+":"+(System.currentTimeMillis()-timeS)+"ms");
@@ -702,10 +746,10 @@ public class PLC implements Serializable {
 						    Resint r2[]=	ClientSer.getIntance().getReturnPlc("D11001", 63, 16, 装配区);	  
 						    Resint bint2=r2[curr*2];
 			    			int tem11=bint2.getResInt();
-			    			int tem22=getRePLC(装配区)[curr].boolCont.getResInt();
+			    			//int tem22=getRePLC(装配区)[curr].boolCont.getResInt();
 			    			
 			    			int 载具放行new=(tem11&0b100)==4?1:0; 
-			    			int 载具放行old=(tem22&0b100)==4?1:0;
+			    			//int 载具放行old=(tem22&0b100)==4?1:0;
 			    			//if(载具放行!=载具放行old){
 			    				if(载具放行new==0){
 			    					 
@@ -741,6 +785,7 @@ public class PLC implements Serializable {
     					System.out.println("同步输送线载具放行-------------》");
     					final long timeS=System.currentTimeMillis();
  					   getWrPLC(装配区).get(i).firstST.set数据更新完成(true);
+ 					 //  getWrPLC(装配区).get(i).firstST.set数据处理中(true);
  					   getWrPLC(装配区).get(i).firstST.set允许工位动作标志(false);
 						   String back=getWrPLC(装配区).get(i).firstST.writeifChangeToPLC();
 						   System.out.println("同步输送线--工位载具放行"+back+":"+(System.currentTimeMillis()-timeS)+"ms");
@@ -797,6 +842,7 @@ public class PLC implements Serializable {
     				
     				
     			}
+    	
     			
     		}
     		
@@ -818,13 +864,16 @@ public class PLC implements Serializable {
     				//更新托盘的物料数量
     				System.out.println("取料完成2---secendST in getFromPlc");
     				if(取料完成1==1){
-    					int 剩余数量=getWrPLC(装配区).get(i-16).firstST.get剩余数量();
+    					 int 剩余数量=getWrPLC(装配区).get(i-16).firstST.get剩余数量();
     					// if(getCarryLine(装配区).getCarry(i-16)!=null)
     					if(剩余数量!=0){//说明第二个队列已经移到第一个队列了,因为必须执行完第一个队列后才能执行第二个队列
+    					   getWrPLC(装配区).get(i).firstST.set数据处理中(true);
     					   getWrPLC(装配区).get(i-16).updataDB(getWrPLC(装配区).get(i-16).firstST);//更新托盘的数量
+    					  
     					   }else{
-    						   
-    					    getWrPLC(装配区).get(i-16).updataDB(getWrPLC(装配区).get(i-16).secondST);//更新托盘的数量   
+    						   getWrPLC(装配区).get(i).secondST.set数据处理中(true);  
+    					       getWrPLC(装配区).get(i-16).updataDB(getWrPLC(装配区).get(i-16).secondST);//更新托盘的数量
+    					    
     					   }
     					
     				}

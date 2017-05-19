@@ -4,20 +4,39 @@ public class _BST extends ST_Father implements STInterface {
 //1到6的工位，要求每个数字的地址必须连续
 	private int boolContent;//保存几个布尔值
     private boolean 允许工位动作标志;//D10006.1
-	private boolean 立库RDY;//D10006.3
-	private boolean 数据更新完成;//D10006.4
+	private boolean 立库RDY;//D10006.2
+	private boolean 数据更新完成;//D10006.3
+	private boolean 数据处理中=false;//D10006.4
+	
 	private int 电芯类型标志;//D10007
 	private int 模组类型标志;//D10008
 	private int 有效型腔数;//D10009
 	private int PACK类型标志;
 	private int PACK号;
 	private int 模组号;
+	public int 模组层数;//
+    private int 配方特征;
 
 	
 	
+	public int get配方特征() {
+		return 配方特征;
+	}
+	public void set配方特征(int 配方特征) {
+		this.配方特征 = 配方特征;
+	}
+	
+	
 	protected _BST(PLC plc, int machineID,String startAddress) {
-		super(plc, machineID,startAddress,7);
+		super(plc, machineID,startAddress,9);
 		// TODO Auto-generated constructor stub
+	}
+	
+	public int get模组层数() {
+		return 模组层数;
+	}
+	public void set模组层数(int 模组层数) {
+		this.模组层数 = 模组层数;
 	}
 	public int getBoolContent(){return boolContent;}
 	public boolean is允许工位动作标志() {
@@ -47,6 +66,14 @@ public class _BST extends ST_Father implements STInterface {
 		this.数据更新完成 = 数据更新完成;
 		if(数据更新完成)
 			boolContent=boolContent|0b100;else boolContent=boolContent&0b1111111111111011;
+	}
+	public boolean is数据处理中() {
+		return 数据处理中;
+	}
+	public void set数据处理中(boolean 数据处理中) {
+		this.数据处理中 = 数据处理中;
+		if(数据处理中)
+			boolContent=boolContent|0b1000;else boolContent=boolContent&0b1111111111110111;
 	}
 	public int get电芯类型标志() {
 		return 电芯类型标志;
@@ -97,13 +124,15 @@ public class _BST extends ST_Father implements STInterface {
 	     允许工位动作标志=((_BST)st).is允许工位动作标志();
 		 立库RDY=((_BST)st).is立库RDY();
 	     数据更新完成=((_BST)st).is数据更新完成();
-	     
+	     数据处理中=((_BST)st).is数据处理中();
 	     电芯类型标志=((_BST)st).get电芯类型标志();
 	     模组类型标志=((_BST)st).get模组类型标志();
 	   
 	     PACK类型标志=((_BST)st).getPACK类型标志();
 	     PACK号=((_BST)st).getPACK号();
   		 模组号=((_BST)st).get模组号();
+  		 模组层数=((_BST)st).get模组层数();
+  		 配方特征=((_BST)st).get配方特征();
 	    
 	     
    	
@@ -116,7 +145,8 @@ public class _BST extends ST_Father implements STInterface {
 			 return true;
 			 
 		 }else{
-			 if(this.boolContent!=old.getBoolContent()||!this.getName().equals(old.getName())){return true;} 
+			 if(this.boolContent!=old.getBoolContent()||!this.getName().equals(old.getName())
+					 ||配方特征!=((_BST)old).get配方特征()||模组层数!=((_BST)old).get模组层数()){return true;} 
 			 
 		 }
 		 return false;}
@@ -126,6 +156,7 @@ public class _BST extends ST_Father implements STInterface {
 	    	允许工位动作标志=false;
    		    立库RDY=false;
   		    数据更新完成=false;
+  		     数据处理中=false;
 	    	  电芯类型标志=0;
 	   		  模组类型标志=0;
 	   		  有效型腔数=0;
@@ -133,6 +164,8 @@ public class _BST extends ST_Father implements STInterface {
 	   		  PACK号=0;
 	   		  模组号=0;
 	   		 write=false; 
+	   		 模组层数=0;
+	   		 配方特征=0;
 	    	
 	    }
 	@Override
@@ -149,7 +182,7 @@ public class _BST extends ST_Father implements STInterface {
 	public String writeToPLC() {
 		return plc.writeBlockToBLC(startAddress, length, 
 				new int[]{boolContent,电芯类型标志,模组类型标志,有效型腔数,
-						PACK类型标志,PACK号,模组号},
+						PACK类型标志,PACK号,模组号,模组层数,配方特征},
 				machineID);
 	}
 	@Override
@@ -162,13 +195,15 @@ public class _BST extends ST_Father implements STInterface {
    		    
    		     立库RDY=((tem&0b10)==2);
    		     数据更新完成=((tem&0b100)==4);
-   		     
+   		     数据处理中=((tem&0b1000)==8);
    		     电芯类型标志=back[1];//D10007
    		     模组类型标志=back[2];//D10008
    		     有效型腔数=back[3];//D10009
    		     PACK类型标志=back[4];
    		     PACK号=back[5];
    		     模组号=back[6];
+   		     模组层数=back[7];
+   		     配方特征=back[8];
    		    
    	 
    	   return "ST 读取成功";

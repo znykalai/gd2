@@ -4,8 +4,10 @@ public class _7ST extends ST_Father implements STInterface {
 //1到6的工位，要求每个数字的地址必须连续
 	private int boolContent;//保存几个布尔值
     private boolean 允许工位动作标志;//D10006.1
-	private boolean 立库RDY;//D10006.3
-	private boolean 数据更新完成;//D10006.4
+	private boolean 立库RDY;//D10006.2
+	private boolean 数据更新完成;//D10006.3
+	private boolean 数据处理中=false;//D10006.4
+	
 	private int 电芯类型标志;//D10007
 	private int 模组类型标志;//D10008
 	private int 需求数量;//D10009
@@ -13,6 +15,16 @@ public class _7ST extends ST_Father implements STInterface {
 	private int 第2个假电芯位置;
     private int 完成数量;
     protected  String 物料编码="";
+    private int 配方特征;
+
+	
+	
+	public int get配方特征() {
+		return 配方特征;
+	}
+	public void set配方特征(int 配方特征) {
+		this.配方特征 = 配方特征;
+	}
 	
 	public String get物料编码() {
 		return 物料编码;
@@ -29,7 +41,7 @@ public class _7ST extends ST_Father implements STInterface {
 	}
 	
 	protected _7ST(PLC plc, int machineID,String startAddress) {
-		super(plc, machineID,startAddress,7);
+		super(plc, machineID,startAddress,8);
 		// TODO Auto-generated constructor stub
 	}
 	public int getBoolContent(){return boolContent;}
@@ -61,6 +73,16 @@ public class _7ST extends ST_Father implements STInterface {
 		if(数据更新完成)
 			boolContent=boolContent|0b100;else boolContent=boolContent&0b1111111111111011;
 	}
+	
+	public boolean is数据处理中() {
+		return 数据处理中;
+	}
+	public void set数据处理中(boolean 数据处理中) {
+		this.数据处理中 = 数据处理中;
+		if(数据处理中)
+			boolContent=boolContent|0b1000;else boolContent=boolContent&0b1111111111110111;
+	}
+	
 	public int get电芯类型标志() {
 		return 电芯类型标志;
 	}
@@ -109,6 +131,8 @@ public class _7ST extends ST_Father implements STInterface {
 	     
 		  完成数量=((_7ST)st).get完成数量();
 		  物料编码=((_7ST)st).get物料编码();
+		  配方特征=((_7ST)st).get配方特征();
+		  数据处理中=((_7ST)st).is数据处理中();
 	 
  }
 	 @Override 
@@ -122,7 +146,8 @@ public class _7ST extends ST_Father implements STInterface {
 			 return true;
 			 
 		 }else{
-			 if(this.boolContent!=old.getBoolContent()||!this.getName().equals(old.getName())){return true;} 
+			 if(this.boolContent!=old.getBoolContent()||!this.getName().equals(old.getName())||
+					 配方特征!=((_7ST)old).get配方特征()){return true;} 
 			 
 		 }
 		 return false;}
@@ -133,6 +158,7 @@ public class _7ST extends ST_Father implements STInterface {
 	    	允许工位动作标志=false;
 			 立库RDY=false;
 		     数据更新完成=false;
+		     数据处理中=false;
 	         电芯类型标志=0;//D10007
   		     模组类型标志=0;//D10008
   		     需求数量=0;//D10009
@@ -141,6 +167,7 @@ public class _7ST extends ST_Father implements STInterface {
  		    完成数量=0;
  		    物料编码="";
  		   write=false; 
+ 		  配方特征=0;
  		     
 	    	
 	    }
@@ -156,7 +183,7 @@ public class _7ST extends ST_Father implements STInterface {
 	}
 	@Override
 	public String writeToPLC() {
-		return plc.writeBlockToBLC(startAddress, length, new int[]{boolContent,电芯类型标志,模组类型标志,需求数量,第1个假电芯位置,第1个假电芯位置,完成数量},machineID);
+		return plc.writeBlockToBLC(startAddress, length, new int[]{boolContent,电芯类型标志,模组类型标志,需求数量,第1个假电芯位置,第1个假电芯位置,完成数量,配方特征},machineID);
 	}
 	@Override
 	public String updataFromPLC() {
@@ -167,12 +194,14 @@ public class _7ST extends ST_Father implements STInterface {
    		     允许工位动作标志=((tem&0b01)==1);
    		     立库RDY=((tem&0b10)==2);
    		     数据更新完成=((tem&0b100)==4);
+   		     数据处理中=((tem&0b1000)==8);
    		     电芯类型标志=back[1];//D10007
    		     模组类型标志=back[2];//D10008
    		     需求数量=back[3];//D10009
    		     第1个假电芯位置=back[4];
    		     第2个假电芯位置=back[5];
    		     完成数量=back[6];
+   		     配方特征=back[7];
    	 
    	   return "ST 读取成功";
    	 }
