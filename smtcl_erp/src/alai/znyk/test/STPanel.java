@@ -217,14 +217,15 @@ public class STPanel extends JPanel {
         table.getColumnModel().getColumn(1).setCellEditor(edit);
         table.getColumnModel().getColumn(2).setCellEditor(edit);
         initPanel();
-        new Thread(){
+       /* new Thread(){
         	public void run(){ 
         		while(true){
         			if(plframe!=null&&plframe.isShowing()){
         				//System.out.println("isShowing");
-        		      initPanel();}
+        		      //initPanel();
+        		      }
         		try {
-					Thread.sleep(1000);
+					Thread.sleep(30000);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -233,7 +234,7 @@ public class STPanel extends JPanel {
         		
         	}
         	
-        }.start();
+        }.start();*/
 	}
 	
 	public void initPanel(){
@@ -245,7 +246,7 @@ public class STPanel extends JPanel {
 		Field f[]=ST.firstST.getClass().getDeclaredFields();
 		
 		if(0==0){
-		for(int i=0;i<f.length;i++){
+		for(int i=0;i<f.length;i++){ 
 			try{  
 				Vector row=new Vector();
 				String name=f[i].getName();

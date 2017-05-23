@@ -10,7 +10,8 @@ public class STContent implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public static int checkNum_预装=1;
+	public static int checkNum_预装=8;
+	public static int checkNum_同步=6;
 	
 	public ST_Father firstST; 
     public ST_Father secondST;
@@ -354,7 +355,7 @@ public class STContent implements Serializable {
     			}else{
     				       cc=PLC.getIntance().line2.getCarry(0);
     			}
-    			if(cc!=null){
+    			if(false/*cc!=null*/){
           tem=SqlTool.findInVector("select  ID,工单序号,分解号,载具序号,pack编码,模组编码,物料,数量,翻面否,工位 ,模组类型,电芯类型 ,工单ID,模组序ID,模组层数,载具位置 ,第二编码  from 配方指令队列,通用物料 "+
     "  where  工单ID="+cc.get工单ID()+" and IFNULL(ST读取标志,0)<>1  and 装配区='"+装配区+"' and 模组序ID='"+cc.get模组序ID()+"' and 分解号='"+cc.get分解号()+"' "
     		+ " and 工位='"+(stNum-1)+"ST'  and 物料=物料编码 ORDER BY 工单序号,模组序号,分解号,载具序号  LIMIT 3");
@@ -441,7 +442,7 @@ public class STContent implements Serializable {
     			}else{
     				cc=PLC.getIntance().line2.getCarry(0);
     			}
-    			if(cc!=null){
+    			if(false/*cc!=null*/){
           tem=SqlTool.findInVector("select  ID,工单序号,分解号,载具序号,pack编码,模组编码,物料,数量,翻面否,工位 ,模组类型,电芯类型 ,工单ID,模组序ID,模组层数,载具位置 ,第二编码  from 配方指令队列 ,通用物料"+
     "  where  工单ID="+cc.get工单ID()+" and IFNULL(ST读取标志,0)<>1  and 装配区='"+装配区+"' and 模组序ID='"+cc.get模组序ID()+"' and 分解号='"+cc.get分解号()+"' "
     		+ " and 工位='"+(stNum-1)+"ST' and 物料=物料编码  ORDER BY 工单序号,模组序号,分解号,载具序号  LIMIT 3");
@@ -498,7 +499,7 @@ public class STContent implements Serializable {
    			}else{
    				cc=PLC.getIntance().line2.getCarry(0);
    			}
-   			if(cc!=null){
+   			if(false/*cc!=null*/){
          tem=SqlTool.findInVector("select  ID,工单序号,分解号,载具序号,pack编码,模组编码,物料,数量,翻面否,工位 ,模组类型,电芯类型 ,假电芯1,假电芯2,工单ID,模组序ID,模组层数,载具位置,第二编码  from 配方指令队列,通用物料 "+
    "  where 工单ID="+cc.get工单ID()+" and IFNULL(ST读取标志,0)<>1  and 装配区='"+装配区+"' and 模组序ID='"+cc.get模组序ID()+"' and 分解号='"+cc.get分解号()+"' "
    		+ " and 工位='"+(stNum-1)+"ST'  and 物料=物料编码  ORDER BY 工单序号,模组序号,分解号,载具序号  LIMIT 3");
@@ -587,7 +588,7 @@ public class STContent implements Serializable {
      	   			}else{
      	   				cc=PLC.getIntance().line2.getCarry(0);
      	   			}
-     	   			if(cc!=null){
+     	   		if(false/*cc!=null*/){
      	         tem=SqlTool.findInVector("select  ID,工单序号,分解号,载具序号,pack编码,模组编码,物料,数量,翻面否,工位 ,模组类型,电芯类型 ,假电芯1,假电芯2,工单ID,模组序ID,模组层数,载具位置 ,第二编码 from 配方指令队列 ,通用物料"+
      	   "  where  工单ID="+cc.get工单ID()+" and IFNULL(ST读取标志,0)<>1  and 装配区='"+装配区+"' and 模组序ID='"+cc.get模组序ID()+"' and 分解号='"+cc.get分解号()+"' "
      	   		+ " and 工位='"+(stNum-1)+"ST' and 物料=通用物料 ORDER BY 工单序号,模组序号,分解号,载具序号  LIMIT 3");
@@ -646,9 +647,11 @@ public class STContent implements Serializable {
     			
     	 		 ((_1_6ST)firstST).setId(ca.调度ID);
     	 		 ((_1_6ST)firstST).set工单号(ca.工单号);
-    	 		 ((_1_6ST)firstST).set工单ID(ca.get工单ID());
     	 		 ((_1_6ST)firstST).set分解号(ca.分解号);
-    	 		 ((_1_6ST)firstST).set载具序号(ca.载具序号);	 
+    	 		 ((_1_6ST)firstST).set工单ID(ca.get工单ID());
+    	 		 ((_1_6ST)firstST).set模组序ID(ca.get模组序ID());
+    	 		 ((_1_6ST)firstST).set分解号(ca.get分解号());
+    	 		 ((_1_6ST)firstST).set载具序号(ca.载具序号);
     	 		 
     	 		 if(stNum==9){//给8ST的工位单盖板载具赋值
     	 			String pei=ca.get配方(); 
@@ -676,14 +679,18 @@ public class STContent implements Serializable {
     		 
     	 }
     	
-    	 if(stNum==10){//预装工位
+    	 if(stNum==10){//预装工位，9ST
     		  //动作容许标志默认false，托盘到这儿判断设置值
     		   //同时把异步输送线的队列也处理了
     		 int next=stNum-1;
     		 if(!firstST.isWrite()&&!secondST.isWrite()){
     			 for(int i=stNum-1;i>=checkNum_预装;i--){//从9向前判断
-    			 Carry car=plc.line.getCarry(i);
+    				 Carry car=null; 
+    				 if(装配区==1)
+    			  car=plc.line.getCarry(i);
+    				 else  car=plc.line2.getCarry(i);
     			 if(car==null){continue;}
+    			 
     			 String ss1= car.get电芯位置1(); String ss2= car.get电芯位置2();
     			 String ss3= car.get电芯位置3(); String ss4= car.get电芯位置4();
     			// System.out.println(car.载具序号+"=====================");
@@ -762,7 +769,10 @@ public class STContent implements Serializable {
     		
     	}//////////////////////////////////////end for
     	 for(int i=next-1;i>=checkNum_预装;i--){
-        			 Carry car=plc.line.getCarry(i);
+    		 Carry car=null; 
+			 if(装配区==1)
+		           car=plc.line.getCarry(i);
+			 else  car=plc.line2.getCarry(i);
         			 if(car==null){continue;}
         			 String ss1= car.get电芯位置1(); String ss2= car.get电芯位置2();
         			 String ss3= car.get电芯位置3(); String ss4= car.get电芯位置4();
@@ -848,7 +858,10 @@ public class STContent implements Serializable {
     
    if(firstST.isWrite()&&!secondST.isWrite()){
     			 for(int i=stNum-1;i>=checkNum_预装;i--){
-        			 Carry car=plc.line.getCarry(i);
+    				 Carry car=null; 
+    				 if(装配区==1)
+    			           car=plc.line.getCarry(i);
+    				 else  car=plc.line2.getCarry(i);
         			 if(car==null){continue;}
         			 String s=firstST.get工单ID()+""+firstST.get模组序ID()+""+firstST.get分解号()+""+firstST.get载具序号();
         			 String s2=car.get工单ID()+""+car.get模组序ID()+""+car.get分解号()+""+car.get载具序号();
@@ -936,7 +949,7 @@ public class STContent implements Serializable {
     		 if(!firstST.isWrite()&&secondST.isWrite()){
     			 firstST.intFromST(secondST);
         		 secondST.setWrite(false);
-        		 secondST.clear();
+        		 secondST.clear(); 
     			 
     		 }
     		
@@ -946,7 +959,10 @@ public class STContent implements Serializable {
     	 if(stNum==13){//叠装工位
    		    //叠装工位,当载具到达时发
     		
-    			 Carry car=plc.line.getCarry(12); 
+    		 Carry car=null; 
+			 if(装配区==1)
+		           car=plc.line.getCarry(12);
+			 else  car=plc.line2.getCarry(12);
     			 if(car!=null){
     				 if(!firstST.isWrite()){
     				 ((_12ST)firstST).clear();
@@ -1031,7 +1047,10 @@ public class STContent implements Serializable {
     	 
     	 if(stNum==14){//到达14的时候在判断_13ST
     		    //取出工位
-    		   Carry car=plc.line.getCarry(13); 
+    		 Carry car=null; 
+			 if(装配区==1)
+		           car=plc.line.getCarry(13);
+			 else  car=plc.line2.getCarry(13);
     		   if(car!=null){
     			   
 
@@ -1068,7 +1087,10 @@ public class STContent implements Serializable {
     	      }
     	 if(stNum==15){//到达工位时发出信号
  		    //后升降机_BST
-    		  Carry car=plc.line.getCarry(14); 
+    		 Carry car=null; 
+			 if(装配区==1)
+		           car=plc.line.getCarry(14);
+			 else  car=plc.line2.getCarry(14);
     		  if(car!=null){
     		
     		  if(!firstST.isWrite()){
@@ -1104,15 +1126,18 @@ public class STContent implements Serializable {
     		//从叠装工位向前判断
     		 if(!firstST.isWrite()&&!secondST.isWrite()){
     			 Vector tem=new Vector();
-    			 for(int i=10;i>=plc.getIntance().checkNum_同步;i--){
-    			 Carry car=plc.line.getCarry(i);
+    			 for(int i=10;i>=checkNum_同步;i--){
+    				 Carry car=null; 
+    				 if(装配区==1)
+    			           car=plc.line.getCarry(i);
+    				 else  car=plc.line2.getCarry(i);
     			
     			 if(car==null){continue;}
     			 String ss1= car.get电芯位置1(); String ss2= car.get电芯位置2();
     			 String ss3= car.get电芯位置3(); String ss4= car.get电芯位置4();
     			 if(ss1!=null){
     				 String sm[]=ss1.split("=");
-    				 if(sm.length==2){
+    				 if(sm.length==2){ 
     					 Vector row=new Vector();
     					 row.addElement(car); row.addElement(sm[1].equals("A")?false:true);
     					 tem.add(row);
@@ -1160,6 +1185,7 @@ public class STContent implements Serializable {
     	    ((_DST)firstST).clear();
 			((_DST)firstST).setId(car.get调度ID());
 			((_DST)firstST).set工单号(car.get工单号());
+			((_DST)firstST).set工单ID(car.get工单ID());
 			((_DST)firstST).set模组序ID(car.get模组序ID());
 			((_DST)firstST).set分解号(car.get分解号());
 			((_DST)firstST).set载具序号(car.载具序号);
@@ -1179,6 +1205,7 @@ public class STContent implements Serializable {
         	    ((_DST)secondST).clear();
     			((_DST)secondST).setId(car.get调度ID());
     			((_DST)secondST).set工单号(car.get工单号());
+    			((_DST)secondST).set工单ID(car.get工单ID());
     			((_DST)secondST).set模组序ID(car.get模组序ID());
     			((_DST)secondST).set分解号(car.get分解号());
     			((_DST)secondST).set载具序号(car.载具序号);
@@ -1197,10 +1224,14 @@ public class STContent implements Serializable {
         		
     			
     		 }
+    		 
     		 if(firstST.isWrite()&&!secondST.isWrite()){
     			 Vector tem=new Vector();
-    			 for(int i=10;i>=plc.getIntance().checkNum_同步;i--){
-        			 Carry car=plc.line.getCarry(i);
+    			 for(int i=10;i>=checkNum_同步;i--){
+    				 Carry car=null; 
+    				 if(装配区==1)
+    			           car=plc.line.getCarry(i);
+    				 else  car=plc.line2.getCarry(i);
         			
         			 if(car==null){continue;}
         			 String ss1= car.get电芯位置1(); String ss2= car.get电芯位置2();
@@ -1238,15 +1269,16 @@ public class STContent implements Serializable {
         			 
         			 if(ss4!=null){
         				 String sm[]=ss4.split("=");
-        				 if(sm.length==2){
+        				 if(sm.length==2){ 
         					 Vector row=new Vector();
         					 row.addElement(car); row.addElement(sm[1].equals("A")?false:true);
         					 tem.add(row);
         					 car.set电芯位置2(ss4+"=已上传");
-        					 if(tem.size()==1){break;}
+        					 if(tem.size()==1){break;} 
         				 }
         			 }
     			 }
+    			 
         		if(tem.size()==1){
         			Vector row=(Vector)tem.get(0);
         			Carry car=(Carry)row.get(0);
@@ -1260,6 +1292,7 @@ public class STContent implements Serializable {
     			((_DST)secondST).set允许工位动作标志(true);
     		    ((_DST)secondST).set电芯类型标志(car.get电芯类型());
     			((_DST)secondST).set翻B面(fan);
+    			((_DST)secondST).set工单ID(car.get工单ID());
     			
     			((_DST)secondST).set立库RDY(true);
     			((_DST)secondST).setWrite(true);
@@ -1293,6 +1326,7 @@ public class STContent implements Serializable {
     	
 		//更新第一个工位动作容许标志
 		if(firstST.isWrite()){
+			
 			Carry car=this.装配区==1?plc.line.getCarry(stNum-1):plc.line2.getCarry(stNum-1);
 			if(car!=null){
 			String id1=firstST.get工单ID()+""+firstST.get模组序ID()+""+firstST.get分解号()+firstST.get载具序号();
@@ -1308,9 +1342,8 @@ public class STContent implements Serializable {
 			    	 ( (_9ST)firstST).set允许工位动作标志(true);
 			    	 
     				 }
-    				 
-    				 if(firstST instanceof _DST ){
-    			    	 ( (_DST)firstST).set允许工位动作标志(true);
+    			    if(firstST instanceof _DST ){
+    			    	// ( (_DST)firstST).set允许工位动作标志(true);
     			    	
         				 }
     			   
@@ -1333,7 +1366,7 @@ public class STContent implements Serializable {
 					    		 
 		    				   }
 		    				 if(firstST instanceof _DST ){
-		    			    	 ( (_DST)firstST).set允许工位动作标志(true);
+		    			    	// ( (_DST)firstST).set允许工位动作标志(true);
 		    			    	
 		        				 }
 		    			    }
@@ -1372,7 +1405,7 @@ public class STContent implements Serializable {
 				( (_9ST)secondST).set允许工位动作标志(true);
 				//System.out.println("____+++++++___");
 				 if(firstST instanceof _DST ){
-			     ( (_DST)secondST).set允许工位动作标志(true);
+			    // ( (_DST)secondST).set允许工位动作标志(true);
 			    	
     				 }
 				

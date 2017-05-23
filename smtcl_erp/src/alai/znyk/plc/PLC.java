@@ -24,11 +24,12 @@ public class PLC implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	public boolean 输送线自动请求打开=true;
+	public boolean A区输送线自动请求打开=true;
+	public boolean B区输送线自动请求打开=true;
 	public boolean A区输送线到位常有=false;
 	public boolean B区输送线到位常有=false;
 	public boolean 不检测取料数量=true;
-	public  int checkNum_同步=0;
+	
 	public int 回流阀值=2;
 	public boolean is不检测取料数量() {
 		return 不检测取料数量;
@@ -225,11 +226,12 @@ public class PLC implements Serializable {
 			  stop2=INSTANCE.stop2;
 			  不检测取料数量=INSTANCE.不检测取料数量;
 			  不检测动作完成=INSTANCE.不检测动作完成;
-			  checkNum_同步=INSTANCE.checkNum_同步;
-			  输送线自动请求打开=INSTANCE.输送线自动请求打开;
+			 
+			  A区输送线自动请求打开=INSTANCE.A区输送线自动请求打开;
+			  B区输送线自动请求打开=INSTANCE.B区输送线自动请求打开;
 			  A区输送线到位常有=INSTANCE.A区输送线到位常有;
 			  B区输送线到位常有=INSTANCE.B区输送线到位常有; 
-			  System.out.println("输送线自动请求打开="+输送线自动请求打开);
+			  System.out.println("A区输送线自动请求打开="+A区输送线自动请求打开);
 			  
 		      STC1=INSTANCE.STC1;
 			  line=INSTANCE.line;
@@ -785,9 +787,8 @@ public class PLC implements Serializable {
     					System.out.println("同步输送线载具放行-------------》");
     					final long timeS=System.currentTimeMillis();
  					   getWrPLC(装配区).get(i).firstST.set数据更新完成(true);
- 					 //  getWrPLC(装配区).get(i).firstST.set数据处理中(true);
  					   getWrPLC(装配区).get(i).firstST.set允许工位动作标志(false);
-						   String back=getWrPLC(装配区).get(i).firstST.writeifChangeToPLC();
+					   String back=getWrPLC(装配区).get(i).firstST.writeifChangeToPLC();
 						   System.out.println("同步输送线--工位载具放行"+back+":"+(System.currentTimeMillis()-timeS)+"ms");
 						    if(back.contains("成功")){
 							  //写入PLC成功后,在这儿再次检测载具放行变为OFF
@@ -945,24 +946,14 @@ public class PLC implements Serializable {
 	   if(line==2)AGV点="60004";
 	   boolean 到位1=false; boolean 到位2=false;
 	   try{
-		  if(st==1){
-			   if(line==1){
-				   STC1.get(st-1).firstST.set立库RDY(true);
-				   STC1.get(st-1).secondST.set立库RDY(true);
-				   return true;
-			   }else{
-				   STC2.get(st-1).firstST.set立库RDY(true);
-				   STC2.get(st-1).secondST.set立库RDY(true);
-				   return true;
-			   }
-		   }
+		 
 		  
 	  if(st>=2&&st<=8){
 	   if(line==1){
 		   
-		   String smm[]=getSTATE1().split("\\|");
+		   String smm[]=getSTATE1().split("\\|"); 
 		   
-		   if(smm[st-2].split("=")[1].equals("0")){
+		   if(smm[7-(st-2)-1].split("=")[1].equals("0")){
 			  
 			   STC1.get(st-1).firstST.set立库RDY(false);
 			   STC1.get(st-1).secondST.set立库RDY(false);
@@ -972,16 +963,19 @@ public class PLC implements Serializable {
 			   Resint r[]=	ClientSer.getIntance().getReturnPlc("D11001", 63, 16, line);
 			   Resint bint=r[(st-1)*2];
    			   int tem1=bint.getResInt();
-   			   int 托盘回大库=(tem1&0b10000)==16?1:0;
+   			   int 托盘回大库=(tem1&0b10000)==16?1:0;//PLC请求托盘回库信息
    			   if(托盘回大库==1){//把托盘出库
    				String sb=SqlTool.findOneRecord("select  托盘编号,物料,数量,货位号  from 库存托盘   where  货位号='"+gw1[st-2]+"'");
    				if(sb!=null){
    					String sm[]=sb.split("!_!");
+   					if(A区输送线自动请求打开){
    				    String bb=SqlTool.add动作指令(sm[0], sm[3], 人工点, "输送线回流", 1, line+"");
-   				    if(bb.contains("成功")){
-   				     STC1.get(st-1).firstST.set立库RDY(false);
-				     STC1.get(st-1).secondST.set立库RDY(false); 
-   				    return false; }
+   				    String bb2=SqlTool.insert(new String[]{"UPDATE 库存托盘 set 数量=0 where 托盘编号=‘"+sm[0]+"’"});
+   				    }
+   				   
+   				    // STC1.get(st-1).firstST.set立库RDY(false);
+				   //  STC1.get(st-1).secondST.set立库RDY(false); 
+   				    return false; 
    				    }
    			      }else{
    			    	  
@@ -994,7 +988,7 @@ public class PLC implements Serializable {
 	   }else{
 		   String smm[]=getSTATE2().split("\\|");
 		   
-		   if(smm[st-2].split("=")[1].equals("0")){
+		   if(smm[7-(st-2)-1].split("=")[1].equals("0")){
 			   STC2.get(st-1).firstST.set立库RDY(false);
 			   STC2.get(st-1).secondST.set立库RDY(false);
 			   到位2=false;
@@ -1008,11 +1002,15 @@ public class PLC implements Serializable {
    				String sb=SqlTool.findOneRecord("select  托盘编号,物料,数量,货位号  from 库存托盘   where  货位号='"+gw2[st-2]+"'");
    				if(sb!=null){
    					String sm[]=sb.split("!_!");
+   					if(B区输送线自动请求打开){
    				    String bb=SqlTool.add动作指令(sm[0], sm[3], 人工点, "输送线回流", 1, line+"");
-   				    if(bb.contains("成功")){
-   				     STC2.get(st-1).firstST.set立库RDY(false);
-				     STC2.get(st-1).secondST.set立库RDY(false); 
-   				    return false; }
+   				    String bb2=SqlTool.insert(new String[]{"UPDATE 库存托盘 set 数量=0 where 托盘编号=‘"+sm[0]+"’"});
+   				    }
+   				  
+   				    // STC2.get(st-1).firstST.set立库RDY(false);
+				    // STC2.get(st-1).secondST.set立库RDY(false); 
+   				    return false; 
+   				    
    				    }
    			      }else{
    			    	  
@@ -1031,7 +1029,7 @@ public class PLC implements Serializable {
 	    到位2=true;
 	   
 	 
-	   if(st>=2&&st<=7){
+	   if(st>=2&&st<=7){ 
 		  String tem2=null;
 		  STContent cot= STC1.get(st-1);
 		  if(line==1){
@@ -1053,16 +1051,21 @@ public class PLC implements Serializable {
 		         String sql1=SqlTool.findOneRecord("select  托盘编号,物料,数量,货位号  from 库存托盘   where  物料='"+wuliao+"' and 数量>0 and 货位号  between 1 and 28 and 方向='"+line+"'"); 
 				  if(sql1!=null){
 					 String sm6[]=sql1.split("!_!") ;
-					 if(输送线自动请求打开)
+					 if(A区输送线自动请求打开){//当检测到偶数位为空时就发出下货请求
 					 SqlTool.add动作指令(sm6[0], sm6[3],  (gw1[st-2]-1)+"", "下货", 0, line+"");
+					 
+					 }
 					   
 				    }
 				  }else{
 					  String sql1=SqlTool.findOneRecord("select  托盘编号,物料,数量,货位号  from 库存托盘   where  物料='"+wuliao+"' and 数量>0 and 货位号  between 1 and 28 and 方向='"+2+"'"); 
 					  if(sql1!=null){
 						 String sm6[]=sql1.split("!_!") ;
-						 if(输送线自动请求打开)
+						 if(B区输送线自动请求打开){
+							 //当检测到偶数位为空时就发出下货请求
 						 SqlTool.add动作指令(sm6[0], sm6[3],  (gw2[st-2]-1)+"", "下货", 0, line+"");
+						 
+						 }
 						   
 					    }  
 					  
@@ -1096,7 +1099,7 @@ public class PLC implements Serializable {
 		    	   if(需求数量-完成数量>tpshul){
 					   //叫托盘回流
 		    		   cot.firstST.set立库RDY(false);
-		    		   if(输送线自动请求打开){
+		    		   if((line==1?A区输送线自动请求打开:B区输送线自动请求打开)){
 		    		   SqlTool.add动作指令(sm[0], sm[3], 人工点, "输送线回流", 1, line+"");
 		    		   System.out.println("要取的不够了------而回流="+sm[1]+"=="+tem.split("!_!")[0]);
 		    		   }
@@ -1116,12 +1119,12 @@ public class PLC implements Serializable {
 		       }else{ //托盘物料跟本工位的不一样
 		    	      //叫托盘回流  
 		    	   if(tpshul>回流阀值){//回货架
-		    		   if(输送线自动请求打开){
+		    		   if((line==1?A区输送线自动请求打开:B区输送线自动请求打开)){
 		    	     String b=SqlTool.add动作指令(sm[0], sm[3], AGV点, "输送线回流", 0, line+"");
 		    	     System.out.println("因为托盘物料不是本工位要的物料------而回到货架"+sm[1]+"=="+tem.split("!_!")[0]+"->"+b);
 		    		   }
 		    	     }else{//回大库
-		    	    	 if(输送线自动请求打开){
+		    	    	 if((line==1?A区输送线自动请求打开:B区输送线自动请求打开)){
 		    	     String b=SqlTool.add动作指令(sm[0], sm[3], 人工点, "输送线回流", 1, line+"");	 
 		    	     System.out.println("因为托盘数量<3且不是本工位要的物料------而回到大库"+sm[1]+"=="+tem.split("!_!")[0]+"->"+b);
 		    	    	 }
@@ -1145,7 +1148,9 @@ public class PLC implements Serializable {
 					   if(需求数量2-完成数量2>tpshul){
 						   //叫托盘回流
 						   cot.secondST.set立库RDY(false);
+						   if((line==1?A区输送线自动请求打开:B区输送线自动请求打开)){
 						   SqlTool.add动作指令(sm[0], sm[3], 人工点, "输送线回流", 1, line+"");  
+						   }
 						   return false;
 						   }else{
 							   if(line==1){   
@@ -1162,11 +1167,11 @@ public class PLC implements Serializable {
 			    	      //叫托盘回流  
 				        cot.secondST.set立库RDY(false);
 				        if(tpshul>回流阀值){//回货架
-				        	 if(输送线自动请求打开)
+				        	 if((line==1?A区输送线自动请求打开:B区输送线自动请求打开))
 				    	     SqlTool.add动作指令(sm[0], sm[3], AGV点, "输送线回流", 0, line+"");
 				    	     //System.out.println("2因为托盘物料不是本工位要的物料------而回到货架"+sm[1]+"=="+tem.split("!_!")[0]);
 				    	     }else{//回大库
-				    	    	 if(输送线自动请求打开)
+				    	    	 if((line==1?A区输送线自动请求打开:B区输送线自动请求打开))
 				    	     SqlTool.add动作指令(sm[0], sm[3], 人工点, "输送线回流", 1, line+"");	 
 				    	     //System.out.println("2因为托盘数量<3且不是本工位要的物料------而回到大库"+sm[1]+"=="+tem.split("!_!")[0]);
 				    	     }
@@ -1205,16 +1210,18 @@ public class PLC implements Serializable {
 			         String sql1=SqlTool.findOneRecord("select  托盘编号,物料,数量,货位号  from 库存托盘   where  物料='"+wuliao+"' and 数量>0 and 货位号  between 1 and 28 and 方向='"+line+"'"); 
 					  if(sql1!=null){
 						 String sm6[]=sql1.split("!_!") ;
-						 if(输送线自动请求打开)
+						 if((line==1?A区输送线自动请求打开:B区输送线自动请求打开)){
 						  SqlTool.add动作指令(sm6[0], sm6[3],  (gw1[st-2]-1)+"", "下货", 0, line+"");
+						  }
 						   
 					    }
 					  }else{
 						  String sql1=SqlTool.findOneRecord("select  托盘编号,物料,数量,货位号  from 库存托盘   where  物料='"+wuliao+"' and 数量>0 and 货位号  between 1 and 28 and 方向='"+2+"'"); 
 						  if(sql1!=null){
 							 String sm6[]=sql1.split("!_!") ;
-							 if(输送线自动请求打开)
+							 if((line==1?A区输送线自动请求打开:B区输送线自动请求打开)){
 							 SqlTool.add动作指令(sm6[0], sm6[3],  (gw2[st-2]-1)+"", "下货", 0, line+"");
+							 }
 							   
 						    }  
 						  
@@ -1247,7 +1254,7 @@ public class PLC implements Serializable {
 			    	   if(tpshul<1){//因为电芯每次只取一个，所以只判断大于0的情况
 						   //叫托盘回流
 			    		   cot.firstST.set立库RDY(false);
-			    		   if(输送线自动请求打开)
+			    		   if((line==1?A区输送线自动请求打开:B区输送线自动请求打开))
 			    		   SqlTool.add动作指令(sm[0], sm[3], 人工点, "输送线回流", 1, line+"");  
 						   return false;
 						   }else{
@@ -1266,10 +1273,10 @@ public class PLC implements Serializable {
 			    	   cot.firstST.set立库RDY(false);
 			    	   
 			    	   if(tpshul>回流阀值){//回货架
-			    		     if(输送线自动请求打开)
+			    		     if((line==1?A区输送线自动请求打开:B区输送线自动请求打开))
 				    	     SqlTool.add动作指令(sm[0], sm[3], AGV点, "输送线回流", 0, line+"");
 				    	     }else{//回大库
-				    	    	 if(输送线自动请求打开)
+				    	    	 if((line==1?A区输送线自动请求打开:B区输送线自动请求打开))
 				    	     SqlTool.add动作指令(sm[0], sm[3], 人工点, "输送线回流", 1, line+"");	 
 				    	     }
 			    	   return false;  
@@ -1290,7 +1297,7 @@ public class PLC implements Serializable {
 						   if(tpshul<1){
 							   //叫托盘回流
 							   cot.secondST.set立库RDY(false);
-							   if(输送线自动请求打开)
+							   if((line==1?A区输送线自动请求打开:B区输送线自动请求打开))
 							   SqlTool.add动作指令(sm[0], sm[3], 人工点, "输送线回流", 1, line+"");  
 							   return false;
 							   }else{
@@ -1308,10 +1315,10 @@ public class PLC implements Serializable {
 				    	      //叫托盘回流  
 					        	 cot.secondST.set立库RDY(false);
 					        	 if(tpshul>回流阀值){//回货架
-					        		 if(输送线自动请求打开)
+					        		 if((line==1?A区输送线自动请求打开:B区输送线自动请求打开))
 						    	     SqlTool.add动作指令(sm[0], sm[3], AGV点, "输送线回流", 0, line+"");
 						    	     }else{//回大库
-						    	    	if(输送线自动请求打开)
+						    	    	if((line==1?A区输送线自动请求打开:B区输送线自动请求打开))
 						    	     SqlTool.add动作指令(sm[0], sm[3], 人工点, "输送线回流", 1, line+"");	 
 						    	     }
 					    	 return false;  
@@ -1323,6 +1330,24 @@ public class PLC implements Serializable {
 			  } 
 			      
 		   
+	   }
+	   
+	   if(st>=2&&st<=8){//开始判断奇数位的托盘情况，始终把奇数位填满
+		   
+		   
+	   }  
+	   
+	  //升降台和8工位开始,立库RDY永远是TRUE 
+	   if(st==1){
+		   if(line==1){
+			   STC1.get(st-1).firstST.set立库RDY(true);
+			   STC1.get(st-1).secondST.set立库RDY(true);
+			   return true;
+		   }else{
+			   STC2.get(st-1).firstST.set立库RDY(true);
+			   STC2.get(st-1).secondST.set立库RDY(true);
+			   return true;
+		   }
 	   }
 	   
 	   
@@ -1339,6 +1364,7 @@ public class PLC implements Serializable {
 	     return false;
 	   
    }
+   
    
     ReST first=new ReST(new Resint());
 	ReST second=new ReST(new Resint());

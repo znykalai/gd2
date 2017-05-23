@@ -33,7 +33,8 @@ public class KuFang {
 			public void run(){
 				try{
 				while(true){
-					startLine();
+					startLine(1);
+					
 				    Thread.sleep(500);
 				
 				}
@@ -42,6 +43,23 @@ public class KuFang {
 			}
 			
 		}.start();
+		
+		new Thread(){
+			public void run(){
+				try{
+				while(true){
+					
+					startLine(2);
+				    Thread.sleep(500);
+				
+				}
+			}catch(Exception ex){}
+			
+			}
+			
+		}.start();
+		
+	
 		
 		new Thread(){
 			public void run(){
@@ -157,16 +175,16 @@ public class KuFang {
 	}
 	
 //更新托盘在7条输送线上的位置	
-public void startLine(){
+public void startLine(int machineID){
 	//测试通过
-		
+	if(machineID==1){	
    try{
 	  String ss= ClientSer.getIntance().getState(SqlPro.A区输送线);
 	  if(ss==null||ss.equals("-2")){
-	  System.out.println("startLine 断开读取超时");
+	  System.out.println("startLine 断开读取超时,状态码="+ss);
 	  return;}
 	  if(ss==null||ss.equals("-1")){
-		  System.out.println("startLine 立库断开");
+		  System.out.println("startLine 立库断开,状态码="+ss);
 		  return;}
 	  String sm[]=ss.split("\\|");
 	String sql1= "select  货位序号,托盘编号   from 货位表  where  货位序号  between 501 and 514 order by 货位序号";
@@ -180,7 +198,7 @@ public void startLine(){
 		String firstTP=line1.get(1)==null?"":line1.get(1).toString();
 		String secTP=line2.get(1)==null?"":line2.get(1).toString();
 		if(secTP.equals("")){
-			if(sm[r*2+1].split("=")[1].equals("0")){
+			//if(sm[r*2+1].split("=")[1].equals("0")){
 				//System.out.println((r*2+1)+"="+sm[r*2+1]+"="+ss);
 				String fromID=line1.get(0)+"";
 				String toID=line2.get(0)+"";
@@ -197,7 +215,7 @@ public void startLine(){
 				  SqlTool.WriteAddresInPaletToPLC(leixing, firstTP, toID, 1);
 					
 				  }
-			}
+			//}
 			
 		 }
 		
@@ -205,14 +223,18 @@ public void startLine(){
 		 SqlPro.getLog().error("A区输送线是否有托盘："+ex.getMessage());
 		 ex.printStackTrace();}
    
+	}
    
+	if(machineID==2){
    try{
 	
 	 String ss2= ClientSer.getIntance().getState(SqlPro.B区输送线);
-	 //System.out.println(ss2);
-	 if(ss2==null||ss2.equals("-2")){
-		  System.out.println(ss2);
+	  if(ss2==null||ss2.equals("-2")){
+		  System.out.println("startLine 断开读取超时,状态码="+ss2);
 		  return;}
+		  if(ss2==null||ss2.equals("-1")){
+		  System.out.println("startLine 立库断开,状态码="+ss2);
+			  return;}
 	 
 	 String sm2[]=ss2.split("\\|");
 	 String sql2= "select  货位序号,托盘编号   from 货位表  where  货位序号  between 601 and 614 order by 货位序号";
@@ -223,7 +245,7 @@ public void startLine(){
 		String firstTP=line1.get(1)==null?"":line1.get(1).toString();
 		String secTP=line2.get(1)==null?"":line2.get(1).toString();
 		if(secTP.equals("")){
-			if(sm2[r*2+1].split("=")[1].equals("0")){
+			//if(sm2[r*2+1].split("=")[1].equals("0")){
 				String fromID=line1.get(0)+"";
 				String toID=line2.get(0)+"";
 				
@@ -231,15 +253,17 @@ public void startLine(){
 				 * 像PLC里面写入PLC地址
 				 * **/
 				if(!firstTP.equals("")){
+					System.out.println("update7Line,进入托盘从第1位向第二位移动，在方法startLine，B区");
 					SqlTool.update7Line(firstTP, fromID, toID);
+					System.out.println("update7Line,执行完成，在方法startLine，B区");
 					// String sql2="select 托盘编号  from 货位表   where  货位序号='"+toID+"'";	
 				  String wuliao= SqlTool.findOneRecord("select 物料  from 库存托盘  where 托盘编号="+"'"+firstTP+"'");
 				  String leixing=SqlTool.findOneRecord("select 类型  from 通用物料  where 物料编码="+"'"+wuliao+"'");
 				  SqlTool.clearValueForPalet(toID, 2);
 				  SqlTool.WriteAddresInPaletToPLC(leixing, firstTP, toID, 2);
-					
+				  System.out.println("update7Line,写人PLC料箱地址 在方法startLine完成"); 
 				  }
-			}
+			//}
 			
 		 }
 		
@@ -248,6 +272,8 @@ public void startLine(){
    }catch(Exception ex){
 		 SqlPro.getLog().error("B区输送线是否有托盘："+ex.getMessage());
 		 ex.printStackTrace();}
+   
+	}
 	
 	if(line==0)
      System.out.println("缓存货位与上料位自动更新启动完成");
@@ -318,10 +344,12 @@ public void start堆垛机指令(){
 			    	 String eventID=up.get(0).toString();
 			    	 String fromID=up.get(5).toString();
 			    	 String toID=up.get(6).toString();
-			    	 ClientSer.getIntance().upPallet(Integer.parseInt(eventID), 
+			    	int bak= ClientSer.getIntance().upPallet(Integer.parseInt(eventID), 
 			    			 Integer.parseInt(fromID), Integer.parseInt(toID), 1);
+			    	if(bak==1){
 			    	 String sql2="update 立库动作指令  set 状态='已发送',发送时间="+SqlPro.getDate()[1]+" where idEvent="+"'"+eventID+"'"; 
 			    	 SqlTool.insert(new String[]{sql2});
+			    	 }
 			      }
 				
 			}
@@ -347,10 +375,12 @@ public void start堆垛机指令(){
 			    	 String eventID=up.get(0).toString();
 			    	 String fromID=up.get(5).toString();
 			    	 String toID=up.get(6).toString();
-			    	 ClientSer.getIntance().getPallet(Integer.parseInt(eventID), 
+			    	 int bak=ClientSer.getIntance().getPallet(Integer.parseInt(eventID), 
 			    			 fromID, Integer.parseInt(toID), 1);
+			    	 if(bak==1){
 			    	 String sql2="update 立库动作指令  set 状态='已发送',发送时间="+SqlPro.getDate()[1]+" where idEvent="+"'"+eventID+"'"; 
 			    	 SqlTool.insert(new String[]{sql2});
+			    	 }
     				
     			}
     		   } catch (Exception e) {e.printStackTrace();}
@@ -378,10 +408,12 @@ public void start堆垛机指令(){
 			    	 String eventID=up.get(0).toString();
 			    	 String fromID=up.get(5).toString();
 			    	 String toID=up.get(6).toString();
-			    	 ClientSer.getIntance().upPallet(Integer.parseInt(eventID), 
+			    	 int bak= ClientSer.getIntance().upPallet(Integer.parseInt(eventID), 
 			    			 Integer.parseInt(fromID), Integer.parseInt(toID), 2);
+			    	if(bak==1){
 			    	 String sql2="update 立库动作指令  set 状态='已发送',发送时间="+SqlPro.getDate()[1]+" where idEvent="+"'"+eventID+"'"; 
 			    	 SqlTool.insert(new String[]{sql2});
+			    	 }
 			      }
 				
 			}
@@ -405,10 +437,12 @@ public void start堆垛机指令(){
 			    	 String eventID=up.get(0).toString();
 			    	 String fromID=up.get(5).toString();
 			    	 String toID=up.get(6).toString();
-			    	 ClientSer.getIntance().getPallet(Integer.parseInt(eventID), 
+			    	int bak= ClientSer.getIntance().getPallet(Integer.parseInt(eventID), 
 			    			 fromID, Integer.parseInt(toID), 2);
+			    	if(bak==1){
 			    	 String sql2="update 立库动作指令  set 状态='已发送',发送时间="+SqlPro.getDate()[1]+" where idEvent="+"'"+eventID+"'"; 
 			    	 SqlTool.insert(new String[]{sql2});
+			    	 }
    				
    			}
    		   } catch (Exception e) {e.printStackTrace();}
@@ -457,10 +491,12 @@ public void startlineAGV(){
 			    	 String eventID=up.get(0).toString();
 			    	 String fromID=up.get(5).toString();
 			    	 String toID=up.get(6).toString();
-			    	 ClientSer.getIntance().toBackBuffer(Integer.parseInt(eventID), 
+			    	int bak= ClientSer.getIntance().toBackBuffer(Integer.parseInt(eventID), 
 			    			 Integer.parseInt(fromID), Integer.parseInt(toID));
-			    	 String sql2="update 立库动作指令  set 状态='已发送',发送时间="+SqlPro.getDate()[1]+" where idEvent="+"'"+eventID+"'"; 
+			    	if(bak==1){
+			    	String sql2="update 立库动作指令  set 状态='已发送',发送时间="+SqlPro.getDate()[1]+" where idEvent="+"'"+eventID+"'"; 
 			    	 SqlTool.insert(new String[]{sql2});
+			    	 }
 			      }
 				
 			}
@@ -483,10 +519,12 @@ public void startlineAGV(){
 			    	 String eventID=up.get(0).toString();
 			    	 String fromID=up.get(5).toString();
 			    	 String toID=up.get(6).toString();
-			    	 ClientSer.getIntance().toBackBuffer(Integer.parseInt(eventID), 
+			    	 int bak=ClientSer.getIntance().toBackBuffer(Integer.parseInt(eventID), 
 			    			 Integer.parseInt(fromID), Integer.parseInt(toID));
+			    	 if(bak==1){
 			    	 String sql2="update 立库动作指令  set 状态='已发送',发送时间="+SqlPro.getDate()[1]+" where idEvent="+"'"+eventID+"'"; 
 			    	 SqlTool.insert(new String[]{sql2});
+			    	 }
    				
    			}
    		   } catch (Exception e) {e.printStackTrace();}

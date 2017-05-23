@@ -320,7 +320,7 @@ public class SqlTool {
         	
         	  
         	//零时方案添加，只要有预装的命令没完成，就不能调动输送线
-        	  String sqll="select idEvent,状态,状态2 from 立库动作指令  where 动作='预上货' and 状态2<>'1'  order by idEvent";
+        	  String sqll="select idEvent,状态,状态2 from 立库动作指令  where 动作='预上货' and 状态2<>'1' and 请求区='"+machineID+"' order by idEvent";
               set=st.executeQuery(sqll);
               
               if(set.next()){
@@ -369,7 +369,7 @@ public class SqlTool {
         if(!have)	{
         	// String sqll="select idEvent,状态,状态2 from 立库动作指令  where 动作='预上货' and 状态2<>'1' and 托盘编号='"+tp+"' order by idEvent";
         	/*在临时方案里面，由于Y向上货点没RFID，所以一次只能上一个命令，来防止托盘串号*/
-        	String sqll="select idEvent,状态,状态2 from 立库动作指令  where 动作='预上货' and 状态2<>'1' order by idEvent";
+        	String sqll="select idEvent,状态,状态2 from 立库动作指令  where 动作='预上货' and 状态2<>'1' and 请求区='"+machineID+"'order by idEvent";
         	set=st.executeQuery(sqll);
              if(set.next()){
              	have=true;

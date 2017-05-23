@@ -53,7 +53,7 @@ public class PLCFrame extends JFrame {
 	 */
 	public PLCFrame() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 1368, 714);
+		setBounds(100, 100, 1452, 714);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -97,14 +97,23 @@ public class PLCFrame extends JFrame {
 		chckbxA.setSelected(PLC.getIntance().A区输送线到位常有);
 		chckbxB.setSelected(PLC.getIntance().B区输送线到位常有);
 		
-		JCheckBox checkBox = new JCheckBox("\u8F93\u9001\u7EBF\u81EA\u52A8\u8BF7\u6C42\u6253\u5F00");
-		checkBox.setSelected(PLC.getIntance().输送线自动请求打开);
-		checkBox.addActionListener(new ActionListener() {
+		JCheckBox chckbxA_1 = new JCheckBox("A\u533A\u8F93\u9001\u7EBF\u81EA\u52A8\u8BF7\u6C42\u6253\u5F00");
+		chckbxA_1.setSelected(PLC.getIntance().A区输送线自动请求打开);
+		chckbxA_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				PLC.getIntance().输送线自动请求打开=checkBox.isSelected();
+				PLC.getIntance().A区输送线自动请求打开=chckbxA_1.isSelected();
 			}
 		});
-		panel_18.add(checkBox);
+		panel_18.add(chckbxA_1);
+		
+		JCheckBox chckbxB_1 = new JCheckBox("B\u533A\u8F93\u9001\u7EBF\u81EA\u52A8\u8BF7\u6C42\u6253\u5F00");
+		chckbxB_1.setSelected(PLC.getIntance().B区输送线自动请求打开);
+		chckbxB_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PLC.getIntance().B区输送线自动请求打开=chckbxB_1.isSelected();	
+			}
+		});
+		panel_18.add(chckbxB_1);
 		
 		JLabel label = new JLabel("\u56DE\u6D41\u9600\u503C");
 		panel_18.add(label);
@@ -228,6 +237,34 @@ public class PLCFrame extends JFrame {
 		splitPane.setRightComponent(scrollPane);
 		CommentPanel pann=new CommentPanel();
 		splitPane.setLeftComponent(pann);
+		
+		textField_1 = new JTextField();
+		textField_1.setBounds(729, 448, 66, 21);
+		pann.add(textField_1);
+		textField_1.setColumns(10);
+		textField_1.setText(STContent.checkNum_预装+"");
+		JButton button_2 = new JButton("\u91CD\u7F6E\u9884\u88C5\u9884\u8BFB\u4F4D\u7F6E");
+		button_2.setBounds(805, 447, 129, 23);
+		pann.add(button_2);
+		
+		textField_2 = new JTextField();
+		textField_2.setBounds(729, 479, 66, 21);
+		pann.add(textField_2);
+		textField_2.setColumns(10);
+		textField_2.setText(STContent.checkNum_同步+"");
+		JButton button_3 = new JButton("\u91CD\u7F6E\u540C\u6B65\u7EBF\u9884\u8BFB\u4F4D\u7F6E");
+		button_3.setBounds(805, 480, 141, 23);
+		pann.add(button_3);
+		button_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				STContent.checkNum_同步=Integer.parseInt(textField_2.getText());
+			}
+		});
+		button_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				STContent.checkNum_预装=Integer.parseInt(textField_1.getText());
+			}
+		});
 	
 		scrollPane.setViewportView(tabbedPane);
 		splitPane.setDividerLocation(1000);
@@ -276,4 +313,6 @@ public class PLCFrame extends JFrame {
 	}
 	public  int start =0;
 	private JTextField textField;
+	private JTextField textField_1;
+	private JTextField textField_2;
 }
