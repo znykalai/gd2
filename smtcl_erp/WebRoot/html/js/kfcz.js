@@ -380,7 +380,7 @@ var readyShow={
 									map.startEnd(0,arryEnd,true,'none',function(){
 										return arryEnd=null;
 									});
-									var a=$("#fangxiang").val($("#fangxiang").attr("oval"));a=null;
+									var a=$("#fangxiang").val($("#fangxiang").attr("oval"));a=null;a=$("#up_number").val(30);a=null;
 									return null;
 								});
 								//下货到输送线事件
