@@ -25,7 +25,7 @@ public class ServiceServerImp implements ServiceServer {
 	public String getLastComment(int machineID,int type) {
 		// TODO Auto-generated method stub
 		if(true)
-		return -1+"|"+-1+"|"+-1+"|"+-1+"|"+"-1";
+		return "0";
 		if(machineID==1){
 			if(type==1){//指堆垛机的动作指令
 				Vector 堆1=SqlTool.findInVector("select idEvent,来源,任务类别,动作,托盘编号,来源货位号,放回货位号,请求区,状态,状态2 from 立库动作指令  where 状态='执行中' and 动作<>'输送线回流' and 请求区= '1' order by idEvent");		
