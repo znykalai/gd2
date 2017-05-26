@@ -1318,9 +1318,12 @@ public static	void initAddresInPalet(String lei/*1=10行X2列X2成*/,String palet, 
 			
 		}
        
-       if(lei.equals("3")){//类别确定了写入的长度，7行X1列X1成
+       if(lei.equals("3")){//类别确定了写入的长度，7行X1列X1成,底板
 			//1-7
-    	   String val="1=1,2=1,3=1,4=1,5=1,6=1,7=1";
+    	   String val="1=1,2=0,3=1,4=0,5=1,6=0,7=1,8=0,"+
+				    "9=1,10=0,11=1,12=0,13=1,14=0,15=1,16=0,17=1,"+
+				    "18=0,19=1,20=0,21=1,22=0,23=1,24=0,25=1,26=0,"+
+				    "27=1,28=0";
     	   String sql= "update 库存托盘  set address='"+val+"' where 托盘编号="+"'"+palet+"'";
     		try{
 				if(st==null){

@@ -36,8 +36,10 @@ public class Carry implements Serializable{
     public int 电芯类型;//
     public int 模组类型;//
     public int 模组序ID;//
+    public int 模组序号;//
     
-    public int 假电芯1;
+   
+	public int 假电芯1;
     public int 假电芯2;
     public String 电芯位置1=null;
     public String 电芯位置2=null;
@@ -216,6 +218,13 @@ public class Carry implements Serializable{
 		public void set模组层数(int 模组层数) {
 			this.模组层数 = 模组层数;
 		}
+		
+		 public int get模组序号() {
+				return 模组序号;
+			}
+			public void set模组序号(int 模组序号) {
+				this.模组序号 = 模组序号;
+			}
 	 
 	public String getName(){
 		//工单号ID+模组序ID+分解号+载具序号,这三个也决定了唯一的载具

@@ -136,7 +136,7 @@ public class ClientSer {
 				}else{
 				tem=tem+row.get(0)+"="+row.get(1)+"|";}
 			}
-			if(!s.equals(""))
+			if(!s.equals(""))  
 			s=tem;
 			
 			return s;
