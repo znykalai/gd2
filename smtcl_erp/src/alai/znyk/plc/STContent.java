@@ -93,6 +93,7 @@ public class STContent implements Serializable {
     		// 工单序号=PACK序号，分解号=这个工单号下面的模组分成的序号，
     		//工单ID+模组序ID+分解号+载具序号,这4个也决定了唯一的载具
     		
+    	 firstST.set数据处理中(false);secondST.set数据处理中(false);
     	 Vector<Vector> tem=SqlTool.findInVector("select  ID,工单序号,分解号,载具序号,pack编码,模组编码,物料,数量,翻面否,工位,工单ID,模组序ID,IFNULL(假电芯1,0),IFNULL(假电芯2,0),电芯位置1,电芯位置2,电芯位置3,电芯位置4,IFNULL(叠装否,'否'),模组类型,电芯类型  ,pack类型,模组层数,载具位置, 模组序号,COUNT(DISTINCT 工单序号,模组序ID,分解号,载具序号 )  from 配方指令队列    where  装配区="+装配区+"   and IFNULL(前升读标志,0)<>1 GROUP BY 工单序号,模组序号,分解号,载具序号   ORDER BY 工单序号,模组序号,分解号,载具序号 LIMIT 10");
     	 //System.out.println(tem);	
     	 if(tem.size()>1){
@@ -353,6 +354,9 @@ public class STContent implements Serializable {
     	if(stNum>=2&&stNum<=7){//动作容许标志默认false，需要判断
     		
     		if(!firstST.isWrite()&&!secondST.isWrite()){
+    			
+    			 firstST.set数据处理中(false);secondST.set数据处理中(false);
+    			 
     			Vector<Vector> tem=new Vector<Vector>();
     			Carry cc=null;
     			if(装配区==1){cc=PLC.getIntance().line.getCarry(0);
@@ -497,6 +501,7 @@ public class STContent implements Serializable {
     	 if(stNum==8){//动作容许标志默认false，需要判断
    		    //假电芯工位
            if(!firstST.isWrite()&&!secondST.isWrite()){
+        	   firstST.set数据处理中(false);secondST.set数据处理中(false);
         	   Vector<Vector> tem=new Vector<Vector>();
    			Carry cc=null;
    			if(装配区==1){cc=PLC.getIntance().line.getCarry(0);
@@ -642,9 +647,11 @@ public class STContent implements Serializable {
     	 
     	 if(stNum==9||stNum==11||stNum==12){//动作容许标志默认false，托盘到这儿直接放行
     		 boolean 数据更新完成 =((_1_6ST)firstST).is数据更新完成();
+    		// boolean  数据处理中=((_1_6ST)firstST).is数据处理中();
     		 ((_1_6ST)firstST).clear();
     		 ((_1_6ST)firstST).set允许工位动作标志(false);
     		 ((_1_6ST)firstST).set数据更新完成(数据更新完成);
+    		// ((_1_6ST)firstST).set数据处理中(数据处理中);
     		 ((_1_6ST)firstST).set立库RDY(true);
     		 Carry ca= plc.line.getCarry(stNum-1);//本工位,只要当载具到了本工位才进行处理
     		 if(ca!=null){
@@ -688,6 +695,7 @@ public class STContent implements Serializable {
     		   //同时把异步输送线的队列也处理了
     		 int next=stNum-1;
     		 if(!firstST.isWrite()&&!secondST.isWrite()){
+    			 firstST.set数据处理中(false);secondST.set数据处理中(false);
     			 for(int i=stNum-1;i>=checkNum_预装;i--){//从9向前判断
     				 Carry car=null; 
     				 if(装配区==1)
@@ -1177,6 +1185,7 @@ public class STContent implements Serializable {
   		    //同步输送线
     		//从叠装工位向前判断
     		 if(!firstST.isWrite()&&!secondST.isWrite()){
+    			 firstST.set数据处理中(false);secondST.set数据处理中(false);
     			 Vector tem=new Vector();
     			 for(int i=10;i>=checkNum_同步;i--){
     				 Carry car=null; 
@@ -1372,7 +1381,7 @@ public class STContent implements Serializable {
     	
     }
     
-    public void updata动作(){//更新动作允许标志
+    public void updata动作(){//更新动作允许标志 
     	
     	int next=stNum-1;
     	
@@ -1473,7 +1482,7 @@ public class STContent implements Serializable {
     }
     
 
-    private boolean updataSTDB(int 货位, ST_Father st){
+    private synchronized boolean updataSTDB(int 货位, ST_Father st){
     	if(stNum<2||stNum>8){return false;}
     	if(stNum>=2&&stNum<=7){
     		//System.out.println("id="+st.getId());
@@ -1501,6 +1510,7 @@ public class STContent implements Serializable {
   				   SqlTool.insert(new String[]{sql});
   				   SqlTool.insert(new String[]{sql2});
   				   ((_1_6ST)st).set完成数量(完成数量+fshul);
+  				  // ((_1_6ST)st).set立库RDY(false);
   				 /*******
   		  	  	 在这里要重新货物在托盘的位置，从PLC更新
   		  		 * 

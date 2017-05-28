@@ -95,11 +95,14 @@ public class _1_6ST extends ST_Father implements STInterface {
 		if(单盖板载具)
 			boolContent=boolContent|0b10000;else boolContent=boolContent&0b1111111111101111;
 	}
-	
+	@Override
 	public boolean is数据处理中() {
-		return 数据处理中;
+		return 数据处理中; 
 	}
+	
+	 @Override
 	public void set数据处理中(boolean 数据处理中) {
+		// System.out.println("数据处理中！！！！！");
 		this.数据处理中 = 数据处理中;
 		if(数据处理中)
 			boolContent=boolContent|0b100000;else boolContent=boolContent&0b1111111111011111;
@@ -164,13 +167,13 @@ public class _1_6ST extends ST_Father implements STInterface {
 	 public boolean isChange(){
 		
 		 if(old==null){
-			 System.out.println("ischange");
+			// System.out.println("ischange");
 			 old=new _1_6ST(plc, machineID,startAddress);
 			 return true;
 			 
 		 }else{
 			if(this.boolContent!=old.getBoolContent()||!this.getName().equals(old.getName())){
-				 System.out.println("ischange2");
+				 //System.out.println("ischange2");
 				return true;} 
 			 
 		 }

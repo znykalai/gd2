@@ -140,7 +140,7 @@ public class ST_Father implements STInterface, Serializable{
 		}
 	 //子类必须覆盖
 	 public void set数据处理中(boolean 数据处理中) {
-			
+		 //System.out.println("父類=set数据更新完成");
 		}
 	 //子類必須覆蓋
 	 public boolean is数据更新完成() {
@@ -188,7 +188,7 @@ public class ST_Father implements STInterface, Serializable{
 		
 		}
 		
-		return "沒變化!";
+		return "成功!";
 	}
 	public int get剩余数量(){
 		return 0;

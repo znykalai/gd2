@@ -29,7 +29,7 @@ public class PLC implements Serializable {
 	public boolean A区输送线到位常有=false;
 	public boolean B区输送线到位常有=false;
 	public boolean 不检测取料数量=true;
-	
+	protected transient Hashtable th=new Hashtable();
 	public int 回流阀值=2;
 	public boolean is不检测取料数量() {
 		return 不检测取料数量;
@@ -358,9 +358,9 @@ public class PLC implements Serializable {
 			INSTANCE=new PLC();
 			System.out.println("PLC启动---------------");
 			INSTANCE.startTiaodu();
-			INSTANCE.startTiaodu2();
+			//INSTANCE.startTiaodu2();
 			INSTANCE.sendHert(1);
-			INSTANCE.sendHert(2);//第2区域
+			//INSTANCE.sendHert(2);//第2区域
 			return INSTANCE;
 		}
 		
@@ -475,7 +475,7 @@ public class PLC implements Serializable {
 				
 				writeO();
 				try {
-					Thread.sleep(500);
+					Thread.sleep(100);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -551,10 +551,14 @@ public class PLC implements Serializable {
 		if(machine==1)return line;else return line2;
 		
 	}
-	
+	int modeTh=0;
 	//读取光大的状态，并更新托盘数量
     public ReST[] getFromPLC(int 装配区){
     	try{
+    		if(modeTh%10==0){
+    			System.out.println(th.size()+"="+th);
+    		 }
+    		modeTh++;
     		Resint r[]=	ClientSer.getIntance().getReturnPlc("D11001", 63, 16, 装配区);
     		if(r[0].getResInt()==-1)return null;
     		if(r[0].getResInt()==-2)return null;
@@ -587,7 +591,8 @@ public class PLC implements Serializable {
     				         //  }
     					}
     					
-    				    System.out.println("取料完成1 firstST in getFromPlc");
+    				    System.out.println("取料完成1 firstST in getFromPlc-在载具"+getWrPLC(装配区).get(i).firstST.getName()+"->"+i+"ST");
+    				    SqlPro.getLog().error("取料完成1 firstST in getFromPlc-在载具"+getWrPLC(装配区).get(i).firstST.getName()+"->"+i+"ST");
     				}
     				
     			}
@@ -624,28 +629,27 @@ public class PLC implements Serializable {
     							 final long timeS=System.currentTimeMillis();
     							 getWrPLC(装配区).get(i).firstST.set数据更新完成(true);
     							 getWrPLC(装配区).get(i).firstST.set数据处理中(true);
+    							 System.out.println("set数据处理中"+getWrPLC(装配区).get(i).firstST.is数据处理中());
     							 getWrPLC(装配区).get(i).firstST.set允许工位动作标志(false);
     							
     						     String back=getWrPLC(装配区).get(i).firstST.writeifChangeToPLC();
-    						     System.out.println("第"+i+"工位载具放行1"+back+":"+(System.currentTimeMillis()-timeS)+"ms");
+    						    // System.out.println("第"+i+"工位载具放行1"+back+":"+(System.currentTimeMillis()-timeS)+"ms");
     						  if(back.contains("成功")){
     							  //写入PLC成功后,在这儿再次检测载具放行变为OFF
     							  System.out.println("1第"+i+"工位数据更新完成，发送成功");
     							  final int curr2=i;
-    							//  getWrPLC(装配区).get(i).firstST.updataFromPLC();
-    							  System.out.println(i+"工位，数据更新完成="+getWrPLC(装配区).get(i).firstST.is数据更新完成());
-    							 // try{Thread.sleep(500);}catch(Exception ee){}
+    							 
     							  new Thread(){
     								  public void run(){
+    									  th.put(Thread.currentThread(), curr2+"工位，数据更新完成="+getWrPLC(装配区).get(curr2).firstST.is数据更新完成());
     									  final long timeS2=timeS;
     									  final int curr=curr2;
-    									  System.out.println(Thread.currentThread()+"启动1-------------------------------------------------------------------------------------");
+    									 // System.out.println(Thread.currentThread()+"启动1-------------------------------------------------------------------------------------");
     									  while(true){
     						    Resint r2[]=	ClientSer.getIntance().getReturnPlc("D11001", 63, 16, 装配区);	  
     						    Resint bint2=r2[curr*2];
     			    			int tem11=bint2.getResInt();
-    			    			//int tem22=getRePLC(装配区)[curr].boolCont.getResInt();
-    			    			
+    			    		
     			    			int 载具放行new=(tem11&0b100)==4?1:0;
     			    			//int 载具放行old=(tem22&0b100)==4?1:0;
     			    			//if(载具放行!=载具放行old){
@@ -656,6 +660,7 @@ public class PLC implements Serializable {
     			    						 new Thread(){
         	    	    						 
         	    	    						 public void run(){
+        	    	    							 th.put(Thread.currentThread(), curr2+"工位，数据更新完成="+getWrPLC(装配区).get(curr2).firstST.is数据更新完成());
         	    	    							 int dd=0;
         	    	    						    while(true)	{
         	    	    						    	try{
@@ -670,8 +675,12 @@ public class PLC implements Serializable {
         	    	    	    	    getWrPLC(装配区).get(curr).firstST.clear();
         	    	    	    	    getWrPLC(装配区).get(curr).firstST.set数据更新完成(false);
         	    	    			    getWrPLC(装配区).get(curr).initFromSql();
-        	    	    	    	    getWrPLC(装配区).get(curr).firstST.writeifChangeToPLC();
-        	    	    	    	    System.out.println("第"+curr+"工位载具放行1"+back+"------------------->:"+(System.currentTimeMillis()-timeS2)+"ms");
+        	    	    	    	  String back=  getWrPLC(装配区).get(curr).firstST.writeifChangeToPLC();
+        	    	    	    	  if(!back.contains("成功")){
+        	    	    	    		  SqlPro.getLog().error("第"+curr+"工位载具放行1"+back+"------------------->:写入失败");
+        	    	    	    		  System.out.println("第"+curr+"工位载具放行1"+back+"------------------->:写入失败");  
+        	    	    	    	  }
+        	    	    	    	  
         	    	    	    	    break;	
                                         }
         	    	    			Thread.sleep(200);	
@@ -679,7 +688,7 @@ public class PLC implements Serializable {
         	    	    				}catch(Exception eee){}
         	    	    						    	
         	    	    					} 
-        	    	    							 
+        	    	    				th.remove(Thread.currentThread());			 
         	    	    					}
         	    	    				}.start();
         	    	    					 break;	
@@ -688,12 +697,17 @@ public class PLC implements Serializable {
     			    						//非5工位的
     			    					 getWrPLC(装配区).get(curr).firstST.setWrite(false);	
     	    	    					 getWrPLC(装配区).get(curr).firstST.clear();
+    	    	    					 getWrPLC(装配区).get(curr).firstST.set数据更新完成(false);
     	    	    					 
-    			    					 getWrPLC(装配区).get(curr).firstST.set数据更新完成(false);
-    			    				 
-    	    	    					 getWrPLC(装配区).get(curr).initFromSql();
-    	    	    					 getWrPLC(装配区).get(curr).firstST.writeifChangeToPLC();
-    	    	    					 System.out.println("第"+curr+"工位载具放行1"+back+"------------------->:"+(System.currentTimeMillis()-timeS2)+"ms");
+    	    	    					 getWrPLC(装配区).get(curr).firstST.set数据处理中(true);
+    			    					 getWrPLC(装配区).get(curr).initFromSql();
+    			    					 
+    	    	    					 String back2=getWrPLC(装配区).get(curr).firstST.writeifChangeToPLC();
+    	    	    					  if(!back2.contains("成功")&&!back2.contains("沒變化")){
+    	    	    						  SqlPro.getLog().error("第"+curr+"工位载具放行1"+back2+"------------------->:写入失败");
+            	    	    	    		  System.out.println("第"+curr+"工位载具放行1"+back2+"------------------->:写入失败");  
+            	    	    	    	  }
+    	    	    					// System.out.println("第"+curr+"工位载具放行1"+back+"------------------->:"+(System.currentTimeMillis()-timeS2)+"ms");
     	    	    					 break;
     			    					}
     			    				
@@ -703,7 +717,8 @@ public class PLC implements Serializable {
     			    			try{Thread.sleep(200);}catch(Exception ee){}
     			    			
     			    			}//end while
-    									  System.out.println(Thread.currentThread()+"结束1-------------------------------------------------------------------------------------");
+    									  th.remove(Thread.currentThread());		
+    									//  System.out.println(Thread.currentThread()+"结束1-------------------------------------------------------------------------------------");
     								  }
     							  }.start();
     							  
@@ -711,12 +726,17 @@ public class PLC implements Serializable {
     	    				 
     	    				 
     	    				 
-    	    				  }
+    	    				  }else{
+    	    					  SqlPro.getLog().error("1第"+i+"工位数据更新完成，发送失败！！！！载具放行处理失败");
+    	    					  System.out.println("1第"+i+"工位数据更新完成，发送失败！！！！载具放行处理失败");  
+    	    				      }
+    						  
     							  } //end 判断取料完成
     						 }
     					}
     					else{//如托盘在本工位没有任何需要的动作，不判断动作完成标志
     						 
+    						
     						 if( getCarryLine(装配区).removeToNext(i)){
     							 if(i<14){
     							
@@ -727,10 +747,12 @@ public class PLC implements Serializable {
     						 
     						final long timeS=System.currentTimeMillis();
     					   getWrPLC(装配区).get(i).firstST.set数据更新完成(true);
-    					  // getWrPLC(装配区).get(i).firstST.set数据处理中(true);
+    					   
+    					   getWrPLC(装配区).get(i).firstST.set数据处理中(true);
+    					  // System.out.println("2set数据处理中"+getWrPLC(装配区).get(i).firstST.is数据处理中());
     					   getWrPLC(装配区).get(i).firstST.set允许工位动作标志(false);
    						   String back=getWrPLC(装配区).get(i).firstST.writeifChangeToPLC();
-   						   System.out.println("第"+i+"工位载具放行2"+back+":"+(System.currentTimeMillis()-timeS)+"ms");
+   						  // System.out.println("第"+i+"工位载具放行2"+back+":"+(System.currentTimeMillis()-timeS)+"ms");
    						    if(back.contains("成功")){
    							  //写入PLC成功后,在这儿再次检测载具放行变为OFF
 							  System.out.println("2第"+i+"工位数据更新完成，发送成功");
@@ -740,9 +762,10 @@ public class PLC implements Serializable {
 							 // try{Thread.sleep(500);}catch(Exception ee){}
 							  new Thread(){
 								  public void run(){
+									  th.put(Thread.currentThread(), curr2+"工位，数据更新完成="+getWrPLC(装配区).get(curr2).firstST.is数据更新完成());
 									  final int curr=curr2;
 									  final long timeS2=timeS;
-									  System.out.println(Thread.currentThread()+"启动2-------------------------------------------------------------------------------------");
+									 // System.out.println(Thread.currentThread()+"启动2-------------------------------------------------------------------------------------");
 									  while(true){
 										  
 						    Resint r2[]=	ClientSer.getIntance().getReturnPlc("D11001", 63, 16, 装配区);	  
@@ -757,12 +780,14 @@ public class PLC implements Serializable {
 			    					 
 			    				// if( getCarryLine(装配区).removeToNext(curr)){
 			    					  //不更新命令
+			    					 getWrPLC(装配区).get(curr).firstST.set数据处理中(false);
 			    					 getWrPLC(装配区).get(curr).firstST.set数据更新完成(false);
-			    					 getWrPLC(装配区).get(curr).firstST.writeifChangeToPLC();
-			    					 System.out.println("第"+curr+"工位载具放行2"+back+"------>:"+(System.currentTimeMillis()-timeS2)+"ms");
-			    					 
-			    				// }
-	    	    					 //getWrPLC(装配区).get(curr).firstST.setWrite(false);	
+			    					String back3= getWrPLC(装配区).get(curr).firstST.writeifChangeToPLC();
+			    					if(!back3.contains("成功")){
+			    						 SqlPro.getLog().error("第"+curr+"工位载具放行1"+back+"------------------->:写入失败");
+        	    	    	    		  System.out.println("第"+curr+"工位载具放行1"+back3+"------------------->:写入失败");  
+        	    	    	    	  }
+			    				
 			    				 
 			    				 break;
 			    				 }
@@ -771,10 +796,16 @@ public class PLC implements Serializable {
 			    			try{Thread.sleep(200);}catch(Exception ee){}
 			    			 
 			    			}//end while
-									  System.out.println(Thread.currentThread()+"结束2-------------------------------------------------------------------------------------");
+									  th.remove(Thread.currentThread());
+									//  System.out.println(Thread.currentThread()+"结束2-------------------------------------------------------------------------------------");
 								  }
 							  }.start(); 
    	    				  }
+   						    else{
+   						     SqlPro.getLog().error("2第"+i+"工位数据更新完成，发送失败！！！！！");
+   	    					  System.out.println("2第"+i+"工位数据更新完成，发送失败！！！！！"); 
+   	    					  
+   	    				      }
     						
     	    				  
     					}
@@ -789,19 +820,20 @@ public class PLC implements Serializable {
  					   getWrPLC(装配区).get(i).firstST.set数据更新完成(true);
  					   getWrPLC(装配区).get(i).firstST.set允许工位动作标志(false);
 					   String back=getWrPLC(装配区).get(i).firstST.writeifChangeToPLC();
-						   System.out.println("同步输送线--工位载具放行"+back+":"+(System.currentTimeMillis()-timeS)+"ms");
+						  // System.out.println("同步输送线--工位载具放行"+back+":"+(System.currentTimeMillis()-timeS)+"ms");
 						    if(back.contains("成功")){
 							  //写入PLC成功后,在这儿再次检测载具放行变为OFF
-							  System.out.println("2同步输送线--工位数据更新完成，发送成功");
+							 // System.out.println("2同步输送线--工位数据更新完成，发送成功");
 							  final int curr2=i;
 							//  getWrPLC(装配区).get(i).firstST.updataFromPLC();
-							  System.out.println("同步输送线工位，数据更新完成="+getWrPLC(装配区).get(i).firstST.is数据更新完成());
+							//  System.out.println("同步输送线工位，数据更新完成="+getWrPLC(装配区).get(i).firstST.is数据更新完成());
 							 // try{Thread.sleep(500);}catch(Exception ee){}
 							  new Thread(){
 								  public void run(){
+									  th.put(Thread.currentThread(), curr2+"工位，数据更新完成="+getWrPLC(装配区).get(curr2).firstST.is数据更新完成());
 									  final int curr=curr2;
 									  final long timeS2=timeS;
-									  System.out.println(Thread.currentThread()+"启动15-------------------------------------------------------------------------------------");
+									  //System.out.println(Thread.currentThread()+"启动15-------------------------------------------------------------------------------------");
 									  while(true){
 										  
 						    Resint r2[]=	ClientSer.getIntance().getReturnPlc("D11001", 63, 16, 装配区);	  
@@ -819,8 +851,12 @@ public class PLC implements Serializable {
 			    					 getWrPLC(装配区).get(curr).firstST.setWrite(false);	
 	    	    					 getWrPLC(装配区).get(curr).firstST.clear();
 	    	    					 getWrPLC(装配区).get(curr).initFromSql();
-	    	    					 getWrPLC(装配区).get(curr).firstST.writeifChangeToPLC();
-	    	    			   System.out.println("同步输送线"+curr+"工位载具放行2"+back+"------>:"+(System.currentTimeMillis()-timeS2)+"ms");
+	    	    					String back5= getWrPLC(装配区).get(curr).firstST.writeifChangeToPLC();
+	    	    					if(!back5.equals("成功")){
+	    	    						
+	    	    						 System.out.println("同步输送线"+curr+"工位载具放行2"+back5+"------>:失败");
+	    	    					}
+	    	    			 //  System.out.println("同步输送线"+curr+"工位载具放行2"+back+"------>:"+(System.currentTimeMillis()-timeS2)+"ms");
 			    				 
 			    				 break;
 			    				 }
@@ -829,7 +865,8 @@ public class PLC implements Serializable {
 			    			try{Thread.sleep(200);}catch(Exception ee){}
 			    			 
 			    			}//end while
-									  System.out.println(Thread.currentThread()+"结束15-------------------------------------------------------------------------------------");
+									  th.remove(Thread.currentThread());
+									 // System.out.println(Thread.currentThread()+"结束15-------------------------------------------------------------------------------------");
 								  }
 							  }.start();
 	    				  }	
@@ -864,6 +901,7 @@ public class PLC implements Serializable {
     			if(取料完成1!=取料完成2){
     				//更新托盘的物料数量
     				System.out.println("取料完成2---secendST in getFromPlc");
+    				SqlPro.getLog().error("取料完成2 secendST in getFromPlc-在载具"+getWrPLC(装配区).get(i).firstST.getName()+"->"+(i-16)+"ST");
     				if(取料完成1==1){
     					 int 剩余数量=getWrPLC(装配区).get(i-16).firstST.get剩余数量();
     					// if(getCarryLine(装配区).getCarry(i-16)!=null)
@@ -957,7 +995,7 @@ public class PLC implements Serializable {
 			  
 			   STC1.get(st-1).firstST.set立库RDY(false);
 			   STC1.get(st-1).secondST.set立库RDY(false);
-			    到位1=false;
+			   到位1=false;
 			   //return false;  
 		   }else{
 			   Resint r[]=	ClientSer.getIntance().getReturnPlc("D11001", 63, 16, line);
@@ -970,7 +1008,7 @@ public class PLC implements Serializable {
    					String sm[]=sb.split("!_!");
    					if(A区输送线自动请求打开){
    				    String bb=SqlTool.add动作指令(sm[0], sm[3], 人工点, "输送线回流", 1, line+"");
-   				    String bb2=SqlTool.insert(new String[]{"UPDATE 库存托盘 set 数量=0 where 托盘编号=‘"+sm[0]+"’"});
+   				    String bb2=SqlTool.insert(new String[]{"UPDATE 库存托盘 set 数量=0 where 托盘编号='"+sm[0]+"'"});
    				    }
    				   
    				    // STC1.get(st-1).firstST.set立库RDY(false);
@@ -1004,7 +1042,7 @@ public class PLC implements Serializable {
    					String sm[]=sb.split("!_!");
    					if(B区输送线自动请求打开){
    				    String bb=SqlTool.add动作指令(sm[0], sm[3], 人工点, "输送线回流", 1, line+"");
-   				    String bb2=SqlTool.insert(new String[]{"UPDATE 库存托盘 set 数量=0 where 托盘编号=‘"+sm[0]+"’"});
+   				    String bb2=SqlTool.insert(new String[]{"UPDATE 库存托盘 set 数量=0 where 托盘编号='"+sm[0]+"'"});
    				    }
    				  
    				    // STC2.get(st-1).firstST.set立库RDY(false);
