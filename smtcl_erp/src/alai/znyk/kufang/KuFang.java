@@ -179,7 +179,7 @@ public void startLine(int machineID){
 	//测试通过
 	if(machineID==1){	
    try{
-	  String ss= ClientSer.getIntance().getState(SqlPro.A区输送线);
+	  String ss= ClientSer.getIntance().getState(10);
 	  if(ss==null||ss.equals("-2")){
 	  System.out.println("startLine 断开读取超时,状态码="+ss);
 	  return;}
@@ -187,6 +187,11 @@ public void startLine(int machineID){
 		  System.out.println("startLine 立库断开,状态码="+ss);
 		  return;}
 	  String sm[]=ss.split("\\|");
+	  if(sm.length<2){
+		  SqlPro.getLog().error("startLine 立库断开,状态码=A区获取立库状态不对");
+		  System.out.println("startLine 立库断开,状态码=A区获取立库状态不对");
+		  return;}
+	  
 	String sql1= "select  货位序号,托盘编号   from 货位表  where  货位序号  between 501 and 514 order by 货位序号";
 	
 	Vector<Vector> tem1=SqlTool.findInVector(sql1);
@@ -198,7 +203,7 @@ public void startLine(int machineID){
 		String firstTP=line1.get(1)==null?"":line1.get(1).toString();
 		String secTP=line2.get(1)==null?"":line2.get(1).toString();
 		if(secTP.equals("")){
-			//if(sm[r*2+1].split("=")[1].equals("0")){
+			if(sm[r].split("=")[1].equals("1")){
 				//System.out.println((r*2+1)+"="+sm[r*2+1]+"="+ss);
 				String fromID=line1.get(0)+"";
 				String toID=line2.get(0)+"";
@@ -215,12 +220,13 @@ public void startLine(int machineID){
 				  SqlTool.WriteAddresInPaletToPLC(leixing, firstTP, toID, 1);
 					
 				  }
-			//}
+			}
 			
 		 }
 		
 	 } }catch(Exception ex){
-		 SqlPro.getLog().error("A区输送线是否有托盘："+ex.getMessage());
+		 SqlPro.getLog().error("A区输送线是否有托盘：",ex);
+		
 		 ex.printStackTrace();}
    
 	}
@@ -228,7 +234,7 @@ public void startLine(int machineID){
 	if(machineID==2){
    try{
 	
-	 String ss2= ClientSer.getIntance().getState(SqlPro.B区输送线);
+	 String ss2= ClientSer.getIntance().getState(11);
 	  if(ss2==null||ss2.equals("-2")){
 		  System.out.println("startLine 断开读取超时,状态码="+ss2);
 		  return;}
@@ -236,7 +242,11 @@ public void startLine(int machineID){
 		  System.out.println("startLine 立库断开,状态码="+ss2);
 			  return;}
 	 
-	 String sm2[]=ss2.split("\\|");
+	 String sm2[]=ss2.split("\\|"); 
+	  if(sm2.length<2){
+		  SqlPro.getLog().error("startLine 立库断开,状态码=B区获取立库状态不对");
+		  System.out.println("startLine 立库断开,状态码=B区获取立库状态不对");
+		  return;}
 	 String sql2= "select  货位序号,托盘编号   from 货位表  where  货位序号  between 601 and 614 order by 货位序号";
 	Vector<Vector> tem2=SqlTool.findInVector(sql2);
 	for(int r=0;r<tem2.size()/2;r++){
@@ -245,7 +255,7 @@ public void startLine(int machineID){
 		String firstTP=line1.get(1)==null?"":line1.get(1).toString();
 		String secTP=line2.get(1)==null?"":line2.get(1).toString();
 		if(secTP.equals("")){
-			//if(sm2[r*2+1].split("=")[1].equals("0")){
+			if(sm2[r].split("=")[1].equals("1")){
 				String fromID=line1.get(0)+"";
 				String toID=line2.get(0)+"";
 				
@@ -263,14 +273,15 @@ public void startLine(int machineID){
 				  SqlTool.WriteAddresInPaletToPLC(leixing, firstTP, toID, 2);
 				  System.out.println("update7Line,写人PLC料箱地址 在方法startLine完成"); 
 				  }
-			//}
+			}
 			
 		 }
 		
 	 } 
 	
    }catch(Exception ex){
-		 SqlPro.getLog().error("B区输送线是否有托盘："+ex.getMessage());
+		 SqlPro.getLog().error("B区输送线是否有托盘：",ex);
+		
 		 ex.printStackTrace();}
    
 	}
@@ -290,6 +301,7 @@ public void start堆垛机指令(){
     
      boolean run=false;
      boolean run2=false;
+     
      boolean up1=false;
      boolean up2=false;
      boolean dw1=false;
@@ -330,7 +342,7 @@ public void start堆垛机指令(){
     //如果这个堆垛机没有执行的指令，那么继续 
     if(last1==1){//上货
     if(!run) {
-    	if(!up2){
+      //	if(!up2){
     	//如果没有运行中的指令,那么就优先上料，上完料了在看看有没有下货的指令，如果有运行下货
     	if(堆1上.size()>0){
     	try {
@@ -353,19 +365,22 @@ public void start堆垛机指令(){
 			      }
 				
 			}
-		   } catch (Exception e) {e.printStackTrace();}
+		   } catch (Exception e) {
+			   SqlPro.getLog().error("A上货指令发送异常：",e);
+			  
+			   e.printStackTrace();}
     	
     	
     	}
     	last1=2;
-    	}
+    //	}
        }
 	
   }
     if(last1==2){//下货
         if(!run) {
         	//如果没有运行中的指令,那么就优先上料，上完料了在看看有没有下货的指令，如果有运行下货
-        	if(!dw2){
+        	//if(!dw2){
         	if(堆1下.size()>0){
         	try {
     			String state=ClientSer.getIntance().getState(SqlPro.堆垛机1状态);//获取堆垛机1的状态
@@ -383,11 +398,14 @@ public void start堆垛机指令(){
 			    	 }
     				
     			}
-    		   } catch (Exception e) {e.printStackTrace();}
+    		   } catch (Exception e) {
+    			   SqlPro.getLog().error("A下货指令发送异常：",e);
+    			  
+    			   e.printStackTrace();}
         	
         	}
         	last1=1;
-           }
+         //  }
         	}
     	
       }
@@ -397,7 +415,7 @@ public void start堆垛机指令(){
    if(last2==1){//上货
    if(!run2) {
    	//如果没有运行中的指令,那么就优先上料，上完料了在看看有没有下货的指令，如果有运行下货
-	   if(!up1){
+	 //  if(!up1){
 	   if(堆2上.size()>0){
    	try {
 			String state=ClientSer.getIntance().getState(SqlPro.堆垛机2状态);//获取堆垛机2的状态
@@ -417,17 +435,20 @@ public void start堆垛机指令(){
 			      }
 				
 			}
-		   } catch (Exception e) {e.printStackTrace();}
+		   } catch (Exception e) {
+			   SqlPro.getLog().error("B上货指令发送异常：",e);
+			 
+			   e.printStackTrace();}
 	   }
    	       last2=2;
-   	    }
+   	   // }
       }
 	
  }
    if(last2==2){//下货
        if(!run2) {
        	//如果没有运行中的指令,那么就优先上料，上完料了在看看有没有下货的指令，如果有运行下货
-    	   if(!dw1){
+    	//   if(!dw1){
        	if(堆2下.size()>0){
        	try {
    			String state=ClientSer.getIntance().getState(SqlPro.堆垛机2状态);//获取堆垛机2的状态
@@ -445,11 +466,14 @@ public void start堆垛机指令(){
 			    	 }
    				
    			}
-   		   } catch (Exception e) {e.printStackTrace();}
+   		   } catch (Exception e) {
+   			 SqlPro.getLog().error("B下货指令发送异常：",e);
+			 
+   			   e.printStackTrace();}
        	}
        	
        	last2=1;
-       	}
+      // 	}
           }
    	
      } 
@@ -500,7 +524,10 @@ public void startlineAGV(){
 			      }
 				
 			}
-		   } catch (Exception e) {e.printStackTrace();}
+		   } catch (Exception e) {
+			   SqlPro.getLog().error("A输送线回流发送异常：",e);
+			  
+			   e.printStackTrace();}
    	             
 	   }
   
@@ -527,7 +554,10 @@ public void startlineAGV(){
 			    	 }
    				
    			}
-   		   } catch (Exception e) {e.printStackTrace();}
+   		   } catch (Exception e) {
+   			   SqlPro.getLog().error("B输送线回流发送异常：",e);
+			 
+   			   e.printStackTrace();}
        	
     	   }
        

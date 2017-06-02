@@ -46,11 +46,11 @@ public class STContent implements Serializable {
     		if(装配区==1){
     		   //System.out.println("return----");
     			if(stNum==1){ 
-    				 if(PLC.getIntance().line.getCarry(0)==null){
+    				// if(PLC.getIntance().line.getCarry(0)==null){
     	    			 ((_FST)firstST).set允许工位动作标志(false);
     	    			 ((_FST)secondST).set允许工位动作标志(false); 
     	    			 
-    	    		 }
+    	    		// }
     				 firstST.writeifChangeToPLC();
     		    	 secondST.writeifChangeToPLC();
     		    	 ////
@@ -60,16 +60,31 @@ public class STContent implements Serializable {
     				return;}
     			
     		}
+    	}else{ 
+    		if(装配区==1){ 
+     		   //System.out.println("return----");
+     			if(stNum==1){ 
+     				 if(PLC.getIntance().line.getCarry(0)!=null){
+     	    			 ((_FST)firstST).set允许工位动作标志(true);
+     	    			 ((_FST)secondST).set允许工位动作标志(true); 
+     	    			 
+     	    		 }
+     				
+     		    	  }	
+     			
+     			
+     		}	
+    		
     	}
     	
-    	if(plc.getIntance().stop2){
+    	if(plc.getIntance().stop2){ 
     		if(装配区==2){
     			if(stNum==1){
-    				 if(PLC.getIntance().line2.getCarry(0)==null){
+    				// if(PLC.getIntance().line2.getCarry(0)==null){
     	    			 ((_FST)firstST).set允许工位动作标志(false); 
     	    			 ((_FST)secondST).set允许工位动作标志(false); 
     	    			 
-    	    		 }
+    	    		// }
     				 firstST.writeifChangeToPLC();
     		    	 secondST.writeifChangeToPLC();
     		    	 
@@ -79,6 +94,22 @@ public class STContent implements Serializable {
     				return;}
     			
     		}
+    		
+    	}else{
+    		if(装配区==2){ 
+      		   //System.out.println("return----");
+      			if(stNum==1){ 
+      				 if(PLC.getIntance().line2.getCarry(0)!=null){
+      	    			 ((_FST)firstST).set允许工位动作标志(true);
+      	    			 ((_FST)secondST).set允许工位动作标志(true); 
+      	    			 
+      	    		 }
+      				
+      		    	  }	
+      			
+      			
+      		}	
+    		
     	}
     	
     	
@@ -1174,8 +1205,8 @@ public class STContent implements Serializable {
   			
     		      }
     	    }else{
-    			  ((_BST)firstST).setWrite(false);  
-    			  ((_BST)firstST).clear();
+    			 // ((_BST)firstST).setWrite(false);  
+    			 // ((_BST)firstST).clear();
     			  
     		  }
     		  

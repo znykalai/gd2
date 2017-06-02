@@ -233,10 +233,11 @@ public class SqlTool {
       boolean have=false;
       String back="未处理";
  try{
+	   if(toID==null)toID="";
         st=con.createStatement();
         con.setAutoCommit(false);
         int fomI=Integer.parseInt(fromID);
-        int toI=Integer.parseInt(toID);
+        int toI=Integer.parseInt(toID.equals("")?"0":toID);
         if(type.equals("上货")){
               if(fomI==60001||fomI==60002||fomI==60003||fomI==60004){
         		  if(fomI==60001){
@@ -378,6 +379,7 @@ public class SqlTool {
              }
              
       }
+      
         
         if(!have){
         String sqll="select idEvent,状态,状态2 from 立库动作指令  where 状态<>'完成' and 托盘编号='"+tp+"' order by idEvent";
@@ -435,7 +437,7 @@ public class SqlTool {
                               "'"+tp+"',"+
                                "'完成',"+
                                 "'"+fromID+"',"+
-                                "'"+toID+"',"+
+                                "'"+toI+"',"+
                                  "'"+0+"',"+
                                  "'"+machineID+"',"+
                                  "'"+0+"',"+
@@ -528,6 +530,32 @@ public class SqlTool {
                 	           }	
                 	         }    
         		   }
+        		 
+        		
+        		 //在判断有没有两个堆垛机去往同一个地方下货的。
+        		 if(!have){
+             		String sql2="select idEvent,来源货位号,状态  from 立库动作指令  where 状态<>'完成' and 来源货位号='"+fromID+"' order by idEvent";
+               	     set=st.executeQuery(sql2);
+               	         if(set.next()){
+               	        	Object t=set.getObject(1)==null?"":set.getObject(1);
+               	        	if(!t.equals("")){
+               	        		have=true;
+               	        	    back="在指令队列里已有指令安排到哪儿取货！";
+               	        	          }
+               	           }	
+               	        }
+        		 
+        		 if(!have){
+        			 String sql2="select idEvent,放回货位号,状态  from 立库动作指令  where 状态<>'完成' and 放回货位号='"+toID+"' order by idEvent";
+              	       set=st.executeQuery(sql2);
+                	         if(set.next()){
+                	        	Object t=set.getObject(1)==null?"":set.getObject(1);
+                	        	if(!t.equals("")){
+                	        		have=true;
+                	        	    back="在指令队列里已有指令安排下货到这个位置！";
+                	        	          }
+                	           }	
+                	        }
         		 
         		 //如果上面判断多没有，那么想指令队列里面插入数据
         		  if(!have){
@@ -793,7 +821,7 @@ public class SqlTool {
    
 
    static String  lock="";
-   public static String setStateForEventID(int idEvent, int state, String ext) {
+   public static synchronized String setStateForEventID(int idEvent, int state, String ext) {
 		// TODO Auto-generated method stub
 	   System.out.println("调用"+idEvent+"/"+state);
 	  synchronized(lock){
@@ -837,7 +865,7 @@ try{  boolean isEvent=false;
 	    			  
     				}
     		   }else{
-    			   String sba[]=getWuliaoFromLK(tp).split("!_!");
+    			   String sba[]=getWuliaoFromLK(tp).split("!_!"); 
     			   
     			   String  ql="insert into 库存托盘 (托盘编号,物料,数量,"+
     	                   "方向,货位号) values("+
@@ -965,7 +993,7 @@ try{  boolean isEvent=false;
    
    //当去料升降台有信号时调用这个方法
    //信息=货位号，当货位号=-1，执行不成功，=100000，升降机去大库成功
-   public static String exeRffid2(String tp){
+   public static synchronized String exeRffid2(String tp){
 	   ConnactionPool p=ConnactionPool.getPool();
        Conn conn=p.getCon2("");
        ResultSet set=null;
@@ -973,20 +1001,20 @@ try{  boolean isEvent=false;
       Connection con=conn.getCon();
       String back="未处理!_!-1";
  try{
-        st=con.createStatement();
+        st=con.createStatement(); 
         con.setAutoCommit(false);
         String sql="select idEvent,动作,状态,状态2,是否回大库,来源货位号,放回货位号,托盘编号,"
         		+"请求区  from 立库动作指令   where 动作='预上货' and 状态2<>'1' and 状态='完成'"
         		+" and 托盘编号='"+tp+"' order by idEvent";
         set=st.executeQuery(sql);
-        if(set.next()){
+        if(set.next()){//有预上货指令
         	 boolean isHuowei=false;
         	 System.out.println("RFID2-------------3="+tp);
         	 Object eventID=set.getObject(1);
         	 Object toID=set.getObject(7)==null?"":set.getObject(7);
         	 String machineID=set.getObject(9)==null?"":set.getObject(9).toString();
         	 
-        	 if(!toID.equals("")){
+        	 if(!toID.equals("")&&!toID.equals("0")){
         		if(machineID.equals("1")) {
         	 String iss=add动作指令( tp, "60001",toID+"","上货"/*上货，下货，输送线回流*/, 
     				  0/*1=回大库，非1=不回*/,  machineID);
@@ -1019,6 +1047,7 @@ try{  boolean isEvent=false;
         	 }
         	 
         	 if(!isHuowei){
+        		 //自动判断
             	 set=st.executeQuery("select 物料,方向  from 库存托盘  where 托盘编号="+"'"+tp+"'"); 	
             	 
             	 if(set.next()){
@@ -1053,7 +1082,7 @@ try{  boolean isEvent=false;
             	 Object eventID=set.getObject(1);
             	 Object toID=set.getObject(7)==null?"":set.getObject(7);
             	 String machineID=set.getObject(9)==null?"":set.getObject(9).toString();
-            	 if(!toID.equals("60001")&&!toID.equals("60002")&&!toID.equals("")){
+            	 if(!toID.equals("60001")&&!toID.equals("60002")&&!toID.equals("")&&!toID.equals("0")){
             		if(machineID.equals("1")) {
             	 String iss=add动作指令( tp, "60003",toID+"","上货"/*上货，下货，输送线回流*/, 
 	    				  0/*1=回大库，非1=不回*/,  machineID);
@@ -1089,6 +1118,7 @@ try{  boolean isEvent=false;
              }
              
              if(!isHuowei){
+            	 //自动判断
         	 set=st.executeQuery("select 物料,方向  from 库存托盘  where 托盘编号="+"'"+tp+"'"); 	
         	 
         	 if(set.next()){

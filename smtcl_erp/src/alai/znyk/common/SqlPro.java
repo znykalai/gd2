@@ -83,13 +83,16 @@ public class SqlPro {
 
     public static Hashtable<String,Integer> getMap(){
     	//»º´æ¹¤Î»
-    	     if(map.size()==0){
-                  map.put(¶Ñ¶â»ú1+"1ST", 501); map.put(¶Ñ¶â»ú1+"2ST", 503);
-                  map.put(¶Ñ¶â»ú1+"3ST", 505); map.put(¶Ñ¶â»ú1+"4ST", 507);
-                  map.put(¶Ñ¶â»ú1+"5ST", 509); map.put(¶Ñ¶â»ú1+"6ST", 511);map.put(¶Ñ¶â»ú1+"7ST", 513);
-                  map.put(¶Ñ¶â»ú2+"1ST", 601); map.put(¶Ñ¶â»ú2+"2ST", 603);
-                  map.put(¶Ñ¶â»ú2+"3ST", 605); map.put(¶Ñ¶â»ú2+"4ST", 607);
-                  map.put(¶Ñ¶â»ú2+"5ST", 609); map.put(¶Ñ¶â»ú2+"6ST", 611);map.put(¶Ñ¶â»ú2+"7ST", 613);
+    	     if(map.size()==0){ 
+               
+                  
+                  map.put(¶Ñ¶â»ú1+"1ST", 513); map.put(¶Ñ¶â»ú1+"2ST", 511);
+                  map.put(¶Ñ¶â»ú1+"3ST", 509); map.put(¶Ñ¶â»ú1+"4ST", 507);
+                  map.put(¶Ñ¶â»ú1+"5ST", 505); map.put(¶Ñ¶â»ú1+"6ST", 503);map.put(¶Ñ¶â»ú1+"7ST", 501);
+                  
+                  map.put(¶Ñ¶â»ú2+"1ST", 613); map.put(¶Ñ¶â»ú2+"2ST", 611);
+                  map.put(¶Ñ¶â»ú2+"3ST", 609); map.put(¶Ñ¶â»ú2+"4ST", 607);
+                  map.put(¶Ñ¶â»ú2+"5ST", 605); map.put(¶Ñ¶â»ú2+"6ST", 603);map.put(¶Ñ¶â»ú2+"7ST", 601);
     	     }
     	
     	    return map;

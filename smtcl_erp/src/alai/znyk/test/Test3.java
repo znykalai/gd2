@@ -53,13 +53,35 @@ public class Test3 {
 			//String back= SqlTool.findOneRecord("Select 第二编码 from 通用物料  where 物料编码='"+11+"'");
 				//if(back!=null&&back.equals("1000")) {
 				// }
-			
+			mode();
 			
 		}catch(Exception e){
 			
 			e.printStackTrace();
 		}
 		}
+	
+	public  static void mode(){
+		int a = 10;
+		int b = 0;
+		
+		try {
+			
+			int test = a/b;
+		} catch (Exception e) {
+			//log.error("error" ,e);
+			 SqlPro.getLog().error("error大数",e);
+			//main  ERROR c.d.s.LogThrowableRule -
+			//			error
+			//java.lang.ArithmeticException: / by zero
+			//          at com.doctor.slf4j.LogThrowableRule.test_rightWayGetInfoForThrowable(LogThrowableRule.java:35) ~[classes/:na]
+			//          at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.8.0_11]
+			//          .............
+			
+			String msg = String.format("{error:'%s/%s'}", a,b);//string带参数，利用String.format
+			 SqlPro.getLog().error( msg);
+		}
+	}
 
 	}
 

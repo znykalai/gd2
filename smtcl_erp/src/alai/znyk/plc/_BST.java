@@ -152,10 +152,10 @@ public class _BST extends ST_Father implements STInterface {
 		 return false;}
 
 	 public void clear(){
-	    	boolContent=0;
-	    	允许工位动作标志=false;
-   		    立库RDY=false;
-  		    数据更新完成=false;
+	    	 boolContent=0;
+	    	 允许工位动作标志=false;
+   		     立库RDY=false;
+  		     数据更新完成=false;
   		     数据处理中=false;
 	    	  电芯类型标志=0;
 	   		  模组类型标志=0;

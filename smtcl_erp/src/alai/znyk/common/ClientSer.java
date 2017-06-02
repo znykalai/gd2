@@ -77,7 +77,7 @@ public class ClientSer {
     	// HttpClient cl;
     	
 	}
-	public static synchronized ClientSer getIntance(){
+	public static  synchronized ClientSer getIntance(){
 		if(INSTANCE!=null){
 			return INSTANCE;
 			}else{
@@ -165,7 +165,7 @@ public class ClientSer {
 		try{
 		if(isOpenPlc) return gd.getGD().upPallet(idEvent, fromID, toLocID, machineID);}
 		catch(Exception ex){
-			SqlPro.getLog().error(ex.getMessage());
+			SqlPro.getLog().error("error 调用SERVICE上托盘发送异常",ex);
 			 ex.printStackTrace();}
 		System.out.println("上货");
 		return -1;
@@ -174,7 +174,7 @@ public class ClientSer {
 		try{
 			if(isOpenPlc) return gd.getGD().getPallet(idEvent, fromLocID, toLocID, machineID);}
 			catch(Exception ex){
-				SqlPro.getLog().error(ex.getMessage());
+				SqlPro.getLog().error("error 调用SERVICE下托盘发送异常",ex);
 				ex.printStackTrace();}
 		System.out.println("下货");
 		return -1;}
@@ -184,7 +184,7 @@ public class ClientSer {
 			if(isOpenPlc) return gd.getGD().toBackBuffer(idEvent, fromLocID, toLocID);
 			}
 			catch(Exception ex){
-				SqlPro.getLog().error(ex.getMessage());
+				SqlPro.getLog().error("error 调用SERVICE回流发送异常",ex);
 				ex.printStackTrace();}
 		System.out.println("回货");
 		return -1;}
@@ -261,7 +261,8 @@ public class ClientSer {
 				}
 				
 			}catch(Exception ex){
-				SqlPro.getLog().error(ex.getMessage());
+				SqlPro.getLog().error("error 调用SERVICE读取"+machineID+"号PLC异常",ex);
+			
 				ex.printStackTrace();}
 			
 			return machineID==1?RST1:RST2;
@@ -276,7 +277,10 @@ public class ClientSer {
 				return gd.getGD().getSirIntValuesFromCTR(startAddress, nums, valueLen, machineID);
 			
 			
-		}catch(Exception ex){SqlPro.getLog().error(ex.getMessage());}
+		}catch(Exception ex){
+			SqlPro.getLog().error("error 调用SERVICE读取"+machineID+"号PLC异常",ex);
+			//SqlPro.getLog().error(ex.getMessage());
+			}
 		
 		
 		return machineID==1?RST1:RST2;
@@ -295,8 +299,8 @@ public class ClientSer {
 				return gd.getGD().writeSirIntToCTR(strAddress, valuseLeng, tem, machineID);
 				
 			}catch(Exception ex){ 
-				SqlPro.getLog().error(ex.getMessage());
-				ex.printStackTrace();}
+				SqlPro.getLog().error("error 调用SERVICE写入"+machineID+"号PLC异常",ex);
+			    ex.printStackTrace();}
 		 }else{
 			 if(!strAddress.equals("D11999"))
 			 System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"+strAddress+",nums="+invalues.length+",lengths="+valuseLeng+">>>>>>>>>>>>>>>>>>>>"+((invalues[0]&0b01)==1));
@@ -312,7 +316,8 @@ public class ClientSer {
 		 try{
 				return gd.getGD().writeValueToCTR(type1, address, value);
 				
-			}catch(Exception ex){SqlPro.getLog().error(ex.getMessage());}
+			}catch(Exception ex){
+				SqlPro.getLog().error(ex.getMessage());}
 		 
 		 return -1; 
 		 

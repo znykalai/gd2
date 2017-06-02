@@ -234,6 +234,7 @@ public class ST_Father implements STInterface, Serializable{
 		table.put("模组序ID-", 模组序ID);
 		table.put("分解号-", 分解号);
 		table.put("载具序号-", 载具序号);
+		table.put("ID", id);
 		return table;
 		
 		}

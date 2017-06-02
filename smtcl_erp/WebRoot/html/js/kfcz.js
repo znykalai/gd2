@@ -492,11 +492,11 @@ var readyShow={
 									    		layer.tips('请输入数量！','#up_number');
 									    		return null;
 											}
-											if($("#go_huowei").val()==""){
+											/*if($("#go_huowei").val()==""){
 									    	 	$("#go_huowei").focus();
 									    		layer.tips('请选择去往货位！','.huowei_id');
 									    		return null;
-											}
+											}*/
 											if($("#fangxiang").val()==""){
 									    	 	$("#fangxiang").focus();
 									    		layer.tips('请选择方向！','#fangxiang');

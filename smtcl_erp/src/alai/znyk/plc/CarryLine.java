@@ -7,6 +7,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Vector;
 
+import alai.znyk.common.SqlPro;
 import alai.znyk.server.SqlTool;
 
 public class CarryLine implements Serializable{
@@ -49,15 +50,22 @@ public class CarryLine implements Serializable{
 		return cont[index];
 	}
 	public boolean removeToNext(int fromSt){
-		if(fromSt==cont.length-1){removeLast();return true;}
-		if(cont[fromSt]==null) {return false;}
-		if(fromSt>cont.length-1){return false;}
+		if(fromSt==cont.length-1){removeLast();
+				return true;}
+		if(cont[fromSt]==null) {
+		   //	SqlPro.getLog().error("载具移动失败在->本工位为空"+fromSt+"ST");	
+
+			return false;}
+		if(fromSt>cont.length-1){
+			SqlPro.getLog().error("载具移动失败在->超出边界"+fromSt+"ST");	
+			return false;}
+		
 		 if(cont[fromSt+1]==null){
 			cont[fromSt+1]=cont[fromSt];
 			cont[fromSt]=null;
 			return true;
 		}
-		
+		 SqlPro.getLog().error("载具移动失败在->前面有载具"+fromSt+"ST");	
 		return false;
 	}
 	public void removeLast(){

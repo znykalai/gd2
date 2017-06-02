@@ -24,8 +24,8 @@ public class PLC implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	public boolean A区输送线自动请求打开=true;
-	public boolean B区输送线自动请求打开=true;
+	public boolean A区输送线自动请求打开=false;
+	public boolean B区输送线自动请求打开=false;
 	public boolean A区输送线到位常有=false;
 	public boolean B区输送线到位常有=false;
 	public boolean 不检测取料数量=true;
@@ -358,13 +358,17 @@ public class PLC implements Serializable {
 			INSTANCE=new PLC();
 			System.out.println("PLC启动---------------");
 			INSTANCE.startTiaodu();
-			//INSTANCE.startTiaodu2();
+			INSTANCE.startTiaodu2();
 			INSTANCE.sendHert(1);
-			//INSTANCE.sendHert(2);//第2区域
+			INSTANCE.sendHert(2);//第2区域
+			INSTANCE.autoGetPaletToST(1);
+			INSTANCE.autoGetPaletToST(2);
+			
 			return INSTANCE;
 		}
 		
 	}
+	
 	public void setAutoRfidUp(boolean state){
 		SqlPro.autoRFIDup=state;
 	}
@@ -426,25 +430,28 @@ public class PLC implements Serializable {
 		    	while(true){
 		    		try{
 		    			ClientSer.getIntance().writeSirIntToCTR("D11999", 1, new int[]{1}, machineID)	;
-		    			Thread.sleep(500);
-		    			ClientSer.getIntance().writeSirIntToCTR("D11999", 1, new int[]{0}, machineID)	;
+		    			Thread.sleep(250);
+		    			ClientSer.getIntance().writeSirIntToCTR("D11999", 1, new int[]{0}, machineID);
+		    			Thread.sleep(250);
 		    		}catch(Exception ex){ex.printStackTrace();}
 		    		
 		    	}
 		    	}
 		    }.start();
 	}
+	
 	public void startTiaodu(){
 		
 		System.out.println("启动16个工位调度。。。。");
 		new Thread(){
-			public void run(){
+			public void run(){ 
 			while(true){
-				
+				long time1=System.currentTimeMillis();
 				try{
 					setSTATE1();
 					setSTATE2();
 				}catch(Exception e){e.printStackTrace();}
+				//System.out.println("立库通信时间="+(System.currentTimeMillis()-time1)+"MS");
 				
 				ST0_1.initFromSql();
 				ST1_1.initFromSql();
@@ -462,7 +469,7 @@ public class PLC implements Serializable {
 				ST13_1.initFromSql();
 				ST14_1.initFromSql();
 				ST15_1.initFromSql();
-				
+				//System.out.println("14个工位数据库处理时间="+(System.currentTimeMillis()-time1)+"MS");
 				getSTRdy(1,2);
 				getSTRdy(1,3);
 				getSTRdy(1,4);
@@ -472,8 +479,9 @@ public class PLC implements Serializable {
 				getSTRdy(1,8);
 				if(!stop1)
 				getFromPLC(1);//必须写在最后
-				
+				//System.out.println("PLC通信与处理时间="+(System.currentTimeMillis()-time1)+"MS");
 				writeO();
+				System.out.println("A区处理15个工位一个周期用时="+(System.currentTimeMillis()-time1)+"MS");
 				try {
 					Thread.sleep(100);
 				} catch (InterruptedException e) {
@@ -496,7 +504,7 @@ public class PLC implements Serializable {
 					setSTATE1();
 					setSTATE2();
 				}catch(Exception e){e.printStackTrace();}*/
-				
+				long time1=System.currentTimeMillis();
 				ST0_2.initFromSql();
 				ST1_2.initFromSql();
 				ST2_2.initFromSql();
@@ -523,6 +531,8 @@ public class PLC implements Serializable {
 				getSTRdy(2,8);
 				if(!stop2)
 				getFromPLC(2);//必须写在最后
+				
+				System.out.println("B区处理15个工位一个周期用时="+(System.currentTimeMillis()-time1)+"MS");
 				//writeO();
 				try {
 					Thread.sleep(500);
@@ -537,7 +547,70 @@ public class PLC implements Serializable {
 		}.start();
 		
 	}
-	
+	   //自动把奇数货位填满	
+	public void autoGetPaletToST(int machineID){
+		new Thread(){public void run(){
+		while(true){
+			 try{
+			      Thread.sleep(1000);
+			 }catch(Exception ex){}
+			if(machineID==1&&!A区输送线自动请求打开)continue;
+			if(machineID==2&&!B区输送线自动请求打开)continue;
+			
+			try{
+			/*	
+			  String ss= ClientSer.getIntance().getState(machineID==1?SqlPro.A区输送线:SqlPro.B区输送线);
+			  if(ss==null||ss.equals("-2")){
+			  System.out.println("autoGetPaletToST 断开读取超时,状态码="+ss);
+			  return;}
+			  if(ss==null||ss.equals("-1")){
+				  System.out.println("autoGetPaletToST 立库通信断开,状态码="+ss);
+				  return;}
+			  
+		String sm[]=ss.split("\\|");
+			*/
+			
+		for(int i=1;i<8;i++){
+			STContent cot= getWrPLC(machineID).get(i);
+			if(cot.firstST.isWrite()){
+				  String wuliao=cot.firstST.get物料编码()==null?"":cot.firstST.get物料编码();
+				  if(!wuliao.equals("")){
+					  if(machineID==1){	  
+			         String sql1=SqlTool.findOneRecord("select  托盘编号,物料,数量,货位号  from 库存托盘   where  物料='"+wuliao+"' and 数量>0 and 货位号  between 1 and 28 and 方向='"+machineID+"'"); 
+					  if(sql1!=null){
+						 String sm6[]=sql1.split("!_!") ;
+						 if(A区输送线自动请求打开){//当检测到偶数位为空时就发出下货请求
+						 SqlTool.add动作指令(sm6[0], sm6[3],  (gw1[i-1]-1)+"", "下货", 0, machineID+"");
+						 
+						 }
+						   
+					    }
+					  }else{
+						  String sql1=SqlTool.findOneRecord("select  托盘编号,物料,数量,货位号  from 库存托盘   where  物料='"+wuliao+"' and 数量>0 and 货位号  between 1 and 28 and 方向='"+2+"'"); 
+						  if(sql1!=null){
+							 String sm6[]=sql1.split("!_!") ;
+							 if(B区输送线自动请求打开){
+								 //当检测到偶数位为空时就发出下货请求
+							   SqlTool.add动作指令(sm6[0], sm6[3],  (gw2[i-1]-1)+"", "下货", 0, 2+"");
+							 
+							 }
+							   
+						    }  
+						  
+					  }
+				  }
+				
+			 }
+			
+		}
+		}catch(Exception ex){ex.printStackTrace();}
+			
+		
+		}
+		}
+		}.start();
+		
+	}
 	
 	public ReST[] getRePLC(int machine){
 		if(machine==1)return RST;else return RST2;
@@ -583,16 +656,13 @@ public class PLC implements Serializable {
     				if(取料完成1==1){//模拟一个上升沿
     					//检测本工位有没有托盘
     					if(i<15){//=15没有载具了，是同步输送线的电芯，不处理这个情况
-    					//if(getCarryLine(装配区).getCarry(i)!=null){
-    					  
+    					  //取料完成需要跟周工做同步处理
     					   getWrPLC(装配区).get(i).updataDB(getWrPLC(装配区).get(i).firstST);//更新托盘的数量
-    					 // getWrPLC(装配区).get(i).firstST.SET
-    					   
-    				         //  }
+    					
     					}
     					
     				    System.out.println("取料完成1 firstST in getFromPlc-在载具"+getWrPLC(装配区).get(i).firstST.getName()+"->"+i+"ST");
-    				    SqlPro.getLog().error("取料完成1 firstST in getFromPlc-在载具"+getWrPLC(装配区).get(i).firstST.getName()+"->"+i+"ST");
+    				   // SqlPro.getLog().error("取料完成1 firstST in getFromPlc-在载具"+getWrPLC(装配区).get(i).firstST.getName()+"->"+i+"ST");
     				}
     				
     			}
@@ -607,6 +677,7 @@ public class PLC implements Serializable {
     				if(载具放行1==1){
     				if(i<15){
     					Carry car=getCarryLine(装配区).getCarry(i);
+    					
     					if(car!=null){
     						//首先移动载具到下一个工位，同时更新下一个工位的信息
     						if(取料完成1==1||不检测动作完成){
@@ -616,7 +687,7 @@ public class PLC implements Serializable {
     							
     							 }
     						}else{
-    							 SqlPro.getLog().error("载具移动失败在->"+i+"ST");	
+    							// SqlPro.getLog().error("载具移动失败在->"+i+"ST");	
     							
     						}
     							 
@@ -624,12 +695,17 @@ public class PLC implements Serializable {
     						
     						
     					if(car.getName().equals(getWrPLC(装配区).get(i).firstST.getName())){
+    						 if( getWrPLC(装配区).get(i).firstST.get剩余数量()!=0){
+    							 if(i!=5)
+    							  SqlPro.getLog().error("抓取数量读取异常,没处理取料完成就移动载具->"+i+"ST");	 
+    						  }
     						//如果这个托盘是本工位需要的托盘
     						 if( getWrPLC(装配区).get(i).firstST.get剩余数量()==0||不检测取料数量){
     							 if(取料完成1==1||不检测动作完成){
     							 System.out.println("载具放行1");
     							 final long timeS=System.currentTimeMillis();
     							 if(i==5){
+    								 
     							   getWrPLC(装配区).get(i).firstST.set数据更新完成(true);
     							   getWrPLC(装配区).get(i).firstST.set数据处理中(true);
     							   System.out.println("set数据处理中"+getWrPLC(装配区).get(i).firstST.is数据处理中());
@@ -667,10 +743,9 @@ public class PLC implements Serializable {
     			    				if(载具放行new==0){
     			    					if(curr==5){
     			    						//如果是5ST，先不要让指令队列移动。等接受到放料完成后，在移动队列
-    			    						
-    			    						 new Thread(){
-        	    	    						 
-        	    	    						 public void run(){
+    			    					
+    			    				new Thread(){
+        	    	    					public void run(){
         	    	    							 th.put(Thread.currentThread(), curr2+"工位，数据更新完成="+getWrPLC(装配区).get(curr2).firstST.is数据更新完成());
         	    	    							 int dd=0;
         	    	    						    while(true)	{
@@ -712,8 +787,8 @@ public class PLC implements Serializable {
     	    	    					 getWrPLC(装配区).get(curr).firstST.set数据处理中(true);
     			    					 getWrPLC(装配区).get(curr).initFromSql();*/
     			    					 
-    	    	    					 getWrPLC(装配区).get(curr).firstST.set数据更新完成(false);
-    	    	    					 String back2=getWrPLC(装配区).get(curr).firstST.writeifChangeToPLC();
+    	    	    					   getWrPLC(装配区).get(curr).firstST.set数据更新完成(false);
+    	    	    					   String back2=getWrPLC(装配区).get(curr).firstST.writeifChangeToPLC();
     	    	    					  if(!back2.contains("成功")&&!back2.contains("沒變化")){
     	    	    						  SqlPro.getLog().error("第"+curr+"工位载具放行1"+back2+"------------------->:写入失败");
             	    	    	    		  System.out.println("第"+curr+"工位载具放行1"+back2+"------------------->:写入失败");  
@@ -748,13 +823,15 @@ public class PLC implements Serializable {
     					else{//如托盘在本工位没有任何需要的动作，不判断动作完成标志
     						 
     						System.out.println("如托盘在本工位没有任何需要的动作，不判断动作完成标志-----------------------------");
-    						 if( getCarryLine(装配区).removeToNext(i)){ 
+    					//再移一次//////////////////////////////////////////////
+    						
+    						if( getCarryLine(装配区).removeToNext(i)){ 
     							 if(i<14){
     							  getWrPLC(装配区).get(i+1).initFromSql(); 
     							 
     							 }
     						}
-    						 
+    					//////////////////////////////////////////////////	 
     						final long timeS=System.currentTimeMillis();
     					   getWrPLC(装配区).get(i).firstST.set数据更新完成(true);
     					   
@@ -911,7 +988,7 @@ public class PLC implements Serializable {
     			if(取料完成1!=取料完成2){
     				//更新托盘的物料数量
     				System.out.println("取料完成2---secendST in getFromPlc");
-    				SqlPro.getLog().error("取料完成2 secendST in getFromPlc-在载具"+getWrPLC(装配区).get(i).firstST.getName()+"->"+(i-16)+"ST");
+    				//SqlPro.getLog().error("取料完成2 secendST in getFromPlc-在载具"+getWrPLC(装配区).get(i).firstST.getName()+"->"+(i-16)+"ST");
     				if(取料完成1==1){
     					 int 剩余数量=getWrPLC(装配区).get(i-16).firstST.get剩余数量();
     					// if(getCarryLine(装配区).getCarry(i-16)!=null)
@@ -1402,7 +1479,8 @@ public class PLC implements Serializable {
 	      return true;
 	   
 	   }catch(Exception ex){
-		   SqlPro.getLog().error(ex.getMessage());
+		  // SqlPro.getLog().error(ex.getMessage());
+		  SqlPro.getLog().error("error",ex);
 		   ex.printStackTrace();}
 	   
 	 
@@ -1457,6 +1535,7 @@ public class PLC implements Serializable {
 					 Method m3=	second.getClass().getMethod("get"+name2, null) ;
 					 table.put(name,  m2.invoke(first, null));
 					 table.put(name+"2",  m3.invoke(second, null));
+					// table.put("ID", first.GET)
 					 }
 					 
 					 }
