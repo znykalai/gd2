@@ -239,19 +239,26 @@ public class OrderOperAction extends Action{
 		try {
 			request.setCharacterEncoding("utf-8");
 			response.setCharacterEncoding("utf-8");
+			HttpSession session = request.getSession();
 			HashMap map=GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
 			ApplicationContext context=GetApplicationContext.getContext(request);
 			OrderOperactionDAO dao=(OrderOperactionDAO)context.getBean("orderOperactionDAO");
 			ArrayList result=new ArrayList();
 			String sql=" WHERE";
 			if(!map.get("getGdId").equals("")){
-				sql += " `工单表`.`工单号`='"+map.get("getGdId")+"' AND ";
+				sql+=" `工单表`.`工单号`='"+map.get("getGdId")+"' AND ";
 			};
 			if(!map.get("getGdfenjieriqi").equals("")){
-				sql += " `工单表`.`分解日期` like '%"+map.get("getGdfenjieriqi")+"%' AND ";
+				sql+=" `工单表`.`分解日期` like '%"+map.get("getGdfenjieriqi")+"%' AND ";
 			};
 			if(!map.get("getPackeCode").equals("")){
-				sql += " `工单表`.`pack编码`='"+map.get("getPackeCode")+"' AND ";
+				sql+=" `工单表`.`pack编码`='"+map.get("getPackeCode")+"' AND ";
+			};
+			//如果是系统管理员则不判断AB区
+			if(session.getAttribute("username")!=null&&
+				session.getAttribute("fangxiang")!=null&&
+				!session.getAttribute("username").equals("admin")){
+					sql+=" `工单表`.`装配区`='"+session.getAttribute("fangxiang")+"' AND ";
 			};
 			if(sql.equals(" WHERE")){
 				sql="";

@@ -466,6 +466,11 @@ var readyShow={
 				        t2=null;a=null;
 			        	return null;
 				    });
+				    //获取当前用户装配区
+					var nude=af_Home.getFx(function(fx){
+						var a=$("#assemble_area_id").val(fx);a=null;
+						return null;
+					});nude=null;
 					//释放否复选框加载
 					$('#shifang').click(function(){
 				        var a=$('#shifang ul').toggle();a=null;

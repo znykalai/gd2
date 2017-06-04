@@ -16,32 +16,19 @@ var readyShow={
 						var a=af.getGDFrame();
 						a=null;return null;
 					});
-					var nude=af.getFx(function(fx){
+					var nude=af_Home.getFx(function(fx){
 						var a=$("#fangxiang").val(fx);a=null;
 						var b=$("#fangxiang").attr("oval",fx);b=null;
 						return null;
 					});nude=null;
 					var a=this.readyEvent();a=null;
-					if(af.hwLoad()&&af.table.load()&&dsState.state){//是否启动定时
+					if(af.table.load()&&dsState.state){//是否启动定时
 						readyShow.deleteSetInterval=setInterval(function(){
-							if(af.table.load()&&af.hwLoad());
+							if(af.table.load());
 						},dsState.tim),af_Home.dlInterval=true;
 					};
 					var ly=layer.close(win),winHeight=null,win=null,ly=null;
 					return fun();
-				},
-				/**
-				 * 查看当前用户默认方向
-				 */
-				getFx:function(fun_){
-					var a=$.ajax({
-						url:getRootPath()+'/KuFangAction.do?operType=getFx',
-						type:'get',cache:false,
-						success:function(data){
-							return fun_(data),af.getFx=null;
-						}
-					});a=null;
-					return null;
 				},
 				/**
 				 * 显示GDFrame
@@ -58,22 +45,22 @@ var readyShow={
 				/**
 				 * 显示物料位置记录仪
 				 */
-				showWlIp:{ip:[],oip:'',show:function(){
-					af.showWlIp.oip='';
+				showWlIp:{ip:[],oip:[],show:function(){
 					$.each(af.showWlIp.ip,function(i,val){
 			        	if(val){
 				        	var wl=val.split("&");
 				        	if($('#show_wuliao').val()==wl[1]&&wl[0]!='60001'&&wl[0]!='60002'){
-				        		af.showWlIp.oip+="‘"+wl[0]+"’,";
-				        		$("#"+wl[0]).attr("class","kf_lv show");
+				        		$("#"+wl[0]).attr("class","kf_red yes");
+				        	}else{
+				        		if(wl[2]==1){
+				        			$("#"+wl[0]).attr("class","kf_lan yes");
+				        		}else{
+					        		$("#"+wl[0]).attr("class","kf_lv yes");
+				        		};
 				        	};
 				        	wl=null;
 			        	};val=null;
 			        });
-			        //去掉，号
-			        if(af.showWlIp.oip.length>0){
-			        	af.showWlIp.oip=af.showWlIp.oip.substring(0,af.showWlIp.oip.length-1);
-			        };
 			        return null;
 				}},
 				/**
@@ -102,7 +89,9 @@ var readyShow={
 								/***************上货****************/
 								if(id=="shanghuo"){
 									//去往货位-----只允许选择空货位
-									if($(e).attr("class")=="kf_lan yes"){
+									if($(e).attr("class")=="kf_lan yes"||
+										$(e).attr("class")=="kf_lv yes"||
+										$(e).attr("class")=="kf_red yes"){
 										return(function(){
 											layer.tips('此货位有托盘！','#'+hwId);
 											hwId=null,id=null;
@@ -138,7 +127,9 @@ var readyShow={
 												hwId=null,id=null;
 												return null;
 											})();
-										}else if($(e).attr("class")=="kf_lan yes"){
+										}else if($(e).attr("class")=="kf_lan yes"||
+												$(e).attr("class")=="kf_lv yes"||
+												$(e).attr("class")=="kf_red yes"){
 											return(function(){
 												layer.tips('此货位有托盘！','#'+hwId);
 												hwId=null,id=null;
@@ -185,7 +176,9 @@ var readyShow={
 												hwId=null,id=null;
 												return null;
 											})();
-										}else if($(e).attr("class")=="kf_lan yes"){
+										}else if($(e).attr("class")=="kf_lan yes"||
+												$(e).attr("class")=="kf_lv yes"||
+												$(e).attr("class")=="kf_red yes"){
 											return(function(){
 												layer.tips('此货位有托盘！','#'+hwId);
 												hwId=null,id=null;
@@ -439,24 +432,24 @@ var readyShow={
 									return null;
 								});
 								//从货架回大库
-//								$("#conghuojiahuidaku").click(function(){
-//									$(this).find("input:radio").prop("checked",true);
-//									//开启文本
-//									var arryStart=['cong_hjhdk_huowei'];
-//									map.startEnd(0,arryStart,false,'none',function(){
-//										return arryStart=null;
-//									});
-//									//关闭文本
-//									var arryEnd=['tp_code','wl_code',
-//									               'up_number','go_huowei','fangxiang',
-//									               'cong_xhdssx_huowei','dao_xhdssx_huowei',
-//									               'cong_ssxhhj_gongwei','dao_ssxhhj_huowei',
-//									               'cong_ssxhdk_gongwei'];
-//									map.startEnd(0,arryEnd,true,'none',function(){
-//										return arryEnd=null;
-//									});
-//									return null;
-//								});
+								/*$("#conghuojiahuidaku").click(function(){
+									$(this).find("input:radio").prop("checked",true);
+									//开启文本
+									var arryStart=['cong_hjhdk_huowei'];
+									map.startEnd(0,arryStart,false,'none',function(){
+										return arryStart=null;
+									});
+									//关闭文本
+									var arryEnd=['tp_code','wl_code',
+									               'up_number','go_huowei','fangxiang',
+									               'cong_xhdssx_huowei','dao_xhdssx_huowei',
+									               'cong_ssxhhj_gongwei','dao_ssxhhj_huowei',
+									               'cong_ssxhdk_gongwei'];
+									map.startEnd(0,arryEnd,true,'none',function(){
+										return arryEnd=null;
+									});
+									return null;
+								});*/
 								//所有单选按钮事件
 								$("input[name='radioName']").click(function(){
 									var clk=$(this).parent().click();
@@ -592,7 +585,7 @@ var readyShow={
 												};
 												var a=$("input[name='radioName']:checked").parent();
 										    	var b=$('#kfcz_id')[0].reset();
-										    	af.showWlIp.ip=[],af.showWlIp.oip='';
+										    	af.showWlIp.ip=[];
 												var c=a.click();
 												return a=null,b=null,c=null,data=null;
 											}
@@ -700,9 +693,11 @@ var readyShow={
 					 * 库存
 					 */
 					kuCun:function(e){
-						$("#kc_table tbody tr").remove();
 						var i=0;
                     	var li="<li></li>";
+                    	af.showWlIp.ip=[];//清空库存记录地址
+						$("div[name='HCK-NAME']").attr("class","kf_hui no");//清空货位状态
+						$("#kc_table tbody tr").remove();
 						while(i<e.length){
 							$('#kc_table tbody').append('<tr bgcolor="#ffffff" style="height:22px;">'+
 								//托盘
@@ -717,13 +712,13 @@ var readyShow={
 								'<td title="'+e[i].fangxiang+'" style="width:40px;padding:0px;font-size:10px;">'+e[i].fangxiang+'</td>'+
 							'</tr>');
 							//获取当前库存中的所有物料
-							if(li.indexOf(e[i].wl_code)==-1){
+							if(li.indexOf("<li>"+e[i].wl_code+"</li>")==-1){
 								li+="<li>"+e[i].wl_code+"</li>";
 							};
 							//获取每个物料对应的库位号
 							if(e[i].huoweihao!=""){
-								af.showWlIp.ip[i]=e[i].huoweihao+"&"+e[i].wl_code;
-							}else if(af.showWlIp.ip[i]!=e[i].huoweihao+"&"+e[i].wl_code){
+								af.showWlIp.ip[i]=e[i].huoweihao+"&"+e[i].wl_code+"&"+e[i].fangxiang;
+							}else if(af.showWlIp.ip[i]!=e[i].huoweihao+"&"+e[i].wl_code+"&"+e[i].fangxiang){
 								af.showWlIp.ip[i]=null;
 							};
 							i++;
@@ -732,51 +727,6 @@ var readyShow={
                     	var b=af.showWlIp.show();b=null;
 						return i=null,li=null,a=null;
 					}
-				},
-				/**
-				 * 渲染货位
-				 */
-                arrayHome:['‘501’','‘502’','‘503’','‘504’','‘505’','‘506’','‘507’','‘508’','‘509’','‘510’','‘511’','‘512’','‘513’','‘514’',
-                           '‘1’','‘2’','‘3’','‘4’','‘5’','‘6’','‘7’','‘8’','‘9’','‘10’','‘11’','‘12’','‘13’','‘14’','‘15’',
-                           '‘16’','‘17’','‘18’','‘19’','‘20’','‘21’','‘22’','‘23’','‘24’','‘25’','‘26’','‘27’','‘28’',
-                           '‘601’','‘602’','‘603’','‘604’','‘605’','‘606’','‘607’','‘608’','‘609’','‘610’','‘611’','‘612’','‘613’','‘614’'],
-	            removeArry:[],
-				hwLoad:function(){
-					//获取输送线 库房状态
-					var a=$.ajax({
-						url:getRootPath()+'/KuFangAction.do?operType=getHw',
-						type:'get',
-						cache:false,
-						success:function(data){
-							var obj=eval("("+data+")");
-							if(obj.hckTb.length>0){
-								af.removeArry=[];
-								for(var i=0,j=0,k=af.arrayHome.length;i<k;i++){
-									try{
-										if(af.arrayHome.toString().indexOf('‘'+obj.hckTb[i][i]+'’')>-1){
-											if(af.showWlIp.oip.indexOf("‘"+obj.hckTb[i][i]+"’")>-1){
-												$("#"+obj.hckTb[i][i]).attr("class","kf_lv show");
-											}else{
-												$("#"+obj.hckTb[i][i]).attr("class","kf_lan yes");
-											};
-											af.removeArry[i]='‘'+obj.hckTb[i][i]+'’';
-											k++;
-										};
-									}catch(e){
-										if(af.removeArry.toString().indexOf(af.arrayHome[j])==-1){
-											var upId=af.arrayHome[j].split("’")[0].split('‘')[1];
-											$("#"+upId).attr("class","kf_hui no");
-										};
-										j++;
-									};
-								};
-							}else{
-								$("div[name='HCK-NAME']").attr("class","kf_hui no");
-							};
-							return obj=null;
-						}
-					});a=null;
-					return true;
 				}
 			};
 			var a=af.load({state:true,tim:1000},function(){

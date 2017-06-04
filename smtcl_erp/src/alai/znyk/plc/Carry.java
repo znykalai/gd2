@@ -15,6 +15,8 @@ public class Carry implements Serializable{
     public int 已装数量; //
     public int 工单号;//PACK号
     public int 工单ID;//
+  
+	
     public String 工位="";
     public String get工位() {
 		return 工位;
@@ -32,7 +34,7 @@ public class Carry implements Serializable{
     public int 载具序号;
     public int pack编码;//
     public int pack类型;//
-    public int 模组编码;//
+    public String 模组编码;//
     public int 电芯类型;//
     public int 模组类型;//
     public int 模组序ID;//
@@ -70,7 +72,7 @@ public class Carry implements Serializable{
 		this.配方 = 配方;
 	}
 	public Carry(int 工单号,int 分解号,int 载具序号,int 模组序ID){
-    	this.工单号=工单号;
+    	this.工单号=工单号;//用的是工单序号
     	this.分解号=分解号;
     	this.载具序号=载具序号;
     	this.模组序ID=模组序ID;
@@ -82,7 +84,8 @@ public class Carry implements Serializable{
 		public void set叠装否(boolean 叠装否) {
 			this.叠装否 = 叠装否;
 		}
-
+		
+		 
     public String getId() {
 		return id;
 	}
@@ -131,7 +134,7 @@ public class Carry implements Serializable{
 	public void setPack编码(int pack编码) {
 		this.pack编码 = pack编码;
 	}
-	public int get模组编码() {
+	public String get模组编码() {
 		return 模组编码;
 	}
 	
@@ -142,7 +145,7 @@ public class Carry implements Serializable{
 	public int getPack类型() {
 		return pack类型;
 	}
-	public void set模组编码(int 模组编码) {
+	public void set模组编码(String 模组编码) {
 		this.模组编码 = 模组编码;
 	}
 	public int get电芯类型() {
@@ -231,5 +234,18 @@ public class Carry implements Serializable{
 		// String s=firstST.get工单ID()+""+firstST.get模组序ID()+""+firstST.get分解号()+""+firstST.get载具序号();
 		// String s2=car.get工单ID()+""+car.get模组序ID()+""+car.get分解号()+""+car.get载具序号();
 		return get工单ID()+"="+get模组序ID()+"="+get分解号()+"="+get载具序号();
+	}	
+	
+	public String getName2(){
+		//工单号ID+模组序ID+分解号+载具序号,这三个也决定了唯一的载具
+		// String s=firstST.get工单ID()+""+firstST.get模组序ID()+""+firstST.get分解号()+""+firstST.get载具序号();
+		// String s2=car.get工单ID()+""+car.get模组序ID()+""+car.get分解号()+""+car.get载具序号();
+		return "PACK:"+get工单号()+"-模组:"+get模组序号()+"-第几模组:"+get分解号()+"-第几载具:"+get载具序号();
+	}
+	public String getName3(){
+		//工单号ID+模组序ID+分解号+载具序号,这三个也决定了唯一的载具
+		// String s=firstST.get工单ID()+""+firstST.get模组序ID()+""+firstST.get分解号()+""+firstST.get载具序号();
+		// String s2=car.get工单ID()+""+car.get模组序ID()+""+car.get分解号()+""+car.get载具序号();
+		return "PACK号:"+get工单号()+"-模组编码:"+get模组编码()+"-第几模组:"+get分解号();
 	}	
 }

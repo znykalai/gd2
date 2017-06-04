@@ -153,9 +153,14 @@ var readyShow={
 							/**
 							 * 货物使用率,订单完成率；必须是int类型
 							 */
-							var hwSyl=Number(obj.hwSyl)>0?Number(obj.hwSyl):0;
+							//var hwSyl=Number(obj.hwSyl)>0?Number(obj.hwSyl):0;
+							//af.upload(hwSyl,gdWcl);
 							var gdWcl=Number(obj.gdWcl)>0?Number(obj.gdWcl):0;
-							af.upload(hwSyl,gdWcl);
+							af.upload(gdWcl);
+							/**
+							 * PACK、模组 完成率；
+							 */
+							$("#home_mz_list").html(obj.packMzTongJi);
 							return obj=null,hwSyl=null,gdWcl=null;
 						}
 					});
@@ -217,13 +222,13 @@ var readyShow={
 					var credits={
 					   enabled:false
 					};
-					//货位占用率
-					var series=[{
-					   name:'Speed',
+					//订单完成率
+					series=[{
+					   name:'RPM',
 					   data:[0],
 					   dataLabels:{
-					      format:'<div style="text-align:center;"><span style="font-size:15px;color:red;">{y:.0f}%</span><br/>' +
-					      '<span style="font-size:10px;color:silver;">货位使用率</span></div>'
+					      format:'<div style="text-align:center;"><span style="font-size:15px;color:red;">{y:.1f}%</span><br/>' +
+					      '<span style="font-size:10px;color:silver;">订单完成率</span></div>'
 					   }
 					}];
 					var json={};
@@ -234,34 +239,36 @@ var readyShow={
 					json.yAxis=yAxis;
 					json.credits=credits;
 					json.series=series;
-					$('#container-speed').highcharts(json);
-					//订单完成率
-					series=[{
-					   name:'RPM',
-					   data:[0],
-					   dataLabels:{
-					      format:'<div style="text-align:center;"><span style="font-size:15px;color:red;">{y:.1f}%</span><br/>' +
-					      '<span style="font-size:10px;color:silver;">订单完成率</span></div>'
-					   }
-					}];
-					json.yAxis=yAxis; 
-					json.series=series;
 					$('#container-rpm').highcharts(json);
-					return chart=null,pane=null,tooltip=null,yAxis=null,plotOptions=null,credits=null,series=null,json=null;
+//					货位占用率
+//					var series=[{
+//					   name:'Speed',
+//					   data:[0],
+//					   dataLabels:{
+//					      format:'<div style="text-align:center;"><span style="font-size:15px;color:red;">{y:.0f}%</span><br/>' +
+//					      '<span style="font-size:10px;color:silver;">货位使用率</span></div>'
+//					   }
+//					}];
+//					json.yAxis=yAxis; 
+//					json.series=series;
+//					$('#container-speed').highcharts(json);
+					chart=null,pane=null,tooltip=null,yAxis=null,plotOptions=null,credits=null,series=null,json=null
+					return null;
 				},
 				/**
 				 * 更新图片信息,参数必须是int类型
 				 */
-				upload:function(newVal1,newVal2){
-					 // 货物使用率
-				      var chart=$('#container-speed').highcharts();
-				      var point;
-				      var newVal;
-				      var inc;
-				      if(chart){
-				         point=chart.series[0].points[0];
-				         point.update(newVal1);
-				      };
+				upload:function(newVal2){
+//				upload:function(newVal1,newVal2){
+//					     货物使用率
+//				      var chart=$('#container-speed').highcharts();
+//				      var point;
+//				      var newVal;
+//				      var inc;
+//				      if(chart){
+//				         point=chart.series[0].points[0];
+//				         point.update(newVal1);
+//				      };
 				      //订单完成率
 				      chart=$('#container-rpm').highcharts();
 				      if(chart){

@@ -33,8 +33,8 @@ public class KuFangAction extends Action{
 				return getHckzddl(mapping, form, request, response);
 			}else if (operType.equals("getKuCun")){
 				return getKuCun(mapping, form, request, response);
-			}else if (operType.equals("getHw")){
-				return getHw(mapping, form, request, response);
+//			}else if (operType.equals("getHw")){
+//				return getHw(mapping, form, request, response);
 			}else if (operType.equals("getTp")){
 				return getTp(mapping, form, request, response);
 			}else if (operType.equals("fsMingLing")){
@@ -189,43 +189,43 @@ public class KuFangAction extends Action{
 		}
 		return null;
 	}
-	/**
-	 * 获取货位
-	 * @param mapping
-	 * @param form
-	 * @param request
-	 * @param response
-	 * @return
-	 */
-	private ActionForward getHw(ActionMapping mapping, ActionForm form, HttpServletRequest request,
-			HttpServletResponse response) {
-		try{
-			request.setCharacterEncoding("utf-8");
-			response.setCharacterEncoding("utf-8");
-			ApplicationContext context = GetApplicationContext.getContext(request);
-			HomeActionDAO dao = (HomeActionDAO)context.getBean("homeActionDAO");
-			JSONObject result = new JSONObject();
-			//获取缓存库 输送线状态
-			List list = dao.getHckState();
-			ArrayList resultList = new ArrayList();
-			if(list!=null&&list.size()>0){
-				int i=0;
-				while(i<list.size()){
-					HashMap map = new HashMap();
-					map.put(""+i+"", ((HashMap)list.get(i)).get("货位序号"));
-					resultList.add(map);
-					i++;
-				}
-			}
-			result.put("hckTb", resultList);
-			response.setContentType("text/html;charset=utf-8");
-			response.getWriter().print(result);
-			response.getWriter().close();
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+//	/**
+//	 * 获取货位
+//	 * @param mapping
+//	 * @param form
+//	 * @param request
+//	 * @param response
+//	 * @return
+//	 */
+//	private ActionForward getHw(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+//			HttpServletResponse response) {
+//		try{
+//			request.setCharacterEncoding("utf-8");
+//			response.setCharacterEncoding("utf-8");
+//			ApplicationContext context = GetApplicationContext.getContext(request);
+//			HomeActionDAO dao = (HomeActionDAO)context.getBean("homeActionDAO");
+//			JSONObject result = new JSONObject();
+//			//获取缓存库 输送线状态
+//			List list = dao.getHckState();
+//			ArrayList resultList = new ArrayList();
+//			if(list!=null&&list.size()>0){
+//				int i=0;
+//				while(i<list.size()){
+//					HashMap map = new HashMap();
+//					map.put(""+i+"", ((HashMap)list.get(i)).get("货位序号"));
+//					resultList.add(map);
+//					i++;
+//				}
+//			}
+//			result.put("hckTb", resultList);
+//			response.setContentType("text/html;charset=utf-8");
+//			response.getWriter().print(result);
+//			response.getWriter().close();
+//		}catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return null;
+//	}
 	/**
 	 * 获取托盘编号
 	 * @param mapping
