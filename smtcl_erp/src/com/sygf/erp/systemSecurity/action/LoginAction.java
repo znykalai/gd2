@@ -51,6 +51,7 @@ public class LoginAction extends Action{
 			if(list!=null&&list.size() > 0){
             	session.setAttribute("username", username);
             	session.setAttribute("juese", ((HashMap)list.get(0)).get("角色"));
+            	session.setAttribute("fangxiang", ((HashMap)list.get(0)).get("方向"));
                 return mapping.findForward("index"); 
             }else{
 				request.setAttribute("msg", "用户名或密码不正确，请重新输入。");

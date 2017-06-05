@@ -160,6 +160,7 @@ public class STContent implements Serializable {
     	     	 carr.setPack类型(row.get(21)==null?0:Integer.parseInt(row.get(21).toString()));
     	     	 carr.set模组层数(row.get(22)==null?0:Integer.parseInt(row.get(22).toString()));
     	     	 carr.set模组序号(row.get(24)==null?0:Integer.parseInt(row.get(24).toString()));
+    	     	 carr.set模组编码(row.get(5)==null?"0":row.get(5).toString());
     	     	 Vector<Vector> tost=SqlTool.findInVector("select 工位,物料 from 配方指令队列   where 工单ID='"+
     	     	 carr.get工单ID()+"' and 模组序ID='"+carr.get模组序ID()+"' and 分解号='"+carr.get分解号()+"' and 载具序号='"+carr.get载具序号()+"' order by 工位");
     	     	 String beifangs="";
@@ -209,6 +210,7 @@ public class STContent implements Serializable {
      	 carr2.setPack类型(row2.get(21)==null?0:Integer.parseInt(row2.get(21).toString()));
      	 carr2.set模组层数(row2.get(22)==null?0:Integer.parseInt(row2.get(22).toString()));
      	 carr2.set模组序号(row2.get(24)==null?0:Integer.parseInt(row2.get(24).toString()));
+     	 carr2.set模组编码(row2.get(5)==null?"0":row2.get(5).toString());
      	 String beifangs2="";	 
      	 Vector<Vector> tost2=SqlTool.findInVector("select 工位,物料 from 配方指令队列   where 工单ID='"+
     	     	 carr2.get工单ID()+"' and 模组序ID='"+carr.get模组序ID()+"' and 分解号='"+carr2.get分解号()+"' and 载具序号='"+carr2.get载具序号()+"' order by 工位");
@@ -260,6 +262,7 @@ public class STContent implements Serializable {
 	     	 carr.setPack类型(row.get(21)==null?0:Integer.parseInt(row.get(21).toString()));
 	     	 carr.set模组层数(row.get(22)==null?0:Integer.parseInt(row.get(22).toString()));
 	     	 carr.set模组序号(row.get(24)==null?0:Integer.parseInt(row.get(24).toString()));
+	     	 carr.set模组编码(row.get(5)==null?"0":row.get(5).toString());
 	     	Vector<Vector> tost=SqlTool.findInVector("select 工位,物料 from 配方指令队列   where 工单ID='"+
 	    	     	 carr.get工单ID()+"' and 模组序ID='"+carr.get模组序ID()+"' and 分解号='"+carr.get分解号()+"' and 载具序号='"+carr.get载具序号()+"' order by 工位");
 	    	     	
@@ -315,6 +318,7 @@ public class STContent implements Serializable {
         	 carr2.setPack类型(row.get(21)==null?0:Integer.parseInt(row.get(21).toString()));
         	 carr2.set模组层数(row.get(22)==null?0:Integer.parseInt(row.get(22).toString()));
         	 carr2.set模组序号(row.get(24)==null?0:Integer.parseInt(row.get(24).toString()));
+        	 carr2.set模组编码(row.get(5)==null?"0":row.get(5).toString());
         	 Vector<Vector> tost=SqlTool.findInVector("select 工位,物料 from 配方指令队列   where 工单ID='"+
         	     	 carr2.get工单ID()+"' and 模组序ID='"+carr2.get模组序ID()+"' and 分解号='"+carr2.get分解号()+"' and 载具序号='"+carr2.get载具序号()+"' order by 工位");
         	     	
@@ -1520,7 +1524,7 @@ public class STContent implements Serializable {
   	  String tem=SqlTool.findOneRecord("select  物料,数量  from 配方指令队列   where  ID='"+st.getId()+"'");
   	  if(tem!=null){
   		String wuliao=tem.split("!_!")[0];
-  		//System.out.println("id2="+wuliao);
+  	   //System.out.println("id2="+wuliao);
   		int shul=Integer.parseInt(tem.split("!_!")[1]);
   		String tem2=SqlTool.findOneRecord("select  托盘编号,物料,数量  from 库存托盘   where  货位号='"+货位+"'");
   		

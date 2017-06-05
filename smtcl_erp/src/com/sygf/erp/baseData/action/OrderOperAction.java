@@ -239,19 +239,26 @@ public class OrderOperAction extends Action{
 		try {
 			request.setCharacterEncoding("utf-8");
 			response.setCharacterEncoding("utf-8");
+			HttpSession session = request.getSession();
 			HashMap map=GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
 			ApplicationContext context=GetApplicationContext.getContext(request);
 			OrderOperactionDAO dao=(OrderOperactionDAO)context.getBean("orderOperactionDAO");
 			ArrayList result=new ArrayList();
 			String sql=" WHERE";
 			if(!map.get("getGdId").equals("")){
-				sql += " `工单表`.`工单号`='"+map.get("getGdId")+"' AND ";
+				sql+=" `工单表`.`工单号`='"+map.get("getGdId")+"' AND ";
 			};
 			if(!map.get("getGdfenjieriqi").equals("")){
-				sql += " `工单表`.`分解日期` like '%"+map.get("getGdfenjieriqi")+"%' AND ";
+				sql+=" `工单表`.`分解日期` like '%"+map.get("getGdfenjieriqi")+"%' AND ";
 			};
 			if(!map.get("getPackeCode").equals("")){
-				sql += " `工单表`.`pack编码`='"+map.get("getPackeCode")+"' AND ";
+				sql+=" `工单表`.`pack编码`='"+map.get("getPackeCode")+"' AND ";
+			};
+			//如果是系统管理员则不判断AB区
+			if(session.getAttribute("username")!=null&&
+				session.getAttribute("fangxiang")!=null&&
+				!session.getAttribute("username").equals("admin")){
+					sql+=" `工单表`.`装配区`='"+session.getAttribute("fangxiang")+"' AND ";
 			};
 			if(sql.equals(" WHERE")){
 				sql="";
@@ -483,50 +490,8 @@ public class OrderOperAction extends Action{
 			HashMap map=GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
 			ApplicationContext context=GetApplicationContext.getContext(request);
 			OrderOperactionDAO dao=(OrderOperactionDAO)context.getBean("orderOperactionDAO");
-			String sql="SELECT " +
-						 "a.ID,"+
-						 "a.ID AS 工单ID," +
-						 "a.`工单序号`, " +
-						 "b.`pack编码`," +
-						 "b.`pack类型`," +
-						 "b.`默认生产线` AS 装配区," +
-						 "c.`模组序ID` AS 模组序ID," +
-						 "c.`序号` AS `模组序号`," +
-						 "c.`模组编码`," +
-						 "e.`序号` AS 载具序号," +
-						 "d.`模组类型`," +
-						 "d.`电芯类型`," +
-						 "d.`层数` AS 模组层数," +
-						 "f.`物料`," +
-						 "f.`物料描述`," +
-						 "f.`数量`," +
-						 "f.`工位`," +
-						 "f.`载具位置`," +
-						 "e.`电芯数` AS 电芯数量," +
-						 "e.`翻面否`," +
-						 "'' AS 前升读标志," +
-						 "'' AS 叠装读标志," +
-						 "'' AS 预装读标志," +
-						 "'' AS ST读取标志," +
-						 "e.`电芯1` AS 电芯位置1," +
-						 "e.`电芯2` AS 电芯位置2," +
-						 "e.`电芯3` AS 电芯位置3," +
-						 "e.`电芯4` AS 电芯位置4," +
-						 "e.`假电芯1` ," +
-						 "e.`假电芯2`," +
-						 "e.`叠装否`," +
-						 "e.`有效型腔`," +
-						 "'' AS 完成数量," +
-						 "c.`数量` AS 分解号 " +
-						 "FROM `工单表` a " +
-						 "LEFT JOIN `pack题头` b ON a.`pack编码`=b.`pack编码` " +
-						 "LEFT JOIN `pack行` c ON b.`pack编码`=c.`pack编码` " +
-						 "LEFT JOIN `模组题头` d ON c.`模组编码`=d.`模组编码` " +
-						 "LEFT JOIN `模组载具` e ON d.`模组ID`= e.`模组ID` " +
-						 "LEFT JOIN `模组指令行` f ON d.`模组ID`=f.`模组ID` AND e.`载具ID`=f.`载具ID`" +
-						 "WHERE a.`pack编码`='"+map.get("pack_code")+"' AND a.ID='"+map.get("dd_id")+"' AND (f.`物料` <> '' or f.`物料`=NULL) ORDER BY a.`工单序号`,c.`序号`";
-			map.put("sql", sql);
-			sql=null;
+			String sql="SELECT a.ID,a.ID AS 工单ID,a.`工单序号`,b.`pack编码`,b.`pack类型`,a.`装配区`,c.`模组序ID` AS 模组序ID,c.`序号` AS `模组序号`,c.`模组编码`,e.`序号` AS 载具序号,d.`模组类型`,d.`电芯类型`,d.`层数` AS 模组层数,f.`物料`,f.`物料描述`,f.`数量`,f.`工位`,f.`载具位置`,e.`电芯数` AS 电芯数量,e.`翻面否`,'' AS 前升读标志,'' AS 叠装读标志,'' AS 预装读标志,'' AS ST读取标志,e.`电芯1` AS 电芯位置1,e.`电芯2` AS 电芯位置2,e.`电芯3` AS 电芯位置3,e.`电芯4` AS 电芯位置4,e.`假电芯1` ,e.`假电芯2`,e.`叠装否`,e.`有效型腔`,'' AS 完成数量,c.`数量` AS 分解号 FROM `工单表` a LEFT JOIN `pack题头` b ON a.`pack编码`=b.`pack编码` LEFT JOIN `pack行` c ON b.`pack编码`=c.`pack编码` LEFT JOIN `模组题头` d ON c.`模组编码`=d.`模组编码` LEFT JOIN `模组载具` e ON d.`模组ID`= e.`模组ID` LEFT JOIN `模组指令行` f ON d.`模组ID`=f.`模组ID` AND e.`载具ID`=f.`载具ID` WHERE a.`pack编码`='"+map.get("pack_code")+"' AND a.ID='"+map.get("dd_id")+"' AND (f.`物料` <> '' or f.`物料`=NULL) ORDER BY a.`工单序号`,c.`序号`";
+			map.put("sql", sql);sql=null;
 			List list=dao.getZlList(map);
 			if(list!=null&&list.size()>0){
 				int fenjiehao=(int)Double.parseDouble(((HashMap)list.get(0)).get("分解号").toString());
@@ -616,59 +581,13 @@ public class OrderOperAction extends Action{
 			HashMap map=GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
 			ApplicationContext context=GetApplicationContext.getContext(request);
 			OrderOperactionDAO dao=(OrderOperactionDAO)context.getBean("orderOperactionDAO");
-			String sql="SELECT " +
-						 "a.ID,"+
-						 "a.ID AS 工单ID," +
-						 "a.`工单序号`, " +
-						 "b.`pack编码`," +
-						 "b.`pack类型`," +
-						 "b.`默认生产线` AS 装配区," +
-						 "c.`模组序ID`," +
-						 "c.`序号` AS `模组序号`," +
-						 "c.`模组编码`," +
-						 "e.`序号` AS 载具序号," +
-						 "d.`模组类型`," +
-						 "d.`电芯类型`," +
-						 "d.`层数` AS 模组层数," +
-						 "f.`物料`," +
-						 "f.`物料描述`," +
-						 "f.`数量`," +
-						 "f.`工位`," +
-						 "f.`载具位置`," +
-						 "e.`电芯数` AS 电芯数量," +
-						 "e.`翻面否`," +
-						 "'' AS 前升读标志," +
-						 "'' AS 叠装读标志," +
-						 "'' AS 预装读标志," +
-						 "'' AS ST读取标志," +
-						 "e.`电芯1` AS 电芯位置1," +
-						 "e.`电芯2` AS 电芯位置2," +
-						 "e.`电芯3` AS 电芯位置3," +
-						 "e.`电芯4` AS 电芯位置4," +
-						 "e.`假电芯1` ," +
-						 "e.`假电芯2`," +
-						 "e.`叠装否`," +
-						 "e.`有效型腔`," +
-						 "'' AS 完成数量," +
-						 "c.`数量` AS 分解号 " +
-						 "FROM `工单表` a " +
-						 "LEFT JOIN `pack题头` b ON a.`pack编码`=b.`pack编码` " +
-						 "LEFT JOIN `pack行` c ON b.`pack编码`=c.`pack编码` " +
-						 "LEFT JOIN `模组题头` d ON c.`模组编码`=d.`模组编码` " +
-						 "LEFT JOIN `模组载具` e ON d.`模组ID`= e.`模组ID` " +
-						 "LEFT JOIN `模组指令行` f ON d.`模组ID`=f.`模组ID` AND e.`载具ID`=f.`载具ID` " +
-						 "LEFT JOIN `配方指令队列` g ON a.ID=g.`工单ID` " +
-						 "WHERE (f.`物料` <> '' or f.`物料`=NULL) AND (g.`工单ID` is NULL OR g.`工单ID` ='') ORDER BY a.`工单序号`,c.`序号`";
-			map.put("sql", sql);
-			sql=null;
+			String sql="SELECT a.ID,a.ID AS 工单ID,a.`工单序号`, b.`pack编码`,b.`pack类型`,a.`装配区`,c.`模组序ID`,c.`序号` AS `模组序号`,c.`模组编码`,e.`序号` AS 载具序号,d.`模组类型`,d.`电芯类型`,d.`层数` AS 模组层数,f.`物料`,f.`物料描述`,f.`数量`,f.`工位`,f.`载具位置`,e.`电芯数` AS 电芯数量,e.`翻面否`,'' AS 前升读标志,'' AS 叠装读标志,'' AS 预装读标志,'' AS ST读取标志,e.`电芯1` AS 电芯位置1,e.`电芯2` AS 电芯位置2,e.`电芯3` AS 电芯位置3,e.`电芯4` AS 电芯位置4,e.`假电芯1` ,e.`假电芯2`,e.`叠装否`,e.`有效型腔`,'' AS 完成数量,c.`数量` AS 分解号 FROM `工单表` a LEFT JOIN `pack题头` b ON a.`pack编码`=b.`pack编码` LEFT JOIN `pack行` c ON b.`pack编码`=c.`pack编码` LEFT JOIN `模组题头` d ON c.`模组编码`=d.`模组编码` LEFT JOIN `模组载具` e ON d.`模组ID`= e.`模组ID` LEFT JOIN `模组指令行` f ON d.`模组ID`=f.`模组ID` AND e.`载具ID`=f.`载具ID` LEFT JOIN `配方指令队列` g ON a.ID=g.`工单ID` WHERE (f.`物料` <> '' or f.`物料`=NULL) AND (g.`工单ID` is NULL OR g.`工单ID` ='') ORDER BY a.`工单序号`,c.`序号`";
+			map.put("sql", sql);sql=null;
 			List list=dao.getZlList(map);
 			if(list!=null&&list.size()>0){
 				//更新分解日期
-				sql="UPDATE `工单表` a " +
-						"LEFT JOIN `配方指令队列` b ON a.ID=b.`工单ID` " +
-						"SET a.`分解日期`=DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i:%s') WHERE b.`工单ID` IS NULL OR b.`工单ID`=''";
-				map.put("sql", sql);
-				sql=null;
+				sql="UPDATE `工单表` a LEFT JOIN `配方指令队列` b ON a.ID=b.`工单ID` SET a.`分解日期`=DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i:%s') WHERE b.`工单ID` IS NULL OR b.`工单ID`=''";
+				map.put("sql", sql);sql=null;
 				dao.updateGdState(map);
 				//处理配方表
 				int fenjiehao=(int)Double.parseDouble(((HashMap)list.get(0)).get("分解号").toString());

@@ -65,7 +65,7 @@
 				<!-- 右侧菜单 -->
 				<td style="position:relative;height:100%;">
 					<div>
-						<div id="right_home1" title="按钮操控" x='280px' y='200px' class="right_home1 tz">
+						<div id="right_home1" title="按钮操控" x='280px' y='250px' class="right_home1 tz">
 							<div class="right_home1_but"></div>
 						</div>
 						<div id="right_home2" title="物料请求，处理完成后请删除" x='500px' y='430px' class="right_home2 tz">

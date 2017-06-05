@@ -668,8 +668,8 @@ public class PLC implements Serializable {
     public ReST[] getFromPLC(int 装配区){
     	try{
     		if(modeTh%30==0){
-    			System.out.println(th.size()+"="+th);
-    			System.out.println("--"+this.get统计(装配区));
+    			 System.out.println(th.size()+"="+th);
+    			//System.out.println("--"+this.get统计(装配区));
     		 }
     		
     		
@@ -729,14 +729,14 @@ public class PLC implements Serializable {
     					
     					if(car!=null){
     						
-    						if(getH放行(装配区).get(i)!=null){
-		    						
-			    					  long 上次有动作放行用时=System.currentTimeMillis()-getH放行(装配区).get(i);
+    						if(getH放行(装配区).get(i+10000)!=null){
+    							System.out.println("有动作放行次数="+i);
+			    					  long 上次有动作放行用时=System.currentTimeMillis()-getH放行(装配区).get(i+10000);
 			    					  getTj(装配区).put("有动作放行次数", (getTj(装配区).get("有动作放行次数")==null?1:getTj(装配区).get("有动作放行次数"))+1);
 			    					  getTj(装配区).put("有动作放行时间", (getTj(装配区).get("有动作放行时间")==null?上次有动作放行用时:getTj(装配区).get("有动作放行时间"))+上次有动作放行用时);
 			    					  getTj(装配区).put("上次有动作放行用时", 上次有动作放行用时);	
 			    					  
-			    					  getH放行(装配区).remove(i);
+			    					  getH放行(装配区).remove(i+10000);
 			    					  }	
     							
     						
@@ -840,7 +840,7 @@ public class PLC implements Serializable {
     			    			//int 载具放行old=(tem22&0b100)==4?1:0;
     			    			//if(载具放行!=载具放行old){
     			    				if(载具放行new==0){
-    			    					getH放行(装配区).put(curr+1, System.currentTimeMillis());
+    			    					getH放行(装配区).put(curr+10001, System.currentTimeMillis());
     			    					
     			    					  
     			    					if(curr==5){
@@ -974,6 +974,7 @@ public class PLC implements Serializable {
 			    					 * 
 			    					 * */
 			    					if(getH放行(装配区).get(curr)!=null){
+			    						System.out.println("空放行次数="+curr);
 			    					  long 上次空放行用时=System.currentTimeMillis()-getH放行(装配区).get(curr);
 			    					  getTj(装配区).put("空放行次数", (getTj(装配区).get("空放行次数")==null?1:getTj(装配区).get("空放行次数"))+1);
 			    					  getTj(装配区).put("空放行时间", (getTj(装配区).get("空放行时间")==null?上次空放行用时:getTj(装配区).get("空放行时间"))+上次空放行用时);
@@ -1784,10 +1785,8 @@ public class PLC implements Serializable {
 	    		t.addElement(o);
 	    	}
 	    }
-	    
 		for(int i=0;i<t.size();i++){m.remove(t.get(i));}
 		t=null;
-		
 		}
 	
 	public List<String> get统计(int machineID){
@@ -1819,8 +1818,7 @@ public class PLC implements Serializable {
 		   h=null;
 		   h=getTj(machineID);
 		   Collections.sort(list);
-		   list.add(0, "完成模组数量="+(h.get("完成模组数量")==null?"等待统计中。。。":h.get("完成模组数量")+"")); 
-		   list.add(0, "完成模PACK数量="+(h.get("完成模PACK数量")==null?"等待统计中。。。":h.get("完成模PACK数量")+""));
+		  
 		   list.add(0, "上次有动作放行用时="+(h.get("上次有动作放行用时")==null?"等待统计中。。。":h.get("上次有动作放行用时")+"")); 
 		   list.add(0, "有动作放行次数="+(h.get("有动作放行次数")==null?"等待统计中。。。":h.get("有动作放行次数")+""));
 		   list.add(0, "有动作放行时间="+(h.get("有动作放行时间")==null?"等待统计中。。。":h.get("有动作放行时间")+""));
@@ -1843,8 +1841,8 @@ public class PLC implements Serializable {
 		   list.add(0, "动作载具平均用时-空放行载具平均用时="+((h.get("有动作放行时间")/h.get("有动作放行次数"))-(h.get("空放行时间")/h.get("空放行次数"))));
 		   else list.add(0, "动作载具平均用时-空放行载具平均用时=等待统计中。。。");
 		 
-		   list.add(0, "完成模组数量="+(h.get("完成模组数量")==null?"0":h.get("完成模组数量")+""));
-		   list.add(0, "完成模PACK数量="+(h.get("完成模PACK数量")==null?"0":h.get("完成模PACK数量")+""));
+		   list.add(0, "完成模组数量="+(h.get("完成模组数量")==null?"等待统计中。。。":h.get("完成模组数量")+"")); 
+		   list.add(0, "完成PACK数量="+(h.get("完成模PACK数量")==null?"等待统计中。。。":h.get("完成模PACK数量")+""));
 		  
 		   return list; 
 	}

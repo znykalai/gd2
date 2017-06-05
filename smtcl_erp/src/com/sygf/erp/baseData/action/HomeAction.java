@@ -269,7 +269,7 @@ public class HomeAction extends Action{
 					resultList.add(map);
 					i++;
 				}
-			}
+			};list=null;
 			//异步输送线上层
 			ArrayList topArratList = new ArrayList();
 			for(int i=0,j=0;i<15;i++){
@@ -296,18 +296,30 @@ public class HomeAction extends Action{
 			}
 			//订单完成率
 			list = dao.getGdWanChengLv();
-			String gdWcl = list!=null&&list.size()>0?((HashMap)list.get(0)).get("工单完成率").toString():"0";
+			String gdWcl = list!=null&&list.size()>0?((HashMap)list.get(0)).get("工单完成率").toString():"0";list=null;
 			//货位使用率
-			list = dao.getHWshiYongLv();
-			String hwSyl = list!=null&&list.size()>0?((HashMap)list.get(0)).get("货位使用率").toString():"0";
-			result.put("hckTop", topArratList);
-			result.put("hckTb", resultList);
-			result.put("hckBottom", bottomArratList);
-			result.put("gdWcl",gdWcl);
-			result.put("hwSyl",hwSyl);
-			dao=null;context=null;list=null;topArratList=null;
-			resultList=null;bottomArratList=null;gdWcl=null;hwSyl=null;
-//			System.err.println("home---定时刷新");
+			//list = dao.getHWshiYongLv();
+			//String hwSyl = list!=null&&list.size()>0?((HashMap)list.get(0)).get("货位使用率").toString():"0";
+			//模组 PACK 完成数量统计；
+			String packMzTongJi="<span style='color:rgb(75,176,249);'>装配区A</br>";
+			List packMzTongJi1=PLC.getIntance().get统计(1);
+			List packMzTongJi2=PLC.getIntance().get统计(2);
+			for(int i=0;i<packMzTongJi1.size();i++){
+				packMzTongJi+=packMzTongJi1.get(i)+"</br>";
+			};packMzTongJi1=null;
+			packMzTongJi+="</span></br><span style='color:rgb(146,208,80);'>装配区B</br>";
+			for(int i=0;i<packMzTongJi2.size();i++){
+				packMzTongJi+=packMzTongJi2.get(i)+"</br>";
+			};packMzTongJi2=null;
+			packMzTongJi+="</span>";
+			//返回参数
+			result.put("hckTop", topArratList);topArratList=null;
+			result.put("hckTb", resultList);resultList=null;
+			result.put("hckBottom", bottomArratList);bottomArratList=null;
+			result.put("gdWcl",gdWcl);gdWcl=null;
+			result.put("packMzTongJi", packMzTongJi);packMzTongJi=null;
+			//result.put("hwSyl",hwSyl);//hwSyl=null;
+			dao=null;context=null;
 			response.setContentType("text/html;charset=utf-8");
 			response.getWriter().print(result);
 			response.getWriter().close();
@@ -406,6 +418,8 @@ public class HomeAction extends Action{
 				result.put("B", PLC.getIntance().is不检测动作完成());
 				result.put("C", SqlPro.autoRFIDup);
 				result.put("D", SqlPro.is大库调度);
+				result.put("E", PLC.getIntance().A区输送线自动请求打开);
+				result.put("F", PLC.getIntance().B区输送线自动请求打开);
 			}else if(map.get("type").equals("A")){
 				if(map.get("buttonA").equals("true")){
 					PLC.getIntance().set不检测取料数量(false);
@@ -427,13 +441,27 @@ public class HomeAction extends Action{
 					SqlPro.autoRFIDup=true;
 				};
 				result.put("type", SqlPro.autoRFIDup);
-			}else{
+			}else if(map.get("type").equals("D")){
 				if(map.get("buttonD").equals("true")){
 					SqlPro.is大库调度=false;
 				}else{
 					SqlPro.is大库调度=true;
 				};
 				result.put("type", SqlPro.is大库调度);
+			}else if(map.get("type").equals("E")){
+				if(map.get("buttonE").equals("true")){
+					PLC.getIntance().A区输送线自动请求打开=false;
+				}else{
+					PLC.getIntance().A区输送线自动请求打开=true;
+				};
+				result.put("type", PLC.getIntance().A区输送线自动请求打开);
+			}else if(map.get("type").equals("F")){
+				if(map.get("buttonF").equals("true")){
+					PLC.getIntance().B区输送线自动请求打开=false;
+				}else{
+					PLC.getIntance().B区输送线自动请求打开=true;
+				};
+				result.put("type", PLC.getIntance().B区输送线自动请求打开);
 			};map=null;
 			response.setContentType("text/html;charset=utf-8");
 			response.getWriter().print(result);
