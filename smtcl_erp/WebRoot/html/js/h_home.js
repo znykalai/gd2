@@ -389,55 +389,111 @@ var readyShow={
 						loadEvn:function(){
 							/**************启动调度-top***************/
 							$("#qidongdiaodu_top").click(function(){
-								var e=but.action(this,'top',but.butClick);
-								return e=null;
+								var this_=this;
+								var nude=af_Home.getFx(function(fx){
+									if(fx==1||fx=='1,2'){
+										var e=but.action(this_,'top',but.butClick);e=null;this_=null;
+									}else{
+										layer.msg("您无权操作A装配区！");
+									};
+								});nude=null;
+								return null;
 							});
 							//复位-top
 							$("#fuwei_top").click(function(){
-								var e=but.action(this,'fuwei_top',function(a,b){
-									return a=null,b=null;
-								});
-								return e=null;
+								var this_=this;
+								var nude=af_Home.getFx(function(fx){
+									if(fx==1||fx=='1,2'){
+										var e=but.action(this_,'fuwei_top',function(a,b){
+											return a=null,b=null;
+										});e=null;this_=null;
+									}else{
+										layer.msg("您无权操作A装配区！");
+									};
+								});nude=null;
+								return null;
 							});
 							//归零启动-top
 							$("#guilingqidong_top").click(function(){
-								var e=but.action(this,'guilingqidong_top',function(a,b){
-									return a=null,b=null;
-								});
-								return e=null;
+								var this_=this;
+								var nude=af_Home.getFx(function(fx){
+									if(fx==1||fx=='1,2'){
+										var e=but.action(this_,'guilingqidong_top',function(a,b){
+											return a=null,b=null;
+										});e=null;this_=null;
+									}else{
+										layer.msg("您无权操作A装配区！");
+									};
+								});nude=null;
+								return null;
 							});
 							//断点启动-top
 							$("#duandianqidong_top").click(function(){
-								var e=but.action(this,'duandianqidong_top',function(a,b){
-									return a=null,b=null;
-								});
-								return e=null;
+								var this_=this;
+								var nude=af_Home.getFx(function(fx){
+									if(fx==1||fx=='1,2'){
+										var e=but.action(this_,'duandianqidong_top',function(a,b){
+											return a=null,b=null;
+										});e=null;this_=null;
+									}else{
+										layer.msg("您无权操作A装配区！");
+									};
+								});nude=null;
+								return null;
 							});
 							/**************启动调度-bottom***************/
 							$("#qidongdiaodu_bottom").click(function(){
-								var e=but.action(this,'bottom',but.butClick);
-								return e=null;
+								var this_=this;
+								var nude=af_Home.getFx(function(fx){
+									if(fx==2||fx=='1,2'){
+										var e=but.action(this_,'bottom',but.butClick);e=null;this_=null;
+									}else{
+										layer.msg("您无权操作B装配区！");
+									};
+								});nude=null;
+								return null;
 							});
 							//复位-bottom
 							$("#fuwei_bottom").click(function(){
-								var e=but.action(this,'fuwei_bottom',function(a,b){
-									return a=null,b=null;
-								});
-								return e=null;
+								var this_=this;
+								var nude=af_Home.getFx(function(fx){
+									if(fx==2||fx=='1,2'){
+										var e=but.action(this_,'fuwei_bottom',function(a,b){
+											return a=null,b=null;
+										});e=null;this_=null;
+									}else{
+										layer.msg("您无权操作B装配区！");
+									};
+								});nude=null;
+								return null;
 							});
 							//归零启动-bottom
 							$("#guilingqidong_bottom").click(function(){
-								var e=but.action(this,'guilingqidong_bottom',function(a,b){
-									return a=null,b=null;
-								});
-								return e=null;
+								var this_=this;
+								var nude=af_Home.getFx(function(fx){
+									if(fx==2||fx=='1,2'){
+										var e=but.action(this_,'guilingqidong_bottom',function(a,b){
+											return a=null,b=null;
+										});e=null;this_=null;
+									}else{
+										layer.msg("您无权操作B装配区！");
+									};
+								});nude=null;
+								return null;
 							});
 							//断点启动-bottom
 							$("#duandianqidong_bottom").click(function(){
-								var e=but.action(this,'duandianqidong_bottom',function(a,b){
-									return a=null,b=null;
-								});
-								return e=null;
+								var this_=this;
+								var nude=af_Home.getFx(function(fx){
+									if(fx==2||fx=='1,2'){
+										var e=but.action(this_,'duandianqidong_bottom',function(a,b){
+											return a=null,b=null;
+										});e=null;this_=null;
+									}else{
+										layer.msg("您无权操作B装配区！");
+									};
+								});nude=null;
+								return null;
 							});
 							this.buttonTop(),
 							this.buttonBottom();

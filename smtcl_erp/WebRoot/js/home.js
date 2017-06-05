@@ -164,7 +164,7 @@ var af_Home={
 			url:getRootPath()+'/KuFangAction.do?operType=getFx',
 			type:'get',cache:false,
 			success:function(data){
-				return fun_(data);
+				return fun_(data);data=null;
 			}
 		});a=null;
 		return null;

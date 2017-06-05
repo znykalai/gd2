@@ -468,7 +468,10 @@ var readyShow={
 				    });
 				    //获取当前用户装配区
 					var nude=af_Home.getFx(function(fx){
-						var a=$("#assemble_area_id").val(fx);a=null;
+						if(fx=='1,2'){
+							fx=1;
+						};
+						var a=$("#assemble_area_id").val(fx);a=null;fx=null;
 						return null;
 					});nude=null;
 					//释放否复选框加载
@@ -532,6 +535,13 @@ var readyShow={
 				    $('#gd_newBtn').click(function(){
 				    	var a=$("#order_id").val('');a=null;
 				    	$('#dingdanform')[0].reset();
+						var nude=af_Home.getFx(function(fx){
+							if(fx=='1,2'){
+								fx=1;
+							};
+							var a=$("#assemble_area_id").val(fx);a=null;fx=null;
+							return null;
+						});nude=null;
 				    	return null;
 				    });
 				    //工单保存

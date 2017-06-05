@@ -17,8 +17,11 @@ var readyShow={
 						a=null;return null;
 					});
 					var nude=af_Home.getFx(function(fx){
+						if(fx=='1,2'){
+							fx=1;
+						};
 						var a=$("#fangxiang").val(fx);a=null;
-						var b=$("#fangxiang").attr("oval",fx);b=null;
+						var b=$("#fangxiang").attr("oval",fx);b=null;fx=null;
 						return null;
 					});nude=null;
 					var a=this.readyEvent();a=null;
