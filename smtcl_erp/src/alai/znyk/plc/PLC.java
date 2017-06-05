@@ -8,7 +8,12 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Vector;
 
 import alai.GDT.Inint;
@@ -30,6 +35,17 @@ public class PLC implements Serializable {
 	public boolean B区输送线到位常有=false;
 	public boolean 不检测取料数量=true;
 	protected transient Hashtable th=new Hashtable();
+	protected transient Hashtable<Integer,Long> 放行startTime_A=new Hashtable<Integer,Long>();
+	protected transient Hashtable<String,Long> tongji_A=new Hashtable<String,Long>();
+	
+	protected transient Hashtable<Integer,Long> 放行startTime_B=new Hashtable<Integer,Long>();
+	protected transient Hashtable<String,Long> tongji_B=new Hashtable<String,Long>();
+	/*tongji.put("空放行次数");tongji.put("空放行时间");tongji.put("上次空放行用时");
+	 *tongji.put("有动作放行次数");tongji.put("有动作放行时间");tongji.put("上次有动作放行用时");
+	 *tongji.put("完成模组数量");tongji.put("完成模PACK数量");
+	 *
+	 * 
+	 * */
 	public int 回流阀值=2;
 	public boolean is不检测取料数量() {
 		return 不检测取料数量;
@@ -481,7 +497,7 @@ public class PLC implements Serializable {
 				getFromPLC(1);//必须写在最后
 				//System.out.println("PLC通信与处理时间="+(System.currentTimeMillis()-time1)+"MS");
 				writeO();
-				System.out.println("A区处理15个工位一个周期用时="+(System.currentTimeMillis()-time1)+"MS");
+			//	System.out.println("A区处理15个工位一个周期用时="+(System.currentTimeMillis()-time1)+"MS");
 				try {
 					Thread.sleep(100);
 				} catch (InterruptedException e) {
@@ -532,10 +548,10 @@ public class PLC implements Serializable {
 				if(!stop2)
 				getFromPLC(2);//必须写在最后
 				
-				System.out.println("B区处理15个工位一个周期用时="+(System.currentTimeMillis()-time1)+"MS");
+				//System.out.println("B区处理15个工位一个周期用时="+(System.currentTimeMillis()-time1)+"MS");
 				//writeO();
 				try {
-					Thread.sleep(500);
+					Thread.sleep(100); 
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -624,13 +640,39 @@ public class PLC implements Serializable {
 		if(machine==1)return line;else return line2;
 		
 	}
+	
+	public Hashtable<Integer,Long> getH放行(int 装配区){
+		 if(装配区==1){
+			
+			 return 放行startTime_A;
+		 }else{
+			 return 放行startTime_B;
+			
+		 }
+		
+	}
+	
+	public Hashtable<String,Long> getTj(int 装配区){
+		 if(装配区==1){
+			
+			 return tongji_A;
+		 }else{
+			 return tongji_B;
+			
+		 }
+		
+	}
+	
 	int modeTh=0;
 	//读取光大的状态，并更新托盘数量
     public ReST[] getFromPLC(int 装配区){
     	try{
-    		if(modeTh%10==0){
+    		if(modeTh%30==0){
     			System.out.println(th.size()+"="+th);
+    			System.out.println("--"+this.get统计(装配区));
     		 }
+    		
+    		
     		modeTh++;
     		Resint r[]=	ClientSer.getIntance().getReturnPlc("D11001", 63, 16, 装配区);
     		if(r[0].getResInt()==-1)return null;
@@ -655,7 +697,9 @@ public class PLC implements Serializable {
     				//更新托盘的物料数量,即使载具没到位
     				if(取料完成1==1){//模拟一个上升沿
     					//检测本工位有没有托盘
+    					
     					if(i<15){//=15没有载具了，是同步输送线的电芯，不处理这个情况
+    					    
     					  //取料完成需要跟周工做同步处理
     					   getWrPLC(装配区).get(i).updataDB(getWrPLC(装配区).get(i).firstST);//更新托盘的数量
     					
@@ -671,7 +715,12 @@ public class PLC implements Serializable {
     			
     			if(载具放行1!=载具放行2){
     				
-    			
+    				/*tongji.put("空放行次数");tongji.put("空放行时间");tongji.put("上次空放行用时");
+					 *tongji.put("有动作放行次数");tongji.put("有动作放行时间");tongji.put("上次有动作放行用时");
+					 *tongji.put("完成模组数量");tongji.put("完成模PACK数量");
+					 *
+					 * 
+					 * */
     				
     				//更新托盘位置，同时把write置成false,
     				if(载具放行1==1){
@@ -679,11 +728,61 @@ public class PLC implements Serializable {
     					Carry car=getCarryLine(装配区).getCarry(i);
     					
     					if(car!=null){
+    						
+    						if(getH放行(装配区).get(i)!=null){
+		    						
+			    					  long 上次有动作放行用时=System.currentTimeMillis()-getH放行(装配区).get(i);
+			    					  getTj(装配区).put("有动作放行次数", (getTj(装配区).get("有动作放行次数")==null?1:getTj(装配区).get("有动作放行次数"))+1);
+			    					  getTj(装配区).put("有动作放行时间", (getTj(装配区).get("有动作放行时间")==null?上次有动作放行用时:getTj(装配区).get("有动作放行时间"))+上次有动作放行用时);
+			    					  getTj(装配区).put("上次有动作放行用时", 上次有动作放行用时);	
+			    					  
+			    					  getH放行(装配区).remove(i);
+			    					  }	
+    							
+    						
+    					
     						//首先移动载具到下一个工位，同时更新下一个工位的信息
     						if(取料完成1==1||不检测动作完成){
     						 if( getCarryLine(装配区).removeToNext(i)){
     							 if(i<14){
+    								 if(i==0){//模组
+    									 if(getTj(装配区).get(car.getName3()+"start")==null){
+    										 getTj(装配区).put(car.getName3()+"start", System.currentTimeMillis());
+    		    					    
+    									   }
+    									/////////////////////////////////////////////////////// 
+    									//pack
+    									 if(getTj(装配区).get(car.get工单号()+"start")==null){
+    										getTj(装配区).put(car.get工单号()+"start", System.currentTimeMillis());
+      		    					    
+      									   }
+    									 
+    		    					    }
+    								 
+    								 
+    								 if(i==13){//模组
+    									 if(getTj(装配区).get(car.getName3()+"start")!=null){
+    										 if(getTj(装配区).get(car.getName3()+"end")==null){
+    											 getTj(装配区).put(car.getName3()+"end", System.currentTimeMillis());
+    											 getTj(装配区).put(car.getName3()+"模组用时=", getTj(装配区).get(car.getName3()+"end")-getTj(装配区).get(car.getName3()+"start"));
+    											 getTj(装配区).put("完成模组数量",getTj(装配区).get("完成模组数量")==null?1:getTj(装配区).get("完成模组数量")+1);
+     		    					        
+    										   }
+     		    					      }
+    									////////////////////////////////////////////// 
+    									//pack
+    									 if(getTj(装配区).get(car.get工单号()+"start")!=null){
+    										 if(getTj(装配区).get(car.get工单号()+"end")==null){
+    											 getTj(装配区).put(car.get工单号()+"end", System.currentTimeMillis());
+    											 getTj(装配区).put(car.get工单号()+"PACK用时=", getTj(装配区).get(car.get工单号()+"end")-getTj(装配区).get(car.get工单号()+"start"));
+    											 getTj(装配区).put("完成模PACK数量",getTj(装配区).get("完成模PACK数量")==null?1:getTj(装配区).get("完成模PACK数量")+1);
+     		    					        
+    										   }
+     		    					      }
+     		    					    }	
+    		    						
     								getWrPLC(装配区).get(i+1).initFromSql(); 
+    								//在这儿可以处理一个模组开始的时间，后结束的时间。
     							
     							 }
     						}else{
@@ -741,11 +840,14 @@ public class PLC implements Serializable {
     			    			//int 载具放行old=(tem22&0b100)==4?1:0;
     			    			//if(载具放行!=载具放行old){
     			    				if(载具放行new==0){
+    			    					getH放行(装配区).put(curr+1, System.currentTimeMillis());
+    			    					
+    			    					  
     			    					if(curr==5){
     			    						//如果是5ST，先不要让指令队列移动。等接受到放料完成后，在移动队列
     			    					
     			    				new Thread(){
-        	    	    					public void run(){
+        	    	    					public void run(){ 
         	    	    							 th.put(Thread.currentThread(), curr2+"工位，数据更新完成="+getWrPLC(装配区).get(curr2).firstST.is数据更新完成());
         	    	    							 int dd=0;
         	    	    						    while(true)	{
@@ -824,6 +926,7 @@ public class PLC implements Serializable {
     						 
     						System.out.println("如托盘在本工位没有任何需要的动作，不判断动作完成标志-----------------------------");
     					//再移一次//////////////////////////////////////////////
+    						getH放行( 装配区).put(i, System.currentTimeMillis());
     						
     						if( getCarryLine(装配区).removeToNext(i)){ 
     							 if(i<14){
@@ -864,6 +967,18 @@ public class PLC implements Serializable {
 			    			//int 载具放行old=(tem22&0b100)==4?1:0;
 			    			//if(载具放行!=载具放行old){
 			    				if(载具放行new==0){
+			    					/*tongji.put("空放行次数");tongji.put("空放行时间");tongji.put("上次空放行用时");
+			    					 *tongji.put("有动作放行次数");tongji.put("有动作放行时间");tongji.put("上次有动作放行用时");
+			    					 *tongji.put("完成模组数量");tongji.put("完成模PACK数量");
+			    					 *
+			    					 * 
+			    					 * */
+			    					if(getH放行(装配区).get(curr)!=null){
+			    					  long 上次空放行用时=System.currentTimeMillis()-getH放行(装配区).get(curr);
+			    					  getTj(装配区).put("空放行次数", (getTj(装配区).get("空放行次数")==null?1:getTj(装配区).get("空放行次数"))+1);
+			    					  getTj(装配区).put("空放行时间", (getTj(装配区).get("空放行时间")==null?上次空放行用时:getTj(装配区).get("空放行时间"))+上次空放行用时);
+			    					  getTj(装配区).put("上次空放行用时", 上次空放行用时);	
+			    					  }
 			    					 
 			    				// if( getCarryLine(装配区).removeToNext(curr)){
 			    					  //不更新命令
@@ -1008,6 +1123,7 @@ public class PLC implements Serializable {
     			
     			
     		}
+    		
     	
     	
     	}catch(Exception ex){
@@ -1638,6 +1754,16 @@ public class PLC implements Serializable {
 				STC1.get(i).secondST.writeifChangeToPLC();
 				
 			}
+
+			/*tongji.put("空放行次数");tongji.put("空放行时间");tongji.put("上次空放行用时");
+			 *tongji.put("有动作放行次数");tongji.put("有动作放行时间");tongji.put("上次有动作放行用时");
+			 *tongji.put("完成模组数量");tongji.put("完成模PACK数量");
+			 *
+			 * 
+			 * */
+			//tongji.get("")
+			
+			
 		     }else{
 		    	 
 		    	 for(int i=0;i<STC2.size();i++)
@@ -1649,7 +1775,79 @@ public class PLC implements Serializable {
 					}	 
 		     }
 		
-	      }
+		Hashtable<String ,Long> m= getTj(machineID);
+		Vector<String> t=new Vector<String>();
+	    Enumeration<String> en=m.keys();
+	    while(en.hasMoreElements()){
+	    	String o=en.nextElement();
+	    	if(o.contains("start")||o.contains("end")){
+	    		t.addElement(o);
+	    	}
+	    }
+	    
+		for(int i=0;i<t.size();i++){m.remove(t.get(i));}
+		t=null;
+		
+		}
+	
+	public List<String> get统计(int machineID){
+		/*tongji.put("空放行次数");tongji.put("空放行时间");tongji.put("上次空放行用时");
+		 *tongji.put("有动作放行次数");tongji.put("有动作放行时间");tongji.put("上次有动作放行用时");
+		 *tongji.put("完成模组数量");tongji.put("完成模PACK数量");
+		 *
+		 * 
+		 * */
+		   Hashtable<String,Long> h=(Hashtable<String,Long>)getTj(machineID).clone();
+		 //  System.out.println(h);
+		   h.remove("空放行次数"); h.remove("上次空放行用时"); h.remove("空放行时间");
+		   h.remove("有动作放行次数"); h.remove("有动作放行时间"); h.remove("上次有动作放行用时");
+		   h.remove("完成模组数量"); h.remove("完成模PACK数量");
+		  
+		   List<String> list = new ArrayList<String>();
+		   Enumeration<String> en=h.keys();
+		   
+		   while(en.hasMoreElements()){
+		    	String o=en.nextElement(); 
+		    	long time=h.get(o);
+		    	if(time>1000000000){
+		    		list.add(o+"="+new Date(time).toLocaleString());
+		    	}else{
+		    	list.add(o+"="+(h.get(o)==null?"等待统计中。。。":h.get(o)+""));}
+		    	
+		       }
+		 //  list.sort();
+		   h=null;
+		   h=getTj(machineID);
+		   Collections.sort(list);
+		   list.add(0, "完成模组数量="+(h.get("完成模组数量")==null?"等待统计中。。。":h.get("完成模组数量")+"")); 
+		   list.add(0, "完成模PACK数量="+(h.get("完成模PACK数量")==null?"等待统计中。。。":h.get("完成模PACK数量")+""));
+		   list.add(0, "上次有动作放行用时="+(h.get("上次有动作放行用时")==null?"等待统计中。。。":h.get("上次有动作放行用时")+"")); 
+		   list.add(0, "有动作放行次数="+(h.get("有动作放行次数")==null?"等待统计中。。。":h.get("有动作放行次数")+""));
+		   list.add(0, "有动作放行时间="+(h.get("有动作放行时间")==null?"等待统计中。。。":h.get("有动作放行时间")+""));
+		   if(h.get("有动作放行时间")!=null&&h.get("有动作放行次数")!=null){
+		   list.add(0, "动作载具平均用时="+(h.get("有动作放行时间")/h.get("有动作放行次数")));
+		   }else{
+			   list.add(0, "动作载具平均用时=等待统计中。。。");   
+			   
+		   }
+		   
+		   list.add(0, "上次空放行用时="+(h.get("上次空放行用时")==null?"等待统计中。。。":h.get("上次空放行用时")+"")); 
+		   list.add(0, "空放行次数="+(h.get("空放行次数")==null?"等待统计中。。。":h.get("空放行次数")+""));
+		   list.add(0, "空放行时间="+(h.get("空放行时间")==null?"等待统计中。。。":h.get("空放行时间")+""));
+		   
+		   if(h.get("空放行时间")!=null&&h.get("空放行次数")!=null)
+		   list.add(0, "空放行载具平均用时="+(h.get("空放行时间")/h.get("空放行次数")));
+		   else  list.add(0, "空放行载具平均用时=等待统计中。。。");
+		   
+		   if(h.get("空放行时间")!=null&&h.get("空放行次数")!=null&&h.get("有动作放行时间")!=null&&h.get("有动作放行次数")!=null)
+		   list.add(0, "动作载具平均用时-空放行载具平均用时="+((h.get("有动作放行时间")/h.get("有动作放行次数"))-(h.get("空放行时间")/h.get("空放行次数"))));
+		   else list.add(0, "动作载具平均用时-空放行载具平均用时=等待统计中。。。");
+		 
+		   list.add(0, "完成模组数量="+(h.get("完成模组数量")==null?"0":h.get("完成模组数量")+""));
+		   list.add(0, "完成模PACK数量="+(h.get("完成模PACK数量")==null?"0":h.get("完成模PACK数量")+""));
+		  
+		   return list; 
+	}
 	
 	public String stop(){
 		 Vector v=SqlTool.findInVector("select idEvent,来源,任务类别,动作,托盘编号,来源货位号,放回货位号,请求区,状态,状态2 from 立库动作指令  where 状态<>'完成' and 状态<>'排队'  order by idEvent");

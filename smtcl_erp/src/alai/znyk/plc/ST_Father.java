@@ -178,8 +178,8 @@ public class ST_Father implements STInterface, Serializable{
 		String back=writeToPLC();
 		if(back!=null){
 			if(back.equals("成功")){
-				//System.out.println("00000");
 				old.intFromST(this);
+				//this.updataFromPLC();
 				return "成功!";
 			}else{
 				return back;
