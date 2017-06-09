@@ -175,20 +175,18 @@ public class ST_Father implements STInterface, Serializable{
 	
 	public synchronized String  writeifChangeToPLC(){
 		if(this.isChange()){
-		String back=writeToPLC();
-		if(back!=null){
-			if(back.equals("成功")){
-				//System.out.println("00000");
-				old.intFromST(this);
-				//updataFromPLC();
-				return "成功!";
-			}else{
-				return back;
+			String back=writeToPLC();
+			if(back!=null){
+				if(back.equals("成功")){
+					old.intFromST(this);
+					//updataFromPLC();
+					//this.updataFromPLC();
+					return "成功!";
+				}else{
+					return back;
+				}
 			}
 		}
-		
-		}
-		
 		return "成功!";
 	}
 	
