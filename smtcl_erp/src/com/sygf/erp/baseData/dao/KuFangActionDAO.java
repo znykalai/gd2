@@ -20,7 +20,6 @@ public class KuFangActionDAO extends SqlMapClientDaoSupport {
 		}
 		return null;
 	}
-	
 	/**
 	 * 获取库存
 	 * @param map
@@ -35,7 +34,6 @@ public class KuFangActionDAO extends SqlMapClientDaoSupport {
 		}
 		return null;
 	}
-	
 	/**
 	 * 获取托盘号、方向
 	 * @param map
@@ -65,5 +63,19 @@ public class KuFangActionDAO extends SqlMapClientDaoSupport {
 			e.printStackTrace();
 		}
 		return result;
+	}
+	/**
+	 * 获取RFID、物料
+	 * @param map
+	 * @return
+	 */
+	public List getRfidWl(HashMap map) {
+		try{
+			return getSqlMapClientTemplate().queryForList("KuFangActionDAO.getRfidWl",map);
+		}catch (Exception e) {
+			Log.error("KuFangActionDAO.getRfidWl方法出现异常！" + e.getMessage());
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

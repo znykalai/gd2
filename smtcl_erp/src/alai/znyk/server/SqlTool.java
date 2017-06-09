@@ -71,8 +71,10 @@ public class SqlTool {
      }
    catch(Exception e){
         e.printStackTrace() ;
+        SqlPro.getLog().error("sql", e);
        try {
     	   conn.realseCon();
+    	   if(set!=null)
            set.close();
            st.close();
 

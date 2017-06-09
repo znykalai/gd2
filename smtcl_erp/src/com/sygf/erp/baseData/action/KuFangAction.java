@@ -239,12 +239,25 @@ public class KuFangAction extends Action{
 		try{
 			request.setCharacterEncoding("utf-8");
 			response.setCharacterEncoding("utf-8");
+			JSONObject mes=new JSONObject();
 			//方向
 			int fx=Integer.parseInt(request.getParameter("fx").toString());
 			//获取托盘编码
 			String tp_code = ClientSer.getIntance().ReadFromRffid("",fx);
+			mes.put("tp_code", tp_code);tp_code=null;
+			mes.put("wl_code", "");
+			if(!mes.getString("tp_code").equals("")){
+				HashMap map=new HashMap();
+				map.put("sql", " WHERE a.托盘编号='"+mes.getString("tp_code")+"'");
+				ApplicationContext context=GetApplicationContext.getContext(request);
+				KuFangActionDAO dao=(KuFangActionDAO)context.getBean("kuFangActionDAO");context=null;
+				List list=dao.getRfidWl(map);map=null;dao=null;
+				if(list!=null&&list.size()>0){
+					mes.put("wl_code", ((HashMap)list.get(0)).get("物料编码"));
+				};list=null;
+			};
 			response.setContentType("text/html;charset=utf-8");
-			response.getWriter().print(tp_code);
+			response.getWriter().print(mes);
 			response.getWriter().close();
 		}catch (Exception e) {
 			e.printStackTrace();

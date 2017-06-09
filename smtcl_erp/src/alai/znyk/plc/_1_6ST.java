@@ -196,7 +196,7 @@ public class _1_6ST extends ST_Father implements STInterface {
 	}
 	@Override
 	public String writeToPLC() {
-		 System.out.println(startAddress+"工位+writeToPLC()->数据更新完成="+ 数据更新完成+"/boolContent="+boolContent);
+		// System.out.println(startAddress+"工位+writeToPLC()->数据更新完成="+ 数据更新完成+"/boolContent="+boolContent);
 		return plc.writeBlockToBLC(startAddress, length, new int[]{boolContent,电芯类型标志,模组类型标志,需求数量,完成数量,配方特征},machineID);
 	}
 	@Override
@@ -214,14 +214,14 @@ public class _1_6ST extends ST_Father implements STInterface {
 	     
    	//	}
    		 int tem= boolContent;
-   		 System.out.println("updataFromPLC()->boolContent="+boolContent);
+   		// System.out.println("updataFromPLC()->boolContent="+boolContent);
    		     允许工位动作标志=((tem&0b01)==1);
    		     投放型腔标志=((tem&0b10)==2);
    		     立库RDY=((tem&0b100)==4);
    		     数据更新完成=((tem&0b1000)==8);
    		     单盖板载具=((tem&0b10000)==16);
    		     数据处理中=((tem&0b100000)==32);
-   		     System.out.println("数据更新完成=((tem&0b1000)==1)="+ 数据更新完成);
+   		//     System.out.println("数据更新完成=((tem&0b1000)==8)="+ 数据更新完成);
    		     
    		   
    	 

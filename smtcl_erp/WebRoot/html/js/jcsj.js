@@ -1,17 +1,13 @@
 var readyShow={
-	//显示模块"物料、模组、pack、权限"
+	//显示模块"物料、模组、pack、权限、RFID绑定"
 	showThis:function(e){
-		if($(e).css("display")=="block"){
-			return null;
-		};
+		if($(e).css("display")=="block"){return null;};
 		var a=$(".showWindow").fadeOut(0,function(){
-			var a=$(e).fadeIn(0);a=null;
-			return null;
+			var a=$(e).fadeIn(0);a=null;return null;
 		});a=null;
 		return null;
 	},
-	//加载主题
-	load:function(hdFun){
+	load:function(){
 		try{
 			var af={
 				/***物料处理***/
@@ -2088,6 +2084,212 @@ var readyShow={
 					});
 					return null;
 				},
+				/**
+				 * RFID绑定物料事件以及操作功能
+				 */
+				rfidLoad:function(){
+					$('#rfid_body').css('height',document.body.clientHeight / 1.5);
+				    var table={
+				    	index:1,//table序列
+				    	//调用load事件
+				    	show:function(){
+			  				var tp=$("#getRfid_tp").val();
+			  				var wl=$("#getRfid_wl").val();
+			  				var rfid_table=$('#rfid_table tbody tr');
+			  				if(rfid_table.length>0){
+				  				table.index=1;rfid_table.remove();
+			  				};rfid_table=null;
+			  				var a=table.tableLoad(tp,wl,'');//显示数据
+			  				a=null;tp=null;wl=null;
+			  				return null;
+				    	},
+				    	//读取托盘编号
+				    	getTpCode:function(function_){
+				    		var a=$.ajax({
+							    url:getRootPath()+'/BaseDataAction.do?operType=getTpCode',
+							    type:'get',cache:false,
+							    success:function(data){
+							    	return function_(data);
+							    }
+							});a=null;
+							return null;
+				    	},
+				    	//保存数据
+				    	save:function(){
+				    		var add=new Array;//新增
+							var update=new Array;//修改
+							var rfid_table=$('#rfid_table tbody tr');
+							for(var i=0;i<rfid_table.length;i++){
+								var map={
+									id:rfid_table.eq(i).children("td").eq(1).attr('id'),
+									tp_code:rfid_table.eq(i).children("td").eq(2).text(),
+									wl_code:rfid_table.eq(i).children("td").eq(3).html()
+								};
+								if(rfid_table.eq(i).children("td").eq(2).text()==""){
+						    		layer.tips('请读取托盘编号！','#rfidTd_tp'+(i+1)); 
+									return null;
+								};
+								if(rfid_table.eq(i).children("td").eq(3).html()==""){
+						    		layer.tips('请选择物料编码！','.rfidTd_wl'+(i+1));
+									return null;
+								};
+								//判断当前行,修改还是新增
+					            if($(rfid_table).parent().children("tr").eq(i).attr("class")=='add'){
+					                add.push(map);//新增数据
+					            } else if($(rfid_table).parent().children("tr").eq(i).attr("class")=="update"){
+					                update.push(map);//修改数据
+					            };map=null;
+							};
+							if(add.length==0&&update.length==0){return null;};
+							var a=$.ajax({
+								url:getRootPath()+'/BaseDataAction.do?operType=saveRfid',
+								type:'post',cache:false,
+								data:'add='+JSON.stringify(add)+'&update='+JSON.stringify(update),
+								success:function(data){
+					  				rfid_table.attr("class","");//将所有行重置class变为老数据
+					  				rfid_table=null;add=null;update=null;
+					  				var a=table.show();a=null;
+					  				layer.msg(data);data=null;
+					            }
+							});a=null;
+							return null;
+				    	},
+				    	setTpCode:function(this_,tr,tp,data){
+		    				tp.html(data);data=null;
+			    			var rfid_table=$('#rfid_table tbody tr');
+		    				for(var i=0;i<rfid_table.length;i++){
+			    				//如果读取的是当前行不判断
+			    				if(($(tr).children("td").eq(1).text()-1)==i){continue;};
+			    				//如果读取到的托盘编号重复则提示换个托盘读取。
+				    			if($(this_).parent().parent().text()==rfid_table.eq(i).children("td").eq(2).text()){
+									layer.tips('当前读取的托盘编号为“'+tp.text()+'”与第'+(i+1)+'行编号重复，请换个托盘重新读取！',$(this_));
+									tp.html(tp.attr('olv'));tp=null;
+									return null;
+								};
+							};rfid_table=null;tp=null;
+							//判断当前行 修改还是新增
+			    			if(tr.attr("class")==""){
+			    				tr.attr("class","update");
+			    			};tr=null;this_=null;
+			    			return null;
+				    	},
+				    	//维护table数据 add以及update
+				    	insert:function(map){
+				    		$('#rfid_table tbody').append('<tr bgcolor="#ffffff" class="'+map.type+'" style="height:26px;">' +
+								'<td style="width:4%;padding:0px;"><input type="checkbox" name="checkbox"></input></td>'+
+								'<td style="width:4%;padding:0px;" id="'+map.id+'">'+map.index+'</td>'+
+								'<td style="width:46%;padding:0px;"><div class="col-md-10"><span style="margin-left:20%;" olv="'+map.tp_code+'">'+map.tp_code+'</span></div><div class="col-md-1"><input style="margin-left:90%;height:24px;font-size:6px;" class="btn btn-default" id="rfidTd_tp'+map.index+'" value="读取" type="button"></input></div></td>'+
+								'<td class="rfidTd_wl'+map.index+'" style="width:46%;padding:0px;">'+map.wl_code+'</td>'+
+							'</tr>');
+				    		$("#rfidTd_tp"+map.index).click(function(){
+				    			var this_=this;
+				    			var tr=$(this).parent().parent().parent();
+				    			var tp=$(tr).children("td").eq(2).children("div").eq(0).children("span").eq(0);
+				    			var a=table.getTpCode(function(data){
+				    				if(tp.text()!=data&&tp.text()!=''){
+					    				var lay=layer.confirm('是否覆盖此托盘？',{
+										    btn:['确定','取消'] //按钮
+										},function(){
+											var a=table.setTpCode(this_,tr,tp,data);
+											a=null;this_=null;tr=null;tp=null;layer.close(lay);
+										});
+				    				}else{var a=table.setTpCode(this_,tr,tp,data);a=null;this_=null;tr=null;tp=null;};
+				    			});a=null;return null;
+				    		});
+				    		$(".rfidTd_wl"+map.index).click(function(){
+				    			var this_=this;
+				    			var a=af.selectMzPack(null,null,null,false,function(e,id){
+				    				if(e){var b=$(".rfidTd_wl"+map.index).html(id);e=null;id=null;b=null;};
+				    				if($(this_).parent().attr("class")==""){
+					                    $(this_).parent().attr("class","update");
+					                };this_=null;
+				    			},"配方");a=null;return null;
+				    		});
+				    		return null;
+				    	},
+				    	//显示table数据
+				    	tableLoad:function(tp,wl,type){
+				    		var a=$.ajax({
+								url:getRootPath()+'/BaseDataAction.do?operType=getRfid',
+								type:'get',cache:false,
+								data:"tp_code="+tp+"&wl_code="+wl,
+								success:function(data){
+							    	var obj=eval("("+data+")");data=null;
+							    	for(var i=0;i<obj.length;i++){
+								    	var map={type:type,index:table.index,id:obj[i].id,tp_code:obj[i].tp_code,wl_code:obj[i].wl_code};
+								    	var a=table.insert(map);a=null;map=null;table.index++;
+							    	};obj=null;return null;
+								}
+							});a=null;return null;
+				    	},
+				    	//删除table数据
+				    	delete:function(){
+				    		var checkedBox=$("input:checked[name='checkbox']");
+				    		if(checkedBox.size()>0){
+				    			var lay=layer.confirm('确定删除托盘？',{
+								    btn:['删除','取消'] //按钮
+								},function(){
+						    		var del=new Array;//删除数组
+						    		var delType=false;
+						    		for(var i=0; i<checkedBox.size(); i++) {
+			                            var tr=checkedBox.eq(i).parent().parent();
+			                            if(tr.find('td').eq(1).attr('id')==''){
+			                            	tr.remove();continue;
+			                            };delType=true;
+			                            del.push(tr.find('td').eq(1).attr('id'));
+						    		};
+						    		if(delType){var a=$.ajax({
+									    url:getRootPath()+'/BaseDataAction.do?operType=deleteRfid',
+									    type:'get',cache:false,
+									    data:'del='+JSON.stringify(del),
+									    success:function(data){
+									    	del=null;checkedBox=null;
+									    	layer.msg(data);data=null;
+									    	var a=table.show();a=null;
+									    }
+									});a=null;}else{layer.msg("删除成功！");};
+								});
+				    		};
+				    		return null;
+				    	}
+				    };
+				    //选择物料点击事件
+				    $("#getRfid_wl_click").click(function(e){
+		    			var a=af.selectMzPack(null,null,null,false,function(e,id){
+		    				if(e){var b=$("#getRfid_wl").val(id);b=null;e=null;id=null;};
+		    			},"配方");a=null;return null;
+				    });
+				    //查询按钮事件
+				    $("#rfid_seBtn").click(function(){
+				    	var a=table.show();a=null;
+				    	return null;
+				    });
+				    //新增按钮事件
+				    $("#rfid_adlBtn").click(function(){
+				    	var map={type:'add',index:table.index,id:'',tp_code:'',wl_code:''};
+				    	var a=table.insert(map);a=null;map=null;table.index++;
+				    	return null;
+				    });
+				    //全选按钮事件
+				    $("#checkboxAll").click(function(){
+				    	if($(this).prop("checked")){
+					    	$("input[name='checkbox']").prop("checked",true);
+				    	}else{
+					    	$("input[name='checkbox']").prop("checked",false);
+				    	};return null;
+				    });
+				    //保存按钮事件
+				    $("#rfid_saBtn").click(function(){
+						var a=table.save();a=null;
+						return null;
+				    });
+				    //删除按钮事件
+				    $("#rfid_delBtn").click(function(){
+				    	var a=table.delete();a=null;
+				    	return null;
+				    });
+					return null;
+				},
 				/***渲染所有事件***/
 				load:function(fun){
 					try{
@@ -2104,6 +2306,7 @@ var readyShow={
 						var b=this.mozuLoad();b=null;
 						var c=this.packLoad();c=null;
 						var d=this.baseLoad();d=null;
+						var b=this.rfidLoad();b=null;
 				    	return fun();
 					}catch(e){
 						return null;
@@ -2144,6 +2347,6 @@ var readyShow={
 		}catch(e){
 			return e;
 		};
-		return hdFun();
+		return null;
 	}
 };

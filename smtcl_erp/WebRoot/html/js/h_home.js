@@ -1,6 +1,6 @@
 var readyShow={
 	deleteSetInterval:null,
-	load:function(hdFun){
+	load:function(){
 		try{
 			var af={
 				/**
@@ -11,14 +11,14 @@ var readyShow={
 					var winHeight=document.body.clientHeight;
 					if(winHeight==window.screen.height){
 						winHeight=document.body.clientHeight-50;
-					}
+					};
 					//设置高度自适应
 					$('#xy').css('height',(winHeight-(window.screen.height-winHeight))/0.98);
 					$('.table-body').css('height',document.body.clientHeight/5.88);
 					this.txload();//图形渲染
 					this.loadButton();//按钮事件启动
 					//货位渲染
-					if(this.getHck()&&dsState.state){//是否启动定时刷新
+					if(this.getHck()&&dsState.state/*是否启动定时刷新*/){
 						readyShow.deleteSetInterval=setInterval(function(){
 							var a=af.getHck();a=null;
 						},dsState.tim),af_Home.dlInterval=true;
@@ -150,18 +150,13 @@ var readyShow={
 								$("div[name='HEAD_BOTTOM-ST']").attr("class","head_hui no");
 								$("div[name='BOTTOM-ST']").attr("class","hui no");
 							};
-							/**
-							 * 货物使用率,订单完成率；必须是int类型
-							 */
-							//var hwSyl=Number(obj.hwSyl)>0?Number(obj.hwSyl):0;
-							//af.upload(hwSyl,gdWcl);
-							var gdWcl=Number(obj.gdWcl)>0?Number(obj.gdWcl):0;
-							af.upload(gdWcl);
-							/**
-							 * PACK、模组 完成率；
-							 */
-							$("#home_mz_list").html(obj.packMzTongJi);
-							return obj=null,hwSyl=null,gdWcl=null;
+							/*** 货物使用率,订单完成率；必须是int类型***/
+							var gdWcl=Number(obj.gdWcl)>0?Number(obj.gdWcl):0;af.upload(gdWcl);gdWcl=null;
+							/*** PACK、模组 完成率***/$("#home_mz_list").html(obj.packMzTongJi);obj.packMzTongJi=null;
+							/***获取PLC连接状态***/
+							if(obj.plcType1){$("#duandianqidong_top").attr("class","qfgdStart");}else{$("#duandianqidong_top").attr("class","qfgd");};
+							if(obj.plcType2){$("#duandianqidong_bottom").attr("class","qfgdStart");}else{$("#duandianqidong_bottom").attr("class","qfgd");};obj=null
+							return null;
 						}
 					});
 					return true;
@@ -240,40 +235,18 @@ var readyShow={
 					json.credits=credits;
 					json.series=series;
 					$('#container-rpm').highcharts(json);
-//					货位占用率
-//					var series=[{
-//					   name:'Speed',
-//					   data:[0],
-//					   dataLabels:{
-//					      format:'<div style="text-align:center;"><span style="font-size:15px;color:red;">{y:.0f}%</span><br/>' +
-//					      '<span style="font-size:10px;color:silver;">货位使用率</span></div>'
-//					   }
-//					}];
-//					json.yAxis=yAxis; 
-//					json.series=series;
-//					$('#container-speed').highcharts(json);
 					chart=null,pane=null,tooltip=null,yAxis=null,plotOptions=null,credits=null,series=null,json=null
 					return null;
 				},
 				/**
 				 * 更新图片信息,参数必须是int类型
 				 */
-				upload:function(newVal2){
-//				upload:function(newVal1,newVal2){
-//					     货物使用率
-//				      var chart=$('#container-speed').highcharts();
-//				      var point;
-//				      var newVal;
-//				      var inc;
-//				      if(chart){
-//				         point=chart.series[0].points[0];
-//				         point.update(newVal1);
-//				      };
+				upload:function(newVal1){
 				      //订单完成率
 				      chart=$('#container-rpm').highcharts();
 				      if(chart){
 				         point=chart.series[0].points[0];
-				         point.update(newVal2);
+				         point.update(newVal1);
 				      };
 				      return chart=null,point=null,newVal=null,inc=null;
 				},
@@ -282,6 +255,9 @@ var readyShow={
 				 */
 				loadButton:function(){
 					var but={
+						//启动调度是否成功状态标识
+						qidongdiaodu_top_type:false,//A
+						qidongdiaodu_bottom_type:false,//B
 						buttonTop:function(){
 							//复位点击效果-top
 							$("#fuwei_top").mousedown(function(){
@@ -298,15 +274,6 @@ var readyShow={
 								return null;
 							});
 							$("#guilingqidong_top").mouseup(function(){
-								$(this).attr("class","qfgd");
-								return null;
-							});
-							//断点启动点击效果-top
-							$("#duandianqidong_top").mousedown(function(){
-								$(this).attr("class","qfgdStart");
-								return null;
-							});
-							$("#duandianqidong_top").mouseup(function(){
 								$(this).attr("class","qfgd");
 								return null;
 							});
@@ -331,20 +298,8 @@ var readyShow={
 								$(this).attr("class","qfgd");
 								return null;
 							});
-							//断点启动点击效果-bottom
-							$("#duandianqidong_bottom").mousedown(function(){
-								$(this).attr("class","qfgdStart");
-								return null;
-							});
-							$("#duandianqidong_bottom").mouseup(function(){
-								$(this).attr("class","qfgd");
-								return null;
-							});
 							return null;
 						},
-						//启动调度是否成功状态标识
-						qidongdiaodu_top_type:false,
-						qidongdiaodu_bottom_type:false,
 						//通用点击事件
 						butClick:function(e,type){
 							if(type==false){
@@ -363,7 +318,7 @@ var readyShow={
 							return null;
 						},
 						action:function(e,type,fun){
-							var a=$.ajax({//ajax处理
+							var a=$.ajax({
 								url:getRootPath()+'/HomeAction.do?operType=getHckButton',
 								type:'get',
 								data:"type="+type+"&A="+but.qidongdiaodu_top_type+"&B="+but.qidongdiaodu_bottom_type,
@@ -427,20 +382,6 @@ var readyShow={
 								});nude=null;
 								return null;
 							});
-							//断点启动-top
-							$("#duandianqidong_top").click(function(){
-								var this_=this;
-								var nude=af_Home.getFx(function(fx){
-									if(fx==1||fx=='1,2'){
-										var e=but.action(this_,'duandianqidong_top',function(a,b){
-											return a=null,b=null;
-										});e=null;this_=null;
-									}else{
-										layer.msg("您无权操作A装配区！");
-									};
-								});nude=null;
-								return null;
-							});
 							/**************启动调度-bottom***************/
 							$("#qidongdiaodu_bottom").click(function(){
 								var this_=this;
@@ -481,20 +422,6 @@ var readyShow={
 								});nude=null;
 								return null;
 							});
-							//断点启动-bottom
-							$("#duandianqidong_bottom").click(function(){
-								var this_=this;
-								var nude=af_Home.getFx(function(fx){
-									if(fx==2||fx=='1,2'){
-										var e=but.action(this_,'duandianqidong_bottom',function(a,b){
-											return a=null,b=null;
-										});e=null;this_=null;
-									}else{
-										layer.msg("您无权操作B装配区！");
-									};
-								});nude=null;
-								return null;
-							});
 							this.buttonTop(),
 							this.buttonBottom();
 							//获取启动调度按钮状态A,B
@@ -510,11 +437,11 @@ var readyShow={
 				if(af_Home.administrator.启动调度==false){var a=af_Home.cleanQX("qidongdiaodu_top");a=null;var b=af_Home.cleanQX("qidongdiaodu_bottom");b=null;};
 				if(af_Home.administrator.复位==false){var a=af_Home.cleanQX("fuwei_top");a=null;var b=af_Home.cleanQX("fuwei_bottom");b=null;};
 				if(af_Home.administrator.归零启动==false){var a=af_Home.cleanQX("guilingqidong_top");a=null;var b=af_Home.cleanQX("guilingqidong_bottom");b=null;};
-				if(af_Home.administrator.断点启动==false){var a=af_Home.cleanQX("duandianqidong_top");a=null;var b=af_Home.cleanQX("duandianqidong_bottom");b=null;};
+				//if(af_Home.administrator.断点启动==false){var a=af_Home.cleanQX("duandianqidong_top");a=null;var b=af_Home.cleanQX("duandianqidong_bottom");b=null;};
 			},{state:true,tim:1000});//渲染主页面,function(){}--第一个返回参数,{ds:true--是否为定时刷新、tim:刷新时间毫秒为单位};
 		}catch(e){
 			return e;
-		}
-		return hdFun();
+		};
+		return null;
 	}
 };

@@ -10,7 +10,7 @@ var readyShow={
 		});a=null;
 		return null;
 	},
-	load:function(hdFun){
+	load:function(){
 		try{
 			var af={
 				load:function(fun,dsState){
@@ -615,7 +615,7 @@ var readyShow={
 			return null;
 		}catch(e){
 			return e;
-		}
-		return hdFun();
+		};
+		return null;
 	}
 };

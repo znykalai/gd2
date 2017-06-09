@@ -913,7 +913,7 @@ public void startlineAGV(){
     		    	
     		    }
     		    SqlTool.insert(s);
-    		    System.out.println(sqlc);
+    		   //System.out.println(sqlc);
     	 }
     	
     }

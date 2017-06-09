@@ -302,8 +302,8 @@ public class ClientSer {
 				SqlPro.getLog().error("error 调用SERVICE写入"+machineID+"号PLC异常",ex);
 			    ex.printStackTrace();}
 		 }else{
-			 if(!strAddress.equals("D11999"))
-			 System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"+strAddress+",nums="+invalues.length+",lengths="+valuseLeng+">>>>>>>>>>>>>>>>>>>>"+((invalues[0]&0b01)==1));
+			 if(!strAddress.equals("D11999"));
+			 //System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"+strAddress+",nums="+invalues.length+",lengths="+valuseLeng+">>>>>>>>>>>>>>>>>>>>"+((invalues[0]&0b01)==1));
 			 //alai.GDT.Inint tem []=new alai.GDT.Inint[invalues.length];
 	        //  for(int i=0;i<tem.length;i++){tem[i]=new alai.GDT.Inint(invalues[i]);}
 			

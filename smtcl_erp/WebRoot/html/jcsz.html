@@ -871,21 +871,74 @@
 			    </div>
 		    </div>
         </div>
+		<!-- RFID绑定物料 -->
+		<div id="rfid" class="row showWindow" style="margin-top:-40px;display:none;">
+			<div class="row" style="margin-top:2px;margin-left:-20px;">
+				<div class="col-md-1" style="width:220px;">
+					<input id="getRfid_tp" type="text" placeholder="--请输入托盘编号 --" class="form-control"/>
+				</div>
+	            <div class="col-md-1" style="width:235px;">
+					<div class="input-group">
+	               		<input id="getRfid_wl" type="text" placeholder="--请选择物料编码 --" style="z-index:0;" class="form-control"/>
+		                <span class="input-group-btn">
+					        <button class="btn btn-default" id="getRfid_wl_click" type="button">选择</button>
+				   		</span>
+			   		</div>
+				</div>
+	            <div class="col-md-1" style="width:120px;">
+			        <div class="button button-primary button-rounded button-small" id="rfid_seBtn">查询</div>
+		        </div>
+	            <div class="col-md-1" style="width:120px;">
+			        <div class="button button-primary button-rounded button-small" id="rfid_adlBtn">新增</div>
+		        </div>
+	            <div class="col-md-1" style="width:120px;">
+			        <div class="button button-primary button-rounded button-small" id="rfid_saBtn">保存</div>
+		        </div>
+	            <div class="col-md-1" style="width:120px;">
+			        <div class="button button-primary button-rounded button-small" id="rfid_delBtn">删除</div>
+		        </div>
+			</div>
+			<div class="row" style="margin-top:5px;margin-left:-5px;">
+				<div style="padding-right:17px;">
+					<table class="table table-bordered" style="width:100%;">
+			           <thead>
+			               <tr>
+			                  <th class="text-center" style="width:4%;" bgcolor="#EFEFEF">
+			                  	<input type="checkbox" id="checkboxAll"></input>
+			                  </th>
+			                  <th class="text-center" style="width:4%;" bgcolor="#EFEFEF"></th>
+			                  <th class="text-center" style="width:46%;" bgcolor="#EFEFEF">托盘编号</th>
+			                  <th class="text-center" style="width:46%;" bgcolor="#EFEFEF">物料编码</th>
+			               </tr>
+			           </thead>
+					</table>
+				</div>
+		        <div class="table-body" style="width:100%;" id="rfid_body">
+		           <table class="table table-bordered text-center table-hover" id="rfid_table">
+		               <tbody></tbody>
+		           </table>
+		        </div>
+	        </div>
+		</div>
 	</div>
 	<div class="col-md-3" style="width:400px;"></div>
-	<div class="col-md-2">
+	<div class="col-md-1" style="width:180px;">
 		<a class="button button-glow button-rounded button-raised button-primary butRow"
 		   onclick="readyShow.showThis(wuliao);">物料维护</a>
 	</div>
-	<div class="col-md-2">
+	<div class="col-md-1" style="width:180px;">
 		<a class="button button-glow button-rounded button-raised button-primary butRow"
 		   onclick="readyShow.showThis(mozu);">模组维护</a>
 	</div>
-	<div class="col-md-2">
+	<div class="col-md-1" style="width:180px;">
 		<a class="button button-glow button-rounded button-raised button-primary butRow"
 		   onclick="readyShow.showThis(pack);">pack维护</a>
 	</div>
-	<div class="col-md-2">
+	<div class="col-md-1" style="width:180px;">
+		<a class="button button-glow button-rounded button-raised button-primary butRow" 
+		   onclick="readyShow.showThis(rfid);">RFID绑定</a>
+	</div>
+	<div class="col-md-1" style="width:180px;">
 		<a class="button button-glow button-rounded button-raised button-primary butRow"
 		   onclick="readyShow.showThis(base);">账户设置</a>
 	</div>

@@ -506,4 +506,13 @@
 	<select id="HomeActionDAO.getDltk" parameterClass="java.util.HashMap" resultMap="HomeActionDAO.getDltkMap">
 		SELECT a.* FROM `大库请求` AS a WHERE a.`状态`&lt;&gt;1 ORDER BY a.ID
 	</select>
+	<!-- 获取RFID以及物料编码 -->
+	<resultMap id="KuFangActionDAO.getRfidWlMap" class="java.util.HashMap">
+    	<result property="ID" column="ID" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="托盘编号" column="托盘编号" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="物料编码" column="物料编码" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    </resultMap>
+	<select id="KuFangActionDAO.getRfidWl" parameterClass="java.util.HashMap" resultMap="KuFangActionDAO.getRfidWlMap">
+		SELECT a.* FROM `托盘物料MAP` AS a $sql$
+	</select>
 </sqlMap>

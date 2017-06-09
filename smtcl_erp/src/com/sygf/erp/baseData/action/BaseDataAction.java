@@ -21,8 +21,12 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.sygf.erp.baseData.dao.BaseDataDAO;
+import com.sygf.erp.baseData.dao.KuFangActionDAO;
+import com.sygf.erp.baseData.dao.OrderOperactionDAO;
 import com.sygf.erp.util.GetApplicationContext;
 import com.sygf.erp.util.GetParam;
+
+import alai.znyk.common.ClientSer;
 
 public class BaseDataAction extends Action{
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -77,12 +81,161 @@ public class BaseDataAction extends Action{
 				return getUserInfo(mapping, form, request, response);
 			}else if (operType.equals("removeYongHu")){
 				return removeYongHu(mapping, form, request, response);
+			}else if (operType.equals("saveRfid")){
+				return saveRfid(mapping, form, request, response);
+			}else if (operType.equals("getRfid")){
+				return getRfid(mapping, form, request, response);
+			}else if (operType.equals("deleteRfid")){
+				return deleteRfid(mapping, form, request, response);
+			}else if (operType.equals("getTpCode")){
+				return getTpCode(mapping, form, request, response);
 			};
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
+	};
+	/**
+	 * 读取托盘编号
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	private ActionForward getTpCode(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) {
+		try{
+			request.setCharacterEncoding("utf-8");
+			response.setCharacterEncoding("utf-8");
+			HttpSession session = request.getSession();
+			//获取当前账户的方向
+			int fx=Integer.parseInt(session.getAttribute("fangxiang").toString());
+			//读取托盘编号
+			String tp_code = ClientSer.getIntance().ReadFromRffid("",fx);
+			response.setContentType("text/html;charset=utf-8");
+			response.getWriter().print(tp_code);tp_code=null;
+			response.getWriter().close();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
+	/**
+	 * 删除RFID托盘编号
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	private ActionForward deleteRfid(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) {
+		try{
+			request.setCharacterEncoding("utf-8");
+			response.setCharacterEncoding("utf-8");
+			HashMap map=GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
+			ApplicationContext context=GetApplicationContext.getContext(request);
+			OrderOperactionDAO daoAll=(OrderOperactionDAO)context.getBean("orderOperactionDAO");
+			JSONArray del=new JSONArray(map.get("del").toString());//删除
+			boolean saType=false;context=null;
+			if(del.length()>0){
+				for(int i=0;i<del.length();i++){
+					String sql="DELETE a FROM `托盘物料map` AS a WHERE a.`ID`='"+del.get(i)+"'";
+					map.put("sql", sql);sql=null;
+					daoAll.removeAll(map);saType=true;
+				};
+			};del=null;daoAll=null;map=null;
+			String result=saType?"删除成功！":"删除失败！";
+			response.setContentType("text/html;charset=utf-8");
+			response.getWriter().print(result);result=null;
+			response.getWriter().close();
+		}catch (Exception e) {
+			e.printStackTrace();
+		};
+		return null;
+	}
+	/**
+	 * 获取RFID
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	private ActionForward getRfid(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) {
+		try{
+			request.setCharacterEncoding("utf-8");
+			response.setCharacterEncoding("utf-8");
+			HashMap map=GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
+			ApplicationContext context=GetApplicationContext.getContext(request);
+			KuFangActionDAO dao=(KuFangActionDAO)context.getBean("kuFangActionDAO");context=null;
+			ArrayList result=new ArrayList();
+			map.put("sql", " WHERE a.`托盘编号` LIKE '%"+map.get("tp_code")+"%' AND a.`物料编码` LIKE '%"+map.get("wl_code")+"%'");
+			List list=dao.getRfidWl(map);map=null;dao=null;
+			for(int i=0;i<list.size();i++){
+				HashMap mapPara=new HashMap();
+				mapPara.put("'id'", "'"+((HashMap)list.get(i)).get("ID")+"'");
+				mapPara.put("'tp_code'", "'"+((HashMap)list.get(i)).get("托盘编号")+"'");
+				mapPara.put("'wl_code'", "'"+((HashMap)list.get(i)).get("物料编码")+"'");
+				result.add(mapPara);mapPara=null;
+			};list=null;
+			response.setContentType("text/html;charset=utf-8");
+			response.getWriter().print(result.toString().replaceAll("'='", "':'"));
+			response.getWriter().close();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	/***
+	 * RFID设置
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	private ActionForward saveRfid(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) {
+		try{
+			request.setCharacterEncoding("utf-8");
+			response.setCharacterEncoding("utf-8");
+			HashMap map=GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
+			ApplicationContext context=GetApplicationContext.getContext(request);
+			OrderOperactionDAO daoAll=(OrderOperactionDAO)context.getBean("orderOperactionDAO");
+			JSONArray add=new JSONArray(map.get("add").toString());//新增
+			boolean saType=false;context=null;
+			if(add.length()>0){
+				for(int i=0;i<add.length();i++){
+					String sql="insert into 托盘物料map(托盘编号,物料编码)" +
+							"values(" +
+							"'"+add.getJSONObject(i).getString("tp_code")+"'," +
+							"'"+add.getJSONObject(i).getString("wl_code")+"')";
+					map.put("sql", sql);sql=null;
+					saType=daoAll.saveAll(map);
+				};
+			};
+			JSONArray update=new JSONArray(map.get("update").toString());//修改
+			if(update.length()>0){
+				for(int i=0;i<update.length();i++){
+					String sql="update 托盘物料map set " +
+						"托盘编号='" +update.getJSONObject(i).getString("tp_code")+"'," +
+						"物料编码='" + update.getJSONObject(i).getString("wl_code")+"' " +
+						"where ID="+update.getJSONObject(i).getString("id");
+					map.put("sql", sql);sql=null;
+					saType=daoAll.saveAll(map);
+				};
+			};daoAll=null;map=null;String result=saType?"保存成功！":"保存失败！";
+			response.setContentType("text/html;charset=utf-8");
+			response.getWriter().print(result);
+			response.getWriter().close();
+		}catch (Exception e) {
+			e.printStackTrace();
+		};
+		return null;
+	};
 	/**
 	 * 删除用户
 	 * @param mapping
@@ -1372,11 +1525,11 @@ public class BaseDataAction extends Action{
 			boolean yesNo=false;
 			if(map.get("deleteType").equals("pack题头")){
 				String sql="DELETE a FROM `pack行` AS a WHERE a.`ID`='"+map.get("pack_id")+"' AND a.`pack编码`='"+map.get("pack_code")+"'";
-				map.put("sql", sql);
+				map.put("sql", sql);sql=null;
 				yesNo =dao.deletePack(map);
 				if(yesNo){
 					sql="DELETE a FROM `pack题头` AS a WHERE a.ID='"+map.get("pack_id")+"' and a.`pack编码`='"+map.get("pack_code")+"'";
-					map.put("sql", sql);
+					map.put("sql", sql);sql=null;
 					yesNo =dao.deletePack(map);
 				}
 			}else if(map.get("deleteType").equals("pack行")){

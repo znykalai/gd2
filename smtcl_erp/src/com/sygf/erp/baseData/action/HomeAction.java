@@ -256,7 +256,7 @@ public class HomeAction extends Action{
 			request.setCharacterEncoding("utf-8");
 			response.setCharacterEncoding("utf-8");
 			ApplicationContext context = GetApplicationContext.getContext(request);
-			HomeActionDAO dao = (HomeActionDAO)context.getBean("homeActionDAO");
+			HomeActionDAO dao = (HomeActionDAO)context.getBean("homeActionDAO");context=null;
 			JSONObject result = new JSONObject();
 			//获取缓存库 输送线状态
 			List list = dao.getHckState();
@@ -295,7 +295,7 @@ public class HomeAction extends Action{
 				}catch(Exception e){}
 			}
 			//订单完成率
-			list = dao.getGdWanChengLv();
+			list = dao.getGdWanChengLv();dao=null;
 			String gdWcl = list!=null&&list.size()>0?((HashMap)list.get(0)).get("工单完成率").toString():"0";list=null;
 			//货位使用率
 			//list = dao.getHWshiYongLv();
@@ -318,8 +318,9 @@ public class HomeAction extends Action{
 			result.put("hckBottom", bottomArratList);bottomArratList=null;
 			result.put("gdWcl",gdWcl);gdWcl=null;
 			result.put("packMzTongJi", packMzTongJi);packMzTongJi=null;
+			result.put("plcType1",PLC.getIntance().getConcent(1));/**获取PLC连接状态A**/
+			result.put("plcType2",PLC.getIntance().getConcent(2));/**获取PLC连接状态B**/
 			//result.put("hwSyl",hwSyl);//hwSyl=null;
-			dao=null;context=null;
 			response.setContentType("text/html;charset=utf-8");
 			response.getWriter().print(result);
 			response.getWriter().close();
@@ -348,27 +349,20 @@ public class HomeAction extends Action{
 			if(map.get("type").equals("get")){
 				result.put("A", PLC.getIntance().isStartDiaodu1());
 				result.put("B", PLC.getIntance().isStartDiaodu2());
-//				System.out.println("result="+result);
 			//A区,启动调度
 			}else if(map.get("type").equals("top")){
-//				System.out.println("当前按钮是否开启中="+map.get("A"));
 				if(map.get("A").equals("true")){
 					PLC.getIntance().setDiaodu1(false);
-//					System.out.println("A区，关闭调度！");
 				}else{
 					PLC.getIntance().setDiaodu1(true);
-//					System.out.println("A区，开启调度!");
 				}
 				result.put("type",PLC.getIntance().isStartDiaodu1());
 			//B区,启动调度
 			}else if(map.get("type").equals("bottom")){
-//				System.out.println("当前按钮是否开启中="+map.get("B"));
 				if(map.get("B").equals("true")){
 					PLC.getIntance().setDiaodu2(false);
-//					System.out.println("B区，关闭调度！");
 				}else{
 					PLC.getIntance().setDiaodu2(true);
-//					System.out.println("B区，开启调度!");
 				}
 				result.put("type", PLC.getIntance().isStartDiaodu2());
 			//A区,复位
@@ -377,18 +371,18 @@ public class HomeAction extends Action{
 			//A区,归零启动
 			}else if(map.get("type").equals("guilingqidong_top")){
 				result.put("type", ClientSer.getIntance().c_exeComment("",5,1));
-			//A区,断点启动
-			}else if(map.get("type").equals("duandianqidong_top")){
-				result.put("type", ClientSer.getIntance().c_exeComment("",4,1));
+//			//A区,断点启动
+//			}else if(map.get("type").equals("duandianqidong_top")){
+//				result.put("type", ClientSer.getIntance().c_exeComment("",4,1));
 			//B区,复位
 			}else if(map.get("type").equals("fuwei_bottom")){
 				result.put("type", ClientSer.getIntance().c_exeComment("",3,2));
 			//B区,归零启动
 			}else if(map.get("type").equals("guilingqidong_bottom")){
 				result.put("type", ClientSer.getIntance().c_exeComment("",5,2));
-			//B区,断点启动
-			}else if(map.get("type").equals("duandianqidong_bottom")){
-				result.put("type", ClientSer.getIntance().c_exeComment("",4,2));
+//			//B区,断点启动
+//			}else if(map.get("type").equals("duandianqidong_bottom")){
+//				result.put("type", ClientSer.getIntance().c_exeComment("",4,2));
 			};map=null;
 			response.setContentType("text/html;charset=utf-8");
 			response.getWriter().print(result);

@@ -42,7 +42,7 @@ var af_Home={
 				  "&buttonE="+af_Home.buttonE+
 				  "&buttonF="+af_Home.buttonF,
 			cache:false,success:function(data){
-				var obj=eval("("+data+")");
+				var obj=eval("("+data+")");data=null;
 				if(type=="get"){//get
 					af_Home.buttonA=obj.A;af_Home.buttonB=obj.B;
 					af_Home.buttonC=obj.C;af_Home.buttonD=obj.D;
@@ -91,8 +91,7 @@ var af_Home={
 					var a=$('.delDltk').unbind("click");a=null;
 					$('.delDltk').click(function(){
 						var id=$(this).attr("title");
-						var a=af_Home.dltkSelectDel('delete',id);
-						a=null;id=null;
+						var a=af_Home.dltkSelectDel('delete',id);a=null;id=null;
 						return null;
 					});
 				}
@@ -121,17 +120,17 @@ var af_Home={
 		    url:url_,type:'get',cache:false,
 		    success:function(data){
 		    	var spl="<div class=\"col-md-3\" style=\"width:400px;\"></div>";
-		    	var body=data.split("<body>");
-		    	var html=body[1].split("</body>")[0];
+		    	var body=data.split("<body>");data=null;
+		    	var html=body[1].split("</body>")[0];body=null;
 		    	var home_html=html.split(spl)[0];
-		    	var home_btn=spl + html.split(spl)[1];
-				$("#home_div").html(home_html);
-				$("#btn_id").html(home_btn);
-				spl=null;body=null;home_html=null;home_btn=null;
-				var a=readyShow.load(function(){return null;});a=null;
+		    	var home_btn=spl+html.split(spl)[1];spl=null;
+				$("#home_div").html(home_html);home_html=null;
+				$("#btn_id").html(home_btn);home_btn=null;
+				var a=readyShow.load();a=null;
 				return null;
 		    }
-		});url_=null;a=null;return null;
+		});url_=null;a=null;
+		return null;
 	},
 	/***获取急停按钮状态&&同时也是set函数***/
 	getState:function(type,e,fun){
@@ -229,7 +228,7 @@ var af_Home={
 			var a=af_Home.getState('get',$('#div_mo_img_strat'),function(r,e){
 				var url=getRootPath()+"/images/fanhuianniu_hong.png";
 				if(!r){url=getRootPath()+"/images/fanhuianniu_lv.png";};
-				$(e).attr("src",url);url=null;
+				$(e).attr("src",url);url=null;e=null;
 			});a=null;return null;
 		},1000);
 		return null;

@@ -13,7 +13,7 @@ var readyShow={
 		};
 		return null;
 	},
-	load:function(hdFun){
+	load:function(){
 		try{
 			var winHeight=document.body.clientHeight;
 			if(winHeight==window.screen.height){
@@ -797,7 +797,7 @@ var readyShow={
 			return null;
 		}catch(e){
 			return e;
-		}
-		return hdFun();
+		};
+		return null;
 	}
 };

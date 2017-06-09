@@ -1,6 +1,6 @@
 var readyShow={
 	deleteSetInterval:null,
-	load:function(hdFun){
+	load:function(){
 		try{
 			var af={
 				load:function(dsState,fun){
@@ -17,9 +17,7 @@ var readyShow={
 						a=null;return null;
 					});
 					var nude=af_Home.getFx(function(fx){
-						if(fx=='1,2'){
-							fx=1;
-						};
+						if(fx=='1,2'){fx=1;};
 						var a=$("#fangxiang").val(fx);a=null;
 						var b=$("#fangxiang").attr("oval",fx);b=null;fx=null;
 						return null;
@@ -39,8 +37,7 @@ var readyShow={
 				getGDFrame:function(){
 					$.ajax({
 						url:getRootPath()+'/HomeAction.do?operType=getGDFrame',
-						type:'get',
-						cache:false,
+						type:'get',cache:false,
 						success:function(data){}
 					});
 					return null;
@@ -67,7 +64,78 @@ var readyShow={
 			        return null;
 				}},
 				/**
-				 * 渲染所有事件
+				 * 物料查询窗体
+				 */
+				getWuliao:function(fun){
+					try{
+						var openWindow='<div style="width:100%;margin-right:0;">'+
+							'<div class="margin-top-10">'+
+								'<div class="col-md-11" style="margin-left:20px;">'+
+								'<!-- 标题 -->'+
+								'<div style="padding-right:17px;">'+
+								'<table class="table table-bordered text-center" id="commonSearchTableHead">'+
+								'<thead>'+
+								'<tr>'+
+								'<td style="width:50%;">编号</td>'+
+								'<td style="width:50%;">描述</td>'+
+								'</tr>'+
+								'</thead>'+
+								'</table>'+
+								'</div>'+
+								'<!-- 标题 end-->'+
+								'<!-- 内容 -->'+
+								'<div class="table-body" id="commonSearchTableBody">'+
+								'<table class="table table-bordered text-center table-hover" id="searchTable">'+
+								'</table>'+
+								'</div>'+
+								'<!-- 内容 end-->'+
+								'</div>'+
+							'</div>'+
+						'</div>';
+						var win=layer.open({
+						    type:1,
+						    title:'物料查询',
+						    shadeClose:false,
+						    scrollbar:false,
+						    anim:5,
+						    move:false,
+						    shade:[0.5,'#393D49'],
+						    area:['45%','50%'],
+						    content:openWindow
+						});
+						/*设置table高度*/
+						$('#commonSearchTableBody').css('height',document.body.clientHeight / 3);
+						var a=$.ajax({
+							url:getRootPath()+'/BaseDataAction.do?operType=selectWlList',
+							type:'get',
+							data:'leibie=配方',
+							cache:false,
+							success:function(data){
+						    	var obj=eval("("+data+")");
+								for(var i=0;i<obj.length;i++){
+					                $('#searchTable').append('<tr class="commonTr" style="cursor:pointer;"></tr>');
+					                $('#searchTable tbody tr:last').
+					                append('<td class="wuliao_code" style="width:50%;">'+ obj[i].wuliao_code+ '</td>');
+					                $('#searchTable tbody tr:last').
+					                append('<td class="wuliao_miaoshu" style="width:50%;">'+ obj[i].wuliao_miaoshu+ '</td>');
+								}
+								/*绑定双击事件*/
+				            	$('.commonTr').bind('dblclick',function(e){
+									var tr=$(e.target).parent();
+									fun(tr.find('.wuliao_code').text());
+				            		layer.close(win);
+				            		return openWindow=null,win=null,obj=null,tr=null,a=null;
+				            	});
+							}
+						});
+						return null;
+					}catch(e){
+						return e;
+					}
+					return null;
+				},
+				/**
+				 * 渲染库房操作界面事件
 				 */
 				readyEvent:function(){
 					try{
@@ -241,75 +309,6 @@ var readyShow={
 								}
 								return fun();
 							},
-							//物料查询窗体
-							getWuliao:function(fun){
-								try{
-									var openWindow='<div style="width:100%;margin-right:0;">'+
-										'<div class="margin-top-10">'+
-											'<div class="col-md-11" style="margin-left:20px;">'+
-											'<!-- 标题 -->'+
-											'<div style="padding-right:17px;">'+
-											'<table class="table table-bordered text-center" id="commonSearchTableHead">'+
-											'<thead>'+
-											'<tr>'+
-											'<td style="width:50%;">编号</td>'+
-											'<td style="width:50%;">描述</td>'+
-											'</tr>'+
-											'</thead>'+
-											'</table>'+
-											'</div>'+
-											'<!-- 标题 end-->'+
-											'<!-- 内容 -->'+
-											'<div class="table-body" id="commonSearchTableBody">'+
-											'<table class="table table-bordered text-center table-hover" id="searchTable">'+
-											'</table>'+
-											'</div>'+
-											'<!-- 内容 end-->'+
-											'</div>'+
-										'</div>'+
-									'</div>';
-									var win=layer.open({
-									    type:1,
-									    title:'物料查询',
-									    shadeClose:false,
-									    scrollbar:false,
-									    anim:5,
-									    move:false,
-									    shade:[0.5,'#393D49'],
-									    area:['45%','50%'],
-									    content:openWindow
-									});
-									/*设置table高度*/
-									$('#commonSearchTableBody').css('height',document.body.clientHeight / 3);
-									var a=$.ajax({
-										url:getRootPath()+'/BaseDataAction.do?operType=selectWlList',
-										type:'get',
-										data:'leibie=配方',
-										cache:false,
-										success:function(data){
-									    	var obj=eval("("+data+")");
-											for(var i=0;i<obj.length;i++){
-								                $('#searchTable').append('<tr class="commonTr" style="cursor:pointer;"></tr>');
-								                $('#searchTable tbody tr:last').
-								                append('<td class="wuliao_code" style="width:50%;">'+ obj[i].wuliao_code+ '</td>');
-								                $('#searchTable tbody tr:last').
-								                append('<td class="wuliao_miaoshu" style="width:50%;">'+ obj[i].wuliao_miaoshu+ '</td>');
-											}
-											/*绑定双击事件*/
-							            	$('.commonTr').bind('dblclick',function(e){
-												var tr=$(e.target).parent();
-												fun(tr.find('.wuliao_code').text());
-							            		layer.close(win);
-							            		return openWindow=null,win=null,obj=null,tr=null,a=null;
-							            	});
-										}
-									});
-									return null;
-								}catch(e){
-									return e;
-								}
-								return null;
-							},
 							load:function(fun){
 								//物料显示位置点击事件
 								$('#show_wuliao_name').click(function(){
@@ -333,8 +332,10 @@ var readyShow={
 											cache:false,
 											data:'fx='+$("#fangxiang").val(),
 											success:function(data){
-												var show=$("#tp_code").val(data);
-												return show=null;
+												var obj=eval("("+data+")");data=null;
+												var b=$("#tp_code").val(obj.tp_code);b=null;
+												var c=$("#wl_code").val(obj.wl_code);c=null;
+												obj=null;return null;
 											}
 										});
 							    		return a=null;
@@ -345,7 +346,7 @@ var readyShow={
 							    });
 							    //物料选择事件
 							    $("#wl_code_click").click(function(e){
-						    		var show=map.getWuliao(function(data){
+						    		var show=af.getWuliao(function(data){
 						    			var wlShow=$("#wl_code").val(data);
 						    			return wlShow=null;
 						    		});
@@ -601,17 +602,13 @@ var readyShow={
 								});
 								return(function(){
 									//默认选择上货
-									var a=$("#shanghuo").click();
-									return a=null;
+									var a=$("#shanghuo").click();a=null
+									return null;
 								})();
 							}
 						};
-						map.load(function(){
-							return null;
-						});
-					}catch(e){
-						return e;
-					}
+						map.load(function(){return null;});
+					}catch(e){return e;}
 					return null;
 				},
 				/**
@@ -619,9 +616,8 @@ var readyShow={
 				 */
 				table:{
 					load:function(fun){
-						var a=this.getTableValue(this.hckzdd,'getHckzddl');
-						var b=this.getTableValue(this.kuCun,'getKuCun');
-						a=null,b=null;
+						var a=this.getTableValue(this.hckzdd,'getHckzddl');a=null;
+						var b=this.getTableValue(this.kuCun,'getKuCun');b=null;
 						return true;
 					},
 					getTableValue:function(fun,operType){
@@ -631,8 +627,8 @@ var readyShow={
 							type:'get',
 							cache:false,
 							success:function(data){
-								var obj=eval("("+data+")");
-								return fun(obj.data);
+								var obj=eval("("+data+")");data=null;
+								return fun(obj.data);obj=null;
 							}
 						});a=null
 						return null;
@@ -647,10 +643,7 @@ var readyShow={
 							var a=$.ajax({
 								url:getRootPath()+'/KuFangAction.do?operType=delEvent',
 								type:'get',data:'id='+id,cache:false,
-								success:function(data){
-									var a=layer.msg(data);a=null;
-									return null;
-								}
+								success:function(data){var a=layer.msg(data);data=null;a=null;return null;}
 							});a=null;
 						});
 						return null;
@@ -725,10 +718,9 @@ var readyShow={
 								af.showWlIp.ip[i]=null;
 							};
 							i++;
-						};
-                    	var a=$('#show_wuliao_name ul').html(li);
-                    	var b=af.showWlIp.show();b=null;
-						return i=null,li=null,a=null;
+						};i=null;
+                    	var a=$('#show_wuliao_name ul').html(li);li=null;a=null;
+                    	var b=af.showWlIp.show();b=null;return null;
 					}
 				}
 			};
@@ -738,7 +730,7 @@ var readyShow={
 			return null;
 		}catch(e){
 			return e;
-		}
-		return hdFun();
+		};
+		return null;
 	}
 };

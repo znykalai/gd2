@@ -173,13 +173,14 @@ public class ST_Father implements STInterface, Serializable{
 		return "成功";
 	}
 	
-	public String writeifChangeToPLC(){
+	public synchronized String  writeifChangeToPLC(){
 		if(this.isChange()){
 		String back=writeToPLC();
 		if(back!=null){
 			if(back.equals("成功")){
 				//System.out.println("00000");
 				old.intFromST(this);
+				//updataFromPLC();
 				return "成功!";
 			}else{
 				return back;
@@ -190,6 +191,7 @@ public class ST_Father implements STInterface, Serializable{
 		
 		return "成功!";
 	}
+	
 	public int get剩余数量(){
 		return 0;
 	}
