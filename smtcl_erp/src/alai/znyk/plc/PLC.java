@@ -441,6 +441,23 @@ public class PLC implements Serializable {
 				ex.printStackTrace();}
 		}
 	}
+	String LockCon="con";
+	
+	private long getLastConcent(int machineID){
+		synchronized(LockCon){
+		    if(machineID==1) return lastConcnetA;
+		    else return lastConcnetB;
+		    
+		     }
+		  }
+	private void setLastConcent(long num,int machineID){
+		synchronized(LockCon){
+		    if(machineID==1)  lastConcnetA=num;
+		                else  lastConcnetB=num;
+		    
+		     }
+		
+	}
 	
 	public void sendHert(int machineID){
 		    new Thread(){
@@ -449,14 +466,13 @@ public class PLC implements Serializable {
 		    		try{
 		    			int bak=ClientSer.getIntance().writeSirIntToCTR("D11999", 1, new int[]{1}, machineID);
 		    			if(bak>-1){
-		    				if(machineID==1)lastConcnetA=System.currentTimeMillis();
-		    				if(machineID==2)lastConcnetB=System.currentTimeMillis();
+		    				setLastConcent(System.currentTimeMillis(), machineID);
+		    				
 		    			}
 		    			Thread.sleep(250);
 		    			ClientSer.getIntance().writeSirIntToCTR("D11999", 1, new int[]{0}, machineID);
 		    			if(bak>-1){
-		    				if(machineID==1)lastConcnetA=System.currentTimeMillis();
-		    				if(machineID==2)lastConcnetB=System.currentTimeMillis();
+		    				setLastConcent(System.currentTimeMillis(), machineID);
 		    			}
 		    			Thread.sleep(250);
 		    		}catch(Exception ex){ex.printStackTrace();}
@@ -467,9 +483,9 @@ public class PLC implements Serializable {
 	}
 	
 	public boolean getConcent(int machineID){
-		if(machineID==1){if(System.currentTimeMillis()-lastConcnetA<1500) return true;}
-		if(machineID==2){if(System.currentTimeMillis()-lastConcnetB<1500) return true;}
-		   return false;
+		if(System.currentTimeMillis()-getLastConcent(machineID)<1500) return true;
+		  else
+		  return false;
 	}
 	
 	public void startTiaodu(){
@@ -478,12 +494,23 @@ public class PLC implements Serializable {
 		new Thread(){
 			public void run(){ 
 			while(true){
+				
 				long time1=System.currentTimeMillis();
 				try{
 					setSTATE1();
 					setSTATE2();
 				}catch(Exception e){e.printStackTrace();}
 				//System.out.println("立库通信时间="+(System.currentTimeMillis()-time1)+"MS");
+				if(!getConcent(1)){
+					try {
+						Thread.sleep(200);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					continue;
+					
+				}
 				
 				ST0_1.initFromSql();
 				ST1_1.initFromSql();
@@ -540,6 +567,17 @@ public class PLC implements Serializable {
 					setSTATE1();
 					setSTATE2();
 				}catch(Exception e){e.printStackTrace();}*/
+				
+				if(!getConcent(2)){
+					try {
+						Thread.sleep(200);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					continue;
+					
+				}
 				long time1=System.currentTimeMillis();
 				ST0_2.initFromSql();
 				ST1_2.initFromSql();
