@@ -722,6 +722,7 @@ public class PLC implements Serializable {
     				if(取料完成1==1){//模拟一个上升沿
     					//检测本工位有没有托盘
     					
+    					
     					if(i<15){//=15没有载具了，是同步输送线的电芯，不处理这个情况
     					    
     					  //取料完成需要跟周工做同步处理
@@ -861,11 +862,12 @@ public class PLC implements Serializable {
     							 
     							  new Thread(){
     								  public void run(){
-    									  th.put(Thread.currentThread(), curr2+"工位，数据更新完成="+getWrPLC(装配区).get(curr2).firstST.is数据更新完成());
+    									  th.put(Thread.currentThread(), 装配区+"-装配区"+curr2+"工位，数据更新完成="+getWrPLC(装配区).get(curr2).firstST.is数据更新完成());
     									  final long timeS2=timeS;
     									  final int curr=curr2;
     									 // System.out.println(Thread.currentThread()+"启动1-------------------------------------------------------------------------------------");
     									  while(true){
+    									//System.out.println("---====");	  
     						    Resint r2[]=	ClientSer.getIntance().getReturnPlc("D11001", 63, 16, 装配区);	  
     						    Resint bint2=r2[curr*2];
     			    			int tem11=bint2.getResInt();
@@ -882,7 +884,7 @@ public class PLC implements Serializable {
     			    					
     			    				new Thread(){
         	    	    					public void run(){ 
-        	    	    							 th.put(Thread.currentThread(), curr2+"工位，数据更新完成="+getWrPLC(装配区).get(curr2).firstST.is数据更新完成());
+        	    	    							 th.put(Thread.currentThread(),  装配区+"-装配区"+curr2+"工位，数据更新完成="+getWrPLC(装配区).get(curr2).firstST.is数据更新完成());
         	    	    							 int dd=0;
         	    	    						    while(true)	{
         	    	    						    	try{
@@ -1001,7 +1003,7 @@ public class PLC implements Serializable {
 							 // try{Thread.sleep(500);}catch(Exception ee){}
 							  new Thread(){
 								  public void run(){
-									  th.put(Thread.currentThread(), curr2+"工位，数据更新完成="+getWrPLC(装配区).get(curr2).firstST.is数据更新完成());
+									  th.put(Thread.currentThread(),  装配区+"-装配区"+curr2+"工位，数据更新完成="+getWrPLC(装配区).get(curr2).firstST.is数据更新完成());
 									  final int curr=curr2;
 									  final long timeS2=timeS;
 									 // System.out.println(Thread.currentThread()+"启动2-------------------------------------------------------------------------------------");
@@ -1085,7 +1087,7 @@ public class PLC implements Serializable {
 							 // try{Thread.sleep(500);}catch(Exception ee){}
 							  new Thread(){
 								  public void run(){
-									  th.put(Thread.currentThread(), curr2+"工位，数据更新完成="+getWrPLC(装配区).get(curr2).firstST.is数据更新完成());
+									  th.put(Thread.currentThread(),  装配区+"-装配区"+curr2+"工位，数据更新完成="+getWrPLC(装配区).get(curr2).firstST.is数据更新完成());
 									  final int curr=curr2;
 									  final long timeS2=timeS;
 									  //System.out.println(Thread.currentThread()+"启动15-------------------------------------------------------------------------------------");
@@ -1821,8 +1823,23 @@ public class PLC implements Serializable {
 			 * 
 			 * */
 			//tongji.get("")
-			
-			
+			 Vector t=new Vector();
+			 Enumeration<String> en1=th.keys();
+			 while(en1.hasMoreElements()){
+				 Object key=en1.nextElement();
+				 Object val=(th.get(key)==null?"":th.get(key));
+				 if(val.toString().contains("1-装配区")){
+					 ((Thread)key).stop();
+					  t.addElement(key);
+				 }
+			 }
+			 
+			 try{
+			 for(int i=0;i<t.size();i++){
+				  th.remove(t.get(i));
+			     }
+			 }catch(Exception ee){}
+			 
 		     }else{
 		    	 
 		    	 for(int i=0;i<STC2.size();i++)
@@ -1831,7 +1848,24 @@ public class PLC implements Serializable {
 						STC2.get(i).secondST.clear();
 						STC2.get(i).firstST.writeToPLC();
 						STC2.get(i).secondST.writeToPLC();
-					}	 
+					}	
+		    	 Vector t=new Vector();
+		    	 Enumeration<String> en2=th.keys();
+				 while(en2.hasMoreElements()){
+					 Object key=en2.nextElement();
+					 Object val=(th.get(key)==null?"":th.get(key));
+					 if(val.toString().contains("2-装配区")){
+						 ((Thread)key).stop();
+						  t.addElement(key);
+						 
+					 }
+				 }
+				 try{
+				 for(int i=0;i<t.size();i++){
+					  th.remove(t.get(i));
+					 
+				 }
+				 }catch(Exception ee){}
 		     }
 		
 		Hashtable<String ,Long> m= getTj(machineID);
