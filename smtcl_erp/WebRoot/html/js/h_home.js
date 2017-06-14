@@ -347,7 +347,16 @@ var readyShow={
 								var this_=this;
 								var nude=af_Home.getFx(function(fx){
 									if(fx==1||fx=='1,2'){
-										var e=but.action(this_,'top',but.butClick);e=null;this_=null;
+										if(but.qidongdiaodu_top_type==false){
+											var lay=layer.confirm('您确定要关闭调度？',{
+												title:'<span style="color:red;">安全提示</span>',
+											    btn:['确定','取消']
+											},function(){
+												var e=but.action(this_,'top',but.butClick);e=null;this_=null;var a=layer.msg("A区调度关闭成功！");a=null;
+											});
+										}else{
+											var e=but.action(this_,'top',but.butClick);e=null;this_=null;var a=layer.msg("A区开启调度成功！");a=null;
+										};
 									}else{
 										layer.msg("您无权操作A装配区！");
 									};
@@ -387,7 +396,16 @@ var readyShow={
 								var this_=this;
 								var nude=af_Home.getFx(function(fx){
 									if(fx==2||fx=='1,2'){
-										var e=but.action(this_,'bottom',but.butClick);e=null;this_=null;
+										if(but.qidongdiaodu_bottom_type==false){
+											var lay=layer.confirm('您确定要关闭调度？',{
+												title:'<span style="color:red;">安全提示</span>',
+											    btn:['确定','取消']
+											},function(){
+												var e=but.action(this_,'bottom',but.butClick);e=null;this_=null;var a=layer.msg("B区调度关闭成功！");a=null;
+											});
+										}else{
+											var e=but.action(this_,'bottom',but.butClick);e=null;this_=null;var a=layer.msg("B区开启调度成功！");a=null;
+										};
 									}else{
 										layer.msg("您无权操作B装配区！");
 									};

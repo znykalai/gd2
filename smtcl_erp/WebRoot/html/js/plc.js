@@ -682,19 +682,40 @@ var readyShow={
 						type:'post',cache:false,
 						data:'update1='+JSON.stringify(update1)+'&update2='+JSON.stringify(update2)+"&line="+line,
 						success:function(data){
-			  				var obj=eval("("+data+")");
+			  				var obj=eval("("+data+")");data=null;
 			  				if(!obj.plcDd){
 								layer.msg("请先停止调度！");
 			  				}else if(obj.result&&obj.setCarryAt=='成功'){
-								var a=$(".anNiuSelect").click();a=null;
 								layer.msg("故障已恢复！");
+								var a=$(".anNiuSelect").click();a=null;
 			  				}else{
 								layer.msg("故障恢复失败或者异步输送线位置恢复失败！");
-			  				};
-			  				obj=null;
+			  				};obj=null;
 			  				return function_(),function_=null;
 						}
 					});a=null;update1=null;update2=null;line=null;
+					return null;
+				},
+				/**
+				 * 一键还原数据清除函数
+				 */
+				removeGzhfTable:function(lay){
+					var pf_table=$('#pf_table1 tbody tr');
+					for(var i=0;i<pf_table.length;i++){
+						var a=pf_table.attr("class","update");a=null;
+						a=pf_table.eq(i).children("td").eq(1).html('');a=null;
+						a=pf_table.eq(i).children("td").eq(2).html('');a=null;
+					};pf_table=null;
+					pf_table=$('#pf_table2 tbody tr');
+					for(var i=0;i<pf_table.length;i++){
+						var a=pf_table.attr("class","update");a=null;
+						a=pf_table.eq(i).children("td").eq(5).html('0');a=null;
+						a=pf_table.eq(i).children("td").eq(7).html('');a=null;
+					};pf_table=null;
+					var b=layer.close(lay);b=null;lay=null;
+					var a=af.anNiuSave(function(){
+						var a=$(".anNiuDelete").click();a=null;
+					});a=null;
 					return null;
 				},
 				/***
@@ -766,21 +787,20 @@ var readyShow={
 					});
 					//一键还原
 					$(".anNiuYJHY").click(function(){
-						var pf_table=$('#pf_table1 tbody tr');
-						for(var i=0;i<pf_table.length;i++){
-							var a=pf_table.attr("class","update");a=null;
-							a=pf_table.eq(i).children("td").eq(1).html('');a=null;
-							a=pf_table.eq(i).children("td").eq(2).html('');a=null;
-						};pf_table=null;
-						pf_table=$('#pf_table2 tbody tr');
-						for(var i=0;i<pf_table.length;i++){
-							var a=pf_table.attr("class","update");a=null;
-							a=pf_table.eq(i).children("td").eq(5).html('0');a=null;
-							a=pf_table.eq(i).children("td").eq(7).html('');a=null;
-						};pf_table=null;
-						var a=af.anNiuSave(function(){
-							var a=$(".anNiuDelete").click();a=null;
-						});a=null;
+						var radioID=$("input[name='trGdRadio']");
+						if(radioID.prop("checked")){
+							if(radioID.parent().parent().children('td').eq(2).text()=='正在处理'){
+								var lay=layer.confirm('请确认是否已经生产完成？',{
+									title:'<span style="color:red;">安全提示</span>',
+								    btn:['确定','取消']
+								},function(){
+									var a=af.removeGzhfTable(lay);
+									a=null;lay=null;
+								});
+							}else{
+								var a=af.removeGzhfTable();a=null;
+							};
+						};radioID=null;
 						return null;
 					});
 					return fun();

@@ -270,8 +270,9 @@ public class OrderOperAction extends Action{
 			if(list!=null&&list.size()>0){
 				for(int i=0;i<list.size();i++){
 					HashMap mapPara=new HashMap();
+					String gdwcl=((HashMap)list.get(i)).get("工单完成率").toString();
 					String start_type="初始化";
-					if(((HashMap)list.get(i)).get("完成数量").equals("1")){
+					if(gdwcl.equals("100.0000")){
 						start_type="已完成";
 					}else{
 						sql="SELECT `配方指令队列`.ID FROM `配方指令队列` WHERE `配方指令队列`.`工单ID`='"+((HashMap)list.get(i)).get("ID")+"' AND " +
@@ -290,11 +291,10 @@ public class OrderOperAction extends Action{
 							if(zlList!=null&&zlList.size()>0){
 								start_type="已分解";
 							}
-						};
-						zlList=null;
+						};zlList=null;
 					};
 					mapPara.put("'id'", "'"+((HashMap)list.get(i)).get("ID")+"'");
-					mapPara.put("'dd_zhuangtai'", "'"+start_type+"'");
+					mapPara.put("'dd_zhuangtai'", "'"+start_type+"'");start_type=null;
 					mapPara.put("'dd_code'", "'"+((HashMap)list.get(i)).get("工单号")+"'");
 					mapPara.put("'dd_xuhao'", "'"+((HashMap)list.get(i)).get("工单序号")+"'");
 					mapPara.put("'pack_code'", "'"+((HashMap)list.get(i)).get("pack编码")+"'");
@@ -302,16 +302,15 @@ public class OrderOperAction extends Action{
 					mapPara.put("'dd_zhuangpeiqu'", "'"+((HashMap)list.get(i)).get("装配区")+"'");
 					mapPara.put("'dd_jihuashuliang'", "'"+((HashMap)list.get(i)).get("工单数量")+"'");
 					mapPara.put("'dd_fenjieriqi'", "'"+((HashMap)list.get(i)).get("分解日期")+"'");
-					mapPara.put("'dd_jindu'", "'"+((HashMap)list.get(i)).get("工单完成率")+"'");
-					result.add(mapPara);
-					mapPara=null;
+					mapPara.put("'dd_jindu'", "'"+gdwcl+"'");gdwcl=null;
+					result.add(mapPara);mapPara=null;
 				}
 			};
 			map=null;list=null;dao=null;context=null;
 //			System.err.println("订单调度---定时刷新");
 			response.setContentType("text/html;charset=utf-8");
 			response.getWriter().print(result.toString().replaceAll("'='", "':'"));
-			response.getWriter().close();
+			response.getWriter().close();result=null;
 		}catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();

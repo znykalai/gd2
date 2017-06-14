@@ -1114,7 +1114,7 @@ public class PLC implements Serializable {
     					final long timeS=System.currentTimeMillis();
  					   getWrPLC(装配区).get(i).firstST.set数据更新完成(true);
  					   getWrPLC(装配区).get(i).firstST.set允许工位动作标志(false);
-					   String back=getWrPLC(装配区).get(i).firstST.writeifChangeToPLC();
+					   String back=getWrPLC(装配区).get(i).firstST.writeToPLC();
 						  // System.out.println("同步输送线--工位载具放行"+back+":"+(System.currentTimeMillis()-timeS)+"ms");
 						    if(back.contains("成功")){
 							  //写入PLC成功后,在这儿再次检测载具放行变为OFF
@@ -1146,7 +1146,7 @@ public class PLC implements Serializable {
 			    					 getWrPLC(装配区).get(curr).firstST.setWrite(false);	
 	    	    					 getWrPLC(装配区).get(curr).firstST.clear();
 	    	    					 getWrPLC(装配区).get(curr).initFromSql();
-	    	    					String back5= getWrPLC(装配区).get(curr).firstST.writeifChangeToPLC();
+	    	    					 String back5= getWrPLC(装配区).get(curr).firstST.writeToPLC();
 	    	    					if(!back5.equals("成功")){
 	    	    						
 	    	    						 System.out.println("同步输送线"+curr+"工位载具放行2"+back5+"------>:失败");

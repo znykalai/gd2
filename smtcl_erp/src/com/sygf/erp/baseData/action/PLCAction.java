@@ -129,15 +129,8 @@ public class PLCAction extends Action{
 						err=PLC.getIntance().line2.setCarryAt(yiBssx,GdId,MzId,fenJh,zaiJh);
 					};
 					//数据库配方表处理
-					String sql="update 配方指令队列 set " +
-						"前升读标志=" +(zaiJydbz.equals("")?null:zaiJydbz)+" " +
-						"where 工单ID='"+GdId+"' and "
-							+ "模组序ID='"+MzId+"' and "
-					  		+ "分解号='"+fenJh+"' and "
-			  				+ "载具序号='"+zaiJh+"'";
-					map.put("sql", sql);
-					GdId=null;zaiJydbz=null;MzId=null;
-					fenJh=null;zaiJh=null;sql=null;
+					String sql="update 配方指令队列 set 前升读标志=" +(zaiJydbz.equals("")?null:zaiJydbz)+" where 工单ID='"+GdId+"' and 模组序ID='"+MzId+"' and 分解号='"+fenJh+"' and 载具序号='"+zaiJh+"'";
+					map.put("sql", sql);GdId=null;zaiJydbz=null;MzId=null;fenJh=null;zaiJh=null;sql=null;
 					yesNo=dao.gwGzUpdate(map);
 				};
 			};array1=null;
@@ -153,20 +146,11 @@ public class PLCAction extends Action{
 					String stGwydbz=array2.getJSONObject(i).getString("stGwydbz");
 					String gw=array2.getJSONObject(i).getString("gw");
 					//数据库配方表处理
-					String sql="update 配方指令队列 set " +
-						"完成数量=" +wanCsl+",ST读取标志=" +(stGwydbz.equals("")?null:stGwydbz)+" " +
-						"where 工单ID='"+GdId+"' and "
-							+ "模组序ID='"+MzId+"' and "
-					  		+ "分解号='"+fenJh+"' and "
-					  		+ "工位='"+gw+"' and "
-			  				+ "载具序号='"+zaiJh+"'";
-					map.put("sql", sql);
-					GdId=null;MzId=null;fenJh=null;
-					wanCsl=null;stGwydbz=null;zaiJh=null;sql=null;
+					String sql="update 配方指令队列 set  完成数量=" +wanCsl+",ST读取标志=" +(stGwydbz.equals("")?null:stGwydbz)+" where 工单ID='"+GdId+"' and 模组序ID='"+MzId+"' and 分解号='"+fenJh+"' and 工位='"+gw+"' and 载具序号='"+zaiJh+"'";
+					map.put("sql", sql);sql=null;GdId=null;MzId=null;fenJh=null;wanCsl=null;stGwydbz=null;zaiJh=null;
 					yesNo=dao.gwGzUpdate(map);
 				};
-			};array2=null;
-			map=null;dao=null;context=null;
+			};array2=null;map=null;dao=null;context=null;
 			result.put("result", yesNo);
 			response.setContentType("text/html;charset=utf-8");
 			response.getWriter().print(result);
