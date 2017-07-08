@@ -109,8 +109,9 @@ public class BaseDataAction extends Action{
 			request.setCharacterEncoding("utf-8");
 			response.setCharacterEncoding("utf-8");
 			HttpSession session = request.getSession();
+			String fangxiang=session.getAttribute("fangxiang").equals("1,2")?"1":session.getAttribute("fangxiang").toString();
 			//获取当前账户的方向
-			int fx=Integer.parseInt(session.getAttribute("fangxiang").toString());
+			int fx=Integer.parseInt(fangxiang);
 			//读取托盘编号
 			String tp_code = ClientSer.getIntance().ReadFromRffid("",fx);
 			response.setContentType("text/html;charset=utf-8");

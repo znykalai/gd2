@@ -2314,34 +2314,11 @@ var readyShow={
 				}
 			};
 			var a=af.load(function(){
-				if(af_Home.administrator.物料.新建==false){var a=af_Home.cleanQX("wl_newBtn");a=null;};
-				if(af_Home.administrator.物料.保存==false){var a=af_Home.cleanQX("wl_saveBtn");a=null;};
-				if(af_Home.administrator.物料.删除==false){var a=af_Home.cleanQX("wl_deleteBtn");a=null;};
-				if(af_Home.administrator.模组.新建==false){var a=af_Home.cleanQX("mz_newBtn");a=null;};
-				if(af_Home.administrator.模组.删除==false){var a=af_Home.cleanQX("mz_deleteBtn");a=null;};
-				if(af_Home.administrator.模组.载具上调==false){var a=af_Home.cleanQX("mz_zj_up");a=null;};
-				if(af_Home.administrator.模组.载具下调==false){var a=af_Home.cleanQX("mz_zj_bottom");a=null;};
-				if(af_Home.administrator.模组.载具添加==false){var a=af_Home.cleanQX("mz_zj_addTr");a=null;};
-				if(af_Home.administrator.模组.载具保存==false){var a=af_Home.cleanQX("mz_zj_saveBtn");a=null;};
-				if(af_Home.administrator.模组.载具删除==false){var a=af_Home.cleanQX("mz_zj_deleteBtn");a=null;};
-				if(af_Home.administrator.模组.指令上调==false){var a=af_Home.cleanQX("mz_zlh_up");a=null;};
-				if(af_Home.administrator.模组.指令下调==false){var a=af_Home.cleanQX("mz_zlh_bottom");a=null;};
-				if(af_Home.administrator.模组.指令添加==false){var a=af_Home.cleanQX("mz_zlh_addTr");a=null;};
-				if(af_Home.administrator.模组.指令保存==false){var a=af_Home.cleanQX("mz_zlh_saveBtn");a=null;};
-				if(af_Home.administrator.模组.指令删除==false){var a=af_Home.cleanQX("mz_zlh_deleteBtn");a=null;};
-				if(af_Home.administrator.pack.新建==false){var a=af_Home.cleanQX("pack_newBtn");a=null;};
-				if(af_Home.administrator.pack.删除==false){var a=af_Home.cleanQX("pack_deleteBtn");a=null;};
-				if(af_Home.administrator.pack.保存==false){var a=af_Home.cleanQX("pack_saveBtn");a=null;};
-				if(af_Home.administrator.pack.pack行上调==false){var a=af_Home.cleanQX("pack_up");a=null;};
-				if(af_Home.administrator.pack.pack行下调==false){var a=af_Home.cleanQX("pack_bottom");a=null;};
-				if(af_Home.administrator.pack.pack行添加==false){var a=af_Home.cleanQX("pack_addTr");a=null;};
-				if(af_Home.administrator.pack.pack行删除==false){var a=af_Home.cleanQX("pack_row_deleteBtn");a=null;};
-				if(af_Home.administrator.账户设置.角色新建==false){var a=af_Home.cleanQX("JueSeNew");a=null;};
-				if(af_Home.administrator.账户设置.角色保存==false){var a=af_Home.cleanQX("JueSeSave");a=null;};
-				if(af_Home.administrator.账户设置.角色删除==false){var a=af_Home.cleanQX("JueSeDel");a=null;};
-				if(af_Home.administrator.账户设置.用户新建==false){var a=af_Home.cleanQX("YongHuNew");a=null;};
-				if(af_Home.administrator.账户设置.用户保存==false){var a=af_Home.cleanQX("YongHuSave");a=null;};
-				if(af_Home.administrator.账户设置.用户删除==false){var a=af_Home.cleanQX("YongHuDel");a=null;};
+				if(af_Home.administrator.物料==false){var a=af_Home.cleanQX("wl_newBtn");a=null;a=af_Home.cleanQX("wl_saveBtn");a=null;a=af_Home.cleanQX("wl_deleteBtn");a=null;};
+				if(af_Home.administrator.模组==false){var a=af_Home.cleanQX("mz_newBtn");a=null;a=af_Home.cleanQX("mz_deleteBtn");a=null;a=af_Home.cleanQX("mz_zj_up");a=null;a=af_Home.cleanQX("mz_zj_bottom");a=null;a=af_Home.cleanQX("mz_zj_addTr");a=null;a=af_Home.cleanQX("mz_zj_saveBtn");a=null;a=af_Home.cleanQX("mz_zj_deleteBtn");a=null;a=af_Home.cleanQX("mz_zlh_up");a=null;a=af_Home.cleanQX("mz_zlh_bottom");a=null;a=af_Home.cleanQX("mz_zlh_addTr");a=null;a=af_Home.cleanQX("mz_zlh_saveBtn");a=null;a=af_Home.cleanQX("mz_zlh_deleteBtn");a=null;};
+				if(af_Home.administrator.pack==false){var a=af_Home.cleanQX("pack_newBtn");a=null;a=af_Home.cleanQX("pack_deleteBtn");a=null;a=af_Home.cleanQX("pack_saveBtn");a=null;a=af_Home.cleanQX("pack_up");a=null;a=af_Home.cleanQX("pack_bottom");a=null;a=af_Home.cleanQX("pack_addTr");a=null;a=af_Home.cleanQX("pack_row_deleteBtn");a=null;};
+				if(af_Home.administrator.RFID绑定==false){var a=af_Home.cleanQX("rfid_adlBtn");a=null;a=af_Home.cleanQX("rfid_saBtn");a=null;a=af_Home.cleanQX("rfid_delBtn");a=null;};
+				if(af_Home.administrator.账户设置==false){var a=af_Home.cleanQX("JueSeNew");a=null;a=af_Home.cleanQX("JueSeSave");a=null;a=af_Home.cleanQX("JueSeDel");a=null;a=af_Home.cleanQX("YongHuNew");a=null;a=af_Home.cleanQX("YongHuSave");a=null;a=af_Home.cleanQX("YongHuDel");a=null;};
 			});a=null;
 			return null;
 		}catch(e){

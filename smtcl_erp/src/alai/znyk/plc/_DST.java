@@ -83,7 +83,7 @@ public class _DST extends ST_Father implements STInterface {
 	
 	public int getLength(){return length;}
     public String getStartAddress(){return startAddress;}
-    public String writeToPLC(){
+    public synchronized String writeToPLC(){
     	
     	return plc.writeBlockToBLC(startAddress, length, new int[]{boolContent,电芯类型标志,配方特征},machineID);
     	

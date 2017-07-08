@@ -36,12 +36,12 @@
 <script src="<%=path%>/js/layer/layer.js"></script>
 <script src="<%=path%>/js/home.js"></script>
 </head>
-<body style="margin:0px; padding:0px; overflow:hidden;" oncontextmenu="window.event.returnValue=false" onselectstart="return false">
+<body style="margin:0px;padding:0px;overflow:hidden;" oncontextmenu="window.event.returnValue=false" onselectstart="return false">
 	<div class="row">
-		<table style="height:100%; width:100%;">
+		<table style="height:100%;width:100%;">
 			<tr>
 				<td style="width:100%;height:100%;">
-					<table style="height:100%; width:100%;">
+					<table style="height:100%;width:100%;">
 						<!-- home -->
 						<tr>
 							<td id="homeBody" style="width:100%;background-color:rgb(245,245,245);">
@@ -50,11 +50,12 @@
 						</tr>
 						<!-- home end -->
 						<!-- 窗底 -->
-						<tr style="height:68px;background-color:rgb( 112 , 131 , 148 ); z-index:999;">
+						<tr style="height:68px;background-color:rgb( 112 , 131 , 148 );z-index:999;">
 							<td>
 								<div id="h_div_mo_img_close" class="h_div_mo_img_close">
 									<img id="div_mo_img_close" class="div_mo_img_close" src="<%=path%>/images/guanjianniu.png"/>
-									<img id="div_mo_img_strat" class="div_mo_img_strat" style="display:none;" src="<%=path%>/images/fanhuianniu_hong.png" />
+									<img id="div_mo_img_strat" class="div_mo_img_strat" src="<%=path%>/images/fanhuianniu_hong.png" />
+									<img id="error" src="<%=path%>/images/error.png" class="error"/>
 									<div class="row" id="btn_id"></div>
 								</div>
 							</td>
@@ -68,7 +69,7 @@
 						<div id="right_home1" title="按钮操控" x='280px' y='250px' class="right_home1 tz">
 							<div class="right_home1_but"></div>
 						</div>
-						<div id="right_home2" title="物料请求，处理完成后请删除" x='500px' y='430px' class="right_home2 tz">
+						<div id="right_home2" title="物料请求" x='500px' y='430px' class="right_home2 tz">
 							<div class="right_home2_but"></div>
 						</div>
 					</div>

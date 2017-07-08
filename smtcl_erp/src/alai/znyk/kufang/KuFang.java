@@ -359,6 +359,7 @@ public void start堆垛机指令(){
 			    	int bak= ClientSer.getIntance().upPallet(Integer.parseInt(eventID), 
 			    			 Integer.parseInt(fromID), Integer.parseInt(toID), 1);
 			    	if(bak==1){
+			    		run=true;
 			    	 String sql2="update 立库动作指令  set 状态='已发送',发送时间="+SqlPro.getDate()[1]+" where idEvent="+"'"+eventID+"'"; 
 			    	 SqlTool.insert(new String[]{sql2});
 			    	 }
@@ -393,6 +394,7 @@ public void start堆垛机指令(){
 			    	 int bak=ClientSer.getIntance().getPallet(Integer.parseInt(eventID), 
 			    			 fromID, Integer.parseInt(toID), 1);
 			    	 if(bak==1){
+			    		 run=true;
 			    	 String sql2="update 立库动作指令  set 状态='已发送',发送时间="+SqlPro.getDate()[1]+" where idEvent="+"'"+eventID+"'"; 
 			    	 SqlTool.insert(new String[]{sql2});
 			    	 }
@@ -429,6 +431,7 @@ public void start堆垛机指令(){
 			    	 int bak= ClientSer.getIntance().upPallet(Integer.parseInt(eventID), 
 			    			 Integer.parseInt(fromID), Integer.parseInt(toID), 2);
 			    	if(bak==1){
+			    		run2=true;
 			    	 String sql2="update 立库动作指令  set 状态='已发送',发送时间="+SqlPro.getDate()[1]+" where idEvent="+"'"+eventID+"'"; 
 			    	 SqlTool.insert(new String[]{sql2});
 			    	 }
@@ -461,6 +464,7 @@ public void start堆垛机指令(){
 			    	int bak= ClientSer.getIntance().getPallet(Integer.parseInt(eventID), 
 			    			 fromID, Integer.parseInt(toID), 2);
 			    	if(bak==1){
+			    		run2=true;
 			    	 String sql2="update 立库动作指令  set 状态='已发送',发送时间="+SqlPro.getDate()[1]+" where idEvent="+"'"+eventID+"'"; 
 			    	 SqlTool.insert(new String[]{sql2});
 			    	 }
@@ -625,21 +629,42 @@ public void startlineAGV(){
 			
 			
 			if(b.equals("1")){//升降台上有货物
-				String sql="select idEvent,托盘编号,"
+				 System.out.println("A区货物到位-----------------");
+				String tp="";
+			if(ClientSer.isOpenRfid){
+				 System.out.println("A区货物到位isOpenRfid=true-----------------");
+			  tp=ClientSer.getIntance().ReadFromRffid("", 1);
+			if(!tp.equals("")){
+				String sq="select 托盘编号 "
+			      		+"  from 立库动作指令   where 动作 ='输送线回流' and 状态2<>'1' and 状态='完成'"
+			      		+" and 请求区=1  and 托盘编号='"+tp+"'  order by idEvent";
+				String hui=SqlTool.findOneRecord(sq);
+				
+				if(hui==null){//判断这个托盘是不是回流的托盘，如果是，那么就不加入预装指令
+				   String wl=SqlTool.findOneRecord("Select 物料编码  from 托盘物料map where 托盘编号='"+tp+"'");
+				if(wl!=null)
+				   {
+					SqlTool.manUpPallet(tp,wl,30,"0","1");
+				   }
+				}
+			}
+			
+			}
+				
+				
+			 String sql="select idEvent,托盘编号,"
 			      		+"请求区  from 立库动作指令   where 动作 IN('输送线回流','预上货') and 状态2<>'1' and 状态='完成'"
 			      		+" and 请求区=1  order by idEvent";
-				
-			 System.out.println("A区RFID+++++");
-			//String tp=ClientSer.getIntance().ReadFromRffid("", 3);
-			String tp="";
+			  System.out.println("A区RFID+++++");
+			
+			
 			String res=SqlTool.findOneRecord(sql);
 			if(res!=null){
+				if(!ClientSer.isOpenRfid)
 				 tp=res.split("!_!")[1];
-			System.out.println("A区RFID+++++="+tp);
-			//if(isRffid1!=null&&isRffid1.equals(tp))return;
-			// isRffid1=tp;
-			if(tp.equals(""))return;
-			 
+		    	System.out.println("A区RFID+++++="+tp);
+			
+			  if(tp.equals(""))return;
 			    String back=SqlTool.exeRffid2(tp);
 			
 				if(back.contains("成功")){
@@ -667,18 +692,39 @@ public void startlineAGV(){
 			
 			
 			if(b.equals("1")){//升降台上有货物
-	           String sql="select idEvent,托盘编号,"
+				
+				   String tp="";
+			 if(ClientSer.isOpenRfid){
+				   tp=ClientSer.getIntance().ReadFromRffid("", 2);
+				if(!tp.equals("")){
+					String sq="select 托盘编号 "
+				      		+"  from 立库动作指令   where 动作 ='输送线回流' and 状态2<>'1' and 状态='完成'"
+				      		+" and 请求区=2  and 托盘编号='"+tp+"'  order by idEvent";
+					String hui=SqlTool.findOneRecord(sq);
+					if(hui==null){
+					String wl=SqlTool.findOneRecord("Select 物料编码  from 托盘物料map where 托盘编号='"+tp+"'");
+					if(wl!=null)
+					{
+						SqlTool.manUpPallet(tp,wl,30,"0","2");
+					}
+					
+					}
+					
+				}
+				}
+				
+	            String sql="select idEvent,托盘编号,"
 			      		+"请求区  from 立库动作指令   where 动作 IN('输送线回流','预上货') and 状态2<>'1' and 状态='完成'"
 			      		+" and 请求区=2  order by idEvent";
 				System.out.println("B区RFID2+++++");
-			  // String tp=ClientSer.getIntance().ReadFromRffid("", 4);
-				String tp="";
+			
+				
 				String res=SqlTool.findOneRecord(sql);
 				if(res!=null){
+					if(!ClientSer.isOpenRfid)
 					 tp=res.split("!_!")[1];
 			   System.out.println("B区RFID2+++++="+tp);
-			     //  if(isRffid2!=null&&isRffid2.equals(tp))return;
-			     //   isRffid2=tp;
+			     
 			      if(tp.equals(""))return;
 			 
 			    String back=SqlTool.exeRffid2(tp);

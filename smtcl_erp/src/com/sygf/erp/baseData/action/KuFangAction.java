@@ -288,7 +288,7 @@ public class KuFangAction extends Action{
 						map.get("toID").toString(),map.get("machineID").toString());
 			}else{
 				List hwList = dao.getTpMachineID(map);
-				System.out.println("hwList="+hwList);
+//				System.out.println("hwList="+hwList);
 				if(hwList!=null&&hwList.size()>0){
 					String tp = ((HashMap)hwList.get(0)).get("托盘编号").toString();
 					String machineID = ((HashMap)hwList.get(0)).get("方向").toString();

@@ -6,30 +6,46 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
+import alai.znyk.common.ClientSer;
+import alai.znyk.server.SqlTool;
+
 public class Test5 {
 
 	public static void main(String[] args) {
+		try{
+//			System.out.println(Integer.toBinaryString(12));
+//			String ss=Integer.toBinaryString(12);
+//			
+//			char index0=ss.charAt(0);
+//			
+//			if(index0=='1'){
+//				System.out.println(index0);
+//			}
+//			
+//			if((index0+"").equals("1")){
+//				System.out.println(index0);
+//				
+//			}
+//			
+//			if(true)
+//			return;
+			String s=SqlTool.findOneRecord("Select ID,ŒÔ¡œ±‡¬Î  from Õ–≈ÃŒÔ¡œmap where Õ–≈Ã±‡∫≈='"+2001+"'");
+		
+			System.out.println(s);
+			//String tp=ClientSer.getIntance().ReadFromRffid("", 1);
 		// TODO Auto-generated method stub
+		//System.out.println("tp="+tp+"p"+(tp.equals("")));
+		
+		}catch(Exception e){e.printStackTrace();}
+		
+		
 		Thread t1=new Thread(){public void run(){
-			while(true){
-				
-				System.out.println(1);
-				try{
-				Thread.sleep(1000);
-				}catch(Exception e){}
-			}
-			
+			  // c.print(1);
 			
 		}};
 		
 		Thread t2=new Thread(){public void run(){
-			while(true){
-				
-				System.out.println(2);
-				try{
-					Thread.sleep(1000);
-					}catch(Exception e){}
-			}
+			// c.print(20);
 			
 		}};
 		t1.start();

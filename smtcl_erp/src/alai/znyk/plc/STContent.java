@@ -10,9 +10,9 @@ public class STContent implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public static int checkNum_预装=8;
-	public static int checkNum_同步=6;
-	
+	public static int checkNum_预装=3;
+	public static int checkNum_同步=3;
+	protected transient int LOCK=0;
 	public ST_Father firstST; 
     public ST_Father secondST;
     public int stNum;
@@ -39,8 +39,16 @@ public class STContent implements Serializable {
        	 }
     }
    
-  
-    public synchronized void initFromSql(){
+    public synchronized void lock(){
+    	LOCK=1;
+    }
+    public synchronized void unLock(){
+    	LOCK=0;
+    }
+    //mod=1时，更新到PLC其他只保留在本地 
+    public synchronized void initFromSql(int mod){
+    	
+    	if(LOCK==1)return;
     	
     	if(plc.getIntance().stop1){//不再重数据库里面读数了，单是不影响搬运机构的继续执行
     		if(装配区==1){
@@ -55,8 +63,9 @@ public class STContent implements Serializable {
     		    	 secondST.writeifChangeToPLC();
     		    	 ////
     				return;}	
+    			
     			if(stNum>=2&&stNum<=8){
-    				updata动作();
+    				updata动作(1);
     				return;}
     			
     		}
@@ -88,9 +97,10 @@ public class STContent implements Serializable {
     				 firstST.writeifChangeToPLC();
     		    	 secondST.writeifChangeToPLC();
     		    	 
-    				return;}	
+    				return;}
+    			
     			if(stNum>=2&&stNum<=8){
-    				updata动作();
+    				updata动作(1);
     				return;}
     			
     		}
@@ -111,6 +121,8 @@ public class STContent implements Serializable {
       		}	
     		
     	}
+    	
+    	
     	
     	
     	if(stNum==1){
@@ -528,7 +540,7 @@ public class STContent implements Serializable {
        		 secondST.clear();
     		}
     		
-    		updata动作();
+    		
     		
     	}
     
@@ -676,7 +688,7 @@ public class STContent implements Serializable {
         		 secondST.clear();
      		}
      		
-     		updata动作();
+     		
    	     }
     	 
     	 
@@ -1035,7 +1047,7 @@ public class STContent implements Serializable {
     			 
     		 }
     		
-    		 updata动作();
+    		
     	 }
     	 
     	 if(stNum==13){//叠装工位
@@ -1274,6 +1286,7 @@ public class STContent implements Serializable {
     				 }
     			 }
     			 }
+    			 
     		if(tem.size()>0){
     			Vector row=(Vector)tem.get(0);
     			Carry car=(Carry)row.get(0);
@@ -1406,17 +1419,20 @@ public class STContent implements Serializable {
         		 secondST.clear();
     			 
     		 }
-    		// updata动作();  
+    		
   	      }
+    	 if((stNum>=2&&stNum<=8)||stNum==10)
+    	    updata动作(mod);
     	 
-    	 
+    	 if(mod==1){
     	 firstST.writeifChangeToPLC();
     	 secondST.writeifChangeToPLC();
+    	  }
     	 
     	
     }
-    
-    public void updata动作(){//更新动作允许标志 
+   //mod=1时，更新到PLC其他只保留在本地 
+    public void updata动作(int mod){//更新动作允许标志 
     	
     	int next=stNum-1;
     	
@@ -1471,6 +1487,7 @@ public class STContent implements Serializable {
 				  //}
 				  
 			  }
+			if(mod==1)
 			firstST.writeifChangeToPLC();
 		}else{
 		   // firstST.set允许工位动作标志(false);
@@ -1508,6 +1525,7 @@ public class STContent implements Serializable {
 				 }
 			    }
 			  }
+			if(mod==1)
 			 secondST.writeifChangeToPLC();
 		}else{
 			

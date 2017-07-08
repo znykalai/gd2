@@ -182,7 +182,7 @@ public class _7ST extends ST_Father implements STInterface {
 		return startAddress;
 	}
 	@Override
-	public String writeToPLC() {
+	public synchronized String writeToPLC() {
 		return plc.writeBlockToBLC(startAddress, length, new int[]{boolContent,电芯类型标志,模组类型标志,需求数量,第1个假电芯位置,第1个假电芯位置,完成数量,配方特征},machineID);
 	}
 	@Override

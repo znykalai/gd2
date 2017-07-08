@@ -52,7 +52,7 @@ public class SqlPro {
     public static int 完成=3;
     public static boolean autoRFIDup=false;//确定是否要自动发送上货取
     public static boolean is指令调度=true;//确定是否要自动处理动作指令，就是向堆垛机发送命令
-    public static boolean is大库调度=true;//确定是否启动大库调度
+    public static boolean is大库调度=false;//确定是否启动大库调度
 
 
     public static String kind[]

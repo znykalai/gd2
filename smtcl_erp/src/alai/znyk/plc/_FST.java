@@ -74,7 +74,7 @@ public class _FST extends ST_Father implements STInterface {
 	
     public int getLength(){return length;}
     public String getStartAddress(){return startAddress;}
-    public String writeToPLC(){
+    public synchronized String writeToPLC(){
     	
     	return plc.writeBlockToBLC(startAddress, length, new int[]{boolContent,Åä·½ÌØÕ÷},machineID);
     	

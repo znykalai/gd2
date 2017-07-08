@@ -195,7 +195,7 @@ public class _1_6ST extends ST_Father implements STInterface {
 		return startAddress;
 	}
 	@Override
-	public String writeToPLC() {
+	public synchronized String writeToPLC() {
 		// System.out.println(startAddress+"工位+writeToPLC()->数据更新完成="+ 数据更新完成+"/boolContent="+boolContent);
 		return plc.writeBlockToBLC(startAddress, length, new int[]{boolContent,电芯类型标志,模组类型标志,需求数量,完成数量,配方特征},machineID);
 	}

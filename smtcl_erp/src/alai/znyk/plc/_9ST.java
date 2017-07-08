@@ -216,7 +216,7 @@ public class _9ST extends ST_Father implements STInterface {
 		return startAddress;
 	}
 	@Override
-	public String writeToPLC() {
+	public synchronized String writeToPLC() {
 		return plc.writeBlockToBLC(startAddress, length, 
 				new int[]{boolContent,电芯类型标志,模组类型标志,需求数量,
 						PACK类型标志,PACK号,模组号,第1个电芯位置,第1个电芯位置,第3个电芯位置,第4个电芯位置,配方特征},

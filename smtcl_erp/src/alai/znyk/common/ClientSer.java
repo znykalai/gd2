@@ -125,7 +125,7 @@ public class ClientSer {
 		}
 		
 		if(t==10){
-			String s="502=1|504=0|506=1|508=0|510=1|512=0|514=1";
+			String s="502=1|504=1|506=1|508=0|510=1|512=0|514=1";
 			Vector v=SqlTool.findInVector("select 工位,信号 from 到位信号  order by 工位");
 			String tem="";
 			for(int i=0;i<v.size();i++){
@@ -152,11 +152,10 @@ public class ClientSer {
 		if(t==SqlPro.去料升){return rffid2;}//返回升降机是否有信号
 		return "1";
 	}
-	  public static String TP="1";
+	  public static String TP="";
 	public String ReadFromRffid(String message,int id) throws RemoteException, ServiceException{
-		if(isOpenRfid) return gd.getGD().readFromRffid(message, id);
-       // if(id==1)
-        // TP= Math.round(Math.random()*10000)+"";
+		if(isOpenPlc) return gd.getGD().readFromRffid(message, id);
+      
 		return TP;
 		
 	}
@@ -248,12 +247,17 @@ public class ClientSer {
 			try{
 				if(isOpenPlc){
 					if(machineID==1){
-					RST1=gd.getGD().getSirIntValuesFromCTR(startAddress, nums, valueLen, machineID);
+					Resint[] tem=	gd.getGD().getSirIntValuesFromCTR(startAddress, nums, valueLen, machineID);
+					if(tem[0].resInt!=-1)
+					  RST1=tem;
 				return RST1;
 				
 					}
 					 else{
-						  RST2=gd.getGD().getSirIntValuesFromCTR(startAddress, nums, valueLen, machineID);
+					 Resint[] tem=	gd.getGD().getSirIntValuesFromCTR(startAddress, nums, valueLen, machineID);
+							
+					   if(tem[0].resInt!=-1)
+							  RST2=tem;
 							return RST2;
 						  
 					  }
@@ -278,7 +282,7 @@ public class ClientSer {
 			
 			
 		}catch(Exception ex){
-			SqlPro.getLog().error("error 调用SERVICE读取"+machineID+"号PLC异常",ex);
+			SqlPro.getLog().error("error 调用SERVICE读取"+machineID+"号PLC异常 在 280行");
 			//SqlPro.getLog().error(ex.getMessage());
 			}
 		
@@ -291,16 +295,15 @@ public class ClientSer {
 		 try{   alai.GDT.Inint tem []=new alai.GDT.Inint[invalues.length];
 		         for(int i=0;i<tem.length;i++){tem[i]=new alai.GDT.Inint(invalues[i]);}
 		         
-			// if(strAddress.equals("D10046")){
-		      //   if(!strAddress.equals("D11999"))
-			//System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"+strAddress+",nums="+invalues.length+",lengths="+valuseLeng+">>>>>>>>>>>>>>>>>>>>"+((invalues[0]&0b01)==1));
-			// }
-		         
-				return gd.getGD().writeSirIntToCTR(strAddress, valuseLeng, tem, machineID);
+		         int back=-1;
+		         back=gd.getGD().writeSirIntToCTR(strAddress, valuseLeng, tem, machineID);
+		         if(back!=0)SqlPro.getLog().error("返回值="+back+" 调用SERVICE写入 开始地址="+strAddress+" 长度="+invalues.length+" 第"+machineID+"号PLC异常");
+				 return back;
 				
 			}catch(Exception ex){ 
-				SqlPro.getLog().error("error 调用SERVICE写入"+machineID+"号PLC异常",ex);
+				SqlPro.getLog().error("error 调用SERVICE写入"+machineID+"号PLC异常 在299行");
 			    ex.printStackTrace();}
+		   return -1;  
 		 }else{
 			 if(!strAddress.equals("D11999"));
 			 //System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"+strAddress+",nums="+invalues.length+",lengths="+valuseLeng+">>>>>>>>>>>>>>>>>>>>"+((invalues[0]&0b01)==1));

@@ -179,7 +179,7 @@ public class _BST extends ST_Father implements STInterface {
 		return startAddress;
 	}
 	@Override
-	public String writeToPLC() {
+	public synchronized String writeToPLC() {
 		return plc.writeBlockToBLC(startAddress, length, 
 				new int[]{boolContent,电芯类型标志,模组类型标志,有效型腔数,
 						PACK类型标志,PACK号,模组号,模组层数,配方特征},

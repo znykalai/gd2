@@ -16,18 +16,18 @@ var readyShow={
 						var a=af.getGDFrame();
 						a=null;return null;
 					});
+					var a=this.readyEvent();a=null;
 					var nude=af_Home.getFx(function(fx){
 						if(fx=='1,2'){fx=1;};
 						var a=$("#fangxiang").val(fx);a=null;
 						var b=$("#fangxiang").attr("oval",fx);b=null;fx=null;
+						if(af.table.load()&&dsState.state){//是否启动定时
+							readyShow.deleteSetInterval=setInterval(function(){
+								if(af.table.load());
+							},dsState.tim),af_Home.dlInterval=true;
+						};
 						return null;
 					});nude=null;
-					var a=this.readyEvent();a=null;
-					if(af.table.load()&&dsState.state){//是否启动定时
-						readyShow.deleteSetInterval=setInterval(function(){
-							if(af.table.load());
-						},dsState.tim),af_Home.dlInterval=true;
-					};
 					var ly=layer.close(win),winHeight=null,win=null,ly=null;
 					return fun();
 				},
@@ -132,6 +132,21 @@ var readyShow={
 					}catch(e){
 						return e;
 					}
+					return null;
+				},
+				/**
+				 * 读取RFID
+				 */
+				getTpCode:function(fun_){
+		    		var a=$.ajax({
+						url:getRootPath()+'/KuFangAction.do?operType=getTp',
+						type:'get',cache:false,
+						data:'fx='+$("#fangxiang").val(),
+						success:function(data){
+							var obj=eval("("+data+")");data=null;
+							return fun_(obj.tp_code,obj.wl_code);obj=null;
+						}
+					});a=null;
 					return null;
 				},
 				/**
@@ -325,24 +340,10 @@ var readyShow={
 							    });
 							    //托盘选择事件
 							    $("#tp_code_click").click(function(e){
-							    	try{
-							    		var a=$.ajax({
-											url:getRootPath()+'/KuFangAction.do?operType=getTp',
-											type:'get',
-											cache:false,
-											data:'fx='+$("#fangxiang").val(),
-											success:function(data){
-												var obj=eval("("+data+")");data=null;
-												var b=$("#tp_code").val(obj.tp_code);b=null;
-												var c=$("#wl_code").val(obj.wl_code);c=null;
-												obj=null;return null;
-											}
-										});
-							    		return a=null;
-							    	}catch(e){
-							    		return e;
-									}
-						    		return null;
+							    	var a=af.getTpCode(function(tpCode,wlCode){
+										var b=$("#tp_code").val(tpCode);b=null;
+										var c=$("#wl_code").val(wlCode);c=null;
+							    	});a=null;return null;
 							    });
 							    //物料选择事件
 							    $("#wl_code_click").click(function(e){
@@ -648,8 +649,8 @@ var readyShow={
 						});
 						return null;
 					},
-					hckzdd:function(e){
-						$("#hc_table tbody tr").remove();var i=0;
+					hcTableLoad:function(e,tpCode,fun_){
+						var zdDQ=false,i=0;$("#hc_table tbody tr").remove();
 						while(i<e.length){
 							$('#hc_table tbody').append('<tr bgcolor="#ffffff" style="height:22px;">'+
 								//事件ID
@@ -672,9 +673,8 @@ var readyShow={
 								'<td title="'+e[i].wanchengshijian+'" style="width:55px;padding:0px;font-size:10px;">'+(e[i].wanchengshijian!=""?e[i].wanchengshijian.substring(0,10)+"...":"")+'</td>'+
 								//删除
 								'<td style="width:20px;padding:0px;">'+(e[i].zhuangtai=="排队"&&af_Home.administrator.发送命令?"<span class='del' title="+e[i].idEvent+" style='cursor:pointer;' aria-hidden='true'>&times;</span>":"")+'</td>'+
-							'</tr>');
-							i++;
-						};i=null;
+							'</tr>');if(tpCode==e[i].tp_code){zdDQ=true;};i++;
+						};i=null;e=null;
 						if(af_Home.administrator.发送命令){
 							var a=$('.del').unbind("click");a=null;
 							$('.del').click(function(){
@@ -683,7 +683,25 @@ var readyShow={
 								return null;
 							});
 						};
-						return null;
+						return fun_(zdDQ);zdDQ=null;
+					},
+					hckzdd:function(e){
+						/*var type=$("input[name='radioName']:checked").parent().attr("id");
+						if(type=="shanghuo"){
+							var a=af.getTpCode(function(tpCode,wlCode){//自动读取RFID
+								var a=af.table.hcTableLoad(e,tpCode,function(type){
+									if(type==false){
+										var b=$("#tp_code").val(tpCode);b=null;
+										var c=$("#wl_code").val(wlCode);c=null;
+										//var a=$("#kcfsBtn").click();a=null;//自动发送
+									}else{
+										var b=$("#tp_code").val('');b=null;
+										var c=$("#wl_code").val('');c=null;
+									};zdDQ=null;e=null;
+								});a=null;
+							});a=null;
+						}else{*/var a=af.table.hcTableLoad(e,null,function(b){e=null;b=null;});a=null;//};
+						/*type=null;*/return null;
 					},
 					/**
 					 * 库存
@@ -718,7 +736,7 @@ var readyShow={
 								af.showWlIp.ip[i]=null;
 							};
 							i++;
-						};i=null;
+						};i=null;e=null;
                     	var a=$('#show_wuliao_name ul').html(li);li=null;a=null;
                     	var b=af.showWlIp.show();b=null;return null;
 					}

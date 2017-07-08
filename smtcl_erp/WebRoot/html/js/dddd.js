@@ -604,12 +604,7 @@ var readyShow={
 				}
 			};
 			af.load(function(){
-				if(af_Home.administrator.订单调度.下载==false){var a=af_Home.cleanQX("dd_dowBtn");a=null;};
-				if(af_Home.administrator.订单调度.上调==false){var a=af_Home.cleanQX("dd_upBtn");a=null;};
-				if(af_Home.administrator.订单调度.下调==false){var a=af_Home.cleanQX("dd_bomBtn");a=null;};
-				if(af_Home.administrator.订单调度.选择分解==false){var a=af_Home.cleanQX("dd_fenjieRadioBtn");a=null;};
-				if(af_Home.administrator.订单调度.分解全部==false){var a=af_Home.cleanQX("dd_fenjieAllBtn");a=null;};
-				if(af_Home.administrator.订单调度.删除==false){var a=af_Home.cleanQX("dd_delBtn");a=null;};
+				if(af_Home.administrator.订单调度==false){var a=af_Home.cleanQX("dd_dowBtn");a=null;a=af_Home.cleanQX("dd_upBtn");a=null;a=af_Home.cleanQX("dd_bomBtn");a=null;a=af_Home.cleanQX("dd_fenjieRadioBtn");a=null;a=af_Home.cleanQX("dd_fenjieAllBtn");a=null;a=af_Home.cleanQX("dd_delBtn");a=null;};
 				if(af_Home.administrator.订单维护==false){var a=af_Home.cleanQX("gd_newBtn"),a=null,a=af_Home.cleanQX("gd_saveBtn"),a=null,a=af_Home.cleanQX("gd_deleteBtn"),a=null;};
 			},{state:false,tim:5000});//渲染主页面,function(){}--第一个返回参数,{ds:true--是否为定时刷新、tim:刷新时间毫秒为单位};
 			return null;

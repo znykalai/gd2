@@ -376,7 +376,7 @@ public class SqlTool {
         	set=st.executeQuery(sqll);
              if(set.next()){
              	have=true;
-             	back="关于这个托盘已有预上货指令";
+             	back="已有预上货指令,只能有一个预上指令！";
               }
              }
              
@@ -628,7 +628,19 @@ public class SqlTool {
  try{
         st=con.createStatement();
         con.setAutoCommit(false);
+        
+        if(machineID.equals("1")){
+            
+ 		   back = add动作指令( tp,"60001", toID,"预上货"/*上货，下货，输送线回流,预上货*/, 
+ 					  0,  machineID);
+ 		   }
+ 		   if(machineID.equals("2")){
+ 		       
+ 		  back = add动作指令( tp,"60002", toID,"预上货"/*上货，下货，输送线回流,预上货*/, 
+ 						  0,  machineID);
+ 		    }
         //第一步先把托盘的数量给按上
+ 	if(back.contains("成功")){
         set=st.executeQuery("select 托盘编号 from 库存托盘  where 托盘编号="+"'"+tp+"'");   
 		   if(set.next()){
 			   st.executeUpdate("update 库存托盘  set 数量='"+num+"',方向='"+machineID+"',物料='"+wuliao+"' where 托盘编号='"+tp+"'");  
@@ -643,18 +655,9 @@ public class SqlTool {
 	                    ")";
 			   st.executeUpdate(ql);	   
 			   
-		   }
-		   
-		   if(machineID.equals("1")){
-       
-		   back = add动作指令( tp,"60001", toID,"预上货"/*上货，下货，输送线回流,预上货*/, 
-					  0,  machineID);
-		   }
-		   if(machineID.equals("2")){
-		       
-		  back = add动作指令( tp,"60002", toID,"预上货"/*上货，下货，输送线回流,预上货*/, 
-						  0,  machineID);
-		    }
+		      }
+ 		   }
+		 
 		  
 
        con.commit();

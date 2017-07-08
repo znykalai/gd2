@@ -703,9 +703,13 @@ public class OrderOperAction extends Action{
 					};
 					if(deleteType){
 						//删除已下载的工单信息，工单下载表
-						sql="UPDATE `工单下载` a SET a.`传送否`='是' WHERE a.ID='"+id+"'";
+						sql="DELETE FROM `工单下载` WHERE ID='"+id+"'";
 						map.put("sql", sql);sql=null;id=null;
-						dao.saveAll(map);
+						dao.removeAll(map);
+//						修改为已传送
+//						sql="UPDATE `工单下载` a SET a.`传送否`='是' WHERE a.ID='"+id+"'";
+//						map.put("sql", sql);sql=null;id=null;
+//						dao.saveAll(map);
 					};
 				};
 			};list=null;map=null;dao=null;sql=null;context=null;

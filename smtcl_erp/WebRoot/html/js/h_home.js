@@ -154,8 +154,8 @@ var readyShow={
 							var gdWcl=Number(obj.gdWcl)>0?Number(obj.gdWcl):0;af.upload(gdWcl);gdWcl=null;
 							/*** PACK、模组 完成率***/$("#home_mz_list").html(obj.packMzTongJi);obj.packMzTongJi=null;
 							/***获取PLC连接状态***/
-							if(obj.plcType1){$("#duandianqidong_top").attr("class","qfgdStart");}else{$("#duandianqidong_top").attr("class","qfgd");};
-							if(obj.plcType2){$("#duandianqidong_bottom").attr("class","qfgdStart");}else{$("#duandianqidong_bottom").attr("class","qfgd");};obj=null
+							if(obj.plcType1){$("#lianjiezhuangtai_top").attr("class","qfgdStart");}else{$("#lianjiezhuangtai_top").attr("class","qfgd");};
+							if(obj.plcType2){$("#lianjiezhuangtai_bottom").attr("class","qfgdStart");}else{$("#lianjiezhuangtai_bottom").attr("class","qfgd");};obj=null
 							return null;
 						}
 					});
@@ -455,7 +455,6 @@ var readyShow={
 				if(af_Home.administrator.启动调度==false){var a=af_Home.cleanQX("qidongdiaodu_top");a=null;var b=af_Home.cleanQX("qidongdiaodu_bottom");b=null;};
 				if(af_Home.administrator.复位==false){var a=af_Home.cleanQX("fuwei_top");a=null;var b=af_Home.cleanQX("fuwei_bottom");b=null;};
 				if(af_Home.administrator.归零启动==false){var a=af_Home.cleanQX("guilingqidong_top");a=null;var b=af_Home.cleanQX("guilingqidong_bottom");b=null;};
-				//if(af_Home.administrator.断点启动==false){var a=af_Home.cleanQX("duandianqidong_top");a=null;var b=af_Home.cleanQX("duandianqidong_bottom");b=null;};
 			},{state:true,tim:1000});//渲染主页面,function(){}--第一个返回参数,{ds:true--是否为定时刷新、tim:刷新时间毫秒为单位};
 		}catch(e){
 			return e;

@@ -504,7 +504,7 @@
     	<result property="状态" column="状态" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     </resultMap>
 	<select id="HomeActionDAO.getDltk" parameterClass="java.util.HashMap" resultMap="HomeActionDAO.getDltkMap">
-		SELECT a.* FROM `大库请求` AS a WHERE a.`状态`&lt;&gt;1 ORDER BY a.ID
+		SELECT a.* FROM `大库请求` AS a WHERE a.`状态`&lt;&gt;1 ORDER BY a.ID LIMIT 50
 	</select>
 	<!-- 获取RFID以及物料编码 -->
 	<resultMap id="KuFangActionDAO.getRfidWlMap" class="java.util.HashMap">
