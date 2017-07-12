@@ -797,6 +797,10 @@ var readyShow={
 					//清除PLC指令
 					$(".anNiuDelete").click(function(){
 						var line=$('#pf_table1 tbody tr').attr("line");
+						if(!line){
+							line=null;
+							return null;
+						};
 						var a=$.ajax({
 							url:getRootPath()+'/PLCAction.do?operType=gwGzDelete',
 							type:'post',cache:false,

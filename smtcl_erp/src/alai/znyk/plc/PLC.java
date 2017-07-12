@@ -1136,15 +1136,15 @@ public class PLC implements Serializable {
     				if(i==15){
     					System.out.println("同步输送线载具放行-------------》");
     					final long timeS=System.currentTimeMillis();
-    					 getWrPLC(装配区).get(i).lock();////////////////////
+    					 //getWrPLC(装配区).get(i).lock();////////////////////
     					 getWrPLC(装配区).get(i).firstST.set允许工位动作标志(false);
 					     getWrPLC(装配区).get(i).firstST.setWrite(false);
 					     //优先把指令放到队列里面
 					     getWrPLC(装配区).get(i).initFromSql(0); 
-					     getWrPLC(装配区).get(i).updata动作(0);
+					     //getWrPLC(装配区).get(i).updata动作(0);
 					    //告诉PLC我数据更新完成了
 					     getWrPLC(装配区).get(i).firstST.set数据更新完成(true);
-					     getWrPLC(装配区).get(i).unLock();///////////////
+					     //getWrPLC(装配区).get(i).unLock();///////////////
     					/*getWrPLC(装配区).get(i).lock();
  					    getWrPLC(装配区).get(i).firstST.set数据更新完成(true);
  					    getWrPLC(装配区).get(i).firstST.set允许工位动作标志(false);
@@ -1259,7 +1259,7 @@ public class PLC implements Serializable {
     	
     	
     	}catch(Exception ex){
-    		SqlPro.getLog().error(ex.getMessage());
+    		SqlPro.getLog().error(ex.getMessage(),ex);
     		ex.printStackTrace();}
     	return null;
     }

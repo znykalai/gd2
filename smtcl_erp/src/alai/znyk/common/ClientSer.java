@@ -45,12 +45,12 @@ public class ClientSer {
     			isOpenRfid=false;
     		}else{
     			if(OpenPlc.equals("1")){
-    				System.out.println("Á¬½ÓPLC");
+    				System.out.println("è¿æ¥PLC");
     				isOpenPlc=true;}
     			else{isOpenPlc=false;}
     			
     			if(OpenRfid.equals("1")){
-    				System.out.println("Á¬½ÓRfid");
+    				System.out.println("è¿æ¥Rfid");
     				isOpenRfid=true;}
     			else{isOpenRfid=false;}
     			
@@ -61,7 +61,7 @@ public class ClientSer {
 		
 		//gd.setGDEndpointAddress("http://192.168.1.222:9005/GD?cgi");
 	//	 ((BindingProvider)gd).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,"serviceUrl");
-		try{//Æô¶¯Ê±ÏÈÔ¤ÈÈÒ»ÏÂ£¬±ÜÃâÊ×Àı´¦·£¡£
+		try{//å¯åŠ¨æ—¶å…ˆé¢„çƒ­ä¸€ä¸‹ï¼Œé¿å…é¦–ä¾‹å¤„ç½šã€‚
 			getState(10000);
 			KuFang.getIntance();
 		   }catch(Exception ex){ex.printStackTrace();}
@@ -98,10 +98,10 @@ public class ClientSer {
 		
 		if(isOpenPlc)return gd.getGD().getState(t);
 		
-		if(t==SqlPro.AÇøÊäËÍÏß){
+		if(t==SqlPro.AåŒºè¾“é€çº¿){
 			String s="501=1|502=0|503=1|504=0|505=1|506=0|507=1|508=0|"+
 					"509=1|510=0|511=1|512=0|513=1|514=0";
-			Vector v=SqlTool.findInVector("select ¹¤Î»,ĞÅºÅ from ÓĞ»õĞÅºÅ  order by ¹¤Î»");
+			Vector v=SqlTool.findInVector("select å·¥ä½,ä¿¡å· from æœ‰è´§ä¿¡å·  order by å·¥ä½");
 			String tem="";
 			for(int i=0;i<v.size();i++){
 				
@@ -118,7 +118,7 @@ public class ClientSer {
 		;
 		}
 		
-		if(t==SqlPro.BÇøÊäËÍÏß){
+		if(t==SqlPro.BåŒºè¾“é€çº¿){
 			return "601=0|602=0|603=0|604=0|605=0|606=0|607=0|608=0|"+
 					"609=0|610=0|611=0|612=0|613=0|614=0"
 		;
@@ -126,7 +126,7 @@ public class ClientSer {
 		
 		if(t==10){
 			String s="502=1|504=1|506=1|508=0|510=1|512=0|514=1";
-			Vector v=SqlTool.findInVector("select ¹¤Î»,ĞÅºÅ from µ½Î»ĞÅºÅ  order by ¹¤Î»");
+			Vector v=SqlTool.findInVector("select å·¥ä½,ä¿¡å· from åˆ°ä½ä¿¡å·  order by å·¥ä½");
 			String tem="";
 			for(int i=0;i<v.size();i++){
 				
@@ -148,8 +148,8 @@ public class ClientSer {
 		
 		}
 		
-		if(t==SqlPro.À´ÁÏÉı){return rffid1; }//·µ»ØÉı½µ»úÊÇ·ñÓĞĞÅºÅ
-		if(t==SqlPro.È¥ÁÏÉı){return rffid2;}//·µ»ØÉı½µ»úÊÇ·ñÓĞĞÅºÅ
+		if(t==SqlPro.æ¥æ–™å‡){return rffid1; }//è¿”å›å‡é™æœºæ˜¯å¦æœ‰ä¿¡å·
+		if(t==SqlPro.å»æ–™å‡){return rffid2;}//è¿”å›å‡é™æœºæ˜¯å¦æœ‰ä¿¡å·
 		return "1";
 	}
 	  public static String TP="";
@@ -164,18 +164,18 @@ public class ClientSer {
 		try{
 		if(isOpenPlc) return gd.getGD().upPallet(idEvent, fromID, toLocID, machineID);}
 		catch(Exception ex){
-			SqlPro.getLog().error("error µ÷ÓÃSERVICEÉÏÍĞÅÌ·¢ËÍÒì³£",ex);
+			SqlPro.getLog().error("error è°ƒç”¨SERVICEä¸Šæ‰˜ç›˜å‘é€å¼‚å¸¸",ex);
 			 ex.printStackTrace();}
-		System.out.println("ÉÏ»õ");
+		System.out.println("ä¸Šè´§");
 		return -1;
 	}
 	public int getPallet(int idEvent,String fromLocID,int toLocID,int machineID){
 		try{
 			if(isOpenPlc) return gd.getGD().getPallet(idEvent, fromLocID, toLocID, machineID);}
 			catch(Exception ex){
-				SqlPro.getLog().error("error µ÷ÓÃSERVICEÏÂÍĞÅÌ·¢ËÍÒì³£",ex);
+				SqlPro.getLog().error("error è°ƒç”¨SERVICEä¸‹æ‰˜ç›˜å‘é€å¼‚å¸¸",ex);
 				ex.printStackTrace();}
-		System.out.println("ÏÂ»õ");
+		System.out.println("ä¸‹è´§");
 		return -1;}
 	
 	public int toBackBuffer(int idEvent, int fromLocID,int toLocID){ 
@@ -183,9 +183,9 @@ public class ClientSer {
 			if(isOpenPlc) return gd.getGD().toBackBuffer(idEvent, fromLocID, toLocID);
 			}
 			catch(Exception ex){
-				SqlPro.getLog().error("error µ÷ÓÃSERVICE»ØÁ÷·¢ËÍÒì³£",ex);
+				SqlPro.getLog().error("error è°ƒç”¨SERVICEå›æµå‘é€å¼‚å¸¸",ex);
 				ex.printStackTrace();}
-		System.out.println("»Ø»õ");
+		System.out.println("å›è´§");
 		return -1;}
 	
 	public static Resint RST1[]=new Resint[]{
@@ -265,7 +265,7 @@ public class ClientSer {
 				}
 				
 			}catch(Exception ex){
-				SqlPro.getLog().error("error µ÷ÓÃSERVICE¶ÁÈ¡"+machineID+"ºÅPLCÒì³£",ex);
+				SqlPro.getLog().error("error è°ƒç”¨SERVICEè¯»å–"+machineID+"å·PLCå¼‚å¸¸",ex);
 			
 				ex.printStackTrace();}
 			
@@ -282,7 +282,7 @@ public class ClientSer {
 			
 			
 		}catch(Exception ex){
-			SqlPro.getLog().error("error µ÷ÓÃSERVICE¶ÁÈ¡"+machineID+"ºÅPLCÒì³£ ÔÚ 280ĞĞ");
+			SqlPro.getLog().error("error è°ƒç”¨SERVICEè¯»å–"+machineID+"å·PLCå¼‚å¸¸ åœ¨ 280è¡Œ");
 			//SqlPro.getLog().error(ex.getMessage());
 			}
 		
@@ -297,11 +297,11 @@ public class ClientSer {
 		         
 		         int back=-1;
 		         back=gd.getGD().writeSirIntToCTR(strAddress, valuseLeng, tem, machineID);
-		         if(back!=0)SqlPro.getLog().error("·µ»ØÖµ="+back+" µ÷ÓÃSERVICEĞ´Èë ¿ªÊ¼µØÖ·="+strAddress+" ³¤¶È="+invalues.length+" µÚ"+machineID+"ºÅPLCÒì³£");
+		    if(back!=0){SqlPro.getLog().error("è¿”å›å€¼="+back+" è°ƒç”¨SERVICEå†™å…¥ å¼€å§‹åœ°å€="+strAddress+" é•¿åº¦="+invalues.length+" ç¬¬"+machineID+"å·PLCå¼‚å¸¸");return -1;}
 				 return back;
 				
 			}catch(Exception ex){ 
-				SqlPro.getLog().error("error µ÷ÓÃSERVICEĞ´Èë"+machineID+"ºÅPLCÒì³£ ÔÚ299ĞĞ");
+				SqlPro.getLog().error("error è°ƒç”¨SERVICEå†™å…¥"+machineID+"å·PLCå¼‚å¸¸ åœ¨299è¡Œ");
 			    ex.printStackTrace();}
 		   return -1;  
 		 }else{
@@ -359,7 +359,7 @@ public class ClientSer {
 	    }
 	    
 	   public String c_exeComment(String comment, int type,int machineID){
-		   if(type==1){//¼±Í£
+		   if(type==1){//æ€¥åœ
 			   if(isOpenPlc){
 				   try{
 				   return gd.getGD().wexeComment(comment, type);
@@ -370,7 +370,7 @@ public class ClientSer {
 			   }
 			   
 		   }
-          if(type==6){//ËÉ¿ª¼±Í£
+          if(type==6){//æ¾å¼€æ€¥åœ
 			   
         	  if(isOpenPlc){
 				   try{
@@ -379,7 +379,7 @@ public class ClientSer {
 				   }catch(Exception ex){SqlPro.getLog().error(ex.getMessage());}
 			   }   
 		   }
-          if(type==2){//A¶Ñ¶â»ú¸´Î»
+          if(type==2){//Aå †å›æœºå¤ä½
         	  
         	  if(isOpenPlc){
 				   try{
@@ -389,7 +389,7 @@ public class ClientSer {
 			   }
 			   
 		   }
-          if(type==3){//B¶Ñ¶â»ú¸´Î»
+          if(type==3){//Bå †å›æœºå¤ä½
         	  
         	  if(isOpenPlc){
 				   try{
@@ -399,14 +399,14 @@ public class ClientSer {
 			   }
 			   
 		   }
-          if(type==4||type==5){//¹ÊÕÏºó¶ÏµãÆô¶¯,·µ»Ø-1ËµÃ÷·½·¨Ö´ĞĞ²»³É¹¦
-			//comment=eventID|fromID|toID|machineID|1=ÉÏ»õ£¬2=ÏÂ»õ£¬3=»ØÁ÷   
-        	 //²»ÅĞ¶Ï»ØÁ÷£¬»ØÁ÷²»ĞèÖĞ¶Ïµã
-        		  Vector ¶Ñ1=SqlTool.findInVector("select idEvent,À´Ô´,ÈÎÎñÀà±ğ,¶¯×÷,ÍĞÅÌ±àºÅ,À´Ô´»õÎ»ºÅ,·Å»Ø»õÎ»ºÅ,ÇëÇóÇø,×´Ì¬,×´Ì¬2 from Á¢¿â¶¯×÷Ö¸Áî  where ×´Ì¬='Ö´ĞĞÖĞ' and ¶¯×÷<>'ÊäËÍÏß»ØÁ÷' and ÇëÇóÇø= '"+machineID+"' order by idEvent");		
-  				if(¶Ñ1.size()>0){
-  					Vector row=(Vector)¶Ñ1.get(0);
+          if(type==4||type==5){//æ•…éšœåæ–­ç‚¹å¯åŠ¨,è¿”å›-1è¯´æ˜æ–¹æ³•æ‰§è¡Œä¸æˆåŠŸ
+			//comment=eventID|fromID|toID|machineID|1=ä¸Šè´§ï¼Œ2=ä¸‹è´§ï¼Œ3=å›æµ   
+        	 //ä¸åˆ¤æ–­å›æµï¼Œå›æµä¸éœ€ä¸­æ–­ç‚¹
+        		  Vector å †1=SqlTool.findInVector("select idEvent,æ¥æº,ä»»åŠ¡ç±»åˆ«,åŠ¨ä½œ,æ‰˜ç›˜ç¼–å·,æ¥æºè´§ä½å·,æ”¾å›è´§ä½å·,è¯·æ±‚åŒº,çŠ¶æ€,çŠ¶æ€2 from ç«‹åº“åŠ¨ä½œæŒ‡ä»¤  where çŠ¶æ€='æ‰§è¡Œä¸­' and åŠ¨ä½œ<>'è¾“é€çº¿å›æµ' and è¯·æ±‚åŒº= '"+machineID+"' order by idEvent");		
+  				if(å †1.size()>0){
+  					Vector row=(Vector)å †1.get(0);
   					try{
-  					String back= row.get(0)+"|"+row.get(5)+"|"+row.get(6)+"|"+machineID+"|"+(row.get(3).equals("ÉÏ»õ")?1:2);
+  					String back= row.get(0)+"|"+row.get(5)+"|"+row.get(6)+"|"+machineID+"|"+(row.get(3).equals("ä¸Šè´§")?1:2);
   					 if(isOpenPlc){
   						return gd.getGD().wexeComment(back, type);
   					 }
@@ -432,7 +432,7 @@ public class ClientSer {
 		   }
          
 		   
-		   return "³É¹¦";
+		   return "æˆåŠŸ";
 		   
 	   }
 }
