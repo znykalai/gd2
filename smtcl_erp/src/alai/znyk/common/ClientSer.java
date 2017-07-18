@@ -1,7 +1,9 @@
+
 package alai.znyk.common;
 
 
 import java.rmi.RemoteException;
+import java.util.Hashtable;
 import java.util.Properties;
 import java.util.Vector;
 
@@ -34,6 +36,19 @@ public class ClientSer {
 	private static ClientSer INSTANCE;
 	public static boolean isOpenPlc=false;
 	public static boolean isOpenRfid=false;
+	public static Hashtable<String,String> th=new Hashtable<String,String>();
+	long fCount=0;
+	long wCount=0;
+	long ftime=0;
+	long wtime=0;
+	long fCount2=0;
+	long wCount2=0;
+	long ftime2=0;
+	long wtime2=0;
+	long nCount=0;
+	long ntime=0;
+	long nCount2=0;
+	long ntime2=0;
 	private ClientSer(){
         try{
         	Properties pro=SqlPro.loadProperties(SqlPro.class.getResource("conf.pro").getFile());
@@ -94,9 +109,85 @@ public class ClientSer {
 	}
 	public static String rffid1="0";
 	public static String rffid2="0";
+	int nI=0;
+	int nI2=0;
+	String LOCK1="A";
+	String LOCK2="B";
+	private void sub1(){synchronized (LOCK1) {nI--;}}
+	private void sub2(){synchronized (LOCK2) {nI2--;}}
+	private void add1(){synchronized (LOCK1) {nI++;}}
+	private void add2(){synchronized (LOCK2) {nI2++;}}
 	public String getState(int t) throws RemoteException, ServiceException{
+		long time1=System.currentTimeMillis();
+		try{
+		if(isOpenPlc){
+			
+			 if(t==2||t==4||t==6||t==8||t==10||t==12){
+				   add1();
+			      nCount++;
+			      th.put("1立库访问", "堆垛机1访问开始,等待返回"+",访问类别="+t+",接口等待数="+nI);	    
+			 }
+			 else {
+				 nCount2++;
+				  add2();
+			     th.put("2立库访问", "堆垛机2访问开始,等待返回"+",访问类别="+t+",接口等待数="+nI2);	
+			 }
+			 long time3=0;
+			
+			String bak=gd.getGD().getState(t);
+			long time2=System.currentTimeMillis();
+			time3=time2-time1;
+			 if(t==2||t==4||t==6||t==8||t==10||t==12){
+			       ntime=ntime+time3;
+			       sub1();      
+			 }
+			 else  {ntime2=ntime2+time3;sub2();}
+			 
+			 if(bak==null){
+				 if(t==2||t==4||t==6||t==8||t==10||t==12)
+				 th.put("1立库访问", "堆垛机1返回值空异常，当前起始地址="+"访问类别="+t+",接口等待数="+nI);	
+				 else  th.put("2立库访问", "堆垛机2返回值空异常，当前起始地址="+"访问类别="+t+",接口等待数="+nI2);	
+			 }
+			 if(bak!=null){
+				 if(bak.equals("-2")){
+					 if(t==2||t==4||t==6||t==8||t==10||t==12)
+				 th.put("1立库访问", "堆垛机1返回值-2异常，当前起始地址="+"访问类别="+t+",接口等待数="+nI);	
+					 else  th.put("2立库访问", "堆垛机2返回值-2异常，当前起始地址="+"访问类别="+t+",接口等待数="+nI2);	
+					  }
+			     if(bak.equals("-1")){
+			    	 if(t==2||t==4||t==6||t==8||t==10||t==12)
+			     th.put("1立库访问", "堆垛机1返回值-1异常，当前起始地址="+"访问类别="+t+",接口等待数="+nI);	
+			    	 else  th.put("2立库访问", "堆垛机2返回值-1异常，当前起始地址="+"访问类别="+t+",接口等待数="+nI2);	
+						  } 
+			     if(bak.contains("&")||bak.equals("")){
+			    	 if(t==2||t==4||t==6||t==8||t==10||t==12) 
+				 th.put("1立库访问", "堆垛机1返回值字符异常，当前起始地址="+"访问类别="+t+",接口等待数="+nI);	
+			    	 else  th.put("2立库访问", "堆垛机2返回值字符异常，当前起始地址="+"访问类别="+t+",接口等待数="+nI2);	
+							  } 
+				 
+			  }
+			 if(t==2||t==4||t==6||t==8||t==10||t==12)
+			 th.put("1立库访问", "堆垛机1访问次数="+nCount+" 速度(ms)="+time3+" 平均速度(ms)="+(ntime/nCount)+"访问类别="+t+",接口等待数="+nI);
+			 else  th.put("2立库访问", "堆垛机2访问次数="+nCount2+" 速度(ms)="+time3+" 平均速度(ms)="+(ntime2/nCount2)+"访问类别="+t+",接口等待数="+nI2);
+			 return bak;
+		   }
 		
-		if(isOpenPlc)return gd.getGD().getState(t);
+		}catch( Exception e){
+			System.out.println("--------------------------------------------");
+			if(t==2||t==4||t==6||t==8||t==10||t==12){
+				sub1();
+			 th.put("1立库访问", "堆垛机1中断异常，当前起始地址="+"访问类别="+t+",接口等待数="+nI);	
+			 ntime=ntime+System.currentTimeMillis()-time1;
+			}
+			else {
+				sub2();
+				th.put("2立库访问", "堆垛机2中断异常，当前起始地址="+"访问类别="+t+",接口等待数="+nI2);
+				 ntime2=ntime2+System.currentTimeMillis()-time1;
+			}
+			throw e;
+			
+		}
+		
 		
 		if(t==SqlPro.A区输送线){
 			String s="501=1|502=0|503=1|504=0|505=1|506=0|507=1|508=0|"+
@@ -247,15 +338,28 @@ public class ClientSer {
 			try{
 				if(isOpenPlc){
 					if(machineID==1){
-					Resint[] tem=	gd.getGD().getSirIntValuesFromCTR(startAddress, nums, valueLen, machineID);
+					Resint[] tem=gd.getGD().getSirIntValuesFromCTR(startAddress, nums, valueLen, machineID);
+					for(int m=0;m<tem.length;m++){
+						if(tem[m].resInt==-1||tem[m].resInt==-2)
+							{
+							SqlPro.getLog().error("error 调用SERVICE读取"+machineID+"号PLC异常 返回值="+tem[m].resInt);
+							return RST1;
+							}
+					}
+					
 					if(tem[0].resInt!=-1)
 					  RST1=tem;
-				return RST1;
+				 return RST1;
 				
 					}
 					 else{
 					 Resint[] tem=	gd.getGD().getSirIntValuesFromCTR(startAddress, nums, valueLen, machineID);
-							
+					 for(int m=0;m<tem.length;m++){
+							if(tem[m].resInt==-1||tem[m].resInt==-2) {
+								SqlPro.getLog().error("error 调用SERVICE读取"+machineID+"号PLC异常 返回值="+tem[m].resInt);	
+								return RST2;
+								}	
+						}	
 					   if(tem[0].resInt!=-1)
 							  RST2=tem;
 							return RST2;
@@ -273,16 +377,59 @@ public class ClientSer {
 		
 		}
 	
-
+    int pfI=0;
+    int pfI2=0;
 	public alai.GDT.Resint[] getSirIntValuesFromCTR(String startAddress,int nums,int valueLen,
           int machineID){
+		long time1=System.currentTimeMillis();
 		try{
-			if(isOpenPlc)
-				return gd.getGD().getSirIntValuesFromCTR(startAddress, nums, valueLen, machineID);
+			if(isOpenPlc){
+				if(machineID==1){
+				fCount++;pfI++;
+				 th.put(machineID+"PLC读", "PLC1访问开始,读取等待返回，当前起始地址="+startAddress+",接口等待数="+pfI);	
+				}
+				else {
+					pfI2++;
+					fCount2++;
+				 th.put(machineID+"PLC读", "PLC2访问开始,读取等待返回，当前起始地址="+startAddress+",接口等待数="+pfI2);	
+				
+				}
+				
+				Resint[] bak=gd.getGD().getSirIntValuesFromCTR(startAddress, nums, valueLen, machineID);
+				long time2=System.currentTimeMillis();
+				long time3=time2-time1;
+				if(machineID==1){
+				ftime=ftime+time3;
+				pfI--;
+				}
+				else {ftime2=ftime2+time3;
+				pfI2--;
+				}
+				if(bak[0].getResInt()==-1||bak[bak.length-1].getResInt()==-1){
+				th.put(machineID+"PLC读", "PLC"+machineID+"读取返回值异常-1，当前起始地址="+startAddress+",接口等待数="+(machineID==1?pfI:pfI2));	
+				}
+				else{
+					if(machineID==1)	
+				th.put(machineID+"PLC读", "PLC1读取次数="+fCount+" 速度(ms)="+time3+" 平均速度(ms)="+(ftime/fCount)+"当前起始地址="+startAddress+",接口等待数="+pfI);
+					else
+				th.put(machineID+"PLC读", "PLC2读取次数="+fCount2+" 速度(ms)="+time3+" 平均速度(ms)="+(ftime2/fCount2)+"当前起始地址="+startAddress+",接口等待数="+pfI2);
+				}
+				return bak;
 			
+			}
 			
 		}catch(Exception ex){
-			SqlPro.getLog().error("error 调用SERVICE读取"+machineID+"号PLC异常 在 280行");
+			
+			if(machineID==1){
+				ftime=ftime+System.currentTimeMillis()-time1;
+				pfI--;
+				th.put(machineID+"PLC读", "PLC1读取中断异常，当前起始地址="+startAddress+",接口等待数="+pfI);	
+			}
+			 else {ftime2=ftime2+System.currentTimeMillis()-time1;
+			    pfI--;
+			    th.put(machineID+"PLC读", "PLC2读取中断异常，当前起始地址="+startAddress+",接口等待数="+pfI2);
+			 }
+			SqlPro.getLog().error("error 调用SERVICE读取"+machineID+"号PLC异常 在304行");
 			//SqlPro.getLog().error(ex.getMessage());
 			}
 		
@@ -290,18 +437,49 @@ public class ClientSer {
 		return machineID==1?RST1:RST2;
 	
 	}
+	int pwI=0;
+	int pwI2=0;
 	 public int writeSirIntToCTR(String strAddress, int valuseLeng, int[] invalues, int machineID) 
-	 { if(isOpenPlc){
+	 {   long time1=System.currentTimeMillis();
+		 if(isOpenPlc){
 		 try{   alai.GDT.Inint tem []=new alai.GDT.Inint[invalues.length];
-		         for(int i=0;i<tem.length;i++){tem[i]=new alai.GDT.Inint(invalues[i]);}
-		         
-		         int back=-1;
-		         back=gd.getGD().writeSirIntToCTR(strAddress, valuseLeng, tem, machineID);
-		    if(back!=0){SqlPro.getLog().error("返回值="+back+" 调用SERVICE写入 开始地址="+strAddress+" 长度="+invalues.length+" 第"+machineID+"号PLC异常");return -1;}
-				 return back;
+		        for(int i=0;i<tem.length;i++){tem[i]=new alai.GDT.Inint(invalues[i]);}
+		        int back=-1;
+		        if(machineID==1){
+		         wCount++; pwI++;
+		         th.put(machineID+"PLC写", "PLC1访问开始,写入等待返回，当前起始地址="+strAddress+",接口等待数="+pwI);	
+		        }
+		        else  {wCount2++;pwI2++;
+		         th.put(machineID+"PLC写", "PLC2访问开始,写入等待返回，当前起始地址="+strAddress+",接口等待数="+pwI);	
+		        }
 				
-			}catch(Exception ex){ 
-				SqlPro.getLog().error("error 调用SERVICE写入"+machineID+"号PLC异常 在299行");
+		         back=gd.getGD().writeSirIntToCTR(strAddress, valuseLeng, tem, machineID);
+		         long time2=System.currentTimeMillis();
+				 long time3=time2-time1;
+				  if(machineID==1){
+				 wtime=wtime+time3; pwI--;}
+				  else { wtime2=wtime2+time3;pwI2--;} 
+		    if(back!=0){
+		    	th.put(machineID+"PLC写", "PLC"+machineID+"写人异常，当前起始地址="+strAddress+",接口等待数="+(machineID==1?pwI:pwI2));	
+		    	SqlPro.getLog().error("返回值="+back+" 调用SERVICE写入 开始地址="+strAddress+" 长度="+invalues.length+" 第"+machineID+"号PLC异常");
+		    	return -1;
+		    	}
+		    if(machineID==1)
+		    th.put(machineID+"PLC写", "写入次数="+wCount+" 速度(ms)="+time3+" 平均速度(ms)="+(wtime/wCount)+"当前起始地址="+strAddress+",接口等待数="+pwI);
+		    else
+		    th.put(machineID+"PLC写", "写入次数="+wCount2+" 速度(ms)="+time3+" 平均速度(ms)="+(wtime2/wCount2)+"当前起始地址="+strAddress+",接口等待数="+pwI2);
+		    return back;
+				
+			}catch(Exception ex){
+				 if(machineID==1){
+					 wtime=wtime+System.currentTimeMillis()-time1; pwI--;
+					 th.put(machineID+"PLC写", "PLC1写人中断异常，当前起始地址="+strAddress+",接口等待数="+pwI);		 
+				 }
+					else  {wtime2=wtime2+System.currentTimeMillis()-time1;pwI2--;
+					 th.put(machineID+"PLC写", "PLC2写人中断异常，当前起始地址="+strAddress+",接口等待数="+pwI2);	
+					}
+				
+				SqlPro.getLog().error("error 调用SERVICE写入"+machineID+"号PLC异常 在334行");
 			    ex.printStackTrace();}
 		   return -1;  
 		 }else{

@@ -78,12 +78,13 @@ public class HomeAction extends Action{
 			int conB=Integer.parseInt(ClientSer.getIntance().getState(13).toString());
 			String htmlA=GetError.getInstace().getArm(conA,"A");
 			String htmlB=GetError.getInstace().getArm(conB,"B");
-			String result="";
-			if(htmlA==""&&htmlB==""){result="";}else{
-				result="<span style='color:red;font-size:18px;'>"+htmlA+"\n\n"+htmlB+"</span>";
-			};
+			JSONObject result = new JSONObject();
+			if(htmlA==""&&htmlB==""){result.put("error", "");}else{
+				result.put("error", "<span style='color:red;font-size:18px;'>"+htmlA+"\n\n"+htmlB+"</span>");
+			};htmlA=null;htmlB=null;
+			result.put("th",PLC.getIntance().getTH().size());
 			response.setContentType("text/html;charset=utf-8");
-			response.getWriter().print(result);
+			response.getWriter().print(result);result=null;
 			response.getWriter().close();
 		}catch (Exception e) {
 			e.printStackTrace();

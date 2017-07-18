@@ -174,14 +174,14 @@ var af_Home={
 		var b=$('#'+id).unbind("click");b=null;
 		return null;
 	},
-	/**是否可以安全关机？***/
-	stop:function(){
-		var a=$.ajax({
-			url:getRootPath()+'/HomeAction.do?operType=stop',type:'get',cache:false,
-			success:function(data){if(data=="成功"){layer.msg("可以安全关机！");}else{layer.msg(data);};data=null;}
-		});a=null;
-		return null;
-	},
+//	/**是否可以安全关机？***/
+//	stop:function(){
+//		var a=$.ajax({
+//			url:getRootPath()+'/HomeAction.do?operType=stop',type:'get',cache:false,
+//			success:function(data){if(data=="成功"){layer.msg("可以安全关机！");}else{layer.msg(data);};data=null;}
+//		});a=null;
+//		return null;
+//	},
 	/***error异常函数***/
 	errorHtml:null,
 	error:function(type){
@@ -190,18 +190,15 @@ var af_Home={
 				url:getRootPath()+'/HomeAction.do?operType=getError',
 				type:'get',cache:false,
 				success:function(data){
-					if(data==''){
+					var obj=eval("("+data+")");data=null;
+					if(obj.error==''){
 					    $("#error").css("display","none");
 					    var a=af_Home.errorHtml=null;a=null;
 					}else{
 					    $("#error").css("display","block");
-//				    	if(af_Home.errorHtml==null){
-						    var a=af_Home.errorHtml=data;a=null;
-//					    	var b=af_Home.error('load');b=null;
-//					    }else{
-//						    var a=af_Home.errorHtml=data;a=null;
-//					    };
-					};data=null;
+					    var a=af_Home.errorHtml=obj.error;a=null;
+					};
+					var a=$("#stJhxh span").html(obj.th);a=null;obj=null;
 				},
 				error:function(){
 					if(af_Home.dlInterval){clearInterval(readyShow.deleteSetInterval);}
@@ -224,9 +221,9 @@ var af_Home={
 	},
 	/***页面渲染***/
 	load:function(fun){
-		$('#div_mo_img_close').mouseover(function(){var url=getRootPath()+"/images/guanjianniu_mo.png";$(this).attr("src",url);url=null;return null;});
-		$('#div_mo_img_close').click(function(){var a=af_Home.stop();a=null;return null;});//关机事件
-		$('#div_mo_img_close').mouseout(function(){var url=getRootPath()+"/images/guanjianniu.png";$(this).attr("src",url);url=null;return null;});
+		//$('#div_mo_img_close').mouseover(function(){var url=getRootPath()+"/images/guanjianniu_mo.png";$(this).attr("src",url);url=null;return null;});
+		//$('#div_mo_img_close').click(function(){var a=af_Home.stop();a=null;return null;});//关机事件
+		//$('#div_mo_img_close').mouseout(function(){var url=getRootPath()+"/images/guanjianniu.png";$(this).attr("src",url);url=null;return null;});
 		$('#div_mo_img_strat').click(function(){var type;if(af_Home.div_mo_img_strat){type=false;}else{type=true;};/*如果当前是停止状态则改为允许状态*/var a=af_Home.getState(type,this,function(r,e){var url=getRootPath()+"/images/fanhuianniu_hong.png";if(!r){url=getRootPath()+"/images/fanhuianniu_lv.png";};$(e).attr("src",url);url=null;return null;});a=null;type=null;return null;});//急停事件
 		$('#yhsz').mousedown(function(){var a=$('#yhsz_id_').show();a=null;var b=$('#yhsz').hide();b=null;});//用户设置
 		$('#xtsz').mousedown(function(){var a=$('#xtsz_id_').show();a=null;var b=$('#xtsz').hide();b=null;});//系统设置

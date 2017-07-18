@@ -53,7 +53,8 @@
 						<tr style="height:68px;background-color:rgb( 112 , 131 , 148 );z-index:999;">
 							<td>
 								<div id="h_div_mo_img_close" class="h_div_mo_img_close">
-									<img id="div_mo_img_close" class="div_mo_img_close" src="<%=path%>/images/guanjianniu.png"/>
+									<!-- <img id="div_mo_img_close" class="div_mo_img_close" src="<%=path%>/images/guanjianniu.png"/> -->
+									<div id="stJhxh" class="stJhxh">ST交互信号有：<span></span></div>
 									<img id="div_mo_img_strat" class="div_mo_img_strat" src="<%=path%>/images/fanhuianniu_hong.png" />
 									<img id="error" src="<%=path%>/images/error.png" class="error"/>
 									<div class="row" id="btn_id"></div>

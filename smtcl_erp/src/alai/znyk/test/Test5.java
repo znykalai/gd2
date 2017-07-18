@@ -13,6 +13,9 @@ public class Test5 {
 
 	public static void main(String[] args) {
 		try{
+			ClientSer.getIntance();//.getState(2);
+			String ss="成功";
+			System.out.println(ss.contains("成功"));
 //			System.out.println(Integer.toBinaryString(12));
 //			String ss=Integer.toBinaryString(12);
 //			
@@ -29,9 +32,9 @@ public class Test5 {
 //			
 //			if(true)
 //			return;
-			String s=SqlTool.findOneRecord("Select ID,物料编码  from 托盘物料map where 托盘编号='"+2001+"'");
+			//String s=SqlTool.findOneRecord("Select ID,物料编码  from 托盘物料map where 托盘编号='"+2001+"'");
 		
-			System.out.println(s);
+			//System.out.println(s);
 			//String tp=ClientSer.getIntance().ReadFromRffid("", 1);
 		// TODO Auto-generated method stub
 		//System.out.println("tp="+tp+"p"+(tp.equals("")));

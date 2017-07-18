@@ -840,7 +840,7 @@ var readyShow={
 				}
 			};
 			var a=af.load(function(){
-				if(af_Home.administrator.PLC==false){var c=af_Home.cleanQX("anNiuSave");c=null;var e=af_Home.cleanQX("anNiuDelete");e=null;};
+				if(af_Home.administrator.PLC==false){var c=af_Home.cleanQX("anNiuSave");c=null;e=null;};
 				return null;
 			});a=null;
 			return null;

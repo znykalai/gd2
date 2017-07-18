@@ -511,6 +511,7 @@
     	<result property="ID" column="ID" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     	<result property="托盘编号" column="托盘编号" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     	<result property="物料编码" column="物料编码" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="默认数量" column="默认数量" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     </resultMap>
 	<select id="KuFangActionDAO.getRfidWl" parameterClass="java.util.HashMap" resultMap="KuFangActionDAO.getRfidWlMap">
 		SELECT a.* FROM `托盘物料MAP` AS a $sql$

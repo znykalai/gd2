@@ -2123,7 +2123,8 @@ var readyShow={
 								var map={
 									id:rfid_table.eq(i).children("td").eq(1).attr('id'),
 									tp_code:rfid_table.eq(i).children("td").eq(2).text(),
-									wl_code:rfid_table.eq(i).children("td").eq(3).html()
+									wl_code:rfid_table.eq(i).children("td").eq(3).html(),
+									mr_number:rfid_table.eq(i).children("td").eq(4).html()
 								};
 								if(rfid_table.eq(i).children("td").eq(2).text()==""){
 						    		layer.tips('请读取托盘编号！','#rfidTd_tp'+(i+1)); 
@@ -2131,6 +2132,10 @@ var readyShow={
 								};
 								if(rfid_table.eq(i).children("td").eq(3).html()==""){
 						    		layer.tips('请选择物料编码！','.rfidTd_wl'+(i+1));
+									return null;
+								};
+								if(rfid_table.eq(i).children("td").eq(4).html()==""){
+						    		layer.tips('请填写默认数量！','.rfidMrslNumber'+(i+1));
 									return null;
 								};
 								//判断当前行,修改还是新增
@@ -2178,9 +2183,10 @@ var readyShow={
 				    		$('#rfid_table tbody').append('<tr bgcolor="#ffffff" class="'+map.type+'" style="height:26px;">' +
 								'<td style="width:4%;padding:0px;"><input type="checkbox" name="checkbox"></input></td>'+
 								'<td style="width:4%;padding:0px;" id="'+map.id+'">'+map.index+'</td>'+
-								'<td style="width:46%;padding:0px;"><div class="col-md-10"><span style="margin-left:20%;" olv="'+map.tp_code+'">'+map.tp_code+'</span></div><div class="col-md-1"><input style="margin-left:90%;height:24px;font-size:6px;" class="btn btn-default" id="rfidTd_tp'+map.index+'" value="读取" type="button"></input></div></td>'+
-								'<td class="rfidTd_wl'+map.index+'" style="width:46%;padding:0px;">'+map.wl_code+'</td>'+
-							'</tr>');
+								'<td style="width:36%;padding:0px;"><div class="col-md-10"><span style="margin-left:20%;" olv="'+map.tp_code+'">'+map.tp_code+'</span></div><div class="col-md-1"><input style="margin-left:90%;height:24px;font-size:6px;" class="btn btn-default" id="rfidTd_tp'+map.index+'" value="读取" type="button"></input></div></td>'+
+								'<td class="rfidTd_wl'+map.index+'" style="width:36%;padding:0px;">'+map.wl_code+'</td>'+
+								'<td class="rfidMrslNumber'+map.index+'" style="width:10%;padding:0px;">'+map.mr_number+'</td>'+
+				    		'</tr>');
 				    		$("#rfidTd_tp"+map.index).click(function(){
 				    			var this_=this;
 				    			var tr=$(this).parent().parent().parent();
@@ -2205,6 +2211,26 @@ var readyShow={
 					                };this_=null;
 				    			},"配方");a=null;return null;
 				    		});
+				    		$(".rfidMrslNumber"+map.index).click(function(){
+								var ck=this;
+								if(this.ck){return null;}else{this.ck=true;};
+								$(this).html('<input id="rfidMrslNumber_id" type="number" min="1" max="30" style="padding:0;width:100%;height:25px;" class="form-control" value="'+$(ck).html()+'">');
+								$('#rfidMrslNumber_id').focus();
+						        $('#rfidMrslNumber_id').blur(function(){
+						            var node=this.parentNode;
+						            $(node).html(this.value);node=null;
+						            ck.ck?ck.ck=false:null;
+							        return null;
+						        });
+					            //判断当前行 修改还是新增
+					            $('#rfidMrslNumber_id').change(function(){
+					                if($(ck).parent().attr("class")==""){
+					                    $(ck).parent().attr("class","update");
+					                }
+							        return null;
+					            });
+						        return null;
+				    		});
 				    		return null;
 				    	},
 				    	//显示table数据
@@ -2216,7 +2242,7 @@ var readyShow={
 								success:function(data){
 							    	var obj=eval("("+data+")");data=null;
 							    	for(var i=0;i<obj.length;i++){
-								    	var map={type:type,index:table.index,id:obj[i].id,tp_code:obj[i].tp_code,wl_code:obj[i].wl_code};
+								    	var map={type:type,index:table.index,id:obj[i].id,tp_code:obj[i].tp_code,wl_code:obj[i].wl_code,mr_number:obj[i].mr_number};
 								    	var a=table.insert(map);a=null;map=null;table.index++;
 							    	};obj=null;return null;
 								}
@@ -2266,7 +2292,7 @@ var readyShow={
 				    });
 				    //新增按钮事件
 				    $("#rfid_adlBtn").click(function(){
-				    	var map={type:'add',index:table.index,id:'',tp_code:'',wl_code:''};
+				    	var map={type:'add',index:table.index,id:'',tp_code:'',wl_code:'',mr_number:'30'};
 				    	var a=table.insert(map);a=null;map=null;table.index++;
 				    	return null;
 				    });

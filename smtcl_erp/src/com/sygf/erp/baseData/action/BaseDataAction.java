@@ -180,6 +180,7 @@ public class BaseDataAction extends Action{
 				mapPara.put("'id'", "'"+((HashMap)list.get(i)).get("ID")+"'");
 				mapPara.put("'tp_code'", "'"+((HashMap)list.get(i)).get("托盘编号")+"'");
 				mapPara.put("'wl_code'", "'"+((HashMap)list.get(i)).get("物料编码")+"'");
+				mapPara.put("'mr_number'", "'"+((HashMap)list.get(i)).get("默认数量")+"'");
 				result.add(mapPara);mapPara=null;
 			};list=null;
 			response.setContentType("text/html;charset=utf-8");
@@ -210,10 +211,11 @@ public class BaseDataAction extends Action{
 			boolean saType=false;context=null;
 			if(add.length()>0){
 				for(int i=0;i<add.length();i++){
-					String sql="insert into 托盘物料map(托盘编号,物料编码)" +
-							"values(" +
-							"'"+add.getJSONObject(i).getString("tp_code")+"'," +
-							"'"+add.getJSONObject(i).getString("wl_code")+"')";
+					String sql="insert into 托盘物料map(托盘编号,物料编码)"+
+							"values("+
+							"'"+add.getJSONObject(i).getString("tp_code")+"',"+
+							"'"+add.getJSONObject(i).getString("wl_code")+"',"+
+							"'"+add.getJSONObject(i).getString("mr_number")+"')";
 					map.put("sql", sql);sql=null;
 					saType=daoAll.saveAll(map);
 				};
@@ -221,9 +223,10 @@ public class BaseDataAction extends Action{
 			JSONArray update=new JSONArray(map.get("update").toString());//修改
 			if(update.length()>0){
 				for(int i=0;i<update.length();i++){
-					String sql="update 托盘物料map set " +
-						"托盘编号='" +update.getJSONObject(i).getString("tp_code")+"'," +
-						"物料编码='" + update.getJSONObject(i).getString("wl_code")+"' " +
+					String sql="update 托盘物料map set "+
+						"托盘编号='"+update.getJSONObject(i).getString("tp_code")+"',"+
+						"物料编码='"+update.getJSONObject(i).getString("wl_code")+"',"+
+						"默认数量='"+ update.getJSONObject(i).getString("mr_number")+"' "+
 						"where ID="+update.getJSONObject(i).getString("id");
 					map.put("sql", sql);sql=null;
 					saType=daoAll.saveAll(map);
@@ -602,40 +605,40 @@ public class BaseDataAction extends Action{
 			ApplicationContext context=GetApplicationContext.getContext(request);
 			BaseDataDAO dao=(BaseDataDAO)context.getBean("baseDataDAO");
 			int wlSize=dao.getWlCode(map).size();
-			String sql="insert into 通用物料(物料编码,物料描述,类别,类型,单位,新建者,新建时间,更新时间,失效,托盘类别,装载系数,回流阀值,第二编码,PLC编码,默认上货区,默认下货区)" +
-						"values(" +
-						"'"+map.get("wuliao_code")+"'," +
-						"'"+map.get("wuliao_miaoshu")+"'," +
-						"'"+map.get("leibie_id")+"'," +
-						"'"+map.get("leixing_id")+"'," +
-						"'"+map.get("danwei_id")+"'," +
-						"'"+session.getAttribute("username")+"'," +
-						"'"+map.get("wl_newDate")+"'," +
-						"'"+map.get("wl_newDate")+"'," +
-						"'"+map.get("shixiao_id")+"'," +
-						"'"+map.get("tuopanleibie_id")+"'," +
-						"'"+map.get("zhuangzaicanshu_id")+"'," +
-						"'"+map.get("huiliufazhi_id")+"'," +
-						"'"+map.get("dier_code")+"'," +
-						"'"+map.get("plc_code")+"'," +
-						"'"+map.get("shanghuoqu_id")+"'," +
+			String sql="insert into 通用物料(物料编码,物料描述,类别,类型,单位,新建者,新建时间,更新时间,失效,托盘类别,装载系数,回流阀值,第二编码,PLC编码,默认上货区,默认下货区)"+
+						"values("+
+						"'"+map.get("wuliao_code")+"',"+
+						"'"+map.get("wuliao_miaoshu")+"',"+
+						"'"+map.get("leibie_id")+"',"+
+						"'"+map.get("leixing_id")+"',"+
+						"'"+map.get("danwei_id")+"',"+
+						"'"+session.getAttribute("username")+"',"+
+						"'"+map.get("wl_newDate")+"',"+
+						"'"+map.get("wl_newDate")+"',"+
+						"'"+map.get("shixiao_id")+"',"+
+						"'"+map.get("tuopanleibie_id")+"',"+
+						"'"+map.get("zhuangzaicanshu_id")+"',"+
+						"'"+map.get("huiliufazhi_id")+"',"+
+						"'"+map.get("dier_code")+"',"+
+						"'"+map.get("plc_code")+"',"+
+						"'"+map.get("shanghuoqu_id")+"',"+
 						"'"+map.get("xiahuoqu_id")+"')";
 			//修改
 			if(wlSize > 0){
-				sql="update 通用物料 set " +
-						"物料描述='"+map.get("wuliao_miaoshu")+"', " +
-						"类别='" + map.get("leibie_id")+"'," +
-						"类型='" + map.get("leixing_id")+"'," +
-						"单位='" + map.get("danwei_id")+"'," +
-						"更新时间=DATE_FORMAT(NOW(),'%Y-%m-%d')," +
-						"失效='" + map.get("shixiao_id")+"'," +
-						"托盘类别='" + map.get("tuopanleibie_id")+"'," +
-						"装载系数='" + map.get("zhuangzaicanshu_id")+"'," +
-						"回流阀值='" + map.get("huiliufazhi_id")+"'," +
-						"第二编码='" + map.get("dier_code")+"'," +
-						"PLC编码='" + map.get("plc_code")+"'," +
-						"默认上货区='" + map.get("shanghuoqu_id")+"'," +
-						"默认下货区='" + map.get("xiahuoqu_id")+"' " +
+				sql="update 通用物料 set "+
+						"物料描述='"+map.get("wuliao_miaoshu")+"', "+
+						"类别='"+ map.get("leibie_id")+"',"+
+						"类型='"+ map.get("leixing_id")+"',"+
+						"单位='"+ map.get("danwei_id")+"',"+
+						"更新时间=DATE_FORMAT(NOW(),'%Y-%m-%d'),"+
+						"失效='"+ map.get("shixiao_id")+"',"+
+						"托盘类别='"+ map.get("tuopanleibie_id")+"',"+
+						"装载系数='"+ map.get("zhuangzaicanshu_id")+"',"+
+						"回流阀值='"+ map.get("huiliufazhi_id")+"',"+
+						"第二编码='"+ map.get("dier_code")+"',"+
+						"PLC编码='"+ map.get("plc_code")+"',"+
+						"默认上货区='"+ map.get("shanghuoqu_id")+"',"+
+						"默认下货区='"+ map.get("xiahuoqu_id")+"' "+
 						"where 物料编码='"+map.get("wuliao_code")+"'";
 			}
 			map.put("sql", sql);
@@ -719,26 +722,26 @@ public class BaseDataAction extends Action{
 			String mozu_newDate=head.getString("mozu_newDate");
 			map.put("mozu_code", mozu_code);
 			int mzYesNo=dao.getMzYesNo(map).size();
-			String sql="insert into 模组题头(模组编码,模组类型,电芯类型,工位类别,型腔数,层数,新建者,新建时间)" +
-						"values(" +
-						"'"+mozu_code+"'," +
-						"'"+Integer.parseInt(mozu_leixing, 16)+"'," +
-						"'"+mozu_dianxinleixing+"'," +
-						"'"+mozu_gongweileibie+"'," +
-						"'"+mozu_xingqiangshu+"'," +
-						"'"+mozu_cengshu+"'," +
-						"'"+userName+"'," +
+			String sql="insert into 模组题头(模组编码,模组类型,电芯类型,工位类别,型腔数,层数,新建者,新建时间)"+
+						"values("+
+						"'"+mozu_code+"',"+
+						"'"+Integer.parseInt(mozu_leixing, 16)+"',"+
+						"'"+mozu_dianxinleixing+"',"+
+						"'"+mozu_gongweileibie+"',"+
+						"'"+mozu_xingqiangshu+"',"+
+						"'"+mozu_cengshu+"',"+
+						"'"+userName+"',"+
 						"'"+mozu_newDate+"')";
 			
 			if(mzYesNo > 0 ){
-				sql="update 模组题头 set " +
-					"模组类型='" +Integer.parseInt(mozu_leixing, 16)+"'," +
-					"电芯类型='" +mozu_dianxinleixing+"'," +
-					"工位类别='" +mozu_gongweileibie+"'," +
-					"型腔数='" +mozu_xingqiangshu+"'," +
-					"层数='" +mozu_cengshu+"'," +
-					"更新时间=DATE_FORMAT(NOW(),'%Y-%m-%d')," +
-					"更新者='" + userName+"' " +
+				sql="update 模组题头 set "+
+					"模组类型='"+Integer.parseInt(mozu_leixing, 16)+"',"+
+					"电芯类型='"+mozu_dianxinleixing+"',"+
+					"工位类别='"+mozu_gongweileibie+"',"+
+					"型腔数='"+mozu_xingqiangshu+"',"+
+					"层数='"+mozu_cengshu+"',"+
+					"更新时间=DATE_FORMAT(NOW(),'%Y-%m-%d'),"+
+					"更新者='"+ userName+"' "+
 					"where 模组编码='"+mozu_code+"'";
 			};
 			map.put("sql", sql);
@@ -765,19 +768,19 @@ public class BaseDataAction extends Action{
 						if(xhList.size() > 0){
 							xh=Integer.parseInt(((HashMap)xhList.get(0)).get("序号").toString());
 						};
-						sql="insert into 模组载具(模组ID,序号,翻面否,叠装否,电芯数,电芯1,电芯2,电芯3,电芯4,有效型腔,假电芯1,假电芯2)" +
-							"values(" +
-							"'"+mz_id+"'," +
-							"'"+(xh+1)+"'," +	//序号+1
-							"'"+add.getJSONObject(i).getString("mozu_fanmianfou")+"'," +
-							"'"+add.getJSONObject(i).getString("mozu_diezhuangfou")+"'," +
-							"'"+add.getJSONObject(i).getString("mozu_dianxinshu")+"'," +
-							"'"+add.getJSONObject(i).getString("mozu_dianxin1")+"'," +
-							"'"+add.getJSONObject(i).getString("mozu_dianxin2")+"'," +
-							"'"+add.getJSONObject(i).getString("mozu_dianxin3")+"'," +
-							"'"+add.getJSONObject(i).getString("mozu_dianxin4")+"'," +
-							"'"+add.getJSONObject(i).getString("mozu_youxiaoxingqiang")+"'," +
-							"'"+add.getJSONObject(i).getString("mozu_jiadianxin1")+"'," +
+						sql="insert into 模组载具(模组ID,序号,翻面否,叠装否,电芯数,电芯1,电芯2,电芯3,电芯4,有效型腔,假电芯1,假电芯2)"+
+							"values("+
+							"'"+mz_id+"',"+
+							"'"+(xh+1)+"',"+	//序号+1
+							"'"+add.getJSONObject(i).getString("mozu_fanmianfou")+"',"+
+							"'"+add.getJSONObject(i).getString("mozu_diezhuangfou")+"',"+
+							"'"+add.getJSONObject(i).getString("mozu_dianxinshu")+"',"+
+							"'"+add.getJSONObject(i).getString("mozu_dianxin1")+"',"+
+							"'"+add.getJSONObject(i).getString("mozu_dianxin2")+"',"+
+							"'"+add.getJSONObject(i).getString("mozu_dianxin3")+"',"+
+							"'"+add.getJSONObject(i).getString("mozu_dianxin4")+"',"+
+							"'"+add.getJSONObject(i).getString("mozu_youxiaoxingqiang")+"',"+
+							"'"+add.getJSONObject(i).getString("mozu_jiadianxin1")+"',"+
 							"'"+add.getJSONObject(i).getString("mozu_jiadianxin2")+"')";
 //						System.out.println("模组行="+sql);
 						map.put("sql", sql);
@@ -787,17 +790,17 @@ public class BaseDataAction extends Action{
 				//update
 				if(update.length() > 0 && !mz_id.equals("")){
 					for(int i=0;i < update.length();i++){
-						sql="update 模组载具 set " +
-							"翻面否='" +update.getJSONObject(i).getString("mozu_fanmianfou")+"'," +
-							"叠装否='" +update.getJSONObject(i).getString("mozu_diezhuangfou")+"'," +
-							"电芯数='" +update.getJSONObject(i).getString("mozu_dianxinshu")+"'," +
-							"电芯1='" +update.getJSONObject(i).getString("mozu_dianxin1")+"'," +
-							"电芯2='" +update.getJSONObject(i).getString("mozu_dianxin2")+"'," +
-							"电芯3='" +update.getJSONObject(i).getString("mozu_dianxin3")+"'," +
-							"电芯4='" +update.getJSONObject(i).getString("mozu_dianxin4")+"'," +
-							"有效型腔='" +update.getJSONObject(i).getString("mozu_youxiaoxingqiang")+"'," +
-							"假电芯1='" +update.getJSONObject(i).getString("mozu_jiadianxin1")+"'," +
-							"假电芯2='" + update.getJSONObject(i).getString("mozu_jiadianxin2")+"' " +
+						sql="update 模组载具 set "+
+							"翻面否='"+update.getJSONObject(i).getString("mozu_fanmianfou")+"',"+
+							"叠装否='"+update.getJSONObject(i).getString("mozu_diezhuangfou")+"',"+
+							"电芯数='"+update.getJSONObject(i).getString("mozu_dianxinshu")+"',"+
+							"电芯1='"+update.getJSONObject(i).getString("mozu_dianxin1")+"',"+
+							"电芯2='"+update.getJSONObject(i).getString("mozu_dianxin2")+"',"+
+							"电芯3='"+update.getJSONObject(i).getString("mozu_dianxin3")+"',"+
+							"电芯4='"+update.getJSONObject(i).getString("mozu_dianxin4")+"',"+
+							"有效型腔='"+update.getJSONObject(i).getString("mozu_youxiaoxingqiang")+"',"+
+							"假电芯1='"+update.getJSONObject(i).getString("mozu_jiadianxin1")+"',"+
+							"假电芯2='"+ update.getJSONObject(i).getString("mozu_jiadianxin2")+"' "+
 							"where 模组ID='"+mz_id+"' and 载具ID='"+update.getJSONObject(i).getString("zj_id")+"'";
 //						System.out.println("模组指令行修改="+sql);
 						map.put("sql", sql);
@@ -842,7 +845,7 @@ public class BaseDataAction extends Action{
 				if(map.get("where")!=null&&!map.get("where").equals("")){
 					where=map.get("where").toString();
 				}
-				String sql="select a.* from `模组题头` a" + where;
+				String sql="select a.* from `模组题头` a"+ where;
 				map.put("sql", sql);
 				List list=dao.getMzHead(map);
 				if(list!=null&&list.size()>0){
@@ -939,7 +942,7 @@ public class BaseDataAction extends Action{
 			boolean yesNo=false;
 			if(add.length() > 0){//add
 				for(int i=0;i<add.length();i++){
-					String sql="select a.* from `模组指令行` a where a.模组ID='"+add.getJSONObject(i).getString("mozu_id")+"' " +
+					String sql="select a.* from `模组指令行` a where a.模组ID='"+add.getJSONObject(i).getString("mozu_id")+"' "+
 							"and a.载具ID='"+add.getJSONObject(i).getString("zj_id")+"' order by a.序号 DESC";
 					map.put("sql", sql);
 					List xhList=dao.getMzzlhList(map);
@@ -947,15 +950,15 @@ public class BaseDataAction extends Action{
 					if(xhList.size() > 0){
 						xh=Integer.parseInt(((HashMap)xhList.get(0)).get("序号").toString());
 					}
-					sql="insert into `模组指令行`(`模组ID`,`载具ID`,`序号`,`物料`,`物料描述`,`数量`,`工位`,`载具位置`)" +
-							"values(" +
-							"'"+add.getJSONObject(i).getString("mozu_id")+"'," +
-							"'"+add.getJSONObject(i).getString("zj_id")+"'," +
-							"'"+(xh+1)+"'," +	//序号+1
-							"'"+add.getJSONObject(i).getString("zlh_wuliao")+"'," +
-							"'"+add.getJSONObject(i).getString("zlh_wuliaomiaoshu")+"'," +
-							"'"+add.getJSONObject(i).getString("zlh_shuliang")+"'," +
-							"'"+add.getJSONObject(i).getString("zlh_gongwei")+"'," +
+					sql="insert into `模组指令行`(`模组ID`,`载具ID`,`序号`,`物料`,`物料描述`,`数量`,`工位`,`载具位置`)"+
+							"values("+
+							"'"+add.getJSONObject(i).getString("mozu_id")+"',"+
+							"'"+add.getJSONObject(i).getString("zj_id")+"',"+
+							"'"+(xh+1)+"',"+	//序号+1
+							"'"+add.getJSONObject(i).getString("zlh_wuliao")+"',"+
+							"'"+add.getJSONObject(i).getString("zlh_wuliaomiaoshu")+"',"+
+							"'"+add.getJSONObject(i).getString("zlh_shuliang")+"',"+
+							"'"+add.getJSONObject(i).getString("zlh_gongwei")+"',"+
 							"'"+add.getJSONObject(i).getString("zlh_zaijuweizhi")+"')";
 					map.put("sql", sql);
 					System.out.println("sql="+sql);
@@ -964,13 +967,13 @@ public class BaseDataAction extends Action{
 			}
 			if(update.length()>0){
 				for(int i=0;i < update.length();i++){
-					String sql="update 模组指令行 set " +
-						"物料='" +update.getJSONObject(i).getString("zlh_wuliao")+"'," +
-						"物料描述='" +update.getJSONObject(i).getString("zlh_wuliaomiaoshu")+"'," +
-						"数量='" +update.getJSONObject(i).getString("zlh_shuliang")+"'," +
-						"载具位置='" +update.getJSONObject(i).getString("zlh_zaijuweizhi")+"'," +
-						"工位='" + update.getJSONObject(i).getString("zlh_gongwei")+"' " +
-						"where 模组ID='"+update.getJSONObject(i).getString("mozu_id")+"' " +
+					String sql="update 模组指令行 set "+
+						"物料='"+update.getJSONObject(i).getString("zlh_wuliao")+"',"+
+						"物料描述='"+update.getJSONObject(i).getString("zlh_wuliaomiaoshu")+"',"+
+						"数量='"+update.getJSONObject(i).getString("zlh_shuliang")+"',"+
+						"载具位置='"+update.getJSONObject(i).getString("zlh_zaijuweizhi")+"',"+
+						"工位='"+ update.getJSONObject(i).getString("zlh_gongwei")+"' "+
+						"where 模组ID='"+update.getJSONObject(i).getString("mozu_id")+"' "+
 								"and 载具ID='"+update.getJSONObject(i).getString("zj_id")+"' "+
 								"and 序号='"+update.getJSONObject(i).getString("zlh_xuhao")+"'";
 					map.put("sql", sql);
@@ -1070,18 +1073,18 @@ public class BaseDataAction extends Action{
 			String zj_id_up=map.get("zj_id_up").toString();
 			boolean yesNo=true;
 			if(!mozu_id.equals("")&&!zj_id.equals("")){
-				String sql="update 模组载具 set " +
-					"序号='-1' " +	//需要先将调小的序号变为-1；然后根据-1改变成调小后的序号
-					"where 模组ID='"+mozu_id+"' " +
+				String sql="update 模组载具 set "+
+					"序号='-1' "+	//需要先将调小的序号变为-1；然后根据-1改变成调小后的序号
+					"where 模组ID='"+mozu_id+"' "+
 							"and 载具ID='"+zj_id_up+"' "+
 							"and 序号='"+(xuhao - 1)+"'";
 				map.put("sql", sql);
 //				System.out.println("sql="+sql);
 				yesNo=dao.updateXuhaoUp(map);
 				if(yesNo){
-					sql="update 模组载具 set " +
-						"序号='"+(xuhao-1)+"' " +
-						"where 模组ID='"+mozu_id+"' " +
+					sql="update 模组载具 set "+
+						"序号='"+(xuhao-1)+"' "+
+						"where 模组ID='"+mozu_id+"' "+
 								"and 载具ID='"+zj_id+"' "+
 								"and 序号='"+xuhao+"'";
 					map.put("sql", sql);
@@ -1089,9 +1092,9 @@ public class BaseDataAction extends Action{
 					yesNo=dao.updateXuhaoUp(map);
 				}
 				if(yesNo){
-					sql="update 模组载具 set " +
-						"序号='"+xuhao+"' " +
-						"where 模组ID='"+mozu_id+"' " +
+					sql="update 模组载具 set "+
+						"序号='"+xuhao+"' "+
+						"where 模组ID='"+mozu_id+"' "+
 								"and 载具ID='"+zj_id_up+"' "+
 								"and 序号='-1'";
 					map.put("sql", sql);
@@ -1135,18 +1138,18 @@ public class BaseDataAction extends Action{
 			String zj_id_up=map.get("zj_id_up").toString();
 			boolean yesNo=true;
 			if(!mozu_id.equals("")&&!zj_id.equals("")){
-				String sql="update 模组载具 set " +
-					"序号='-1' " +	//需要先将调小的序号变为-1；然后根据-1改变成调小后的序号
-					"where 模组ID='"+mozu_id+"' " +
+				String sql="update 模组载具 set "+
+					"序号='-1' "+	//需要先将调小的序号变为-1；然后根据-1改变成调小后的序号
+					"where 模组ID='"+mozu_id+"' "+
 							"and 载具ID='"+zj_id_up+"' "+
-							"and 序号='"+(xuhao + 1)+"'";
+							"and 序号='"+(xuhao+ 1)+"'";
 				map.put("sql", sql);
 //				System.out.println("sql="+sql);
 				yesNo=dao.updateXuhaoUp(map);
 				if(yesNo){
-					sql="update 模组载具 set " +
-						"序号='"+(xuhao+1)+"' " +
-						"where 模组ID='"+mozu_id+"' " +
+					sql="update 模组载具 set "+
+						"序号='"+(xuhao+1)+"' "+
+						"where 模组ID='"+mozu_id+"' "+
 								"and 载具ID='"+zj_id+"' "+
 								"and 序号='"+xuhao+"'";
 					map.put("sql", sql);
@@ -1154,9 +1157,9 @@ public class BaseDataAction extends Action{
 					yesNo=dao.updateXuhaoUp(map);
 				}
 				if(yesNo){
-					sql="update 模组载具 set " +
-						"序号='"+xuhao+"' " +
-						"where 模组ID='"+mozu_id+"' " +
+					sql="update 模组载具 set "+
+						"序号='"+xuhao+"' "+
+						"where 模组ID='"+mozu_id+"' "+
 								"and 载具ID='"+zj_id_up+"' "+
 								"and 序号='-1'";
 					map.put("sql", sql);
@@ -1199,18 +1202,18 @@ public class BaseDataAction extends Action{
 			String zj_id=map.get("zj_id").toString();
 			boolean yesNo=true;
 			if(!mozu_id.equals("")&&!zj_id.equals("")){
-				String sql="update 模组指令行 set " +
-					"序号='-1' " +	//需要先将调小的序号变为-1；然后根据-1改变成调小后的序号
-					"where 模组ID='"+mozu_id+"' " +
+				String sql="update 模组指令行 set "+
+					"序号='-1' "+	//需要先将调小的序号变为-1；然后根据-1改变成调小后的序号
+					"where 模组ID='"+mozu_id+"' "+
 							"and 载具ID='"+zj_id+"' "+
 							"and 序号='"+(xuhao - 1)+"'";
 				map.put("sql", sql);
 //				System.out.println("sql="+sql);
 				yesNo=dao.updateXuhaoUp(map);
 				if(yesNo){
-					sql="update 模组指令行 set " +
-						"序号='"+(xuhao-1)+"' " +
-						"where 模组ID='"+mozu_id+"' " +
+					sql="update 模组指令行 set "+
+						"序号='"+(xuhao-1)+"' "+
+						"where 模组ID='"+mozu_id+"' "+
 								"and 载具ID='"+zj_id+"' "+
 								"and 序号='"+xuhao+"'";
 					map.put("sql", sql);
@@ -1218,9 +1221,9 @@ public class BaseDataAction extends Action{
 					yesNo=dao.updateXuhaoUp(map);
 				}
 				if(yesNo){
-					sql="update 模组指令行 set " +
-						"序号='"+xuhao+"' " +
-						"where 模组ID='"+mozu_id+"' " +
+					sql="update 模组指令行 set "+
+						"序号='"+xuhao+"' "+
+						"where 模组ID='"+mozu_id+"' "+
 								"and 载具ID='"+zj_id+"' "+
 								"and 序号='-1'";
 					map.put("sql", sql);
@@ -1263,18 +1266,18 @@ public class BaseDataAction extends Action{
 			String zj_id=map.get("zj_id").toString();
 			boolean yesNo=true;
 			if(!mozu_id.equals("")&&!zj_id.equals("")){
-				String sql="update 模组指令行 set " +
-					"序号='-1' " +	//需要先将调小的序号变为-1；然后根据-1改变成调小后的序号
-					"where 模组ID='"+mozu_id+"' " +
+				String sql="update 模组指令行 set "+
+					"序号='-1' "+	//需要先将调小的序号变为-1；然后根据-1改变成调小后的序号
+					"where 模组ID='"+mozu_id+"' "+
 							"and 载具ID='"+zj_id+"' "+
-							"and 序号='"+(xuhao + 1)+"'";
+							"and 序号='"+(xuhao+ 1)+"'";
 				map.put("sql", sql);
 //				System.out.println("sql="+sql);
 				yesNo=dao.updateXuhaoUp(map);
 				if(yesNo){
-					sql="update 模组指令行 set " +
-						"序号='"+(xuhao+1)+"' " +
-						"where 模组ID='"+mozu_id+"' " +
+					sql="update 模组指令行 set "+
+						"序号='"+(xuhao+1)+"' "+
+						"where 模组ID='"+mozu_id+"' "+
 								"and 载具ID='"+zj_id+"' "+
 								"and 序号='"+xuhao+"'";
 					map.put("sql", sql);
@@ -1282,9 +1285,9 @@ public class BaseDataAction extends Action{
 					yesNo=dao.updateXuhaoUp(map);
 				}
 				if(yesNo){
-					sql="update 模组指令行 set " +
-						"序号='"+xuhao+"' " +
-						"where 模组ID='"+mozu_id+"' " +
+					sql="update 模组指令行 set "+
+						"序号='"+xuhao+"' "+
+						"where 模组ID='"+mozu_id+"' "+
 								"and 载具ID='"+zj_id+"' "+
 								"and 序号='-1'";
 					map.put("sql", sql);
@@ -1329,22 +1332,22 @@ public class BaseDataAction extends Action{
 			String userName=session.getAttribute("username")==null?"":session.getAttribute("username").toString();//登录人员
 			List headList=null;
 			boolean yesNo=false;
-			String sql="insert into `pack题头`(`pack编码`,`pack类型`,`默认生产线`,`电芯类型`,`新建者`,`新建时间`)" +
-						"values(" +
-						"'"+pack_code+"'," +
-						"'"+head.get("pack_leixing").toString()+"'," +
-						"'"+head.get("pack_morenshengchanxian").toString()+"'," +
-						"'"+head.get("pack_dianxinleixing").toString()+"'," +
-						"'"+userName+"'," +
+			String sql="insert into `pack题头`(`pack编码`,`pack类型`,`默认生产线`,`电芯类型`,`新建者`,`新建时间`)"+
+						"values("+
+						"'"+pack_code+"',"+
+						"'"+head.get("pack_leixing").toString()+"',"+
+						"'"+head.get("pack_morenshengchanxian").toString()+"',"+
+						"'"+head.get("pack_dianxinleixing").toString()+"',"+
+						"'"+userName+"',"+
 						"'"+head.get("pack_newDate").toString()+"')";
 			if(!pack_id.equals("")){
-				sql="update `pack题头` set " +
-					"pack类型='" +head.get("pack_leixing").toString()+"'," +
-					"默认生产线='" +head.get("pack_morenshengchanxian").toString()+"'," +
-					"电芯类型='" +head.get("pack_dianxinleixing").toString()+"'," +
-					"更新时间=DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i:%S')," +
-					"更新者='" + userName +"' " +
-					"where ID='"+pack_id+"' " +
+				sql="update `pack题头` set "+
+					"pack类型='"+head.get("pack_leixing").toString()+"',"+
+					"默认生产线='"+head.get("pack_morenshengchanxian").toString()+"',"+
+					"电芯类型='"+head.get("pack_dianxinleixing").toString()+"',"+
+					"更新时间=DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i:%S'),"+
+					"更新者='"+ userName+"' "+
+					"where ID='"+pack_id+"' "+
 							"and pack编码='"+pack_code+"'";
 			}
 			map.put("sql", sql);
@@ -1360,9 +1363,9 @@ public class BaseDataAction extends Action{
 				JSONArray add=new JSONArray(map.get("add").toString());
 				if(add.length() > 0){//add
 					for(int i=0;i<add.length();i++){
-						sql="select a.*,b.`模组类型` from `pack行` a " +
-							"LEFT JOIN `模组题头` b ON a.`模组编码`=b.`模组编码` " +
-							"where a.`pack编码`='"+pack_code+"' and a.`ID`='"+pack_id+"' " +
+						sql="select a.*,b.`模组类型` from `pack行` a "+
+							"LEFT JOIN `模组题头` b ON a.`模组编码`=b.`模组编码` "+
+							"where a.`pack编码`='"+pack_code+"' and a.`ID`='"+pack_id+"' "+
 							"order by a.序号 DESC";;
 						map.put("sql", sql);
 						List xhList=dao.getPackRowList(map);
@@ -1370,14 +1373,14 @@ public class BaseDataAction extends Action{
 						if(xhList.size() > 0){
 							xh=Integer.parseInt(((HashMap)xhList.get(0)).get("序号").toString());
 						}
-						sql="insert into `pack行`(`ID`,`pack编码`,`序号`,`模组编码`,`数量`,`更新者`,`更新时间`)" +
-								"values(" +
-								"'"+pack_id+"'," +
-								"'"+pack_code+"'," +
-								"'"+(xh+1)+"'," +	//序号+1
-								"'"+add.getJSONObject(i).getString("pack_mozu_code")+"'," +
-								"'"+add.getJSONObject(i).getString("pack_shuliang")+"'," +
-								"'"+userName+"'," +
+						sql="insert into `pack行`(`ID`,`pack编码`,`序号`,`模组编码`,`数量`,`更新者`,`更新时间`)"+
+								"values("+
+								"'"+pack_id+"',"+
+								"'"+pack_code+"',"+
+								"'"+(xh+1)+"',"+	//序号+1
+								"'"+add.getJSONObject(i).getString("pack_mozu_code")+"',"+
+								"'"+add.getJSONObject(i).getString("pack_shuliang")+"',"+
+								"'"+userName+"',"+
 								"DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i:%S'))";
 						map.put("sql", sql);
 						yesNo=dao.savePack(map);
@@ -1387,12 +1390,12 @@ public class BaseDataAction extends Action{
 				JSONArray update=new JSONArray(map.get("update").toString());
 				if(update.length() > 0){
 					for(int i=0;i < update.length();i++){
-						sql="update `pack行` set " +
-						"模组编码='" +update.getJSONObject(i).getString("pack_mozu_code")+"'," +
-						"数量='" +update.getJSONObject(i).getString("pack_shuliang")+"'," +
-						"更新时间=DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i:%S')," +
-						"更新者='" + userName +"' " +
-						"where ID='"+pack_id+"' " +
+						sql="update `pack行` set "+
+						"模组编码='"+update.getJSONObject(i).getString("pack_mozu_code")+"',"+
+						"数量='"+update.getJSONObject(i).getString("pack_shuliang")+"',"+
+						"更新时间=DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i:%S'),"+
+						"更新者='"+ userName+"' "+
+						"where ID='"+pack_id+"' "+
 								"and pack编码='"+pack_code+"' and 序号='"+update.getJSONObject(i).getString("pack_xuhao")+"'";
 					}
 					map.put("sql", sql);
@@ -1432,9 +1435,9 @@ public class BaseDataAction extends Action{
 			BaseDataDAO dao=(BaseDataDAO)context.getBean("baseDataDAO");
 			ArrayList result=new ArrayList();
 			if(!map.get("pack_id").equals("")&&!map.get("pack_code").equals("")){
-				String sql="select a.*,b.`模组类型` from `pack行` a " +
-						"LEFT JOIN `模组题头` b ON a.`模组编码`=b.`模组编码` " +
-						"where a.`pack编码`='"+map.get("pack_code")+"' and a.`ID`='"+map.get("pack_id")+"' " +
+				String sql="select a.*,b.`模组类型` from `pack行` a "+
+						"LEFT JOIN `模组题头` b ON a.`模组编码`=b.`模组编码` "+
+						"where a.`pack编码`='"+map.get("pack_code")+"' and a.`ID`='"+map.get("pack_id")+"' "+
 						"order by a.序号";
 				map.put("sql", sql);
 				List list=dao.getPackRowList(map);
@@ -1479,7 +1482,7 @@ public class BaseDataAction extends Action{
 			ArrayList result=new ArrayList();
 			String sql="select a.* from `pack题头` a";
 			if(map.get("pack_code")!=null){
-				sql=sql + " where a.`pack编码`='"+map.get("pack_code")+"'";
+				sql=sql+ " where a.`pack编码`='"+map.get("pack_code")+"'";
 			}
 			map.put("sql", sql);
 			List list=dao.getHeadList(map);
@@ -1574,18 +1577,18 @@ public class BaseDataAction extends Action{
 			
 			boolean yesNo=false;
 			if(!pack_id.equals("")&&!pack_code.equals("")){
-				String sql="update pack行 set " +
-					"序号='-1' " +	//需要先将调小的序号变为-1；然后根据-1改变成调小后的序号
-					"where ID='"+pack_id+"' " +
+				String sql="update pack行 set "+
+					"序号='-1' "+	//需要先将调小的序号变为-1；然后根据-1改变成调小后的序号
+					"where ID='"+pack_id+"' "+
 							"and pack编码='"+pack_code+"' "+
 							"and 序号='"+(xuhao - 1)+"'";
 				map.put("sql", sql);
 //				System.out.println("sql="+sql);
 				yesNo=dao.updateXuhaoUp(map);
 				if(yesNo){
-					sql="update pack行 set " +
-						"序号='"+(xuhao-1)+"' " +
-						"where ID='"+pack_id+"' " +
+					sql="update pack行 set "+
+						"序号='"+(xuhao-1)+"' "+
+						"where ID='"+pack_id+"' "+
 						"and pack编码='"+pack_code+"' "+
 								"and 序号='"+xuhao+"'";
 					map.put("sql", sql);
@@ -1593,9 +1596,9 @@ public class BaseDataAction extends Action{
 					yesNo=dao.updateXuhaoUp(map);
 				}
 				if(yesNo){
-					sql="update pack行 set " +
-						"序号='"+xuhao+"' " +
-						"where ID='"+pack_id+"' " +
+					sql="update pack行 set "+
+						"序号='"+xuhao+"' "+
+						"where ID='"+pack_id+"' "+
 						"and pack编码='"+pack_code+"' "+
 								"and 序号='-1'";
 					map.put("sql", sql);
@@ -1638,18 +1641,18 @@ public class BaseDataAction extends Action{
 			
 			boolean yesNo=true;
 			if(!pack_id.equals("")&&!pack_code.equals("")){
-				String sql="update pack行 set " +
-					"序号='-1' " +	//需要先将调小的序号变为-1；然后根据-1改变成调小后的序号
-					"where ID='"+pack_id+"' " +
+				String sql="update pack行 set "+
+					"序号='-1' "+	//需要先将调小的序号变为-1；然后根据-1改变成调小后的序号
+					"where ID='"+pack_id+"' "+
 							"and pack编码='"+pack_code+"' "+
-							"and 序号='"+(xuhao + 1)+"'";
+							"and 序号='"+(xuhao+ 1)+"'";
 				map.put("sql", sql);
 //				System.out.println("sql="+sql);
 				yesNo=dao.updateXuhaoUp(map);
 				if(yesNo){
-					sql="update pack行 set " +
-						"序号='"+(xuhao+1)+"' " +
-						"where ID='"+pack_id+"' " +
+					sql="update pack行 set "+
+						"序号='"+(xuhao+1)+"' "+
+						"where ID='"+pack_id+"' "+
 						"and pack编码='"+pack_code+"' "+
 								"and 序号='"+xuhao+"'";
 					map.put("sql", sql);
@@ -1657,9 +1660,9 @@ public class BaseDataAction extends Action{
 					yesNo=dao.updateXuhaoUp(map);
 				}
 				if(yesNo){
-					sql="update pack行 set " +
-						"序号='"+xuhao+"' " +
-						"where ID='"+pack_id+"' " +
+					sql="update pack行 set "+
+						"序号='"+xuhao+"' "+
+						"where ID='"+pack_id+"' "+
 						"and pack编码='"+pack_code+"' "+
 								"and 序号='-1'";
 					map.put("sql", sql);

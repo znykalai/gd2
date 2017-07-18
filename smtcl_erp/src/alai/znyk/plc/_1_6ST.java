@@ -196,8 +196,13 @@ public class _1_6ST extends ST_Father implements STInterface {
 	}
 	@Override
 	public synchronized String writeToPLC() {
-		// System.out.println(startAddress+"工位+writeToPLC()->数据更新完成="+ 数据更新完成+"/boolContent="+boolContent);
-		return plc.writeBlockToBLC(startAddress, length, new int[]{boolContent,电芯类型标志,模组类型标志,需求数量,完成数量,配方特征},machineID);
+		
+		 String back=plc.writeBlockToBLC(startAddress, length, new int[]{boolContent,电芯类型标志,模组类型标志,需求数量,完成数量,配方特征},machineID);
+		 if(back.equals("成功")){
+			    isChange();//初始话OLD
+				old.intFromST(this);
+			 }
+		 return back;
 	}
 	@Override
 	public String updataFromPLC() {

@@ -180,10 +180,15 @@ public class _BST extends ST_Father implements STInterface {
 	}
 	@Override
 	public synchronized String writeToPLC() {
-		return plc.writeBlockToBLC(startAddress, length, 
+		 String back=plc.writeBlockToBLC(startAddress, length, 
 				new int[]{boolContent,电芯类型标志,模组类型标志,有效型腔数,
 						PACK类型标志,PACK号,模组号,模组层数,配方特征},
 				machineID);
+		 if(back.equals("成功")){
+			    isChange();//初始话OLD
+				old.intFromST(this);
+			 }
+		 return back;
 	}
 	@Override
 	public String updataFromPLC() {
