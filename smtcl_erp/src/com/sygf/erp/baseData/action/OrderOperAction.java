@@ -81,35 +81,24 @@ public class OrderOperAction extends Action{
 			JSONObject head=new JSONObject(map.get("head").toString());
 			JSONObject result=new JSONObject();
 			if(head.get("id").equals("")){//新增
-				String sql="insert into `工单下载`(`工单号`,`pack编码`,`工单数量`,`装配区`,`释放否`)" +
+				map.put("sql", "insert into `工单下载`(`工单号`,`pack编码`,`工单数量`,`装配区`,`释放否`)" +
 						"values(" +
 						"'"+head.get("订单号").toString()+"'," +
 						"'"+head.get("pack编码").toString()+"'," +
 						"'"+head.get("订单数量").toString()+"'," +
 						"'"+head.get("装配区").toString()+"'," +
-						"'"+head.get("释放否").toString()+"')";
-				map.put("sql", sql);sql=null;
+						"'"+head.get("释放否").toString()+"')");
 				result.put("result", dao.saveAll(map)?"保存成功！":"保存失败！");//保存	
 				map.put("sql","SELECT MAX(a.ID)AS ID FROM `工单下载` a");//获取工单ID的 SQL
 				result.put("id", ((HashMap)dao.getGdxzId(map).get(0)).get("ID"));//获取工单下载表ID
 			}else{//修改
-				String sql="select a.* from `工单下载` as a where a.工单号='"+head.get("订单号").toString()+"'";
-				map.put("sql", sql);sql=null;
-				List list=dao.getGdDownload(map);
-				if(list!=null&&list.size()>0){
-					if(((HashMap)list.get(0)).get("传送否").equals("是")){
-						result.put("result", "此工单已经传送，不可修改！");//保存
-					}else{
-						sql="update 工单下载 set "
-								+ "工单号='"+head.get("订单号").toString()+"',"
-								+ "pack编码='"+head.get("pack编码").toString()+"',"
-								+ "工单数量='"+head.get("订单数量").toString()+"',"
-								+ "装配区='"+head.get("装配区").toString()+"',"
-								+ "释放否='"+head.get("释放否").toString()+"' where ID="+head.get("id");
-						map.put("sql", sql);sql=null;
-						result.put("result", dao.saveAll(map)?"保存成功！":"保存失败！");//保存
-					};
-				};list=null;
+				map.put("sql", "update 工单下载 set "
+						+ "工单号='"+head.get("订单号").toString()+"',"
+						+ "pack编码='"+head.get("pack编码").toString()+"',"
+						+ "工单数量='"+head.get("订单数量").toString()+"',"
+						+ "装配区='"+head.get("装配区").toString()+"',"
+						+ "释放否='"+head.get("释放否").toString()+"' where ID="+head.get("id"));
+				result.put("result", dao.saveAll(map)?"保存成功！":"保存失败！");//保存
 				result.put("id", head.get("id"));
 			};
 			head=null;context=null;dao=null;map=null;
@@ -244,7 +233,7 @@ public class OrderOperAction extends Action{
 			ApplicationContext context=GetApplicationContext.getContext(request);
 			OrderOperactionDAO dao=(OrderOperactionDAO)context.getBean("orderOperactionDAO");
 			ArrayList result=new ArrayList();
-			String sql=" WHERE";
+			String sql=" WHERE `工单表`.`状态` IS NULL AND ";
 			if(!map.get("getGdId").equals("")){
 				sql+=" `工单表`.`工单号`='"+map.get("getGdId")+"' AND ";
 			};
@@ -260,11 +249,7 @@ public class OrderOperAction extends Action{
 				!session.getAttribute("username").equals("admin")){
 					sql+=" `工单表`.`装配区`='"+session.getAttribute("fangxiang")+"' AND ";
 			};
-			if(sql.equals(" WHERE")){
-				sql="";
-			}else if(sql.endsWith("AND ")){
-				sql=sql.substring(0,sql.length()-4);
-			};
+			if(sql.endsWith("AND ")){sql=sql.substring(0,sql.length()-4);};
 			map.put("sql", sql);sql=null;
 			List list=dao.getDdList(map);
 			if(list!=null&&list.size()>0){
@@ -275,18 +260,16 @@ public class OrderOperAction extends Action{
 					if(gdwcl.equals("100.0000")){
 						start_type="已完成";
 					}else{
-						sql="SELECT `配方指令队列`.ID FROM `配方指令队列` WHERE `配方指令队列`.`工单ID`='"+((HashMap)list.get(i)).get("ID")+"' AND " +
+						map.put("sql", "SELECT `配方指令队列`.ID FROM `配方指令队列` WHERE `配方指令队列`.`工单ID`='"+((HashMap)list.get(i)).get("ID")+"' AND " +
 								"((`配方指令队列`.`前升读标志` IS NOT NULL OR `配方指令队列`.`前升读标志`<>'') OR " +
-								"`配方指令队列`.`ST读取标志` IS NOT NULL OR `配方指令队列`.`ST读取标志`<>'')";
-						map.put("sql", sql);sql=null;
+								"`配方指令队列`.`ST读取标志` IS NOT NULL OR `配方指令队列`.`ST读取标志`<>'')");
 						List zlList=dao.getGdtype(map);
 						if(zlList!=null&&zlList.size()>0){
 							start_type="正在处理";
 						}else{
-							sql="SELECT `配方指令队列`.ID FROM `配方指令队列` WHERE `配方指令队列`.`工单ID`='"+((HashMap)list.get(i)).get("ID")+"' AND " +
-							"((`配方指令队列`.`前升读标志` IS NULL OR `配方指令队列`.`前升读标志`='') OR " +
-							"`配方指令队列`.`ST读取标志` IS NULL OR `配方指令队列`.`ST读取标志`='')";
-							map.put("sql", sql);sql=null;
+							map.put("sql", "SELECT `配方指令队列`.ID FROM `配方指令队列` WHERE `配方指令队列`.`工单ID`='"+((HashMap)list.get(i)).get("ID")+"' AND " +
+									"((`配方指令队列`.`前升读标志` IS NULL OR `配方指令队列`.`前升读标志`='') OR " +
+									"`配方指令队列`.`ST读取标志` IS NULL OR `配方指令队列`.`ST读取标志`='')");
 							zlList=dao.getGdtype(map);
 							if(zlList!=null&&zlList.size()>0){
 								start_type="已分解";
@@ -307,7 +290,6 @@ public class OrderOperAction extends Action{
 				}
 			};
 			map=null;list=null;dao=null;context=null;
-//			System.err.println("订单调度---定时刷新");
 			response.setContentType("text/html;charset=utf-8");
 			response.getWriter().print(result.toString().replaceAll("'='", "':'"));
 			response.getWriter().close();result=null;
@@ -377,7 +359,7 @@ public class OrderOperAction extends Action{
 			ArrayList result=new ArrayList();
 			JSONObject obj=new JSONObject();
 			String sql="SELECT a.* FROM `配方指令队列` a WHERE " +
-					"a.`工单ID`='"+map.get("dd_id")+"' AND a.`模组序ID`='"+map.get("mz_xuId")+"' ORDER BY a.`分解号`,a.`载具序号`";
+					"a.`工单ID`='"+map.get("dd_id")+"' AND a.`模组序ID`='"+map.get("mz_xuId")+"' ORDER BY a.`分解号`,a.`载具序号`,a.`载具位置`";
 			map.put("sql", sql);sql=null;
 			List list=dao.getZlpfList(map);
 			if(list!=null&&list.size()>0){
@@ -489,14 +471,12 @@ public class OrderOperAction extends Action{
 			HashMap map=GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
 			ApplicationContext context=GetApplicationContext.getContext(request);
 			OrderOperactionDAO dao=(OrderOperactionDAO)context.getBean("orderOperactionDAO");
-			String sql="SELECT a.ID,a.ID AS 工单ID,a.`工单序号`,b.`pack编码`,b.`pack类型`,a.`装配区`,c.`模组序ID` AS 模组序ID,c.`序号` AS `模组序号`,c.`模组编码`,e.`序号` AS 载具序号,d.`模组类型`,d.`电芯类型`,d.`层数` AS 模组层数,f.`物料`,f.`物料描述`,f.`数量`,f.`工位`,f.`载具位置`,e.`电芯数` AS 电芯数量,e.`翻面否`,'' AS 前升读标志,'' AS 叠装读标志,'' AS 预装读标志,'' AS ST读取标志,e.`电芯1` AS 电芯位置1,e.`电芯2` AS 电芯位置2,e.`电芯3` AS 电芯位置3,e.`电芯4` AS 电芯位置4,e.`假电芯1` ,e.`假电芯2`,e.`叠装否`,e.`有效型腔`,'' AS 完成数量,c.`数量` AS 分解号 FROM `工单表` a LEFT JOIN `pack题头` b ON a.`pack编码`=b.`pack编码` LEFT JOIN `pack行` c ON b.`pack编码`=c.`pack编码` LEFT JOIN `模组题头` d ON c.`模组编码`=d.`模组编码` LEFT JOIN `模组载具` e ON d.`模组ID`= e.`模组ID` LEFT JOIN `模组指令行` f ON d.`模组ID`=f.`模组ID` AND e.`载具ID`=f.`载具ID` WHERE a.`pack编码`='"+map.get("pack_code")+"' AND a.ID='"+map.get("dd_id")+"' AND (f.`物料` <> '' or f.`物料`=NULL) ORDER BY a.`工单序号`,c.`序号`";
-			map.put("sql", sql);sql=null;
+			map.put("sql", "SELECT a.ID,a.ID AS 工单ID,a.`工单序号`,b.`pack编码`,b.`pack类型`,a.`装配区`,c.`模组序ID` AS 模组序ID,c.`序号` AS `模组序号`,c.`模组编码`,e.`序号` AS 载具序号,d.`模组类型`,d.`电芯类型`,d.`层数` AS 模组层数,f.`物料`,f.`物料描述`,f.`数量`,f.`工位`,f.`载具位置`,e.`电芯数` AS 电芯数量,e.`翻面否`,'' AS 前升读标志,'' AS 叠装读标志,'' AS 预装读标志,'' AS ST读取标志,e.`电芯1` AS 电芯位置1,e.`电芯2` AS 电芯位置2,e.`电芯3` AS 电芯位置3,e.`电芯4` AS 电芯位置4,e.`假电芯1` ,e.`假电芯2`,e.`叠装否`,e.`有效型腔`,'' AS 完成数量,c.`数量` AS 分解号 FROM `工单表` a LEFT JOIN `pack题头` b ON a.`pack编码`=b.`pack编码` LEFT JOIN `pack行` c ON b.`pack编码`=c.`pack编码` LEFT JOIN `模组题头` d ON c.`模组编码`=d.`模组编码` LEFT JOIN `模组载具` e ON d.`模组ID`= e.`模组ID` LEFT JOIN `模组指令行` f ON d.`模组ID`=f.`模组ID` AND e.`载具ID`=f.`载具ID` WHERE a.`pack编码`='"+map.get("pack_code")+"' AND a.ID='"+map.get("dd_id")+"' AND (f.`物料` <> '' or f.`物料`=NULL) ORDER BY a.`工单序号`,c.`序号`");
 			List list=dao.getZlList(map);
 			if(list!=null&&list.size()>0){
 				int fenjiehao=(int)Double.parseDouble(((HashMap)list.get(0)).get("分解号").toString());
-				String mz_xuId=((HashMap)list.get(0)).get("模组序ID").toString();
-				int i=1;
-				while(i <= fenjiehao){//分解次数
+				String mz_xuId=((HashMap)list.get(0)).get("模组序ID").toString();int i=1;
+				while(i<=fenjiehao){//分解次数
 					for(int j=0;j<list.size();j++){
 						//所需要分解的模组全部完成之后 进行下一条数据处理
 						if(mz_xuId.equals(((HashMap)list.get(j)).get("模组序ID"))	){
@@ -544,8 +524,7 @@ public class OrderOperAction extends Action{
 							mz_xuId=((HashMap)list.get(0)).get("模组序ID").toString();
 						}else{
 							//更新分解日期
-							sql="UPDATE `工单表` SET `分解日期`=DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i:%s') WHERE `ID`='"+map.get("dd_id")+"'";
-							map.put("sql", sql);
+							map.put("sql", "UPDATE `工单表` SET `分解日期`=DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i:%s') WHERE `ID`='"+map.get("dd_id")+"'");
 							dao.updateGdState(map);
 							return null;
 						};
@@ -554,7 +533,7 @@ public class OrderOperAction extends Action{
 				};
 				mz_xuId=null;fenjiehao=0;i=0;
 			};
-			list=null;map=null;sql=null;dao=null;context=null;
+			list=null;map=null;dao=null;context=null;
 			response.setContentType("text/html;charset=utf-8");
 			response.getWriter().print("true");
 			response.getWriter().close();
@@ -580,20 +559,19 @@ public class OrderOperAction extends Action{
 			HashMap map=GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
 			ApplicationContext context=GetApplicationContext.getContext(request);
 			OrderOperactionDAO dao=(OrderOperactionDAO)context.getBean("orderOperactionDAO");
-			String sql="SELECT a.ID,a.ID AS 工单ID,a.`工单序号`, b.`pack编码`,b.`pack类型`,a.`装配区`,c.`模组序ID`,c.`序号` AS `模组序号`,c.`模组编码`,e.`序号` AS 载具序号,d.`模组类型`,d.`电芯类型`,d.`层数` AS 模组层数,f.`物料`,f.`物料描述`,f.`数量`,f.`工位`,f.`载具位置`,e.`电芯数` AS 电芯数量,e.`翻面否`,'' AS 前升读标志,'' AS 叠装读标志,'' AS 预装读标志,'' AS ST读取标志,e.`电芯1` AS 电芯位置1,e.`电芯2` AS 电芯位置2,e.`电芯3` AS 电芯位置3,e.`电芯4` AS 电芯位置4,e.`假电芯1` ,e.`假电芯2`,e.`叠装否`,e.`有效型腔`,'' AS 完成数量,c.`数量` AS 分解号 FROM `工单表` a LEFT JOIN `pack题头` b ON a.`pack编码`=b.`pack编码` LEFT JOIN `pack行` c ON b.`pack编码`=c.`pack编码` LEFT JOIN `模组题头` d ON c.`模组编码`=d.`模组编码` LEFT JOIN `模组载具` e ON d.`模组ID`= e.`模组ID` LEFT JOIN `模组指令行` f ON d.`模组ID`=f.`模组ID` AND e.`载具ID`=f.`载具ID` LEFT JOIN `配方指令队列` g ON a.ID=g.`工单ID` WHERE (f.`物料` <> '' or f.`物料`=NULL) AND (g.`工单ID` is NULL OR g.`工单ID` ='') ORDER BY a.`工单序号`,c.`序号`";
-			map.put("sql", sql);sql=null;
+			map.put("sql", "SELECT a.ID,a.ID AS 工单ID,a.`工单序号`, b.`pack编码`,b.`pack类型`,a.`装配区`,c.`模组序ID`,c.`序号` AS `模组序号`,c.`模组编码`,e.`序号` AS 载具序号,d.`模组类型`,d.`电芯类型`,d.`层数` AS 模组层数,f.`物料`,f.`物料描述`,f.`数量`,f.`工位`,f.`载具位置`,e.`电芯数` AS 电芯数量,e.`翻面否`,'' AS 前升读标志,'' AS 叠装读标志,'' AS 预装读标志,'' AS ST读取标志,e.`电芯1` AS 电芯位置1,e.`电芯2` AS 电芯位置2,e.`电芯3` AS 电芯位置3,e.`电芯4` AS 电芯位置4,e.`假电芯1` ,e.`假电芯2`,e.`叠装否`,e.`有效型腔`,'' AS 完成数量,c.`数量` AS 分解号 FROM `工单表` a LEFT JOIN `pack题头` b ON a.`pack编码`=b.`pack编码` LEFT JOIN `pack行` c ON b.`pack编码`=c.`pack编码` LEFT JOIN `模组题头` d ON c.`模组编码`=d.`模组编码` LEFT JOIN `模组载具` e ON d.`模组ID`= e.`模组ID` LEFT JOIN `模组指令行` f ON d.`模组ID`=f.`模组ID` AND e.`载具ID`=f.`载具ID` LEFT JOIN `配方指令队列` g ON a.ID=g.`工单ID` WHERE (f.`物料` <> '' or f.`物料`=NULL) AND (g.`工单ID` is NULL OR g.`工单ID` ='') AND a.`状态` IS NULL ORDER BY a.`工单序号`,c.`序号`");
 			List list=dao.getZlList(map);
+			boolean fj=false;
 			if(list!=null&&list.size()>0){
 				//更新分解日期
-				sql="UPDATE `工单表` a LEFT JOIN `配方指令队列` b ON a.ID=b.`工单ID` SET a.`分解日期`=DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i:%s') WHERE b.`工单ID` IS NULL OR b.`工单ID`=''";
-				map.put("sql", sql);sql=null;
+				map.put("sql", "UPDATE `工单表` a LEFT JOIN `配方指令队列` b ON a.ID=b.`工单ID` SET a.`分解日期`=DATE_FORMAT(NOW(),'%Y-%m-%d %H:%i:%s') WHERE b.`工单ID` IS NULL OR b.`工单ID`=''");
 				dao.updateGdState(map);
 				//处理配方表
 				int fenjiehao=(int)Double.parseDouble(((HashMap)list.get(0)).get("分解号").toString());
 				String gd_id=((HashMap)list.get(0)).get("工单ID").toString();
 				String mz_xuId=((HashMap)list.get(0)).get("模组序ID").toString();
 				int i=1;
-				while(i <= fenjiehao){//分解次数
+				while(i<=fenjiehao){//分解次数
 					for(int j=0;j<list.size();j++){
 						//所需要分解的模组全部完成之后 进行下一条数据处理
 						if(gd_id.equals(((HashMap)list.get(j)).get("工单ID")) && mz_xuId.equals(((HashMap)list.get(j)).get("模组序ID"))){
@@ -642,16 +620,16 @@ public class OrderOperAction extends Action{
 							gd_id=((HashMap)list.get(0)).get("工单ID").toString();
 							mz_xuId=((HashMap)list.get(0)).get("模组序ID").toString();
 						}else{
-							return null;
+							break;
 						};
 					};
 					i++;
 				};
-				fenjiehao=0;gd_id=null;mz_xuId=null;i=0;
+				fenjiehao=0;gd_id=null;mz_xuId=null;i=0;fj=true;
 			};
 			context=null;dao=null;map=null;list=null;
 			response.setContentType("text/html;charset=utf-8");
-			response.getWriter().print("true");
+			response.getWriter().print(fj);
 			response.getWriter().close();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -666,7 +644,7 @@ public class OrderOperAction extends Action{
 	 * @param response
 	 * @return
 	 */
-	private ActionForward downloadBtn(ActionMapping mapping, ActionForm form,
+	private synchronized ActionForward downloadBtn(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response) {
 		try{
 			request.setCharacterEncoding("utf-8");
@@ -674,50 +652,40 @@ public class OrderOperAction extends Action{
 			HashMap map=GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
 			ApplicationContext context=GetApplicationContext.getContext(request);
 			OrderOperactionDAO dao=(OrderOperactionDAO)context.getBean("orderOperactionDAO");
-			String sql="SELECT a.* FROM `工单下载` a WHERE a.`传送否`='否'";
-			map.put("sql", sql);
-			List list=dao.getGdDownload(map);
-			boolean deleteType=false;
+			map.put("sql", "SELECT a.* FROM `工单下载` a WHERE a.`传送否`='否'");
+			List list=dao.getGdDownload(map);boolean deleteType=false;
 			if(list!=null&&list.size()>0){
 				for(int i=0;i<list.size();i++){
 					double gdNumber=Double.parseDouble(((HashMap)list.get(i)).get("工单数量").toString());
 					String id=((HashMap)list.get(i)).get("ID").toString();
 					for(int k=0;k<(int)gdNumber;k++){
 						//获取最大工单序号
-						List maxList=dao.getMaxGdxh();
-						int maxGdxh=0;
-						if(maxList!=null&&maxList.size()>0){
-							maxGdxh=Integer.parseInt(((HashMap)maxList.get(0)).get("工单序号").toString().equals("")?"0":((HashMap)maxList.get(0)).get("工单序号").toString());
-						};maxList=null;
-						sql="insert into `工单表`(`工单序号`,`工单号`,`pack编码`,`工单数量`,`装配区`,`传送否`,`释放否`,`完成数量`)"+
-								"values("+(maxGdxh+1)+","+
-										""+((HashMap)list.get(i)).get("工单号")+"," +
-										"'"+((HashMap)list.get(i)).get("pack编码")+"'," +
-										"1," +
-										"'"+((HashMap)list.get(i)).get("装配区")+"'," +
-										"'是'," +
-										"'"+((HashMap)list.get(i)).get("释放否")+"'," +
-										"0)";
-						map.put("sql",sql);sql=null;
+						map.put("sql", "SELECT MAX(A.`工单序号`) AS '序号' FROM `工单表` AS A");
+						List maxList=dao.getMaxGdxh(map);
+						int maxGdxh=(((HashMap)maxList.get(0)).get("序号").equals("")?0:Integer.parseInt(((HashMap)maxList.get(0)).get("序号").toString()))+1;maxList=null;
+						map.put("sql","insert into `工单表`(`工单序号`,`工单号`,`pack编码`,`工单数量`,`装配区`,`传送否`,`释放否`,`完成数量`)"+
+								"values("+maxGdxh+","+
+								""+((HashMap)list.get(i)).get("工单号")+"," +
+								"'"+((HashMap)list.get(i)).get("pack编码")+"'," +
+								"1," +
+								"'"+((HashMap)list.get(i)).get("装配区")+"'," +
+								"'是'," +
+								"'"+((HashMap)list.get(i)).get("释放否")+"'," +
+								"0)");
 						deleteType=dao.saveAll(map);//将工单下载到工单表中
 					};
 					if(deleteType){
 						//删除已下载的工单信息，工单下载表
-						sql="DELETE FROM `工单下载` WHERE ID='"+id+"'";
-						map.put("sql", sql);sql=null;id=null;
-						dao.removeAll(map);
-//						修改为已传送
-//						sql="UPDATE `工单下载` a SET a.`传送否`='是' WHERE a.ID='"+id+"'";
-//						map.put("sql", sql);sql=null;id=null;
-//						dao.saveAll(map);
+						map.put("sql", "DELETE FROM `工单下载` WHERE ID='"+id+"'");
+						dao.removeAll(map);id=null;
 					};
 				};
-			};list=null;map=null;dao=null;sql=null;context=null;
+			};list=null;map=null;dao=null;context=null;
 			response.setContentType("text/html;charset=utf-8");
 			response.getWriter().print(deleteType);
 			response.getWriter().close();
 		}catch (Exception e) {
-			e.printStackTrace();
+			System.out.println(e);e.printStackTrace();
 		}
 		return null;
 	}
@@ -740,23 +708,22 @@ public class OrderOperAction extends Action{
 			OrderOperactionDAO dao=(OrderOperactionDAO)context.getBean("orderOperactionDAO");
 			JSONObject result=new JSONObject();
 			//查询当前工单是否处理中，非处理状态可删除
-			String sql="SELECT `配方指令队列`.* FROM `配方指令队列` WHERE `配方指令队列`.`工单ID`='"+map.get("gd_id")+"' AND " +
-			"((`配方指令队列`.`前升读标志` IS NOT NULL OR `配方指令队列`.`前升读标志`<>'') OR " +
-			"`配方指令队列`.`ST读取标志` IS NOT NULL OR `配方指令队列`.`ST读取标志`<>'')";
-			map.put("sql", sql);
+			map.put("sql", "SELECT `配方指令队列`.* FROM `配方指令队列` WHERE `配方指令队列`.`工单ID`='"+map.get("gd_id")+"' AND " +
+					"((`配方指令队列`.`前升读标志` IS NOT NULL OR `配方指令队列`.`前升读标志`<>'') OR " +
+					"`配方指令队列`.`ST读取标志` IS NOT NULL OR `配方指令队列`.`ST读取标志`<>'')");
 			List list=dao.getGdtype(map);
 			if(list!=null&&list.size()>0){
 				result.put("body","此工单正在处理，无法删除！");
 				result.put("success",false);
 			}else{
-				sql="DELETE a,b FROM `工单表` AS a "+
-					 "LEFT JOIN `配方指令队列` AS b ON a.ID=b.`工单ID` WHERE a.ID='"+map.get("gd_id")+"'";
-				map.put("sql", sql);
+				map.put("sql", "UPDATE 工单表 SET 状态='已删除' where ID='"+map.get("gd_id")+"'");
+				dao.updateGdState(map);
+				map.put("sql", "DELETE FROM `配方指令队列` WHERE 工单ID='"+map.get("gd_id")+"'");
 				dao.removeAll(map);
 				result.put("body","删除成功！");
 				result.put("success",true);
 			};
-			list=null;map=null;dao=null;context=null;sql=null;
+			list=null;map=null;dao=null;context=null;
 			response.setContentType("text/html;charset=utf-8");
 			response.getWriter().print(result);
 			response.getWriter().close();

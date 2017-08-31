@@ -67,6 +67,10 @@
 				<!-- 右侧菜单 -->
 				<td style="position:relative;height:100%;">
 					<div>
+						<div class="user_name">
+							<div><span>用户:</span><span id='user_name'>null</span></div>
+							<a href="#" id='qh_user_name' style="color:rgb(75,176,249);">切换用户</a>
+						</div>
 						<div id="right_home1" title="按钮操控" x='280px' y='250px' class="right_home1 tz">
 							<div class="right_home1_but"></div>
 						</div>

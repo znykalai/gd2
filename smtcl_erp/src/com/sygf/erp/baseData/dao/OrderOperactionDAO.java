@@ -89,9 +89,9 @@ public class OrderOperactionDAO extends SqlMapClientDaoSupport {
 	 * @param map
 	 * @return
 	 */
-	public List getMaxGdxh(){
+	public List getMaxGdxh(HashMap map){
 		try{
-			return getSqlMapClientTemplate().queryForList("OrderOperactionDAO.getMaxGdxh",null);
+			return getSqlMapClientTemplate().queryForList("OrderOperactionDAO.getMaxGdxh",map);
 		}catch (Exception e) {
 			Log.error("OrderOperactionDAO.getMaxGdxh方法出现异常！" + e.getMessage());
 			e.printStackTrace();

@@ -174,7 +174,7 @@ public class ST_Father implements STInterface, Serializable{
 	}
 	
 	public synchronized String  writeifChangeToPLC(){
-		if(this.isChange()){
+		if(this.isChange()){ 
 			String back=writeToPLC();
 			return back;
 		}

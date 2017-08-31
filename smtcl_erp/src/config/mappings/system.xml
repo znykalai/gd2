@@ -246,7 +246,7 @@
 			FROM `工单表` 
 			LEFT JOIN `pack题头` ON `工单表`.`pack编码` = `pack题头`.`pack编码` 
 			LEFT JOIN `工单完成率` ON `工单完成率`.`工单ID` = `工单表`.ID $sql$ 
-		  	ORDER BY `工单表`.`工单序号`
+		  	ORDER BY `工单表`.`装配区`,`工单表`.`工单序号`
 	</select>
 	<!-- 指令list -->
 	<resultMap id="OrderOperactionDAO.getZlListMap" class="java.util.HashMap">
@@ -352,11 +352,10 @@
 	</select>
 	<!-- 获取最大工单序号 -->
 	<resultMap id="OrderOperactionDAO.getMaxGdxhMap" class="java.util.HashMap">
-    	<result property="ID" column="ID" javaType="String" jdbcType="VARCHAR" nullValue=""/>
-    	<result property="工单序号" column="工单序号" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="序号" column="序号" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     </resultMap>
 	<select id="OrderOperactionDAO.getMaxGdxh" parameterClass="java.util.HashMap" resultMap="OrderOperactionDAO.getMaxGdxhMap">
-		SELECT MAX(a.`工单序号`) AS `工单序号`,MAX(a.`ID`) AS ID FROM `工单表` a
+		$sql$
 	</select>
 	<!-- 获取工单状态 -->
 	<resultMap id="OrderOperactionDAO.getGdtypeMap" class="java.util.HashMap">

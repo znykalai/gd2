@@ -211,7 +211,7 @@ public class BaseDataAction extends Action{
 			boolean saType=false;context=null;
 			if(add.length()>0){
 				for(int i=0;i<add.length();i++){
-					String sql="insert into 托盘物料map(托盘编号,物料编码)"+
+					String sql="insert into 托盘物料map(托盘编号,物料编码,默认数量)"+
 							"values("+
 							"'"+add.getJSONObject(i).getString("tp_code")+"',"+
 							"'"+add.getJSONObject(i).getString("wl_code")+"',"+

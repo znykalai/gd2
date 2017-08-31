@@ -9,6 +9,9 @@ import java.io.FileInputStream;
 import java.io.OutputStreamWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import javax.swing.JTable;
 
@@ -60,7 +63,7 @@ public class SqlPro {
      "自动换刀工具锥柄","削平型工具刀柄",
      "套式立铣刀刀柄","加长套式立铣刀柄","莫氏钻卡头刀柄","强力铣夹头刀柄","三面刃铣刀刀柄"};
     public static Hashtable canshu=new Hashtable();
-    static{
+    static{ 
 
    canshu.put("无扁尾莫氏圆锥孔刀柄",new String[]{"长度(L)","外圆直径(D)","内孔直径dm","锥度"});
    canshu.put("刀盘",new String[]{"切削直径","接口孔径","长度","槽宽","刃数"});
@@ -410,6 +413,39 @@ public class SqlPro {
 			in.close();
 			return props;
 		} catch (IOException e) {
+			getLog().error("属性文件读取错误");
+			e.printStackTrace();
+			return null;
+		}
+	}
+  
+  public static Properties loadProperties2(String propertyFilePath){
+	  FileInputStream fs=null;
+	  BufferedReader in=null;
+		try {
+			Properties props = new Properties();
+			 fs = new FileInputStream(propertyFilePath);
+			 
+			 in
+			   = new BufferedReader(new InputStreamReader(fs));
+			 String ss=null;
+			 while((ss=in.readLine())!=null){
+				 if(!ss.startsWith("#")){
+					 String sm[]=ss.split("=");
+					 if(sm.length==2){
+						 props.setProperty(sm[0], sm[1]);
+					 }
+					 
+				 }
+			 }
+            System.out.println("loadERRassm");
+			in.close();
+			fs.close();
+			return props;
+		} catch (IOException e) {
+			try{
+			if(fs!=null)fs.close();
+			if(in!=null)in.close();}catch(Exception eee){}
 			getLog().error("属性文件读取错误");
 			e.printStackTrace();
 			return null;

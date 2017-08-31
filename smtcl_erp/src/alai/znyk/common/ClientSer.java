@@ -173,7 +173,7 @@ public class ClientSer {
 		   }
 		
 		}catch( Exception e){
-			System.out.println("--------------------------------------------");
+			//System.out.println("--------------------------------------------");
 			if(t==2||t==4||t==6||t==8||t==10||t==12){
 				sub1();
 			 th.put("1立库访问", "堆垛机1中断异常，当前起始地址="+"访问类别="+t+",接口等待数="+nI);	
@@ -379,17 +379,24 @@ public class ClientSer {
 	
     int pfI=0;
     int pfI2=0;
+    String LOCK3="C";
+    String LOCK4="D";
+    private void subf1(){synchronized (LOCK3) {pfI--;}}
+    private void subf2(){synchronized (LOCK4) {pfI2--;}}
+    private void addf1(){synchronized (LOCK3) {pfI++;}}
+    private void addf2(){synchronized (LOCK4) {pfI2++;}}
+    
 	public alai.GDT.Resint[] getSirIntValuesFromCTR(String startAddress,int nums,int valueLen,
           int machineID){
 		long time1=System.currentTimeMillis();
 		try{
 			if(isOpenPlc){
 				if(machineID==1){
-				fCount++;pfI++;
+				fCount++;addf1();
 				 th.put(machineID+"PLC读", "PLC1访问开始,读取等待返回，当前起始地址="+startAddress+",接口等待数="+pfI);	
 				}
 				else {
-					pfI2++;
+					addf2();
 					fCount2++;
 				 th.put(machineID+"PLC读", "PLC2访问开始,读取等待返回，当前起始地址="+startAddress+",接口等待数="+pfI2);	
 				
@@ -400,10 +407,11 @@ public class ClientSer {
 				long time3=time2-time1;
 				if(machineID==1){
 				ftime=ftime+time3;
-				pfI--;
+				subf1();
 				}
-				else {ftime2=ftime2+time3;
-				pfI2--;
+				else {
+					ftime2=ftime2+time3;
+				    subf2();
 				}
 				if(bak[0].getResInt()==-1||bak[bak.length-1].getResInt()==-1){
 				th.put(machineID+"PLC读", "PLC"+machineID+"读取返回值异常-1，当前起始地址="+startAddress+",接口等待数="+(machineID==1?pfI:pfI2));	
@@ -422,11 +430,11 @@ public class ClientSer {
 			
 			if(machineID==1){
 				ftime=ftime+System.currentTimeMillis()-time1;
-				pfI--;
+				subf1();
 				th.put(machineID+"PLC读", "PLC1读取中断异常，当前起始地址="+startAddress+",接口等待数="+pfI);	
 			}
 			 else {ftime2=ftime2+System.currentTimeMillis()-time1;
-			    pfI--;
+			    subf2();
 			    th.put(machineID+"PLC读", "PLC2读取中断异常，当前起始地址="+startAddress+",接口等待数="+pfI2);
 			 }
 			SqlPro.getLog().error("error 调用SERVICE读取"+machineID+"号PLC异常 在304行");
@@ -439,17 +447,23 @@ public class ClientSer {
 	}
 	int pwI=0;
 	int pwI2=0;
+	String LOCK5="E";
+	String LOCK6="F";
+	private void subw1(){synchronized (LOCK5) {pwI--;}}
+	private void subw2(){synchronized (LOCK6) {pwI2--;}}
+	private void addw1(){synchronized (LOCK5) {pwI++;}}
+	private void addw2(){synchronized (LOCK6) {pwI2++;}}
 	 public int writeSirIntToCTR(String strAddress, int valuseLeng, int[] invalues, int machineID) 
 	 {   long time1=System.currentTimeMillis();
-		 if(isOpenPlc){
+		 if(isOpenPlc){ 
 		 try{   alai.GDT.Inint tem []=new alai.GDT.Inint[invalues.length];
 		        for(int i=0;i<tem.length;i++){tem[i]=new alai.GDT.Inint(invalues[i]);}
 		        int back=-1;
 		        if(machineID==1){
-		         wCount++; pwI++;
+		         wCount++; addw1();
 		         th.put(machineID+"PLC写", "PLC1访问开始,写入等待返回，当前起始地址="+strAddress+",接口等待数="+pwI);	
 		        }
-		        else  {wCount2++;pwI2++;
+		        else  {wCount2++;addw2();
 		         th.put(machineID+"PLC写", "PLC2访问开始,写入等待返回，当前起始地址="+strAddress+",接口等待数="+pwI);	
 		        }
 				
@@ -457,8 +471,8 @@ public class ClientSer {
 		         long time2=System.currentTimeMillis();
 				 long time3=time2-time1;
 				  if(machineID==1){
-				 wtime=wtime+time3; pwI--;}
-				  else { wtime2=wtime2+time3;pwI2--;} 
+				 wtime=wtime+time3; subw1();}
+				  else { wtime2=wtime2+time3;subw2();} 
 		    if(back!=0){
 		    	th.put(machineID+"PLC写", "PLC"+machineID+"写人异常，当前起始地址="+strAddress+",接口等待数="+(machineID==1?pwI:pwI2));	
 		    	SqlPro.getLog().error("返回值="+back+" 调用SERVICE写入 开始地址="+strAddress+" 长度="+invalues.length+" 第"+machineID+"号PLC异常");
@@ -472,10 +486,10 @@ public class ClientSer {
 				
 			}catch(Exception ex){
 				 if(machineID==1){
-					 wtime=wtime+System.currentTimeMillis()-time1; pwI--;
+					 wtime=wtime+System.currentTimeMillis()-time1; subw1();
 					 th.put(machineID+"PLC写", "PLC1写人中断异常，当前起始地址="+strAddress+",接口等待数="+pwI);		 
 				 }
-					else  {wtime2=wtime2+System.currentTimeMillis()-time1;pwI2--;
+					else  {wtime2=wtime2+System.currentTimeMillis()-time1;subw2();
 					 th.put(machineID+"PLC写", "PLC2写人中断异常，当前起始地址="+strAddress+",接口等待数="+pwI2);	
 					}
 				
@@ -577,7 +591,7 @@ public class ClientSer {
 			   }
 			   
 		   }
-          if(type==4||type==5){//故障后断点启动,返回-1说明方法执行不成功
+          if(type==4||type==5){ //故障后断点启动,返回-1说明方法执行不成功
 			//comment=eventID|fromID|toID|machineID|1=上货，2=下货，3=回流   
         	 //不判断回流，回流不需中断点
         		  Vector 堆1=SqlTool.findInVector("select idEvent,来源,任务类别,动作,托盘编号,来源货位号,放回货位号,请求区,状态,状态2 from 立库动作指令  where 状态='执行中' and 动作<>'输送线回流' and 请求区= '"+machineID+"' order by idEvent");		

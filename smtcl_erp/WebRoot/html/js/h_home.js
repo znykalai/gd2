@@ -1,5 +1,4 @@
 var readyShow={
-	deleteSetInterval:null,
 	load:function(){
 		try{
 			var af={
@@ -19,19 +18,18 @@ var readyShow={
 					this.loadButton();//按钮事件启动
 					//货位渲染
 					if(this.getHck()&&dsState.state/*是否启动定时刷新*/){
-						readyShow.deleteSetInterval=setInterval(function(){
+						af_Home.dlInterval=setInterval(function(){
 							var a=af.getHck();a=null;
-						},dsState.tim),af_Home.dlInterval=true;
+						},dsState.tim);
 					}
 					var ly=layer.close(win),win=null,ly=null,winHeight=null;
 					return fun();
 				},
 				//数组初始化
 				arrayInitialization:function(){
-					this.removeTop=[],
-					this.removeArry=[],
-					this.removeBottom=[];
-					return null;
+					af.removeTop=[],
+					af.removeArry=[],
+					af.removeBottom=[];
 				},
 				/**
 				 * 异步输送线top
@@ -65,7 +63,7 @@ var readyShow={
 						type:'get',
 						cache:false,
 						success:function(data){
-							var obj=eval("("+data+")");
+							var obj=eval("("+data+")");data=null;
 							/**
 							 * 异步输送线-上层
 							 */
@@ -117,7 +115,7 @@ var readyShow={
 									}
 								}
 							}else{
-								$("div[name='HCK-NAME']").attr("class","hui no");
+								$("div[name='HOME_HCK-NAME']").attr("class","hui no");
 							};
 							/**
 							 * 缓存库下层
@@ -251,7 +249,7 @@ var readyShow={
 				      return chart=null,point=null,newVal=null,inc=null;
 				},
 				/**
-				 * 按钮：调度、复位、归零、断点
+				 * 按钮：调度、复位、断点
 				 */
 				loadButton:function(){
 					var but={
@@ -268,12 +266,12 @@ var readyShow={
 								$(this).attr("class","qfgd");
 								return null;
 							});
-							//归零启动点击效果-top
-							$("#guilingqidong_top").mousedown(function(){
+							//断点启动点击效果-top
+							$("#duandianqidong_top").mousedown(function(){
 								$(this).attr("class","qfgdStart");
 								return null;
 							});
-							$("#guilingqidong_top").mouseup(function(){
+							$("#duandianqidong_top").mouseup(function(){
 								$(this).attr("class","qfgd");
 								return null;
 							});
@@ -289,12 +287,12 @@ var readyShow={
 								$(this).attr("class","qfgd");
 								return null;
 							});
-							//归零启动点击效果-bottom
-							$("#guilingqidong_bottom").mousedown(function(){
+							//断点启动点击效果-bottom
+							$("#duandianqidong_bottom").mousedown(function(){
 								$(this).attr("class","qfgdStart");
 								return null;
 							});
-							$("#guilingqidong_bottom").mouseup(function(){
+							$("#duandianqidong_bottom").mouseup(function(){
 								$(this).attr("class","qfgd");
 								return null;
 							});
@@ -377,12 +375,12 @@ var readyShow={
 								});nude=null;
 								return null;
 							});
-							//归零启动-top
-							$("#guilingqidong_top").click(function(){
+							//断点启动-top
+							$("#duandianqidong_top").click(function(){
 								var this_=this;
 								var nude=af_Home.getFx(function(fx){
 									if(fx==1||fx=='1,2'){
-										var e=but.action(this_,'guilingqidong_top',function(a,b){
+										var e=but.action(this_,'duandianqidong_top',function(a,b){
 											return a=null,b=null;
 										});e=null;this_=null;
 									}else{
@@ -426,12 +424,12 @@ var readyShow={
 								});nude=null;
 								return null;
 							});
-							//归零启动-bottom
-							$("#guilingqidong_bottom").click(function(){
+							//断点启动-bottom
+							$("#duandianqidong_bottom").click(function(){
 								var this_=this;
 								var nude=af_Home.getFx(function(fx){
 									if(fx==2||fx=='1,2'){
-										var e=but.action(this_,'guilingqidong_bottom',function(a,b){
+										var e=but.action(this_,'duandianqidong_bottom',function(a,b){
 											return a=null,b=null;
 										});e=null;this_=null;
 									}else{
@@ -454,7 +452,7 @@ var readyShow={
 				if(af_Home.administrator.急停){var a=$('#div_mo_img_strat').show();a=null;}else{var a=$('#div_mo_img_strat').hide();a=null;};
 				if(af_Home.administrator.启动调度==false){var a=af_Home.cleanQX("qidongdiaodu_top");a=null;var b=af_Home.cleanQX("qidongdiaodu_bottom");b=null;};
 				if(af_Home.administrator.复位==false){var a=af_Home.cleanQX("fuwei_top");a=null;var b=af_Home.cleanQX("fuwei_bottom");b=null;};
-				if(af_Home.administrator.归零启动==false){var a=af_Home.cleanQX("guilingqidong_top");a=null;var b=af_Home.cleanQX("guilingqidong_bottom");b=null;};
+				if(af_Home.administrator.断点启动==false){var a=af_Home.cleanQX("duandianqidong_top");a=null;var b=af_Home.cleanQX("duandianqidong_bottom");b=null;};
 			},{state:true,tim:1000});//渲染主页面,function(){}--第一个返回参数,{ds:true--是否为定时刷新、tim:刷新时间毫秒为单位};
 		}catch(e){
 			return e;

@@ -43,8 +43,42 @@ public class PLCAction extends Action{
 				return gwGzDelete(mapping, form, request, response);
 			}else if(operType.equals("updateAll")){
 				return updateAll(mapping, form, request, response);
+			}else if(operType.equals("closePLC")){
+				return closePLC(mapping, form, request, response);
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	/***
+	 * 清除PLC
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	private ActionForward closePLC(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) {
+		try{
+		request.setCharacterEncoding("utf-8");
+		response.setCharacterEncoding("utf-8");
+		HashMap map=GetParam.GetParamValue(request, "iso-8859-1", "utf-8");
+		ApplicationContext context=GetApplicationContext.getContext(request);
+		OrderOperactionDAO gdDao=(OrderOperactionDAO)context.getBean("orderOperactionDAO");context=null;
+		map.put("sql", "SELECT a.* FROM `配方指令队列` AS a WHERE a.`装配区`='"+map.get("line")+"' and (a.`前升读标志` is not NULL or a.`ST读取标志` is not null);");
+		List list=gdDao.getZlList(map);
+		String error="true";
+		if(list!=null&&list.size()>0){
+			error="false";
+		}else{
+			PLC.getIntance().reLoad(Integer.parseInt(map.get("line").toString()));//清除PLC
+		};
+		response.setContentType("text/html;charset=utf-8");
+		response.getWriter().print(error);
+		response.getWriter().close();
+		}catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
@@ -57,7 +91,7 @@ public class PLCAction extends Action{
 	 * @param response
 	 * @return
 	 */
-	private ActionForward updateAll(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+	private synchronized ActionForward updateAll(ActionMapping mapping, ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) {
 		try{
 			request.setCharacterEncoding("utf-8");
@@ -93,9 +127,12 @@ public class PLCAction extends Action{
 					ApplicationContext context=GetApplicationContext.getContext(request);
 					PLCDAO dao=(PLCDAO)context.getBean("pLCDAO");
 					OrderOperactionDAO gdDao=(OrderOperactionDAO)context.getBean("orderOperactionDAO");context=null;
+					if(map.get("xh").equals("0")){//多个订单时第一次清除PLC，不允许多次清除
+						PLC.getIntance().reLoad(Integer.parseInt(map.get("line").toString()));//清除PLC
+					};
 					String GdId=map.get("GdId").toString();
-					map.put("sql", "SELECT a.* FROM `配方指令队列` AS a WHERE a.`工单ID`='"+GdId+"'");
-					List list=gdDao.getZlList(map);gdDao=null;
+					map.put("sql", "SELECT a.* FROM `配方指令队列` AS a WHERE a.`工单ID`='"+GdId+"' AND a.`装配区`='"+map.get("line")+"'");
+					List list=gdDao.getZlList(map);
 					//异步输送线处理
 					for(int i=0;i<list.size();i++){
 						String MzId=((HashMap)list.get(i)).get("模组序ID").toString();
@@ -104,11 +141,13 @@ public class PLCAction extends Action{
 						err=line.setCarryAt(-2,GdId,MzId,fenJh,zaiJh);//A区&B区
 					};list=null;
 					//数据库配方表处理
-					map.put("sql", "update 配方指令队列 set 前升读标志=null,完成数量=0,ST读取标志=null where 工单ID='"+GdId+"'");
+					map.put("sql", "SELECT MAX(A.`工单序号`) AS '序号' FROM `工单表` AS A");
+					List maxList=gdDao.getMaxGdxh(map);gdDao=null;
+					int maxGdxh=(((HashMap)maxList.get(0)).get("序号").equals("")?0:Integer.parseInt(((HashMap)maxList.get(0)).get("序号").toString()))+1;maxList=null;
+					map.put("sql", "UPDATE 工单表 SET 工单序号="+maxGdxh+" where ID='"+GdId+"'");
+					yesNo=dao.gwGzUpdate(map);
+					map.put("sql", "UPDATE 配方指令队列 SET 前升读标志=null,完成数量=0,ST读取标志=null,工单序号="+maxGdxh+" WHERE 工单ID='"+GdId+"' AND 装配区='"+map.get("line")+"'");
 					yesNo=dao.gwGzUpdate(map);dao=null;GdId=null;
-					if(yesNo==true){//当所有数据还原后清除PLC
-						PLC.getIntance().reLoad(Integer.parseInt(map.get("line").toString()));//清除PLC
-					};
 				};
 			};map=null;
 			result.put("plcDd", plcDd);
@@ -429,8 +468,7 @@ public class PLCAction extends Action{
 			response.getWriter().close();
 		}catch (Exception e) {
 			e.printStackTrace();
-		}finally{
-		}
+		}finally{}
 		return null;
 	}
 }

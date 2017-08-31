@@ -432,12 +432,12 @@ var readyShow={
 						data:"getGdId="+GdId+"&getGdfenjieriqi="+Gdfenjieriqi+"&getPackeCode="+PackeCode,
 						success:function(data){
 							var a=$('#dd_table tbody tr').remove();a=null;//工单table
-			  				var obj=eval("("+data+")"),i=0;
+			  				var obj=eval("("+data+")"),i=0;data=null;
 							while(i<obj.length){
 			  					$('#dd_table tbody').append('<tr id="gd_row'+i+'" bgcolor="#ffffff" style="height:20px;">'+
 			  						//单选
 									'<td id="radio_id_'+i+'" style="width:3%;">'+
-										'<input type="radio" id="trRadio_dd'+obj[i].id+'" name="trGdRadio" value="'+obj[i].id+'"/>'+
+										'<input type="radio" id="trRadio_dd_'+i+'" name="trGdRadio" value="'+obj[i].id+'"/>'+
 									'</td>'+
 									//工单序号
 									'<td style="width:8%;">'+obj[i].dd_xuhao+
@@ -702,26 +702,77 @@ var readyShow={
 				 * 一键还原数据清除函数
 				 */
 				updateAllTable:function(){
-					var line=$('#pf_table1 tbody tr').attr("line");
-					var a=$.ajax({
-						url:getRootPath()+'/PLCAction.do?operType=updateAll',
-						type:'post',cache:false,
-						data:'GdId='+af.GdId+"&line="+line,
-						success:function(data){
-			  				var obj=eval("("+data+")");data=null;
-			  				if(obj.plcDd==false){
-								layer.msg("请先停止调度！");
-			  				}else if(obj.result==true&&obj.setCarryAt=='成功'){
-								var a=$(".anNiuSelect").click();a=null;
-								layer.msg("一键还原成功！");
-			  				}else if(obj.update==false){
-			  					layer.msg("输送线上还有未完成的载具，请完成后操作。或者与系统管理员联系！");
-			  				}else{
-								layer.msg("故障恢复失败或者异步输送线位置恢复失败！");
-			  				};obj=null;line=null;
-			  				return null;
+					var m={
+						i:0,
+						xh:0,
+						saType:false,
+						id:function(){
+							return $("#trRadio_dd_"+(this.i)).val();
+						},
+						closePLC:function(funtion_){
+							var a=$.ajax({
+								url:getRootPath()+'/PLCAction.do?operType=closePLC',
+								type:'post',cache:false,
+								data:"line="+m.line,
+								success:function(success){
+									return funtion_==null?null:funtion_(success);
+								}
+							});a=null;
+						},
+						length:$('#dd_table tbody tr').length,
+						line:$("input[name='trGdRadio']:checked").parent().parent().children("td").eq(6).html(),
+						ABline:function(i){return $('#dd_table tbody tr').eq(i).children("td").eq(6).html()},
+						update:function(){
+							if(m.line!=m.ABline(m.i)&&m.i!=m.length){
+								m.i++;m.update();
+							}else{
+								var win=null;
+								if(m.i==m.length&&m.saType){
+				  					var a=m.success();a=null;
+				  					return null;
+				  				}else if(m.xh==0){
+				  					win=layer.open({type:3});
+			  					};
+								var a=$.ajax({
+									url:getRootPath()+'/PLCAction.do?operType=updateAll',
+									type:'post',cache:false,
+									data:'GdId='+m.id()+"&line="+m.line+"&xh="+m.xh,
+									success:function(data){
+						  				var obj=eval("("+data+")");data=null;if(m)m.saType=false;
+						  				if(obj.plcDd==false){
+											layer.msg("请先停止调度！");m=null;
+						  				}else if(obj.result==true&&obj.setCarryAt=='成功'){
+						  					m.saType=true;
+						  				}else if(obj.update==false){
+						  					layer.msg("输送线上还有未完成的载具，请完成后操作。或者与系统管理员联系！");m=null;
+						  				}else{
+											layer.msg("故障恢复失败或者异步输送线位置恢复失败！");m=null;
+						  				};obj=null;
+						  				if(m!=null){
+						  					m.i++;m.xh++;var a=m.update();a=null;
+						  				}else{
+							  				var b=layer.close(win);b=null;win=null;
+						  					return null;
+						  				};
+									}
+								});a=null;
+							}
+						},
+						success:function(){
+		  					var a=m.closePLC(function(type){
+		  						if(type=='true'){
+									var a=$(".anNiuSelect").click();a=null;
+									layer.msg("一键还原成功！");m=null;
+		  						}else{
+									var a=$(".anNiuSelect").click();a=null;
+									layer.msg("一键还原失败，请重新还原！");
+									m.i=0;m.saType=false;
+		  						};
+								return null;
+		  					});a=null;
 						}
-					});a=null;
+					};
+					var a=m.update();a=null;
 					return null;
 				},
 				/***
@@ -823,12 +874,15 @@ var readyShow={
 					$(".anNiuYJHY").click(function(){
 						var radioID=$("input[name='trGdRadio']:checked");
 						if(radioID.prop("checked")){
-							if(radioID.parent().parent().children('td').eq(2).text()=='正在处理'){
+							if(radioID.parent().parent().children('td').eq(2).text()=='初始化'){
+								return null;
+							}else if(radioID.parent().parent().children('td').eq(2).text()=='正在处理'){
 								var lay=layer.confirm('请确认是否已经生产完成？',{
 									title:'<span style="color:red;">安全提示</span>',
 								    btn:['确定','取消']
 								},function(){
-									var a=af.updateAllTable();a=null;lay=null;
+									var b=layer.close(lay);b=null;lay=null;
+									var a=af.updateAllTable();a=null;
 								});
 							}else{
 								var a=af.updateAllTable();a=null;

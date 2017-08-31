@@ -2,12 +2,10 @@ package alai.znyk.kufang;
 
 import java.rmi.RemoteException;
 import java.util.Hashtable;
-import java.util.Properties;
 import java.util.Vector;
 
 import alai.znyk.common.ClientSer;
 import alai.znyk.common.SqlPro;
-import alai.znyk.plc.Carry;
 import alai.znyk.plc.PLC;
 import alai.znyk.server.SqlTool;
 
@@ -22,8 +20,6 @@ public class KuFang {
 	String isRffid2="";
 	String isRffid3="";
 	String isRffid4="";
-	PLC plc;
-	public static Hashtable<String,String>th=new Hashtable<String,String>();
 	public static void main(String ss[]){
 		
 		//KuFang.getIntance();
@@ -31,15 +27,12 @@ public class KuFang {
 		//startDakuQingqiu();
 	}
 	private KuFang(){
-		plc=PLC.getIntance();
-		
 		
 		new Thread(){
 			public void run(){
 				try{
 				while(true){
-					startLine(1);
-					
+					startLine();
 				    Thread.sleep(500);
 				
 				}
@@ -48,23 +41,6 @@ public class KuFang {
 			}
 			
 		}.start();
-		
-		new Thread(){
-			public void run(){
-				try{
-				while(true){
-					
-					startLine(2);
-				    Thread.sleep(500);
-				
-				}
-			}catch(Exception ex){}
-			
-			}
-			
-		}.start();
-		
-	
 		
 		new Thread(){
 			public void run(){
@@ -99,7 +75,7 @@ public class KuFang {
 			public void run(){
 			try{
 				while(true){
-				  startDownRFFID2();
+					startUpRFFID();
 				Thread.sleep(500);
 				
 				}
@@ -113,36 +89,8 @@ public class KuFang {
 			public void run(){
 			try{
 				while(true){
-				startDownRFFID();
+					startDownRFFID();
 				Thread.sleep(500);
-				
-				}
-			}catch(Exception ex){}
-			
-			}
-			
-		}.start();
-		
-		new Thread(){
-			public void run(){
-			try{
-				while(true){
-					statPaletToPLC(1);
-				Thread.sleep(2000);
-				
-				}
-			}catch(Exception ex){}
-			
-			}
-			
-		}.start();
-		
-		new Thread(){
-			public void run(){
-			try{
-				while(true){
-					statPaletToPLC(2);
-				Thread.sleep(2000);
 				
 				}
 			}catch(Exception ex){}
@@ -180,28 +128,15 @@ public class KuFang {
 	}
 	
 //更新托盘在7条输送线上的位置	
-public void startLine(int machineID){
+public void startLine(){
 	//测试通过
-	if(machineID==1){	
+		
    try{
-	  String ss= ClientSer.getIntance().getState(10);
+	  String ss= ClientSer.getIntance().getState(SqlPro.A区输送线);
 	  if(ss==null||ss.equals("-2")){
-		  th.put("1立库输送线", "1区7条输送状态返回异常，如果长时间异常，请重启NC系统，注意不是下大电，返回值="+ss);
-	  System.out.println("startLine 断开读取超时,状态码="+ss);
+	  System.out.println(ss);
 	  return;}
-	  if(ss==null||ss.equals("-1")){
-		  th.put("1立库输送线", "1区7条输送状态返回异常，如果长时间异常，请重启NC系统，注意不是下大电，返回值="+ss);
-		  System.out.println("startLine 立库断开,状态码="+ss);
-		  return;}
-	
 	  String sm[]=ss.split("\\|");
-	  if(sm.length<2){
-		  th.put("1立库输送线", "1区7条输送状态返回异常，如果长时间异常，请重启NC系统，注意不是下大电，返回值长度<2");	
-		  SqlPro.getLog().error("startLine 立库断开,状态码=A区获取立库状态不对");
-		  System.out.println("startLine 立库断开,状态码=A区获取立库状态不对");
-		  return;}
-	  
-	  th.remove("1立库输送线");
 	String sql1= "select  货位序号,托盘编号   from 货位表  where  货位序号  between 501 and 514 order by 货位序号";
 	
 	Vector<Vector> tem1=SqlTool.findInVector(sql1);
@@ -213,56 +148,29 @@ public void startLine(int machineID){
 		String firstTP=line1.get(1)==null?"":line1.get(1).toString();
 		String secTP=line2.get(1)==null?"":line2.get(1).toString();
 		if(secTP.equals("")){
-			if(sm[r].split("=")[1].equals("1")){
+			if(sm[r*2+1].split("=")[1].equals("0")){
 				//System.out.println((r*2+1)+"="+sm[r*2+1]+"="+ss);
 				String fromID=line1.get(0)+"";
 				String toID=line2.get(0)+"";
-				
-				/*
-				 * 像PLC里面写入PLC地址
-				 * **/
-				if(!firstTP.equals("")){
-					SqlTool.update7Line(firstTP, fromID, toID);
-					// String sql2="select 托盘编号  from 货位表   where  货位序号='"+toID+"'";	
-				  String wuliao= SqlTool.findOneRecord("select 物料  from 库存托盘  where 托盘编号="+"'"+firstTP+"'");
-				  String leixing=SqlTool.findOneRecord("select 类型  from 通用物料  where 物料编码="+"'"+wuliao+"'");
-				  SqlTool.clearValueForPalet(toID, 1);
-				  SqlTool.WriteAddresInPaletToPLC(leixing, firstTP, toID, 1);
-					
-				  }
+				SqlTool.update7Line(firstTP, fromID, toID);
 			}
 			
 		 }
 		
 	 } }catch(Exception ex){
-		 th.put("1立库输送线", "1区7条输送状态返回异常，如果长时间异常，请重启NC系统，注意不是下大电，返回值="+ex.getMessage());
-		 SqlPro.getLog().error("A区输送线是否有托盘：",ex);
-		
+		 SqlPro.getLog().error("A区输送线是否有托盘："+ex.getMessage());
 		 ex.printStackTrace();}
    
-	}
    
-	if(machineID==2){
    try{
 	
-	 String ss2= ClientSer.getIntance().getState(11);
-	  if(ss2==null||ss2.equals("-2")){
-		  th.put("2立库输送线", "2区7条输送状态返回异常，如果长时间异常，请重启NC系统，注意不是下大电，返回值="+ss2);
-		  System.out.println("startLine 断开读取超时,状态码="+ss2);
+	 String ss2= ClientSer.getIntance().getState(SqlPro.B区输送线);
+	 //System.out.println(ss2);
+	 if(ss2==null||ss2.equals("-2")){
+		  System.out.println(ss2);
 		  return;}
-		  if(ss2==null||ss2.equals("-1")){
-		  th.put("2立库输送线", "2区7条输送状态返回异常，如果长时间异常，请重启NC系统，注意不是下大电，返回值="+ss2);	  
-		  System.out.println("startLine 立库断开,状态码="+ss2);
-			  return;}
-	
-	 String sm2[]=ss2.split("\\|"); 
-	  if(sm2.length<2){
-		  th.put("2立库输送线", "2区7条输送状态返回异常，如果长时间异常，请重启NC系统，注意不是下大电，返回值长度<2");	
-		  SqlPro.getLog().error("startLine 立库断开,状态码=B区获取立库状态不对");
-		  System.out.println("startLine 立库断开,状态码=B区获取立库状态不对");
-		  return;}
-	  
-	  th.remove("2立库输送线");
+	 
+	 String sm2[]=ss2.split("\\|");
 	 String sql2= "select  货位序号,托盘编号   from 货位表  where  货位序号  between 601 and 614 order by 货位序号";
 	Vector<Vector> tem2=SqlTool.findInVector(sql2);
 	for(int r=0;r<tem2.size()/2;r++){
@@ -271,24 +179,10 @@ public void startLine(int machineID){
 		String firstTP=line1.get(1)==null?"":line1.get(1).toString();
 		String secTP=line2.get(1)==null?"":line2.get(1).toString();
 		if(secTP.equals("")){
-			if(sm2[r].split("=")[1].equals("1")){
+			if(sm2[r*2+1].split("=")[1].equals("0")){
 				String fromID=line1.get(0)+"";
 				String toID=line2.get(0)+"";
-				
-				/*
-				 * 像PLC里面写入PLC地址
-				 * **/
-				if(!firstTP.equals("")){
-					System.out.println("update7Line,进入托盘从第1位向第二位移动，在方法startLine，B区");
-					SqlTool.update7Line(firstTP, fromID, toID);
-					System.out.println("update7Line,执行完成，在方法startLine，B区");
-					// String sql2="select 托盘编号  from 货位表   where  货位序号='"+toID+"'";	
-				  String wuliao= SqlTool.findOneRecord("select 物料  from 库存托盘  where 托盘编号="+"'"+firstTP+"'");
-				  String leixing=SqlTool.findOneRecord("select 类型  from 通用物料  where 物料编码="+"'"+wuliao+"'");
-				  SqlTool.clearValueForPalet(toID, 2);
-				  SqlTool.WriteAddresInPaletToPLC(leixing, firstTP, toID, 2);
-				  System.out.println("update7Line,写人PLC料箱地址 在方法startLine完成"); 
-				  }
+				SqlTool.update7Line(firstTP, fromID, toID);
 			}
 			
 		 }
@@ -296,12 +190,8 @@ public void startLine(int machineID){
 	 } 
 	
    }catch(Exception ex){
-	   th.put("2立库输送线", "2区7条输送状态返回异常，如果长时间异常，请重启NC系统，注意不是下大电，返回值="+ex.getMessage());
-		 SqlPro.getLog().error("B区输送线是否有托盘：",ex);
-		
+		 SqlPro.getLog().error("B区输送线是否有托盘："+ex.getMessage());
 		 ex.printStackTrace();}
-   
-	}
 	
 	if(line==0)
      System.out.println("缓存货位与上料位自动更新启动完成");
@@ -318,7 +208,6 @@ public void start堆垛机指令(){
     
      boolean run=false;
      boolean run2=false;
-     
      boolean up1=false;
      boolean up2=false;
      boolean dw1=false;
@@ -356,13 +245,10 @@ public void start堆垛机指令(){
       
      }
      
-     if(堆1上.size()==0&&堆1下.size()==0){th.remove("1堆垛机");}
-     if(堆2上.size()==0&&堆2下.size()==0){th.remove("2堆垛机");}
-     
     //如果这个堆垛机没有执行的指令，那么继续 
     if(last1==1){//上货
     if(!run) {
-      //	if(!up2){
+    	if(!up2){
     	//如果没有运行中的指令,那么就优先上料，上完料了在看看有没有下货的指令，如果有运行下货
     	if(堆1上.size()>0){
     	try {
@@ -370,72 +256,52 @@ public void start堆垛机指令(){
     		
 			String state=ClientSer.getIntance().getState(SqlPro.堆垛机1状态);//获取堆垛机1的状态
 			if(state.equals(SqlPro.堆垛空闲码)){
-				  th.put("1堆垛机", "1堆垛机=空闲");	
 				 if(堆1上.size()>0){
 			    	 //首先判断当前指令有没有在执行中，如果有，那么就不在发送
 			    	 Vector up=(Vector)堆1上.get(0);
 			    	 String eventID=up.get(0).toString();
 			    	 String fromID=up.get(5).toString();
 			    	 String toID=up.get(6).toString();
-			    	int bak= ClientSer.getIntance().upPallet(Integer.parseInt(eventID), 
+			    	 ClientSer.getIntance().upPallet(Integer.parseInt(eventID), 
 			    			 Integer.parseInt(fromID), Integer.parseInt(toID), 1);
-			    	if(bak==1){
-			    		run=true;
 			    	 String sql2="update 立库动作指令  set 状态='已发送',发送时间="+SqlPro.getDate()[1]+" where idEvent="+"'"+eventID+"'"; 
 			    	 SqlTool.insert(new String[]{sql2});
-			    	 }
 			      }
 				
-			}else{
-				  th.put("1堆垛机", "1堆垛机=非空闲");	
-			     }
-		   } catch (Exception e) {
-			      th.put("1堆垛机", "获取堆垛机1=状态异常！");	
-			   SqlPro.getLog().error("A上货指令发送异常：",e);
-			  
-			   e.printStackTrace();}
+			}
+		   } catch (Exception e) {e.printStackTrace();}
     	
     	
     	}
     	last1=2;
-    //	}
+    	}
        }
 	
   }
     if(last1==2){//下货
         if(!run) {
         	//如果没有运行中的指令,那么就优先上料，上完料了在看看有没有下货的指令，如果有运行下货
-        	//if(!dw2){
+        	if(!dw2){
         	if(堆1下.size()>0){
         	try {
     			String state=ClientSer.getIntance().getState(SqlPro.堆垛机1状态);//获取堆垛机1的状态
     			if(state.equals(SqlPro.堆垛空闲码)){
-    				 th.put("1堆垛机", "1堆垛机=空闲");	
     				//首先判断当前指令有没有在执行中，如果有，那么就不在发送
 			    	 Vector up=(Vector)堆1下.get(0);
 			    	 String eventID=up.get(0).toString();
 			    	 String fromID=up.get(5).toString();
 			    	 String toID=up.get(6).toString();
-			    	 int bak=ClientSer.getIntance().getPallet(Integer.parseInt(eventID), 
+			    	 ClientSer.getIntance().getPallet(Integer.parseInt(eventID), 
 			    			 fromID, Integer.parseInt(toID), 1);
-			    	 if(bak==1){
-			    		 run=true;
 			    	 String sql2="update 立库动作指令  set 状态='已发送',发送时间="+SqlPro.getDate()[1]+" where idEvent="+"'"+eventID+"'"; 
 			    	 SqlTool.insert(new String[]{sql2});
-			    	 }
     				
-    			}else{
-    				 th.put("1堆垛机", "1堆垛机=非空闲");	
     			}
-    		   } catch (Exception e) {
-    			   th.put("1堆垛机", "获取堆垛机1=状态异常！");	
-    			   SqlPro.getLog().error("A下货指令发送异常：",e);
-    			  
-    			   e.printStackTrace();}
+    		   } catch (Exception e) {e.printStackTrace();}
         	
         	}
         	last1=1;
-         //  }
+           }
         	}
     	
       }
@@ -445,76 +311,55 @@ public void start堆垛机指令(){
    if(last2==1){//上货
    if(!run2) {
    	//如果没有运行中的指令,那么就优先上料，上完料了在看看有没有下货的指令，如果有运行下货
-	 //  if(!up1){
+	   if(!up1){
 	   if(堆2上.size()>0){
    	try {
 			String state=ClientSer.getIntance().getState(SqlPro.堆垛机2状态);//获取堆垛机2的状态
 			if(state.equals(SqlPro.堆垛空闲码)){
-				 th.put("2堆垛机", "2堆垛机=空闲");	
 				 if(堆2上.size()>0){
-					
 			    	 //首先判断当前指令有没有在执行中，如果有，那么就不在发送
 			    	 Vector up=(Vector)堆2上.get(0);
 			    	 String eventID=up.get(0).toString();
 			    	 String fromID=up.get(5).toString();
 			    	 String toID=up.get(6).toString();
-			    	 int bak= ClientSer.getIntance().upPallet(Integer.parseInt(eventID), 
+			    	 ClientSer.getIntance().upPallet(Integer.parseInt(eventID), 
 			    			 Integer.parseInt(fromID), Integer.parseInt(toID), 2);
-			    	if(bak==1){
-			    		run2=true;
 			    	 String sql2="update 立库动作指令  set 状态='已发送',发送时间="+SqlPro.getDate()[1]+" where idEvent="+"'"+eventID+"'"; 
 			    	 SqlTool.insert(new String[]{sql2});
-			    	 }
 			      }
 				
-			}else{
-				  th.put("2堆垛机", "2堆垛机=非空闲");	
-			 }
-		   } catch (Exception e) {
-			   th.put("2堆垛机", "获取堆垛机2=状态异常！");	
-			   SqlPro.getLog().error("B上货指令发送异常：",e);
-			   e.printStackTrace();
-			   }
+			}
+		   } catch (Exception e) {e.printStackTrace();}
 	   }
    	       last2=2;
-   	   // }
+   	    }
       }
 	
  }
    if(last2==2){//下货
        if(!run2) {
        	//如果没有运行中的指令,那么就优先上料，上完料了在看看有没有下货的指令，如果有运行下货
-    	//   if(!dw1){
+    	   if(!dw1){
        	if(堆2下.size()>0){
        	try {
    			String state=ClientSer.getIntance().getState(SqlPro.堆垛机2状态);//获取堆垛机2的状态
    			if(state.equals(SqlPro.堆垛空闲码)){
-   				th.put("2堆垛机", "2堆垛机=空闲");
    				//首先判断当前指令有没有在执行中，如果有，那么就不在发送
 			    	 Vector up=(Vector)堆2下.get(0);
 			    	 String eventID=up.get(0).toString();
 			    	 String fromID=up.get(5).toString();
 			    	 String toID=up.get(6).toString();
-			    	int bak= ClientSer.getIntance().getPallet(Integer.parseInt(eventID), 
+			    	 ClientSer.getIntance().getPallet(Integer.parseInt(eventID), 
 			    			 fromID, Integer.parseInt(toID), 2);
-			    	if(bak==1){
-			    		run2=true;
 			    	 String sql2="update 立库动作指令  set 状态='已发送',发送时间="+SqlPro.getDate()[1]+" where idEvent="+"'"+eventID+"'"; 
 			    	 SqlTool.insert(new String[]{sql2});
-			    	 }
    				
-   			}else{
-				  th.put("2堆垛机", "2堆垛机=非空闲");	
-			 }
-   		   } catch (Exception e) {
-   			 th.put("2堆垛机", "获取堆垛机2=状态异常！");	
-   			 SqlPro.getLog().error("B下货指令发送异常：",e);
-			 
-   			   e.printStackTrace();}
+   			}
+   		   } catch (Exception e) {e.printStackTrace();}
        	}
        	
        	last2=1;
-      // 	}
+       	}
           }
    	
      } 
@@ -551,71 +396,19 @@ public void startlineAGV(){
 			String state=ClientSer.getIntance().getState(SqlPro.AGV1);//获取AGV1的状态
 			if(state.equals(SqlPro.AGV空闲码)){
 				 if(堆1上.size()>0){
-					 boolean isGeban=false;
-					 //首先检测有没有隔板。隔板在504
-					 for(int i=0;i<堆1上.size();i++){
-						 Vector up=(Vector)堆1上.get(i); 
-						 String eventID=up.get(0).toString();
-						 String fromID=(up.get(5)==null?"":up.get(5).toString());
-						 String toID=(up.get(6)==null?"":up.get(6).toString());
-						 if(fromID.equals("504")){
-							 isGeban=true;
-							 int bak= ClientSer.getIntance().toBackBuffer(Integer.parseInt(eventID), 
-					    			 Integer.parseInt(fromID), Integer.parseInt(toID));
-							 if(bak==1){
-							    	String sql2="update 立库动作指令  set 状态='已发送',发送时间="+SqlPro.getDate()[1]+" where idEvent="+"'"+eventID+"'"; 
-							    	SqlTool.insert(new String[]{sql2});
-							    	 } 
-							 break;
-							 
-						   }
-						 
-					   }
-					 
-			    	 
-					 if(!isGeban){
-						//如果没有隔板下货的指令，那么我们判断隔板框里面还有多少数量，如果数量不够1ST,2ST,3ST,4ST,5ST工位的需求量，说明
-						//马上托盘就得下货，那么盖板和底板的命令先不执行。
-					 int gst=0;
-					 boolean willdown=false;
-					 for(int n=4;n<7;n++){
-						Carry car= plc.line.getCarry(n);
-						 if(car!=null){
-							 if(car.get工位().contains("6ST")){
-								 gst++; 
-							 }
-						 }
-					 }
-					 String tem2=SqlTool.findOneRecord("select  托盘编号,物料,数量,货位号  from 库存托盘   where  货位号='"+504+"'");  
-					if(tem2!=null){
-						int ss=Integer.parseInt(tem2.split("!_!")[2]);
-						  if(ss<gst){
-							  willdown=true;  
-						    }
-					   }
-					if(!willdown){
+			    	 //首先判断当前指令有没有在执行中，如果有，那么就不在发送
 			    	 Vector up=(Vector)堆1上.get(0);
 			    	 String eventID=up.get(0).toString();
 			    	 String fromID=up.get(5).toString();
 			    	 String toID=up.get(6).toString();
-			    	int bak= ClientSer.getIntance().toBackBuffer(Integer.parseInt(eventID), 
+			    	 ClientSer.getIntance().toBackBuffer(Integer.parseInt(eventID), 
 			    			 Integer.parseInt(fromID), Integer.parseInt(toID));
-			    	if(bak==1){
-			    	String sql2="update 立库动作指令  set 状态='已发送',发送时间="+SqlPro.getDate()[1]+" where idEvent="+"'"+eventID+"'"; 
+			    	 String sql2="update 立库动作指令  set 状态='已发送',发送时间="+SqlPro.getDate()[1]+" where idEvent="+"'"+eventID+"'"; 
 			    	 SqlTool.insert(new String[]{sql2});
-			    	 }
-			    	
-					}
-			    	
-					 }
-			    	
 			      }
 				
 			}
-		   } catch (Exception e) {
-			   SqlPro.getLog().error("A输送线回流发送异常：",e);
-			  
-			   e.printStackTrace();}
+		   } catch (Exception e) {e.printStackTrace();}
    	             
 	   }
   
@@ -629,70 +422,18 @@ public void startlineAGV(){
        	try {
    			String state=ClientSer.getIntance().getState(SqlPro.AGV2);//获取AGV2的状态
    			if(state.equals(SqlPro.AGV空闲码)){
-   			        boolean isGeban=false;
-			      //首先检测有没有隔板。隔板在604
-   			     for(int i=0;i<堆2上.size();i++){
-					 Vector up=(Vector)堆2上.get(i); 
-					 String eventID=up.get(0).toString();
-					 String fromID=(up.get(5)==null?"":up.get(5).toString());
-					 String toID=(up.get(6)==null?"":up.get(6).toString());
-					 if(fromID.equals("604")){
-						 isGeban=true;
-						 int bak= ClientSer.getIntance().toBackBuffer(Integer.parseInt(eventID), 
-				    			 Integer.parseInt(fromID), Integer.parseInt(toID));
-						 if(bak==1){
-						    	String sql2="update 立库动作指令  set 状态='已发送',发送时间="+SqlPro.getDate()[1]+" where idEvent="+"'"+eventID+"'"; 
-						    	 SqlTool.insert(new String[]{sql2});
-						    	 } 
-						 break;
-						 
-					   }
-					 
-				   }
-				     
-   			        
    				//首先判断当前指令有没有在执行中，如果有，那么就不在发送
-   			        if(!isGeban){
-   			         int gst=0;
-					 boolean willdown=false;
-					 for(int n=4;n<7;n++){
-						Carry car= plc.line2.getCarry(n);
-						 if(car!=null){
-							 if(car.get工位().contains("6ST")){
-								 gst++; 
-							 }
-						 }
-					 }
-					 
-					 String tem2=SqlTool.findOneRecord("select  托盘编号,物料,数量,货位号  from 库存托盘   where  货位号='"+604+"'");  
-					if(tem2!=null){
-						int ss=Integer.parseInt(tem2.split("!_!")[2]);
-						  if(ss<gst){
-							  willdown=true;  
-						    }
-					   }
-					
-					if(!willdown){
 			    	 Vector up=(Vector)堆2上.get(0);
 			    	 String eventID=up.get(0).toString();
 			    	 String fromID=up.get(5).toString();
 			    	 String toID=up.get(6).toString();
-			    	 int bak=ClientSer.getIntance().toBackBuffer(Integer.parseInt(eventID), 
+			    	 ClientSer.getIntance().toBackBuffer(Integer.parseInt(eventID), 
 			    			 Integer.parseInt(fromID), Integer.parseInt(toID));
-			    	 if(bak==1){
 			    	 String sql2="update 立库动作指令  set 状态='已发送',发送时间="+SqlPro.getDate()[1]+" where idEvent="+"'"+eventID+"'"; 
 			    	 SqlTool.insert(new String[]{sql2});
-			    	 }
-			    	 
-					}
-			    	 
-   			        }
    				
    			}
-   		   } catch (Exception e) {
-   			   SqlPro.getLog().error("B输送线回流发送异常：",e);
-			 
-   			   e.printStackTrace();}
+   		   } catch (Exception e) {e.printStackTrace();}
        	
     	   }
        
@@ -742,68 +483,68 @@ public void startlineAGV(){
 	      rf1=1;
      }
   
- 
+  public void startUpRFFID2_A(){
+	    //临时方案版本，与大库无关。
+	  
+	  try {
+		  if(SqlPro.autoRFIDup){
+			String b=ClientSer.getIntance().getState(SqlPro.来料升);//此时来料升降机代表A区Y向AGV小车
+			if(b.equals("1")){//A区Y向AGV小车到达上货点且有货
+			String tp=ClientSer.getIntance().ReadFromRffid("", 3);
+			if(isRffid3!=null&&isRffid3.equals(tp))return;
+		      isRffid2=tp;
+				if(tp.equals(""))return;
+			//先从库存托盘表里面看看有没有这个托盘
+			Vector tem=SqlTool.findInVector("select 物料  from 库存托盘  where 托盘编号="+"'"+tp+"'"  );
+			if(tem.size()>0){
+			    Vector row=(Vector)tem.get(0);
+				SqlTool.autoUpPallet(tp, row.get(0)+"", "60001",/* machineID*/"1");
+				
+			}else{
+				//下面这个功能在零时方案里面没有用处
+				//String sm[]=SqlTool.getWuliaoFromLK(tp).split("!_!");//物料!_!数量
+				//SqlTool.autoUpPallet(tp, sm[0], "60001",/* machineID*/"1");
+				
+			}
+			
+			
+				
+			}
+			
+		  }
+			
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+	  
+	  if(rf1==0)
+	       System.out.println("来料升降机处理程序启动完成");
+	      rf1=1;
+     }
+  
+  
 //启动升降机的型号检测
   public void startDownRFFID(){
 	  //测试通过
-	  /*  String sql="select idEvent,动作,状态,状态2,是否回大库,来源货位号,放回货位号,托盘编号,"
-        		+"请求区  from 立库动作指令   where 动作='预上货' and 状态2<>'1' and 状态='完成'"
-        		+" and 托盘编号='"+tp+"' order by idEvent";
-        		*/
-	 /* String sql3="select max(idEvent),动作,状态,状态2,是否回大库,来源货位号,放回货位号,托盘编号,"
-       		+"请求区  from 立库动作指令   where   动作='输送线回流' and 状态='完成' and 状态2<>'1'"
-       		+" and 托盘编号='"+tp+"'";*/
-	  
-	  
 	    try {
-			String b=ClientSer.getIntance().getState(4);
+			String b=ClientSer.getIntance().getState(5);
 			
 			
 			if(b.equals("1")){//升降台上有货物
-				 System.out.println("A区货物到位-----------------");
-				String tp="";
-			if(ClientSer.isOpenRfid){
-				 System.out.println("A区货物到位isOpenRfid=true-----------------");
-			  tp=ClientSer.getIntance().ReadFromRffid("", 1);
-			if(!tp.equals("")){
-				String sq="select 托盘编号 "
-			      		+"  from 立库动作指令   where 动作 ='输送线回流' and 状态2<>'1' and 状态='完成'"
-			      		+" and 请求区=1  and 托盘编号='"+tp+"'  order by idEvent";
-				String hui=SqlTool.findOneRecord(sq);
-				
-				if(hui==null){//判断这个托盘是不是回流的托盘，如果是，那么就不加入预装指令
-				   String wl=SqlTool.findOneRecord("Select 物料编码 ,IFNULL(默认数量,0) from 托盘物料map where 托盘编号='"+tp+"'");
-				if(wl!=null)
-				   {
-					String sm[]=wl.split("!_!");
-					SqlTool.manUpPallet(tp,sm[0],Integer.parseInt(sm[1]),"0","1");
-				   }
-				}
-			}
-			
-			}
-				
-				
-			 String sql="select idEvent,托盘编号,"
-			      		+"请求区  from 立库动作指令   where 动作 IN('输送线回流','预上货') and 状态2<>'1' and 状态='完成'"
-			      		+" and 请求区=1  order by idEvent";
-			  System.out.println("A区RFID+++++");
-			
-			
-			String res=SqlTool.findOneRecord(sql);
-			if(res!=null){
-				if(!ClientSer.isOpenRfid)
-				 tp=res.split("!_!")[1];
-		    	System.out.println("A区RFID+++++="+tp);
-			
-			  if(tp.equals(""))return;
+				System.out.println("RFID2+++++");
+			String tp=ClientSer.getIntance().ReadFromRffid("", 2);
+			System.out.println("RFID2+++++="+tp);
+			if(isRffid1!=null&&isRffid1.equals(tp))return;
+			 isRffid1=tp;
+			if(tp.equals(""))return;
+			 
 			    String back=SqlTool.exeRffid2(tp);
 			
 				if(back.contains("成功")){
 					
 				}
-				
-			    }
 			}
 			
 			
@@ -812,73 +553,10 @@ public void startlineAGV(){
 			e.printStackTrace();
 		} 
 	    if(rf2==0)
-	    	 System.out.println("A区AGV处理程序启动完成");
+		       System.out.println("去料升降机处理程序启动完成");
 		      rf2=1;
 	    
      }
-  
-  public void startDownRFFID2(){
-	  //测试通过
-	    try {  
-			String b=ClientSer.getIntance().getState(5);
-			
-			
-			if(b.equals("1")){//升降台上有货物
-				
-				   String tp="";
-			 if(ClientSer.isOpenRfid){ 
-				   tp=ClientSer.getIntance().ReadFromRffid("", 2);
-				if(!tp.equals("")){
-					String sq="select 托盘编号 "
-				      		+"  from 立库动作指令   where 动作 ='输送线回流' and 状态2<>'1' and 状态='完成'"
-				      		+" and 请求区=2  and 托盘编号='"+tp+"'  order by idEvent";
-					String hui=SqlTool.findOneRecord(sq);
-					if(hui==null){ 
-					String wl=SqlTool.findOneRecord("Select 物料编码,IFNULL(默认数量,0)  from 托盘物料map where 托盘编号='"+tp+"'");
-					if(wl!=null)
-					{   String sm[]=wl.split("!_!");
-						SqlTool.manUpPallet(tp,sm[0],Integer.parseInt(sm[1]),"0","2");
-					}
-					
-					}
-					
-				}
-				}
-				
-	            String sql="select idEvent,托盘编号,"
-			      		+"请求区  from 立库动作指令   where 动作 IN('输送线回流','预上货') and 状态2<>'1' and 状态='完成'"
-			      		+" and 请求区=2  order by idEvent";
-				System.out.println("B区RFID2+++++");
-			
-				
-				String res=SqlTool.findOneRecord(sql);
-				if(res!=null){
-					if(!ClientSer.isOpenRfid)
-					 tp=res.split("!_!")[1];
-			   System.out.println("B区RFID2+++++="+tp);
-			     
-			      if(tp.equals(""))return;
-			 
-			    String back=SqlTool.exeRffid2(tp);
-			
-				if(back.contains("成功")){
-					
-				}
-				
-				}
-			}
-			
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
-	    if(rf1==0)
-		       System.out.println("B区AGV处理程序启动完成");
-		      rf1=1;
-	    
-     }
-  
   
     public  void startDakuQingqiu(){
     	 //	第一步读取大库请求表格里面的内容。放到一个hashtable里面。
@@ -1091,7 +769,7 @@ public void startlineAGV(){
     		    	
     		    }
     		    SqlTool.insert(s);
-    		   //System.out.println(sqlc);
+    		    System.out.println(sqlc);
     	 }
     	
     }
@@ -1110,181 +788,5 @@ public void startlineAGV(){
     	   }
     	
     }
-    Properties pro;
-    public void statPaletToPLC(int machineID){
-    	try{
-    		alai.GDT.Resint[] bak=ClientSer.getIntance().getReturnPlc("D11998", 1, 16, machineID);
-    		if(bak[0].getResInt()==1){
-    			if(pro==null){pro=SqlPro.loadProperties(SqlPro.class.getResource("conf.pro").getFile());}
-    			if(pro!=null){
-    				String huoweiA[]=new String[]{"514","512","510","508","506","504","502"};
-    				String huoweiB[]=new String[]{"614","612","610","608","606","604","602"};
-    				if(machineID==1){
-    			    for(int r=0;r<huoweiA.length;r++){
-    					//货位的起始地址，标注有没有初始化，比如货位的起始地址是D200，那么D200就标注为有没有初始化。
-    			   String palet=SqlTool.findOneRecord("select 托盘编号 from 库存托盘  where  货位号='"+huoweiA[r]+"'");
-    			   String val=SqlTool.findOneRecord("select address from 库存托盘  where  托盘编号='"+palet+"'");
-    			   if(val!=null){
-    				   String sm[]=val.split(",");
-    				   int length=sm.length+1;
-    				   int to[]=new int[length];
-    				   to[0]=1;
-    				   for(int i=1;i<to.length;i++){
-    					     to[i]=Integer.parseInt(sm[i-1].split("=")[1]);
-    					   
-    				     }
-    				   
-    				   ClientSer.getIntance().writeSirIntToCTR(pro.getProperty(huoweiA[r]), length, to,  machineID)  ;
-    				   
-    			   }
-    			   
-    					
-    				}//
-    			    
-    				}
-    				
-    				if(machineID==2){
-    					  for(int r=0;r<huoweiB.length;r++){
-    	    					//货位的起始地址，标注有没有初始化，比如货位的起始地址是D200，那么D200就标注为有没有初始化。
-    	    			   String palet=SqlTool.findOneRecord("select 托盘编号 from 库存托盘  where  货位号='"+huoweiB[r]+"'");
-    	    			   String val=SqlTool.findOneRecord("select address from 库存托盘  where  托盘编号='"+palet+"'");
-    	    			   if(val!=null){
-    	    				   String sm[]=val.split(",");
-    	    				   int length=sm.length+1;
-    	    				   int to[]=new int[length];
-    	    				   to[0]=1;
-    	    				   for(int i=1;i<to.length;i++){
-    	    					     to[i]=Integer.parseInt(sm[i-1].split("=")[1]);
-    	    					   
-    	    				     }
-    	    				   
-    	    				   ClientSer.getIntance().writeSirIntToCTR(pro.getProperty(huoweiB[r]), length, to,  machineID)  ;
-    	    				   
-    	    			   }
-    	    			   
-    	    					
-    	    				}//	
-    					
-    					
-    				}
-    			    
-    			}
-    		    
-    			 ClientSer.getIntance().writeSirIntToCTR("D11998", 10, new int[]{0},  machineID)  ;
-    			
-    		}
-    		
-    	}catch(Exception ex){}
-    	
-    }
-    
-    int startLine1=0; int startLine2=0;
-    int huojia1=0; int huojia2=0;
-   public void testLiKu(int machinID){
-	       try{
-	    	   if(machinID==1){
-	    		   
-	    			  String tem2=SqlTool.findOneRecord("select  托盘编号,物料,货位号,方向  from 库存托盘"
-	    			  		+ "   where  货位号 in (514,512,510,508,506,504,502) and  托盘编号=8888 and 方向=1");   
-	    			    if(tem2!=null){
-	    			    	//如果这个托盘在输送线上，那么就是输送线回流
-	    			    	String sm[]=tem2.split("!_!");
-	    			    	String tem=SqlTool.findOneRecord("select  货位序号,托盘编号  from 货位表   where  货位序号 BETWEEN 1 AND 28  AND (托盘编号 IS NULL OR  托盘编号='')  and 货位序号>'"+huojia1+"' ORDER BY  货位序号 " );   
-	    			    	  if(tem!=null){
-	    			    		  String sm2[]=tem.split("!_!");
-	    			    		  String b=SqlTool.add动作指令(sm[0], sm[2], sm2[0], "输送线回流", 0, 1+"");
-	    			    		  if(b.contains("成功")){
-	    			    		  huojia1++;}
-	    			    		  if(huojia1==28)huojia1=0;
-	    			    	     }
-	    			            
-	    			         }else{
-	    			          //若果托盘不在输送线上，那么就是下货
-	    			        	 tem2=SqlTool.findOneRecord("select  托盘编号,物料,货位号,方向  from 库存托盘"
-	    			        		  		+ "   where  货位号 between 1 and 28 and  托盘编号=8888 and 方向=1");  
-	    			        	 if(tem2!=null){
-	    			        		 String sm[]=tem2.split("!_!");
-	    			               Vector v=SqlTool.findInVector("select  货位序号,托盘编号  from 货位表   where  货位序号  between 501 and 514 AND 货位序号>"+(500+startLine1*2)+"  ORDER BY  货位序号 " ); 
-	    			               int maxCols=7-startLine1;
-	    			               
-	    			               for(int i=0;i<maxCols;i++){
-	    			            	   Vector row1=(Vector)v.get(i*2); //奇数位
-	    			            	   Vector row2=(Vector)v.get(i*2+1); //偶数位
-	    			            	 String tp1=(row1.get(1)==null?"": row1.get(1).toString());
-	    			            	 String tp2=(row2.get(1)==null?"": row2.get(1).toString());
-	    			            	 if(tp1.equals("")&&tp2.equals("")){
-	    			            		 String b=SqlTool.add动作指令(sm[0], sm[2], row1.get(0).toString(), "下货", 0, 1+""); 
-	    			            		 if(b.contains("成功")){
-	    			            			/* if(row1.get(0).toString().equals("501")) startLine1=1;
-	    			            			 if(row1.get(0).toString().equals("503")) startLine1=2;
-	    			            			 if(row1.get(0).toString().equals("505")) startLine1=3;
-	    			            			 if(row1.get(0).toString().equals("507")) startLine1=4;
-	    			            			 if(row1.get(0).toString().equals("509")) startLine1=5;
-	    			            			 if(row1.get(0).toString().equals("511")) startLine1=6;
-	    			            			 if(row1.get(0).toString().equals("513")) startLine1=7;*/
-	    			            		   startLine1++;
-	    			            		 System.out.println("startLine1="+startLine1);
-	    			            		 }
-	    			            		 if(startLine1==7)startLine1=0;
-	    			            		  break;
-	    			            	 }
-	    			                 }
-	    			        	   }
-	    			        	 
-	    			         }
-
-	    		          } 
-	    	   
-	    	  /////////////////////////////////////////////////////////////////////////////////
-	    	   
-	    	   if(machinID==2){
-	    		   
-	    			  String tem2=SqlTool.findOneRecord("select  托盘编号,物料,货位号,方向  from 库存托盘"
-	    			  		+ "   where  货位号 in (614,612,610,608,606,604,602) and  托盘编号=8888 and 方向=2");   
-	    			    if(tem2!=null){
-	    			    	//如果这个托盘在输送线上，那么就是输送线回流
-	    			    	String sm[]=tem2.split("!_!");
-	    			    	String tem=SqlTool.findOneRecord("select  货位序号,托盘编号  from 货位表   where  货位序号 BETWEEN 1 AND 28  AND (托盘编号 IS NULL OR  托盘编号='')  and 货位序号>'"+huojia2+"' ORDER BY  货位序号 " );   
-	    			    	  if(tem!=null){
-	    			    		  String sm2[]=tem.split("!_!");
-	    			    		  String b=SqlTool.add动作指令(sm[0], sm[2], sm2[0], "输送线回流", 0, 2+"");
-	    			    		  if(b.contains("成功")){
-	    			    		  huojia2++;}
-	    			    		  if(huojia2==28)huojia2=0;
-	    			    	     }
-	    			            
-	    			         }else{
-	    			          //若果托盘不在输送线上，那么就是下货
-	    			        	 tem2=SqlTool.findOneRecord("select  托盘编号,物料,货位号,方向  from 库存托盘"
-	    			        		  		+ "   where  货位号 between 1 and 28 and  托盘编号=8888 and 方向=2");  
-	    			        	 if(tem2!=null){
-	    			        		 String sm[]=tem2.split("!_!");
-	    			               Vector v=SqlTool.findInVector("select  货位序号,托盘编号  from 货位表   where  货位序号  between 601 and 614 AND 货位序号>"+(600+startLine2*2)+"  ORDER BY  货位序号 " ); 
-	    			               int maxCols=7-startLine2;
-	    			               
-	    			               for(int i=0;i<maxCols;i++){
-	    			            	   Vector row1=(Vector)v.get(i*2); //奇数位
-	    			            	   Vector row2=(Vector)v.get(i*2+1); //偶数位
-	    			            	 String tp1=(row1.get(1)==null?"": row1.get(1).toString());
-	    			            	 String tp2=(row2.get(1)==null?"": row2.get(1).toString());
-	    			            	 if(tp1.equals("")&&tp2.equals("")){
-	    			            		 String b=SqlTool.add动作指令(sm[0], sm[2], row1.get(0).toString(), "下货", 0, 2+""); 
-	    			            		 if(b.contains("成功")){
-	    			            		 startLine2++;
-	    			            		 System.out.println("startLine2="+startLine2);
-	    			            		 }
-	    			            		 if(startLine2==7)startLine2=0;
-	    			            		  break;
-	    			            	 }
-	    			                 }
-	    			        	   }
-	    			        	 
-	    			         }
-
-	    		               } 
-	    			    	      
-	         }catch(Exception ex){ex.printStackTrace();}
-	   
-       }
 	
 }

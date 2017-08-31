@@ -1,5 +1,4 @@
 var readyShow={
-	deleteSetInterval:null,
 	load:function(){
 		try{
 			var af={
@@ -22,9 +21,9 @@ var readyShow={
 						var a=$("#fangxiang").val(fx);a=null;
 						var b=$("#fangxiang").attr("oval",fx);b=null;fx=null;
 						if(af.table.load()&&dsState.state){//是否启动定时
-							readyShow.deleteSetInterval=setInterval(function(){
+							af_Home.dlInterval=setInterval(function(){
 								if(af.table.load());
-							},dsState.tim),af_Home.dlInterval=true;
+							},dsState.tim);
 						};
 						return null;
 					});nude=null;

@@ -13,9 +13,9 @@ public class Test5 {
 
 	public static void main(String[] args) {
 		try{
-			ClientSer.getIntance();//.getState(2);
-			String ss="成功";
-			System.out.println(ss.contains("成功"));
+			//ClientSer.getIntance();//.getState(2);
+			//String ss="成功";
+			System.out.println(3001%3000);
 //			System.out.println(Integer.toBinaryString(12));
 //			String ss=Integer.toBinaryString(12);
 //			

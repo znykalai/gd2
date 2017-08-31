@@ -95,9 +95,18 @@ public class DeletOrderFrame extends JFrame {
 		table.getColumnModel().getColumn(4).setPreferredWidth(300);
 	}
 	public void getData(){
-		Vector v=SqlTool.findInVector("select 工单序号,ID,工单号,pack编码,工单数量,装配区,分解日期 ,工单完成率.完成数量/工单完成率.数量  from 工单表 ,工单完成率 where ID=工单ID order by 工单序号");
+		Vector v=SqlTool.findInVector( "select 工单序号,ID,工单号,pack编码,工单数量,工单表.装配区,分解日期 ,状态  from 工单表  order by 工单序号");
+		Vector v2=SqlTool.findInVector("select 工单序号,ID,工单号,pack编码,工单数量,工单表.装配区,分解日期 ,工单完成率.完成数量/工单完成率.数量  from 工单表 ,工单完成率 where ID=工单ID order by 工单序号");
 		for(int r=0;r<v.size();r++){
 			Vector row=(Vector)v.get(r);
+			for(int r2=0;r2<v2.size();r2++){
+				Vector row2=(Vector)v2.get(r2);
+				if((row.get(0)+"").equals(row2.get(0)+"")){
+					row.setElementAt(row2.get(7), 7);
+					break; 
+				 }
+				
+			}
 			row.insertElementAt(false, 0);
 		}
 		mode.setDataVector(v, col);

@@ -1,5 +1,4 @@
 var readyShow={
-	deleteSetInterval:null,
 	showThis:function(e){
 		if($(e).css("display")=="block"){
 			return null;
@@ -233,6 +232,7 @@ var readyShow={
 						if(cheBoolean){
 							var DdType=$("input[name='trGdRadio']:checked").parent().parent().children("td").eq(2).html();
 							if(DdType=="初始化"){
+								layer.open({type:3});
 								var dd_table=$('#dd_table tbody tr');//工单行
 								var thisRow=$("input[name='trGdRadio']:checked").parent().parent().children("td").eq(1).text();
 								var yesFenjie="";
@@ -266,12 +266,17 @@ var readyShow={
 					});
 					//分解全部
 					$("#dd_fenjieAllBtn").click(function(){
+						layer.open({type:3});
 						$.ajax({
 							url:getRootPath()+'/OrderOperAction.do?operType=fenjieAllBtn',
 							type:'post',cache:false, 
 							success:function(data){
 								var a=$("#dd_selectBtn").click();a=null;
-								layer.msg("分解成功！");
+								if(data=='true'){
+									layer.msg("分解成功！");
+								}else{
+									layer.msg("没有可分解的订单！");
+								}
 							}
 						});
 						return null;
@@ -410,9 +415,9 @@ var readyShow={
 					});
 					var a=$("#dd_selectBtn").click();a=null;
 					if(dsState.state){
-						readyShow.deleteSetInterval=setInterval(function(){//定时刷新
+						af_Home.dlInterval=setInterval(function(){//定时刷新
 							showGdList($("#getGdId").val(),$("#getPackeCode").val(),$('#getGdfenjieriqi').val(),false);
-						},dsState.tim),af_Home.dlInterval=true;
+						},dsState.tim);
 					};
 					return null;
 				},
@@ -577,8 +582,7 @@ var readyShow={
 							success:function(data){
 						    	var obj = eval("("+data+")");data=null;
 					    		$('#order_id').val(obj.id)
-				  				layer.msg(obj.result);
-						    	obj=null;
+				  				layer.msg(obj.result);obj=null;
 							}
 						});a=null;head=null;
 			    	    return null;				    	

@@ -22,7 +22,7 @@ public class ServiceServerImp implements ServiceServer {
 	}
 
 	@Override
-	public String getLastComment(int machineID,int type) {
+	public String getLastComment(int machineID,int type) { 
 		// TODO Auto-generated method stub
 		if(true)
 		return "0";

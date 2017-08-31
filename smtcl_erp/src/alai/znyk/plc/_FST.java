@@ -72,7 +72,7 @@ public class _FST extends ST_Father implements STInterface {
 	}
 	
 	
-    public int getLength(){return length;}
+    public int getLength(){return length;} 
     public String getStartAddress(){return startAddress;}
     public synchronized String writeToPLC(){
     	

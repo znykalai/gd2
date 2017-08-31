@@ -222,7 +222,8 @@ public class CarryFrame extends JPanel {
 	}
 
 	public void click(JButton but,MouseEvent e){
-		
+		if(1==1)
+		return;
 		CarryLine li=PLC.getIntance().line;
 		int col=buts.lastIndexOf(but);
 		if(li.getCarry(col)==null)return;

@@ -107,7 +107,7 @@ public class _9ST extends ST_Father implements STInterface {
 	}
 
 	public void setPACKºÅ(int pACKºÅ) {
-		PACKºÅ = pACKºÅ;
+		PACKºÅ = pACKºÅ%30000;
 	}
 
 	public int getÄ£×éºÅ() {

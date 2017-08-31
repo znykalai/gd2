@@ -1470,7 +1470,7 @@ footer {
 	width: 500px; 
 	height: 100px; 
 	position: absolute; 
-	bottom: 480px; 
+	bottom: 470px; 
 	left:-82px;
 }
 .right_home2_but{
@@ -1484,7 +1484,7 @@ footer {
 	width: 500px; 
 	height: 100px; 
 	position: absolute; 
-	bottom: 325px; 
+	bottom: 315px; 
 	left:-82px;
 }
 .h_div_mo_img_close{
@@ -1924,5 +1924,8 @@ footer {
 }
 .home_mz_list{
 	margin-top:-50px;height:300px;overflow-y:scroll;font-size:12px;margin-left:-120px;
+}
+.user_name{
+	width: 500px; height: 100px;position: absolute;top:20px; left:-90px;font-size:9px;margin:1px;
 }
 /************************afeng end**********************/

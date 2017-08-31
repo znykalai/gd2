@@ -136,7 +136,7 @@ public class PLCFrame extends JFrame {
 		
 		JCheckBox chckbxrfid = new JCheckBox("\u6253\u5F00RFID");
 		chckbxrfid.setSelected(ClientSer.isOpenRfid);
-		chckbxrfid.addActionListener(new ActionListener() {
+		chckbxrfid.addActionListener(new ActionListener() { 
 			public void actionPerformed(ActionEvent e) {
 				if(chckbxrfid.isSelected()){ 
 					ClientSer.isOpenRfid=true;
@@ -146,6 +146,23 @@ public class PLCFrame extends JFrame {
 			}
 		});
 		panel_18.add(chckbxrfid);
+		
+		JCheckBox checkBox = new JCheckBox("\u6253\u5F00\u4EA4\u6362\u8BB0\u5F55");
+		checkBox.setSelected(PLC.getIntance().打开交换记录);
+		checkBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(checkBox.isSelected()){ 
+				//	PLC.getIntance().setDiaodu1(true);
+					PLC.getIntance().打开交换记录=true;
+				}else{
+				//	PLC.getIntance().setDiaodu1(false);
+					PLC.getIntance().打开交换记录=false;
+				}
+			
+				PLC.getIntance().get统计(1);
+			}
+		});
+		panel_18.add(checkBox);
 		
 		chckbxA.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -239,23 +256,23 @@ public class PLCFrame extends JFrame {
 		splitPane.setLeftComponent(pann);
 		
 		textField_1 = new JTextField();
-		textField_1.setBounds(729, 448, 66, 21);
+		textField_1.setBounds(0, 590, 66, 21);
 		pann.add(textField_1);
 		textField_1.setColumns(10);
 		textField_1.setText(STContent.checkNum_预装+"");
 		JButton button_2 = new JButton("\u91CD\u7F6E\u9884\u88C5\u9884\u8BFB\u4F4D\u7F6E");
-		button_2.setBounds(805, 447, 129, 23);
+		button_2.setBounds(79, 590, 129, 23);
 		pann.add(button_2);
 		
 		textField_2 = new JTextField();
-		textField_2.setBounds(729, 479, 66, 21);
+		textField_2.setBounds(436, 590, 66, 21);
 		pann.add(textField_2);
 		textField_2.setColumns(10);
 		textField_2.setText(STContent.checkNum_同步+"");
 		JButton button_3 = new JButton("\u91CD\u7F6E\u540C\u6B65\u7EBF\u9884\u8BFB\u4F4D\u7F6E");
-		button_3.setBounds(805, 480, 141, 23);
+		button_3.setBounds(512, 590, 141, 23);
 		pann.add(button_3);
-		button_3.addActionListener(new ActionListener() {
+		button_3.addActionListener(new ActionListener() { 
 			public void actionPerformed(ActionEvent e) {
 				STContent.checkNum_同步=Integer.parseInt(textField_2.getText());
 			}

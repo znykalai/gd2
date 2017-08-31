@@ -197,31 +197,20 @@ public class HomeAction extends Action{
 			HttpSession session = request.getSession();
 			ApplicationContext context = GetApplicationContext.getContext(request);
 			BaseDataDAO dao = (BaseDataDAO)context.getBean("baseDataDAO");
+			JSONObject result = new JSONObject();
 			HashMap map=new HashMap();
 			String ID=session.getAttribute("juese").toString();
 			map.put("sql", "SELECT a.角色名,a.角色功能,a.ID,a.序号,a.功能权限  FROM `角色` AS a WHERE a.ID='"+ID+"' ORDER BY a.`序号`");
 			List list=dao.selectJues(map);
-			String json="{物料:"+((HashMap)list.get(0)).get("功能权限")+","
-						+"模组:"+((HashMap)list.get(1)).get("功能权限")+","
-						+"pack:"+((HashMap)list.get(2)).get("功能权限")+","
-						+"账户设置:"+((HashMap)list.get(3)).get("功能权限")+","
-						+"发送命令:"+((HashMap)list.get(4)).get("功能权限")+","
-						+"PLC:"+((HashMap)list.get(5)).get("功能权限")+","
-						+"订单维护:"+((HashMap)list.get(6)).get("功能权限")+","
-						+"订单调度:"+((HashMap)list.get(7)).get("功能权限")+","
-						+"启动调度:"+((HashMap)list.get(8)).get("功能权限")+","
-						+"复位:"+((HashMap)list.get(9)).get("功能权限")+","
-						+"归零启动:"+((HashMap)list.get(10)).get("功能权限")+","
-						+"A区自动:"+((HashMap)list.get(11)).get("功能权限")+","
-						+"B区自动:"+((HashMap)list.get(12)).get("功能权限")+","
-						+"不检测数量:"+((HashMap)list.get(13)).get("功能权限")+","
-						+"不检测动作:"+((HashMap)list.get(14)).get("功能权限")+","
-						+"RFD自动读取:"+((HashMap)list.get(15)).get("功能权限")+","
-						+"启动库指令:"+((HashMap)list.get(16)).get("功能权限")+","
-						+"急停:"+((HashMap)list.get(17)).get("功能权限")+","
-						+"RFID绑定:"+((HashMap)list.get(18)).get("功能权限")+"}";
+			String json="{";
+			for(int i=0;i<list.size();i++){
+				json+=((HashMap)list.get(i)).get("角色功能")+":"+((HashMap)list.get(i)).get("功能权限")+",";
+			};
+			if(json.endsWith(",")){json=json.substring(0, json.length()-1)+"}";}else{json="";};
+			result.put("json",json);
+			result.put("user_name", session.getAttribute("username"));
 			response.setContentType("text/html;charset=utf-8");
-			response.getWriter().print(json);
+			response.getWriter().print(result);
 			response.getWriter().close();
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -376,21 +365,21 @@ public class HomeAction extends Action{
 			//A区,复位
 			}else if(map.get("type").equals("fuwei_top")){
 				result.put("type", ClientSer.getIntance().c_exeComment("",2,1));
-			//A区,归零启动
-			}else if(map.get("type").equals("guilingqidong_top")){
-				result.put("type", ClientSer.getIntance().c_exeComment("",5,1));
-//			//A区,断点启动
-//			}else if(map.get("type").equals("duandianqidong_top")){
-//				result.put("type", ClientSer.getIntance().c_exeComment("",4,1));
+//			//A区,归零启动
+//			}else if(map.get("type").equals("guilingqidong_top")){
+//				result.put("type", ClientSer.getIntance().c_exeComment("",5,1));
+			//A区,断点启动
+			}else if(map.get("type").equals("duandianqidong_top")){
+				result.put("type", ClientSer.getIntance().c_exeComment("",4,1));
 			//B区,复位
 			}else if(map.get("type").equals("fuwei_bottom")){
 				result.put("type", ClientSer.getIntance().c_exeComment("",3,2));
-			//B区,归零启动
-			}else if(map.get("type").equals("guilingqidong_bottom")){
-				result.put("type", ClientSer.getIntance().c_exeComment("",5,2));
-//			//B区,断点启动
-//			}else if(map.get("type").equals("duandianqidong_bottom")){
-//				result.put("type", ClientSer.getIntance().c_exeComment("",4,2));
+//			//B区,归零启动
+//			}else if(map.get("type").equals("guilingqidong_bottom")){
+//				result.put("type", ClientSer.getIntance().c_exeComment("",5,2));
+			//B区,断点启动
+			}else if(map.get("type").equals("duandianqidong_bottom")){
+				result.put("type", ClientSer.getIntance().c_exeComment("",4,2));
 			};map=null;
 			response.setContentType("text/html;charset=utf-8");
 			response.getWriter().print(result);

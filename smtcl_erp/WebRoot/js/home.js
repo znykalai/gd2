@@ -20,7 +20,7 @@ var af_Home={
 	arrBtn:null,
 	dlInterval:null,/***定时摧毁器***/
 	dlIntervalHome:null,
-	administrator:null,	/***权限***/
+	administrator:null,/***权限***/
 	winHtml:function(fun,type){
 		var html="<div class='col-md-11'><div class='col-md-7' style='margin-top:25px;'><div class='qfgd' id='A'><span style='font-size:12px;'>不检测数量</span></div></div><div class='col-md-2' style='margin-top:25px;'><div class='qfgd' id='B'><span style='font-size:12px;'>不检测动作</span></div></div></div><div class='col-md-11'><div class='col-md-7' style='margin-top:10px;'><div class='qfgd' id='C'><span style='font-size:12px;'>RFD自动读取</span></div></div><div class='col-md-2' style='margin-top:10px;'><div class='qfgd' id='D'><span style='font-size:12px;'>启动库指令</span></div></div></div><div class='col-md-11'><div class='col-md-7' style='margin-top:10px;'><div class='qfgd' id='E'><span style='font-size:12px;'>A区自动</span></div></div><div class='col-md-2' style='margin-top:10px;'><div class='qfgd' id='F'><span style='font-size:12px;'>B区自动</span></div></div></div>";
 		if(type=='right_home2'){html='<div class="col-md-12"><div style="padding-right:17px;"><table class="table-bordered"style="height:25px;width:100%;"><thead><tr style="height:25px;"><th class="text-center"style="width:20%;font-size:12px;border-bottom:0px;"bgcolor="#EFEFEF">托盘编号</th><th class="text-center"style="width:20%;font-size:12px;border-bottom:0px;"bgcolor="#EFEFEF">物料</th><th class="text-center"style="width:20%;font-size:12px;border-bottom:0px;"bgcolor="#EFEFEF">数量</th><th class="text-center"style="width:20%;font-size:12px;border-bottom:0px;"bgcolor="#EFEFEF">方向</th><th class="text-center"style="width:10%;font-size:12px;border-bottom:0px;"bgcolor="#EFEFEF"></th></tr></thead></table></div><div class="table-body"style="width:100%;height:90%;margin-top:-1px;"id="dltk_table_id"><table class="table-bordered text-center table-hover"style="width:100%;"id="dltk_table"><tbody></tbody></table></div></div>';};
@@ -114,7 +114,7 @@ var af_Home={
 	},
 	click:function(url_){
 		if(af_Home.arrBtn==url_){return null;}
-		if(af_Home.dlInterval){af_Home.dlInterval=null;clearInterval(readyShow.deleteSetInterval);}//销毁定时器
+		if(af_Home.dlInterval){clearInterval(af_Home.dlInterval);af_Home.dlInterval=null;}//销毁定时器
 		$("#home_div").val(null);$("#btn_id").val(null);readyShow=null;af_Home.arrBtn=url_;
 	 	var a=$.ajax({
 		    url:url_,type:'get',cache:false,
@@ -151,8 +151,11 @@ var af_Home={
 		var a=$.ajax({
 			url:getRootPath()+'/HomeAction.do?operType=getQX',
 			type:'get',cache:false,success:function(data){
-				var a=af_Home.administrator=data==''?null:eval("("+data+")");
-				data=null;a=null;return fun();
+				var obj=eval("("+data+")");data=null;
+				var a=af_Home.administrator=obj.json==''?null:(eval("("+obj.json+")"));a=null;
+				$("#user_name").html(obj.user_name==''?null:obj.user_name.length>6?obj.user_name.substring(0,5)+'.':obj.user_name);
+				$("#qh_user_name").attr('href',getRootPath());obj=null;
+				return fun();
 			}
 		});a=null;
 		return null;
@@ -201,7 +204,7 @@ var af_Home={
 					var a=$("#stJhxh span").html(obj.th);a=null;obj=null;
 				},
 				error:function(){
-					if(af_Home.dlInterval){clearInterval(readyShow.deleteSetInterval);}
+					if(af_Home.dlInterval){clearInterval(af_Home.dlInterval);}
 					if(af_Home.dlIntervalHome){clearInterval(af_Home.dlIntervalHome);};
 					readyShow=null;af_Home=null;return null;
 				}

@@ -10,9 +10,9 @@ public class STContent implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public static int checkNum_预装=3;
-	public static int checkNum_同步=3;
-	protected transient int LOCK=0;
+	public static int checkNum_预装=8;
+	public static int checkNum_同步=6;
+	
 	public ST_Father firstST; 
     public ST_Father secondST;
     public int stNum;
@@ -39,91 +39,47 @@ public class STContent implements Serializable {
        	 }
     }
    
-    public synchronized void lock(){
-    	LOCK=1;
-    }
-    public synchronized void unLock(){
-    	LOCK=0;
-    }
-    //mod=1时，更新到PLC其他只保留在本地 
-    public synchronized void initFromSql(int mod){
-    	
-    	if(LOCK==1)return;
+  
+    public synchronized void initFromSql(){
     	
     	if(plc.getIntance().stop1){//不再重数据库里面读数了，单是不影响搬运机构的继续执行
-    		
     		if(装配区==1){
     		   //System.out.println("return----");
     			if(stNum==1){ 
-    				// if(PLC.getIntance().line.getCarry(0)==null){
+    				 if(PLC.getIntance().line.getCarry(0)==null){
     	    			 ((_FST)firstST).set允许工位动作标志(false);
     	    			 ((_FST)secondST).set允许工位动作标志(false); 
     	    			 
-    	    		// }
+    	    		 }
     				 firstST.writeifChangeToPLC();
     		    	 secondST.writeifChangeToPLC();
     		    	 ////
     				return;}	
-    			
     			if(stNum>=2&&stNum<=8){
-    				updata动作(1);
+    				updata动作();
     				return;}
     			
     		}
-    	}else{ 
-    		if(装配区==1){ 
-     		   //System.out.println("return----");
-     			if(stNum==1){ 
-     				 if(PLC.getIntance().line.getCarry(0)!=null){
-     	    			 ((_FST)firstST).set允许工位动作标志(true);
-     	    			 ((_FST)secondST).set允许工位动作标志(true); 
-     	    			 
-     	    		 }
-     				
-     		    	  }	
-     			
-     			
-     		}	
-    		
     	}
     	
-    	if(plc.getIntance().stop2){ 
+    	if(plc.getIntance().stop2){
     		if(装配区==2){
     			if(stNum==1){
-    				// if(PLC.getIntance().line2.getCarry(0)==null){
+    				 if(PLC.getIntance().line2.getCarry(0)==null){
     	    			 ((_FST)firstST).set允许工位动作标志(false); 
     	    			 ((_FST)secondST).set允许工位动作标志(false); 
     	    			 
-    	    		// }
+    	    		 }
     				 firstST.writeifChangeToPLC();
     		    	 secondST.writeifChangeToPLC();
     		    	 
-    				return;}
-    			
+    				return;}	
     			if(stNum>=2&&stNum<=8){
-    				updata动作(1);
+    				updata动作();
     				return;}
     			
     		}
-    		
-    	}else{
-    		if(装配区==2){ 
-      		   //System.out.println("return----");
-      			if(stNum==1){ 
-      				 if(PLC.getIntance().line2.getCarry(0)!=null){
-      	    			 ((_FST)firstST).set允许工位动作标志(true);
-      	    			 ((_FST)secondST).set允许工位动作标志(true); 
-      	    			 
-      	    		 }
-      				
-      		    	  }	
-      			
-      			
-      		}	
-    		
     	}
-    	
-    	
     	
     	
     	if(stNum==1){
@@ -173,7 +129,6 @@ public class STContent implements Serializable {
     	     	 carr.setPack类型(row.get(21)==null?0:Integer.parseInt(row.get(21).toString()));
     	     	 carr.set模组层数(row.get(22)==null?0:Integer.parseInt(row.get(22).toString()));
     	     	 carr.set模组序号(row.get(24)==null?0:Integer.parseInt(row.get(24).toString()));
-    	     	 carr.set模组编码(row.get(5)==null?"0":row.get(5).toString());
     	     	 Vector<Vector> tost=SqlTool.findInVector("select 工位,物料 from 配方指令队列   where 工单ID='"+
     	     	 carr.get工单ID()+"' and 模组序ID='"+carr.get模组序ID()+"' and 分解号='"+carr.get分解号()+"' and 载具序号='"+carr.get载具序号()+"' order by 工位");
     	     	 String beifangs="";
@@ -223,7 +178,6 @@ public class STContent implements Serializable {
      	 carr2.setPack类型(row2.get(21)==null?0:Integer.parseInt(row2.get(21).toString()));
      	 carr2.set模组层数(row2.get(22)==null?0:Integer.parseInt(row2.get(22).toString()));
      	 carr2.set模组序号(row2.get(24)==null?0:Integer.parseInt(row2.get(24).toString()));
-     	 carr2.set模组编码(row2.get(5)==null?"0":row2.get(5).toString());
      	 String beifangs2="";	 
      	 Vector<Vector> tost2=SqlTool.findInVector("select 工位,物料 from 配方指令队列   where 工单ID='"+
     	     	 carr2.get工单ID()+"' and 模组序ID='"+carr.get模组序ID()+"' and 分解号='"+carr2.get分解号()+"' and 载具序号='"+carr2.get载具序号()+"' order by 工位");
@@ -275,7 +229,6 @@ public class STContent implements Serializable {
 	     	 carr.setPack类型(row.get(21)==null?0:Integer.parseInt(row.get(21).toString()));
 	     	 carr.set模组层数(row.get(22)==null?0:Integer.parseInt(row.get(22).toString()));
 	     	 carr.set模组序号(row.get(24)==null?0:Integer.parseInt(row.get(24).toString()));
-	     	 carr.set模组编码(row.get(5)==null?"0":row.get(5).toString());
 	     	Vector<Vector> tost=SqlTool.findInVector("select 工位,物料 from 配方指令队列   where 工单ID='"+
 	    	     	 carr.get工单ID()+"' and 模组序ID='"+carr.get模组序ID()+"' and 分解号='"+carr.get分解号()+"' and 载具序号='"+carr.get载具序号()+"' order by 工位");
 	    	     	
@@ -331,7 +284,6 @@ public class STContent implements Serializable {
         	 carr2.setPack类型(row.get(21)==null?0:Integer.parseInt(row.get(21).toString()));
         	 carr2.set模组层数(row.get(22)==null?0:Integer.parseInt(row.get(22).toString()));
         	 carr2.set模组序号(row.get(24)==null?0:Integer.parseInt(row.get(24).toString()));
-        	 carr2.set模组编码(row.get(5)==null?"0":row.get(5).toString());
         	 Vector<Vector> tost=SqlTool.findInVector("select 工位,物料 from 配方指令队列   where 工单ID='"+
         	     	 carr2.get工单ID()+"' and 模组序ID='"+carr2.get模组序ID()+"' and 分解号='"+carr2.get分解号()+"' and 载具序号='"+carr2.get载具序号()+"' order by 工位");
         	     	
@@ -541,7 +493,7 @@ public class STContent implements Serializable {
        		 secondST.clear();
     		}
     		
-    		
+    		updata动作();
     		
     	}
     
@@ -689,7 +641,7 @@ public class STContent implements Serializable {
         		 secondST.clear();
      		}
      		
-     		
+     		updata动作();
    	     }
     	 
     	 
@@ -1048,7 +1000,7 @@ public class STContent implements Serializable {
     			 
     		 }
     		
-    		
+    		 updata动作();
     	 }
     	 
     	 if(stNum==13){//叠装工位
@@ -1222,8 +1174,8 @@ public class STContent implements Serializable {
   			
     		      }
     	    }else{
-    			 // ((_BST)firstST).setWrite(false);  
-    			 // ((_BST)firstST).clear();
+    			  ((_BST)firstST).setWrite(false);  
+    			  ((_BST)firstST).clear();
     			  
     		  }
     		  
@@ -1287,7 +1239,6 @@ public class STContent implements Serializable {
     				 }
     			 }
     			 }
-    			 
     		if(tem.size()>0){
     			Vector row=(Vector)tem.get(0);
     			Carry car=(Carry)row.get(0);
@@ -1420,20 +1371,17 @@ public class STContent implements Serializable {
         		 secondST.clear();
     			 
     		 }
-    		
+    		// updata动作();  
   	      }
-    	 if((stNum>=2&&stNum<=8)||stNum==10)
-    	    updata动作(mod);
     	 
-    	 if(mod==1){
+    	 
     	 firstST.writeifChangeToPLC();
     	 secondST.writeifChangeToPLC();
-    	  }
     	 
     	
     }
-   //mod=1时，更新到PLC其他只保留在本地 
-    public void updata动作(int mod){//更新动作允许标志 
+    
+    public void updata动作(){//更新动作允许标志 
     	
     	int next=stNum-1;
     	
@@ -1488,7 +1436,6 @@ public class STContent implements Serializable {
 				  //}
 				  
 			  }
-			if(mod==1)
 			firstST.writeifChangeToPLC();
 		}else{
 		   // firstST.set允许工位动作标志(false);
@@ -1526,7 +1473,6 @@ public class STContent implements Serializable {
 				 }
 			    }
 			  }
-			if(mod==1)
 			 secondST.writeifChangeToPLC();
 		}else{
 			
@@ -1543,7 +1489,7 @@ public class STContent implements Serializable {
   	  String tem=SqlTool.findOneRecord("select  物料,数量  from 配方指令队列   where  ID='"+st.getId()+"'");
   	  if(tem!=null){
   		String wuliao=tem.split("!_!")[0];
-  	   //System.out.println("id2="+wuliao);
+  		//System.out.println("id2="+wuliao);
   		int shul=Integer.parseInt(tem.split("!_!")[1]);
   		String tem2=SqlTool.findOneRecord("select  托盘编号,物料,数量  from 库存托盘   where  货位号='"+货位+"'");
   		

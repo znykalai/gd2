@@ -32,6 +32,8 @@ import java.awt.event.MouseEvent;
 import javax.swing.JComboBox;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
+import javax.swing.event.PopupMenuListener;
+import javax.swing.event.PopupMenuEvent;
 
 public class CommentPanel extends JPanel {
 	private JTextField textField;
@@ -129,13 +131,13 @@ public class CommentPanel extends JPanel {
 			  // SqlTool.insert(new String[]{"update 立库动作指令 set 状态='完成' where idEvent='"+name+"'"});
 				  if(!isWan.equals("完成")){
 			    SqlTool.setStateForEventID(Integer.parseInt(name.toString()), SqlPro.完成, "");
-				Vector v3=SqlTool.findInVector("select idEvent,动作,托盘编号,来源货位号,放回货位号,状态,状态2,是否回大库,空  from 立库动作指令  order by idEvent");
+				Vector v3=SqlTool.findInVector("select idEvent,动作,托盘编号,来源货位号,放回货位号,状态,状态2,是否回大库,空  from 立库动作指令   where 状态<>'完成' order by idEvent");
 				modezl.setDataVector(v3, zl);
 				Vector v4=SqlTool.findInVector("select 托盘编号,物料,数量,货位号,方向  from 库存托盘  order by 托盘编号");
 				modeTP.setDataVector(v4, TP);
 				
 				
-				Vector v5=SqlTool.findInVector("select 货位序号,托盘编号   from 货位表  order by 距离");
+				Vector v5=SqlTool.findInVector("select 货位序号,托盘编号 ,堆垛机  from 货位表  order by 距离");
 				modeKF.setDataVector(v5, KF);
 				  }
 			 }
@@ -176,6 +178,7 @@ public class CommentPanel extends JPanel {
 					     }
 										}
 		 };
+		 
     DefaultTableModel modeKF=new DefaultTableModel(){
 			 public void setValueAt(Object aValue, int row, int column) {
 									}
@@ -236,7 +239,7 @@ public class CommentPanel extends JPanel {
 		zl.addElement("idEvent");zl.addElement("动作");
 		zl.addElement("托盘");zl.addElement("从");zl.addElement("到");zl.addElement("状态");
 		zl.addElement("已回大库");zl.addElement("大库");zl.addElement("完成");
-		Vector v3=SqlTool.findInVector("select idEvent,动作,托盘编号,来源货位号,放回货位号,状态,状态2,是否回大库,空  from 立库动作指令  order by idEvent");
+		Vector v3=SqlTool.findInVector("select idEvent,动作,托盘编号,来源货位号,放回货位号,状态,状态2,是否回大库,空  from 立库动作指令    where 状态<>'完成' order by idEvent");
 		modezl.setDataVector(v3, zl);
 		
 		TP.addElement("托盘编号");TP.addElement("物料");
@@ -244,8 +247,8 @@ public class CommentPanel extends JPanel {
 		Vector v4=SqlTool.findInVector("select 托盘编号,物料,数量,货位号,方向  from 库存托盘  order by 托盘编号");
 		modeTP.setDataVector(v4, TP);
 		
-		KF.addElement("货位");KF.addElement("托盘");
-		Vector v5=SqlTool.findInVector("select 货位序号,托盘编号   from 货位表  order by 距离");
+		KF.addElement("货位");KF.addElement("托盘");KF.addElement("方向");
+		Vector v5=SqlTool.findInVector("select 货位序号,托盘编号,堆垛机   from 货位表  order by 距离");
 		modeKF.setDataVector(v5, KF);
 		
 		setLayout(null);
@@ -282,6 +285,7 @@ public class CommentPanel extends JPanel {
 		add(label_3);
 		
 		JButton btnNewButton = new JButton("\u53D1\u9001");
+		btnNewButton.setEnabled(false);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(!textField.getText().equals("")&&!textField_1.getText().equals("")){
@@ -317,6 +321,7 @@ public class CommentPanel extends JPanel {
 		add(textField_4);
 		
 		JButton button = new JButton("\u53D1\u9001");
+		button.setEnabled(false);
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			
@@ -352,6 +357,7 @@ public class CommentPanel extends JPanel {
 		add(textField_6);
 		
 		JButton button_1 = new JButton("\u53D1\u9001");
+		button_1.setEnabled(false);
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String fID=textField_5.getText();
@@ -395,6 +401,7 @@ public class CommentPanel extends JPanel {
 		add(textField_8);
 		
 		JButton button_2 = new JButton("\u53D1\u9001");
+		button_2.setEnabled(false);
 		button_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String fID=textField_7.getText();
@@ -437,6 +444,7 @@ public class CommentPanel extends JPanel {
 		add(textField_10);
 		
 		JButton button_3 = new JButton("\u53D1\u9001");
+		button_3.setEnabled(false);
 		button_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String fID=textField_9.getText();
@@ -474,7 +482,7 @@ public class CommentPanel extends JPanel {
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "\u6258\u76D8\u8868", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		scrollPane_1.setBounds(0, 415, 440, 124);
+		scrollPane_1.setBounds(0, 415, 655, 124);
 		add(scrollPane_1);
 		
 		table_1 = new JTable();
@@ -493,7 +501,7 @@ public class CommentPanel extends JPanel {
 		
 		JScrollPane scrollPane_2 = new JScrollPane();
 		scrollPane_2.setBorder(new TitledBorder(null, "\u8D27\u4F4D", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		scrollPane_2.setBounds(450, 10, 113, 362);
+		scrollPane_2.setBounds(450, 10, 209, 362);
 		add(scrollPane_2);
 		
 		table_2 = new JTable();
@@ -501,7 +509,7 @@ public class CommentPanel extends JPanel {
 		
 		JScrollPane scrollPane_3 = new JScrollPane();
 		scrollPane_3.setBorder(new TitledBorder(null, "\u6709\u8D27\u4FE1\u53F7", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		scrollPane_3.setBounds(573, 10, 93, 233);
+		scrollPane_3.setBounds(1048, 10, 93, 30);
 		add(scrollPane_3);
 		
 		table_3 = new JTable();
@@ -509,7 +517,7 @@ public class CommentPanel extends JPanel {
 		
 		JScrollPane scrollPane_4 = new JScrollPane();
 		scrollPane_4.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "\u5230\u4F4D\u4FE1\u53F7", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		scrollPane_4.setBounds(573, 253, 93, 118);
+		scrollPane_4.setBounds(1148, 10, 93, 30);
 		add(scrollPane_4);
 		
 		table_4 = new JTable();
@@ -520,17 +528,22 @@ public class CommentPanel extends JPanel {
 		table_3.setModel(mode3);
 		table_4.setModel(mode4);
 		
-		this.setPreferredSize(new Dimension(1012, 739));
+		this.setPreferredSize(new Dimension(1343, 739));
 		
 		textField_12 = new JTextField();
-		textField_12.setBounds(0, 549, 64, 21);
+		textField_12.setBounds(0, 547, 64, 21);
 		add(textField_12);
 		textField_12.setColumns(10);
 		
-		JButton button_4 = new JButton("\u5220\u9664");
+		JButton button_4 = new JButton("\u5220\u9664\u6258\u76D8\u4F4D\u7F6E");
 		button_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String tp=textField_12.getText();
+				Vector v=SqlTool.findInVector("select 托盘编号 from 货位表  where 托盘编号='"+tp+"'");
+				if(v.size()>1){
+					 int i=  JOptionPane.showConfirmDialog(null, "检测到同一个料箱编号在货位表里面有多个，这是不对的，系统会把这个托盘编号在货位表里面的位置全部删掉", "确认",JOptionPane.YES_NO_CANCEL_OPTION);
+					if(i!=0)
+					 return;}
 				String huowei=SqlTool.findOneRecord("select 托盘编号 from 库存托盘  where 托盘编号='"+tp+"'");
 				if(!huowei.equals("0")){
 					String sql1="DELETE FROM 库存托盘  where 托盘编号='"+tp+"'";
@@ -542,7 +555,7 @@ public class CommentPanel extends JPanel {
 				}
 			}
 		});
-		button_4.setBounds(78, 548, 93, 23);
+		button_4.setBounds(78, 546, 113, 23);
 		add(button_4);
 		
 		JButton button_5 = new JButton("\u5237\u65B0");
@@ -551,7 +564,7 @@ public class CommentPanel extends JPanel {
 				refsh();
 			}
 		});
-		button_5.setBounds(347, 548, 93, 23);
+		button_5.setBounds(562, 547, 93, 23);
 		add(button_5);
 		
 		JLabel lblagvb = new JLabel("\u4E0A\u6599agvB");
@@ -581,15 +594,15 @@ public class CommentPanel extends JPanel {
 		comboBox.addItem("10ST");comboBox.addItem("11ST");
 		comboBox.addItem("12ST");comboBox.addItem("13ST");
 		comboBox.addItem("14ST");comboBox.addItem("15ST");
-		comboBox.setBounds(558, 384, 113, 21);
+		comboBox.setBounds(1158, 50, 96, 21);
 		add(comboBox);
 		
 		JLabel lblplc = new JLabel("\u9009\u62E9PLC\u8FD4\u56DE\u5DE5\u4F4D");
-		lblplc.setBounds(440, 387, 108, 18);
+		lblplc.setBounds(1023, 51, 108, 18);
 		add(lblplc);
 		
 		JScrollPane scrollPane_5 = new JScrollPane();
-		scrollPane_5.setBounds(440, 415, 231, 117);
+		scrollPane_5.setBounds(1023, 96, 231, 117);
 		add(scrollPane_5);
 		
 		table_5 = new JTable();
@@ -614,24 +627,24 @@ public class CommentPanel extends JPanel {
 	    		
 	    	}
 	    });
-	    button_6.setBounds(578, 548, 93, 23);
+	    button_6.setBounds(1174, 232, 80, 23);
 	    add(button_6);
 	    
 	    JLabel label_17 = new JLabel("\u9996\u5730\u5740\uFF1A");
-	    label_17.setBounds(10, 602, 54, 15);
+	    label_17.setBounds(10, 659, 54, 15);
 	    add(label_17);
 	    
 	    textField_13 = new JTextField();
-	    textField_13.setBounds(59, 599, 91, 21);
+	    textField_13.setBounds(59, 656, 91, 21);
 	    add(textField_13);
 	    textField_13.setColumns(10);
 	    
 	    JLabel label_18 = new JLabel("\u503C");
-	    label_18.setBounds(159, 602, 54, 15);
+	    label_18.setBounds(159, 659, 54, 15);
 	    add(label_18);
 	    
 	    textField_14 = new JTextField();
-	    textField_14.setBounds(177, 599, 489, 21);
+	    textField_14.setBounds(177, 656, 489, 21);
 	    add(textField_14);
 	    textField_14.setColumns(10);
 	    
@@ -654,7 +667,7 @@ public class CommentPanel extends JPanel {
 	    				
 	    	}
 	    });
-	    button_7.setBounds(676, 598, 93, 23);
+	    button_7.setBounds(676, 655, 93, 23);
 	    add(button_7);
 	    
 	    JLabel label_20 = new JLabel("\u88C5\u914D\u533A");
@@ -761,6 +774,9 @@ public class CommentPanel extends JPanel {
 	    			int i=JOptionPane.showConfirmDialog(null, "执行中的指令删除时要注意，排队中的可以安全删除", "提示", JOptionPane.YES_NO_OPTION);
 	               
 	                 if(i==JOptionPane.YES_OPTION){
+	                	String bb= SqlTool.findOneRecord("select idEvent,来源,任务类别,动作,托盘编号,状态,来源货位号,放回货位号,状态2,新建时间,发送时间,请求区,是否回大库"
+	                	 		+ " from 立库动作指令  where idEvent='"+ID+"'");
+	                	 SqlPro.getLog().error("删除立库指令-> idEvent,来源,任务类别,动作,托盘编号,状态,来源货位号,放回货位号,状态2,新建时间,发送时间,请求区,是否回大库 ="+bb);  
 	                	 String back=SqlTool.insert(new String[]{"delete from 立库动作指令  where idEvent='"+ID+"'"});
 	                	 refsh();
 	                 }
@@ -824,13 +840,14 @@ public class CommentPanel extends JPanel {
 	    JComboBox comboBox_3 = new JComboBox();
 	    comboBox_3.addItem("2");  comboBox_3.addItem("1");
 	    
-	    comboBox_3.setBounds(817, 599, 54, 21);
+	    comboBox_3.setBounds(817, 656, 54, 21);
 	    add(comboBox_3);
 	    JButton button_12 = new JButton("\u8BD5\u8DD18888\u6258\u76D8");
 	    
 	    button_12.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
-	    		
+	    		if(1==1)
+	    		return;
 	    		if(start==0){
 	    			start=1;
 	    			button_12.setText("停止试运行");
@@ -860,12 +877,175 @@ public class CommentPanel extends JPanel {
 	    		
 	    	}
 	    });
-	    button_12.setBounds(881, 598, 121, 23);
+	    button_12.setBounds(881, 655, 121, 23);
 	    add(button_12);
 	    
 	    JLabel label_22 = new JLabel("\u5206\u533A");
-	    label_22.setBounds(779, 602, 54, 15);
+	    label_22.setBounds(779, 659, 54, 15);
 	    add(label_22);
+	    
+	    JButton button_13 = new JButton("\u6E05\u9664\u8D27\u4F4D");
+	    button_13.addActionListener(new ActionListener() {
+	    	public void actionPerformed(ActionEvent e) {
+	    		int row=table_2.getSelectedRow();
+	    		if(row==-1){
+	    			JOptionPane.showConfirmDialog(null, "请选择一行", "确认",JOptionPane.DEFAULT_OPTION);	
+	    		}else{
+	    			Object huowei=table_2.getValueAt(row, 0);
+	    			String tp=SqlTool.findOneRecord("select 托盘编号 from 库存托盘  where 货位号='"+huowei+"'");
+	    			 int i=  JOptionPane.showConfirmDialog(null, "请确定"+huowei+"号货位上是否有料箱,如果有料箱请点击‘否’或‘取消’", "确认",JOptionPane.YES_NO_CANCEL_OPTION);
+	    				     if(i==0){
+	    				    		String sql1="UPDATE 库存托盘   SET 货位号=NULL where 托盘编号='"+tp+"'";
+	    				    	   // String sql1="DELETE FROM 库存托盘  where 托盘编号='"+tp+"'";
+	    							String sql2="UPDATE 货位表  SET 托盘编号=NULL   where 托盘编号='"+tp+"' and 货位序号='"+huowei+"'";
+	    							SqlTool.insert(new String[]{sql1,sql2});
+	    							refsh(); 
+	    				    	 
+	    				      }
+	    				     }
+	    	}
+	    			   
+	    		
+	    	
+	    });
+	    button_13.setBounds(542, 382, 113, 23);
+	    add(button_13);
+	    
+	    JPanel panel = new JPanel();
+	    panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "\u6DFB\u52A0/\u66F4\u6539\u6258\u76D8", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+	    panel.setBounds(659, 415, 343, 153);
+	    add(panel);
+	    panel.setLayout(null);
+	    
+	    JLabel lblNewLabel = new JLabel("\u6258\u76D8\u7F16\u53F7");
+	    lblNewLabel.setBounds(21, 20, 61, 28);
+	    panel.add(lblNewLabel);
+	    
+	    JComboBox comboBox_4 = new JComboBox();
+	    comboBox_4.addPopupMenuListener(new PopupMenuListener() {
+	    	public void popupMenuCanceled(PopupMenuEvent e) {
+	    	}
+	    	public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+	    	}
+	    	public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+	    		Vector v=SqlTool.findInVector("select 托盘编号 from 托盘物料map  ORDER BY 托盘编号");
+	    		comboBox_4.removeAllItems();
+	    		for(int i=0;i<v.size();i++){
+	    			Vector row=(Vector)v.get(i);
+	    			comboBox_4.addItem(row.get(0));
+	    		}
+	    		comboBox_4.addItem("");
+	    	}
+	    });
+	    comboBox_4.setBounds(92, 24, 105, 21);
+	    panel.add(comboBox_4);
+	    
+	    JLabel label_23 = new JLabel("\u8D27\u4F4D\u53F7");
+	    label_23.setBounds(21, 61, 54, 15);
+	    panel.add(label_23);
+	    
+	    JComboBox comboBox_5 = new JComboBox();
+	    comboBox_5.addPopupMenuListener(new PopupMenuListener() {
+	    	public void popupMenuCanceled(PopupMenuEvent e) {
+	    	}
+	    	public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+	    	}
+	    	public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+	    		Vector v=SqlTool.findInVector("select 货位序号 from 货位表  where 货位序号<>'60001' and  货位序号<>'60002' ORDER BY 货位序号");
+	    		comboBox_5.removeAllItems();
+	    		for(int i=0;i<v.size();i++){
+	    			Vector row=(Vector)v.get(i);
+	    			comboBox_5.addItem(row.get(0));
+	    		}
+	    		comboBox_5.addItem("");
+	    	}
+	    });
+	    comboBox_5.setBounds(92, 58, 105, 21);
+	    panel.add(comboBox_5);
+	    
+	    JLabel label_24 = new JLabel("\u533A\u53F7");
+	    label_24.setBounds(21, 98, 54, 15);
+	    panel.add(label_24);
+	    
+	    JComboBox comboBox_6 = new JComboBox();
+	    comboBox_6.setBounds(92, 95, 105, 21);
+	    panel.add(comboBox_6);
+	    comboBox_6.addItem("1"); comboBox_6.addItem("2");
+	    comboBox_6.addItem("");
+	    JButton button_14 = new JButton("\u63D0\u4EA4/\u68C0\u67E5");
+	    button_14.setBounds(237, 120, 96, 23);
+	    panel.add(button_14);
+	    button_14.addActionListener(new ActionListener() {
+	    	public void actionPerformed(ActionEvent e) {
+	    	Object tp=	comboBox_4.getSelectedItem()==null?"":comboBox_4.getSelectedItem();
+	    	Object huowei=	comboBox_5.getSelectedItem()==null?"":comboBox_5.getSelectedItem();
+	    	Object quhao=	comboBox_6.getSelectedItem()==null?"":comboBox_6.getSelectedItem();
+	    		
+	    	if(!tp.equals("")&&!huowei.equals("")&&!quhao.equals("")){
+	    		String istp=SqlTool.findOneRecord("select 托盘编号 from 库存托盘  where 托盘编号='"+tp+"'");	
+	    		if(istp!=null){
+	    		int i=  JOptionPane.showConfirmDialog(null, "这个料箱已经在托盘表里面，继续的话将会覆盖该料箱的信息！", "确认",JOptionPane.YES_NO_CANCEL_OPTION);	
+	    		  if(i==0)	{
+	    			  String ishuowei=SqlTool.findOneRecord("select 货位序号 from 货位表  where 货位序号='"+huowei+"'"+" and  托盘编号<>''"); 
+	    			 System.out.println("ishuowei="+ishuowei);
+	    			  if(ishuowei!=null){
+	    				  System.out.println("ishuowei3="+ishuowei);
+		    		    int i2=  JOptionPane.showConfirmDialog(null, "你选择的货位号上已经有料箱，是否覆盖？", "确认",JOptionPane.YES_NO_CANCEL_OPTION);
+	    			     if(i2!=0) {check();return;}
+	    			  }			 
+		    		  String sql1="UPDATE 库存托盘   SET 货位号='"+huowei+"', 方向='"+quhao+"' where 托盘编号='"+tp+"'";
+		    		  String sql3="UPDATE 货位表  SET 托盘编号=NULL,堆垛机=NULL"+"   where 托盘编号='"+tp+"'";
+	    			  String sql2="UPDATE 货位表  SET 托盘编号='"+tp+"',堆垛机='"+quhao+"'"+"   where 货位序号='"+huowei+"'";
+					  SqlTool.insert(new String[]{sql1,sql3,sql2});
+						refsh(); 
+						comboBox_4.setSelectedItem("");
+						comboBox_5.setSelectedItem("");
+						comboBox_6.setSelectedItem("");
+					
+						
+	    		      }else{
+	    		    	  check();
+	    		    	  return;}
+	    		  }else{
+	    			  String ishuowei=SqlTool.findOneRecord("select 货位序号 from 货位表  where 货位序号='"+huowei+"'"+" and  托盘编号<>''"); 
+	    			 if(ishuowei!=null){
+	    				 int i=  JOptionPane.showConfirmDialog(null, "你选择的货位号上已经有料箱，是否覆盖？", "确认",JOptionPane.YES_NO_CANCEL_OPTION);
+	    				 if(i!=0) {check();return;}
+	    			 }
+	    			 
+	    				 
+	    					String wl=SqlTool.findOneRecord("Select 物料编码,IFNULL(默认数量,0)  from 托盘物料map where 托盘编号='"+tp+"'");
+	    					if(wl!=null)
+	    					{   String sm[]=wl.split("!_!");
+	    						 String sql1="insert into 库存托盘 (托盘编号,物料,数量,"+
+		    			                   "方向,货位号,address) values("+
+		    			                     "'"+tp+"',"+
+		    			                     "'"+sm[0]+"',"+
+		    			                      "'"+Integer.parseInt(sm[1])+"',"+
+		    			                      "'"+quhao+"','"+huowei+"',"+
+		    			                      "'1=1,2=1,3=1,4=1,5=1,6=1,7=1,8=1,9=1,10=1,11=1,12=1,13=1,14=1,15=1,16=1,17=1,18=1,19=1,20=1,21=1,22=1,23=1,24=1,25=1,26=1,27=1,28=1'"
+		    			                      
+		    			                   + ")";
+					    	  String sql2="UPDATE 货位表  SET 托盘编号='"+tp+"',堆垛机='"+quhao+"'"+"   where 货位序号='"+huowei+"'";
+					    	  String sql3="UPDATE 货位表  SET 托盘编号=NULL,堆垛机=NULL"+"   where 托盘编号='"+tp+"'";
+								SqlTool.insert(new String[]{sql1,sql3,sql2});
+								refsh(); 
+								comboBox_4.setSelectedItem("");
+								comboBox_5.setSelectedItem("");
+								comboBox_6.setSelectedItem("");
+	    					}else{check();return;}
+	    				    
+	    				 
+	    			  
+	    		    }
+	    			
+	    		}
+	    		
+	    	check();
+	    	
+	    	
+	    	}
+	    });
 	    
 	   
 	   // initTable6();
@@ -889,6 +1069,47 @@ public class CommentPanel extends JPanel {
 			
 		}.start();
 
+	}
+	public void check(){
+		//check
+    	Vector v=SqlTool.findInVector("select 托盘编号,货位号 from 库存托盘  where  货位号<>'' order by 托盘编号");
+    	for(int i=0;i<v.size();i++){
+    		Vector row=(Vector)v.get(i);
+    		String ishuowei=SqlTool.findOneRecord("select 货位序号 from 货位表  where 托盘编号='"+row.get(0)+"'"); 
+    		if(ishuowei==null){
+    			JOptionPane.showConfirmDialog(null, "检查1，托盘"+row.get(0)+"在货位表里找不到，这是不对的，请对照实物调整！！！", "确认",JOptionPane.DEFAULT_OPTION);
+    			  return;    			
+    			
+    		 }else{
+    		if(!ishuowei.equals(row.get(1)+"")){
+    			JOptionPane.showConfirmDialog(null, "检查2，托盘表里托盘"+row.get(0)+",货位="+row.get(1)+",货位表里托盘="+row.get(0)+",货位号="+ishuowei+",两个对不上,请对照实物调整！！！", "确认",JOptionPane.DEFAULT_OPTION);
+    			  return;
+    		   }
+    		
+    		   }
+    		
+    		 
+    	   }
+    	
+    	Vector v2=SqlTool.findInVector("select 托盘编号,货位序号 from 货位表  where  托盘编号<>'' order by 托盘编号");
+    	for(int i=0;i<v2.size();i++){
+    		Vector row=(Vector)v2.get(i);
+    		String ishuowei=SqlTool.findOneRecord("select 货位号 from 库存托盘  where 托盘编号='"+row.get(0)+"'"); 
+    		if(ishuowei==null){
+    			JOptionPane.showConfirmDialog(null, "检查3，托盘"+row.get(0)+"在货位表里找不到，这是不对的，请对照实物调整！！！", "确认",JOptionPane.DEFAULT_OPTION);
+    			  return;    			
+    			
+    		 }else{
+    		if(!ishuowei.equals(row.get(1)+"")){
+    			JOptionPane.showConfirmDialog(null, "检查4，托盘表里托盘"+row.get(0)+",货位="+row.get(1)+",货位表里托盘="+row.get(0)+",货位号="+ishuowei+",两个对不上,请对照实物调整！！！", "确认",JOptionPane.DEFAULT_OPTION);
+    			  return;
+    		   }
+    		
+    		   }
+    		
+    		 
+    	   }
+		
 	}
 	public void setWidth(){
 		table_6.getColumnModel().getColumn(0).setPreferredWidth(10);
@@ -938,11 +1159,15 @@ public class CommentPanel extends JPanel {
 	}
 	
 	public void refsh(){
-		Vector v3=SqlTool.findInVector("select idEvent,动作,托盘编号,来源货位号,放回货位号,状态,状态2,是否回大库,空  from 立库动作指令  order by idEvent");
+		Vector v3=SqlTool.findInVector("select idEvent,动作,托盘编号,来源货位号,放回货位号,状态,状态2,是否回大库,空  from 立库动作指令   where 状态<>'完成' order by idEvent");
+		Vector v33=SqlTool.findInVector("select idEvent,动作,托盘编号,来源货位号,放回货位号,状态,状态2,是否回大库,空  from 立库动作指令   where 动作='预上货' and 状态2<>'1' order by idEvent");
+		for(int i=0;i<v33.size();i++){
+			 v3.addElement(v33.get(i));
+		 }
 		modezl.setDataVector(v3, zl);
 		Vector v4=SqlTool.findInVector("select 托盘编号,物料,数量,货位号,方向  from 库存托盘  order by 托盘编号");
 		modeTP.setDataVector(v4, TP);
-		Vector v5=SqlTool.findInVector("select 货位序号,托盘编号   from 货位表  order by 距离");
+		Vector v5=SqlTool.findInVector("select 货位序号,托盘编号  ,堆垛机 from 货位表  order by 距离");
 		modeKF.setDataVector(v5, KF);
 		
 		
