@@ -16,7 +16,6 @@
     	<result property="账户" column="账户" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     	<result property="密码" column="密码" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     	<result property="角色" column="角色" javaType="String" jdbcType="VARCHAR" nullValue=""/>
-    	<result property="方向" column="方向" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     </resultMap>
 	<select id="LoginDAO.getUserPassword" parameterClass="java.util.HashMap" resultMap="LoginDAO.getUserPasswordMap">
 		SELECT a.* FROM `账户` AS a WHERE a.`账户`=#userName# AND a.`密码`=#password#
@@ -127,7 +126,6 @@
     	<result property="新建时间" column="新建时间" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     	<result property="更新者" column="更新者" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     	<result property="更新时间" column="更新时间" javaType="String" jdbcType="VARCHAR" nullValue=""/>
-    	<result property="层数" column="层数" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     </resultMap>
 	<select id="BaseDataDAO.getMzYesNo" parameterClass="java.util.HashMap" resultMap="BaseDataDAO.getMzYesNoMap">
 		select a.* from 模组题头 a where a.模组编码 = #mozu_code#
@@ -171,7 +169,6 @@
     	<result property="物料描述" column="物料描述" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     	<result property="数量" column="数量" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     	<result property="工位" column="工位" javaType="String" jdbcType="VARCHAR" nullValue=""/>
-    	<result property="载具位置" column="载具位置" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     </resultMap>
 	<select id="BaseDataDAO.getMzzlhList" parameterClass="java.util.HashMap" resultMap="BaseDataDAO.getMzzlhListMap">
 		$sql$
@@ -246,7 +243,7 @@
 			FROM `工单表` 
 			LEFT JOIN `pack题头` ON `工单表`.`pack编码` = `pack题头`.`pack编码` 
 			LEFT JOIN `工单完成率` ON `工单完成率`.`工单ID` = `工单表`.ID $sql$ 
-		  	ORDER BY `工单表`.`装配区`,`工单表`.`工单序号`
+		  	ORDER BY `工单表`.`工单序号`
 	</select>
 	<!-- 指令list -->
 	<resultMap id="OrderOperactionDAO.getZlListMap" class="java.util.HashMap">
@@ -282,8 +279,6 @@
     	<result property="有效型腔" column="有效型腔" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     	<result property="完成数量" column="完成数量" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     	<result property="装配区" column="装配区" javaType="String" jdbcType="VARCHAR" nullValue=""/>
-    	<result property="模组层数" column="模组层数" javaType="String" jdbcType="VARCHAR" nullValue=""/>
-    	<result property="载具位置" column="载具位置" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     </resultMap>
 	<select id="OrderOperactionDAO.getZlList" parameterClass="java.util.HashMap" resultMap="OrderOperactionDAO.getZlListMap">
 		$sql$
@@ -330,8 +325,8 @@
 	</select>
 	<!-- 配方指令队列 保存 -->
 	<insert id="OrderOperactionDAO.savePfzldl" parameterClass="java.util.HashMap">
-		insert into `配方指令队列`(`工单ID`,`工单序号`,`pack编码`,`pack类型`,`装配区`,`模组序ID`,`模组序号`,`模组编码`,`载具序号`,`模组类型`,`电芯类型`,`物料`,`物料描述`,`数量`,`工位`,`电芯数量`,`翻面否`,`电芯位置1`,`电芯位置2`,`电芯位置3`,`电芯位置4`,`假电芯1`,`假电芯2`,`叠装否`,`有效型腔`,`完成数量`,`分解号`,`模组层数`,`载具位置`)
-		values(#工单ID#,#工单序号#,#pack编码#,#pack类型#,#装配区#,#模组序ID#,#模组序号#,#模组编码#,#载具序号#,#模组类型#,#电芯类型#,#物料#,#物料描述#,#数量#,#工位#,#电芯数量#,#翻面否#,#电芯位置1#,#电芯位置2#,#电芯位置3#,#电芯位置4#,#假电芯1#,#假电芯2#,#叠装否#,#有效型腔#,#完成数量#,#分解号#,#模组层数#,#载具位置#)
+		insert into `配方指令队列`(`工单ID`,`工单序号`,`pack编码`,`pack类型`,`装配区`,`模组序ID`,`模组序号`,`模组编码`,`载具序号`,`模组类型`,`电芯类型`,`物料`,`物料描述`,`数量`,`工位`,`电芯数量`,`翻面否`,`电芯位置1`,`电芯位置2`,`电芯位置3`,`电芯位置4`,`假电芯1`,`假电芯2`,`叠装否`,`有效型腔`,`完成数量`,`分解号`)
+		values(#工单ID#,#工单序号#,#pack编码#,#pack类型#,#装配区#,#模组序ID#,#模组序号#,#模组编码#,#载具序号#,#模组类型#,#电芯类型#,#物料#,#物料描述#,#数量#,#工位#,#电芯数量#,#翻面否#,#电芯位置1#,#电芯位置2#,#电芯位置3#,#电芯位置4#,#假电芯1#,#假电芯2#,#叠装否#,#有效型腔#,#完成数量#,#分解号#)
 	</insert>
 	<!-- 修改工单分解日期 -->
 	<update id="OrderOperactionDAO.updateGdState" parameterClass="java.util.HashMap">
@@ -352,10 +347,11 @@
 	</select>
 	<!-- 获取最大工单序号 -->
 	<resultMap id="OrderOperactionDAO.getMaxGdxhMap" class="java.util.HashMap">
-    	<result property="序号" column="序号" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="ID" column="ID" javaType="String" jdbcType="VARCHAR" nullValue=""/>
+    	<result property="工单序号" column="工单序号" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     </resultMap>
 	<select id="OrderOperactionDAO.getMaxGdxh" parameterClass="java.util.HashMap" resultMap="OrderOperactionDAO.getMaxGdxhMap">
-		$sql$
+		SELECT MAX(a.`工单序号`) AS `工单序号`,MAX(a.`ID`) AS ID FROM `工单表` a
 	</select>
 	<!-- 获取工单状态 -->
 	<resultMap id="OrderOperactionDAO.getGdtypeMap" class="java.util.HashMap">
@@ -473,7 +469,6 @@
     	<result property="密码" column="密码" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     	<result property="角色" column="角色" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     	<result property="角色名" column="角色名" javaType="String" jdbcType="VARCHAR" nullValue=""/>
-    	<result property="方向" column="方向" javaType="String" jdbcType="VARCHAR" nullValue=""/>
     </resultMap>
 	<select id="BaseDataDAO.selectYongHJues" parameterClass="java.util.HashMap" resultMap="BaseDataDAO.selectYongHJuesMap">
 		$sql$
@@ -486,33 +481,4 @@
 	<delete id="KuFangActionDAO.removeAll" parameterClass="java.util.HashMap">
 		$sql$
 	</delete>
-	<!-- 获取工单下载表中的ID -->
-	<resultMap id="OrderOperactionDAO.getGdxzIdMap" class="java.util.HashMap">
-		<result nullValue="" jdbcType="VARCHAR" javaType="String" column="ID" property="ID"/>
-	</resultMap>
-	<select parameterClass="java.util.HashMap" id="OrderOperactionDAO.getGdxzId" resultMap="OrderOperactionDAO.getGdxzIdMap">
-		$sql$
-	</select>
-	<!-- 物料请求 大立体库 -->
-	<resultMap id="HomeActionDAO.getDltkMap" class="java.util.HashMap">
-    	<result property="id" column="id" javaType="String" jdbcType="VARCHAR" nullValue=""/>
-    	<result property="托盘编码" column="托盘编码" javaType="String" jdbcType="VARCHAR" nullValue=""/>
-    	<result property="物料" column="物料" javaType="String" jdbcType="VARCHAR" nullValue=""/>
-    	<result property="数量" column="数量" javaType="String" jdbcType="VARCHAR" nullValue=""/>
-    	<result property="方向" column="方向" javaType="String" jdbcType="VARCHAR" nullValue=""/>
-    	<result property="状态" column="状态" javaType="String" jdbcType="VARCHAR" nullValue=""/>
-    </resultMap>
-	<select id="HomeActionDAO.getDltk" parameterClass="java.util.HashMap" resultMap="HomeActionDAO.getDltkMap">
-		SELECT a.* FROM `大库请求` AS a WHERE a.`状态`&lt;&gt;1 ORDER BY a.ID LIMIT 50
-	</select>
-	<!-- 获取RFID以及物料编码 -->
-	<resultMap id="KuFangActionDAO.getRfidWlMap" class="java.util.HashMap">
-    	<result property="ID" column="ID" javaType="String" jdbcType="VARCHAR" nullValue=""/>
-    	<result property="托盘编号" column="托盘编号" javaType="String" jdbcType="VARCHAR" nullValue=""/>
-    	<result property="物料编码" column="物料编码" javaType="String" jdbcType="VARCHAR" nullValue=""/>
-    	<result property="默认数量" column="默认数量" javaType="String" jdbcType="VARCHAR" nullValue=""/>
-    </resultMap>
-	<select id="KuFangActionDAO.getRfidWl" parameterClass="java.util.HashMap" resultMap="KuFangActionDAO.getRfidWlMap">
-		SELECT a.* FROM `托盘物料MAP` AS a $sql$
-	</select>
 </sqlMap>
